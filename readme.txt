@@ -4,7 +4,7 @@ Donate link:
 Tags: speed, optimization, performance, scripts to the footer, google libraries, font awesome cdn, defer parsing of javascript, remove query strings, lazy load images, gtmetrix, google pageSpeed, yslow, eliminate external render-blocking javascript and css, compression, async, render-blocking css
 Requires at least: 3.6
 Tested up to: 4.9
-Stable tag: 3.6
+Stable tag: 3.6.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,8 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 1. Plugin options page, simple view (v2.5)
 
 == Changelog ==
+= 3.6.1 =
+ * Added a section for feedback in the plugin's dashboard
 
 = 3.6 =
 * Changed contributors and fixed a few bugs. Plugin is now under new ownership.
