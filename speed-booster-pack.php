@@ -86,8 +86,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 				add_action( 'wp_head', array( $this, 'sbp_fade_in_style' ), 100 );
 			}
 
-			// Render debugging information
-			add_action( 'wp_footer', array( $this, 'sbp_debugg' ), SBP_FOOTER_LAST );
 
 			// Filters
 			$this->path = plugin_basename( __FILE__ );
@@ -270,36 +268,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 			return $links;
 
 		}    //	End function sbp_settings_link
-
-
-		/*----------------------------------------------------------------------------------------------------------
-			Render the plugin name, its version and active options in page source, useful for debugging
-		-----------------------------------------------------------------------------------------------------------*/
-
-		function sbp_debugg() {
-
-			global $sbp_options;
-
-			echo '<! --We need this for debugging themes using ' . SPEED_BOOSTER_PACK_NAME . ' ' . SPEED_BOOSTER_PACK_VERSION . '-->' . "\n";
-
-			if ( isset( $sbp_options['jquery_to_footer'] ) ) {
-				echo ' < ! --Scripts to footer: enabled-->' . "\n";
-			}
-
-			if ( isset( $sbp_options['sbp_footer_css'] ) ) {
-				echo ' < ! --CSS to footer: enabled-->' . "\n";
-			}
-
-			if ( isset( $sbp_options['defer_parsing'] ) ) {
-				echo ' < ! --Defer parsing of js: enabled-->' . "\n";
-			}
-
-			if ( isset( $sbp_options['sbp_css_async'] ) ) {
-				echo ' < ! --CSS Async: enabled-->' . "\n";
-			}
-
-		}    //	End function sbp_debugg
-
 	}    //	End class Speed_Booster_Pack
 
 }    //	End if (!class_exists("Speed_Booster_Pack")) (1)
