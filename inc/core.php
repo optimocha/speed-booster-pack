@@ -239,19 +239,19 @@ public function sbp_exclude_scripts() {
 
 
 	 if ( get_option( 'sbp_js_footer_exceptions1' ) ) {
-		$sbp_handle1 = esc_html( get_option( 'sbp_js_footer_exceptions1' ) );
+		$sbp_handle1 = get_option( 'sbp_js_footer_exceptions1' );
 	}
 
 	if ( get_option( 'sbp_js_footer_exceptions2' ) ) {
-		$sbp_handle2 = esc_html( get_option( 'sbp_js_footer_exceptions2' ) );
+		$sbp_handle2 = get_option( 'sbp_js_footer_exceptions2' );
 	}
 
 	if ( get_option( 'sbp_js_footer_exceptions3' ) ) {
-		$sbp_handle3 = esc_html( get_option( 'sbp_js_footer_exceptions3' ) );
+		$sbp_handle3 = get_option( 'sbp_js_footer_exceptions3' );
 	}
 
 	if ( get_option( 'sbp_js_footer_exceptions4' ) ) {
-		$sbp_handle4 = esc_html( get_option( 'sbp_js_footer_exceptions4' ) );
+		$sbp_handle4 = get_option( 'sbp_js_footer_exceptions4' );
 	}
 
 	$sbp_enq 	= 'enqueued';
@@ -491,7 +491,7 @@ function sbp_no_more_fontawesome() {
 		if( !is_admin() and preg_match( $regex, $registered->src) and isset( $sbp_options['font_awesome'] ) ) {
 			wp_dequeue_style( $registered->handle );
 			// FA was dequeued, so here we need to enqueue it again from CDN
-			wp_enqueue_style( 'font-awesome', '//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css' );
+			wp_enqueue_style( 'font-awesome', '//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
 		}	//	END if( preg_match...
 	}	//	END foreach
 }	//	End function dfa_no_more_fontawesome

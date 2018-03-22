@@ -12,6 +12,10 @@ A light, frequently updated and easy to use plugin to make your site load faster
 
 == Description ==
 
+A short video about how Speed Booster pack can help actually increase a website's score in Google PageSpeed Insights:
+
+https://www.youtube.com/watch?v=u0G6pk2mX4M
+
 **Speed Booster Pack is a lightweight, frequently updated, easy to use and well supported plugin which allows you to improve your website's loading speed.**
 
 Improving your site's speed will get you a better score on major speed testing services such as [Google PageSpeed](http://developers.google.com/speed/pagespeed/insights/), [GTmetrix](http://gtmetrix.com/), [YSlow](https://developer.yahoo.com/yslow/), [Pingdom](http://tools.pingdom.com/fpt/), [Webpagetest](http://www.webpagetest.org/) and will also improve your overall site's usability. This will persuade Google and other search engines to rank your site higher in search results thus sending more traffic.
@@ -46,9 +50,6 @@ Speed Booster Pack is a plugin that can help you speed up your website by tweaki
 
 * For complete usage instructions visit [Plugin Documentation](http://docs.machothemes.com/category/118-speed-booster)
 
-A short video about how Speed Booster pack can help actually increase a website's score in Google PageSpeed Insights:
-
-https://www.youtube.com/watch?v=u0G6pk2mX4M
 
 Future Development:
 
@@ -77,6 +78,20 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 1. Plugin options page, simple view (v2.5)
 
 == Changelog ==
+
+= 3.7 =
+
+* Bumped FontAwesome bundled CSS version from 4.1 -> 4.7 and changed to using MaxCDN
+* (Hopefully) Fixed #7 - https://github.com/MachoThemes/speed-booster-pack/issues/7
+* Fixed #9 - https://github.com/MachoThemes/speed-booster-pack/issues/9
+* Fixed #10 - https://github.com/MachoThemes/speed-booster-pack/issues/10
+* Fixed #11 - https://github.com/MachoThemes/speed-booster-pack/issues/11
+* Fixed #12 - https://github.com/MachoThemes/speed-booster-pack/issues/12
+* Implemented #13 - https://github.com/MachoThemes/speed-booster-pack/issues/13
+* Implemented #14 - https://github.com/MachoThemes/speed-booster-pack/issues/14
+* Implemented #15 - https://github.com/MachoThemes/speed-booster-pack/issues/15
+* Implemented #16 - https://github.com/MachoThemes/speed-booster-pack/issues/16
+
 = 3.6.1 =
  * Added a section for feedback in the plugin's dashboard
 

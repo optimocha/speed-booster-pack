@@ -1,21 +1,17 @@
 <?php
-/*	Use Google Libraries 1.5.2 => Allows your site to use common javascript libraries from Google's AJAX Libraries CDN, rather than from WordPress's own copies.	*/
-/*	http://jasonpenney.net/wordpress-plugins/use-google-libraries/	*/
-/*	Author & copyright (c) 2008-2013 : Jason Penney (email : jpenney@jczorkmid.net ).  General Public License v.2.0 */
 
+if ( ! class_exists( 'JCP_UseGoogleLibraries' ) ) {
 
-if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
-
-	class SBP_GoogleLibraries {
+	class JCP_UseGoogleLibraries {
 
 		protected static $instance;
 		protected static $plugin_file = __FILE__;
-		protected static $version = '1.6dev';
+		protected static $version = '1.6.2.3';
 		protected static $noconflict_inject = "<script type='text/javascript'>try{jQuery.noConflict();}catch(e){};</script>\n";
 
 		public static function get_instance() {
 			if ( ! isset( self::$instance ) ) {
-				self::$instance = new SBP_GoogleLibraries();
+				self::$instance = new JCP_UseGoogleLibraries();
 			}
 			return self::$instance;
 		}
@@ -77,7 +73,7 @@ if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
 		 *
 		 * @var string
 		 */
-		protected static $cache_id = 'SBP_GoogleLibraries_cache';
+		protected static $cache_id = 'JCP_UseGoogleLibraries_cache';
 
 		/**
 		 * transient expiration
@@ -131,9 +127,12 @@ if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
 			'jquery-ui-progressbar' => array( '', '', 'jquery-ui-core' ),
 			'jquery-ui-resizable' => array( '', '', 'jquery-ui-core' ),
 			'jquery-ui-selectable' => array( '', '', 'jquery-ui-core' ),
+			'jquery-ui-selectmenu' => array( '', '', 'jquery-ui-core' ),/* jQuery UI 1.11 */
 			'jquery-ui-slider' => array( '', '', 'jquery-ui-core' ),
 			'jquery-ui-sortable' => array( '', '', 'jquery-ui-core' ),
+			'jquery-ui-spinner' => array( '', '', 'jquery-ui-core' ), /* jQuery UI 1.11 */
 			'jquery-ui-tabs' => array( '', '', 'jquery-ui-core' ),
+			'jquery-ui-tooltip' => array( '', '', 'jquery-ui-core' ), /* jQuery UI 1.11 */
 			'jquery-ui-widget' => array( '', '', 'jquery-ui-core' ),  /* jQuery UI 1.8 */
 
 			/* jQuery Effects */
@@ -146,9 +145,11 @@ if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
 			'jquery-effects-fade' => array( '', '', 'jquery-ui-core' ),  /* jQuery UI 1.8 */
 			'jquery-effects-fold' => array( '', '', 'jquery-ui-core' ),
 			'jquery-effects-highlight' => array( '', '', 'jquery-ui-core' ),
+			'jquery-effects-puff' => array( '', '', 'jquery-ui-core' ), /* jQuery UI 1.11 */
 			'jquery-effects-pulsate' => array( '', '', 'jquery-ui-core' ),
 			'jquery-effects-scale' => array( '', '', 'jquery-ui-core' ),
 			'jquery-effects-shake' => array( '', '', 'jquery-ui-core' ),
+			'jquery-effects-size' => array( '', '', 'jquery-ui-core' ), /* jQuery UI 1.11 */
 			'jquery-effects-slide' => array( '', '', 'jquery-ui-core' ),
 			'jquery-effects-transfer' => array( '', '', 'jquery-ui-core' ),
 
@@ -188,7 +189,7 @@ if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
 			$this->jquery_tag     = 'jquery';
 			$this->google_scripts = self::$default_google_scripts;
 
-			$this->noconflict_next = FALSE;
+			$this->noconflict_next = false;
 			// protocol-relative URLS accepted by `wp_register_scripts`
 			// starting with version 3.5
 			$this->protocol_relative_supported = version_compare(
@@ -197,22 +198,23 @@ if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
 		}
 
 		static function configure_plugin() {
+
 			add_action(
 				'wp_default_scripts',
 				array(
-					'SBP_GoogleLibraries',
+					'JCP_UseGoogleLibraries',
 					'replace_default_scripts_action',
 				),
 				1000
 			);
 			add_filter(
 				'script_loader_src',
-				array( 'SBP_GoogleLibraries', 'remove_ver_query_filter' ),
+				array( 'JCP_UseGoogleLibraries', 'remove_ver_query_filter' ),
 				1000
 			);
 			add_filter(
 				'init',
-				array( 'SBP_GoogleLibraries', 'setup_filter' )
+				array( 'JCP_UseGoogleLibraries', 'setup_filter' )
 			);
 
 			// There's a chance some plugin has called wp_enqueue_script
@@ -303,13 +305,14 @@ if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
 			if ( $lib != '' ) {
 				// build new URL
 				$url  = "//ajax.googleapis.com/ajax/libs/$lib/$ver/$js.js";
-				$head = wp_remote_head( "http:$url" );
+				$proto_url = "http:$url";
+				$head = wp_remote_head( $proto_url );
 				if ( wp_remote_retrieve_response_code( $head ) !== 200 ) {
 					self::debug( "Google servers do not seem to be hosting requested version of $name (version $ver). Using version provided by WordPress." );
 					return $orig_url;
 				}
 				if ( ! $this->protocol_relative_supported ) {
-					return "http:$url";
+					return $proto_url;
 				}
 				return $url;
 			} else {
@@ -447,17 +450,21 @@ if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
 
 		function wp_dependency_get_data( $dep_obj, $handle, $data_name = false ) {
 
-			if ( ! method_exists( $dep_obj, 'add_data' ) )
+			if ( ! method_exists( $dep_obj, 'add_data' ) ) {
 				return false;
+			}
 
-			if ( ! isset( $dep_obj->registered[$handle] ) )
+			if ( ! isset( $dep_obj->registered[ $handle ] ) ) {
 				return false;
+			}
 
-			if ( ! $data_name )
-				return $dep_obj->registered[$handle]->extra;
+			if ( ! $data_name ) {
+				return $dep_obj->registered[ $handle ]->extra;
+			}
 
-			if ( ! method_exists( $dep_obj, 'get_data' ) )
-				return $dep_obj->registered[$handle]->extra[$data_name];
+			if ( ! method_exists( $dep_obj, 'get_data' ) ) {
+				return $dep_obj->registered[ $handle ]->extra[ $data_name ];
+			}
 
 			return $dep_obj->get_data( $handle, $data_name );
 		}
@@ -472,13 +479,13 @@ if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
 		 */
 		function remove_ver_query( $src ) {
 			if ( $this->noconflict_next ) {
-				$this->noconflict_next = FALSE;
+				$this->noconflict_next = false;
 				echo self::$noconflict_inject; // xss ok
 			}
 			if ( preg_match( '/ajax\.googleapis\.com\//', $src ) ) {
 				$src = remove_query_arg( 'ver', $src );
-				if ( strpos( $src, $this->google_scripts[$this->jquery_tag][1] . '.js' ) ) {
-					$this->noconflict_next = TRUE;
+				if ( strpos( $src, $this->google_scripts[ $this->jquery_tag ][1] . '.js' ) ) {
+					$this->noconflict_next = true;
 				}
 			}
 			return $src;
@@ -489,4 +496,9 @@ if ( ! class_exists( 'SBP_GoogleLibraries' ) ) {
 			return $ugl->remove_ver_query( $src );
 		}
 	}
+}
+
+//instantiate the class
+if ( class_exists( 'JCP_UseGoogleLibraries' ) ) {
+	JCP_UseGoogleLibraries::configure_plugin();
 }
