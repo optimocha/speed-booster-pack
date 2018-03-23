@@ -1,2 +1,4 @@
-.idea/*
-.node_modules/*
+*.log
+/node_modules/
+.idea/
+/.standard.json
