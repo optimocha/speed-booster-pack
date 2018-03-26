@@ -4,7 +4,8 @@ Donate link:
 Tags: speed, optimization, performance, scripts to the footer, google libraries, font awesome cdn, defer parsing of javascript, remove query strings, lazy load images, gtmetrix, google pageSpeed, yslow, eliminate external render-blocking javascript and css, compression, async, render-blocking css
 Requires at least: 3.6
 Tested up to: 4.9
-Stable tag: 3.6.1
+Requires PHP: 5.6
+Stable tag: 3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -82,15 +83,22 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 = 3.7 =
 
 * Bumped FontAwesome bundled CSS version from 4.1 -> 4.7 and changed to using MaxCDN
-* (Hopefully) Fixed #7 - https://github.com/MachoThemes/speed-booster-pack/issues/7
-* Fixed #9 - https://github.com/MachoThemes/speed-booster-pack/issues/9
-* Fixed #10 - https://github.com/MachoThemes/speed-booster-pack/issues/10
-* Fixed #11 - https://github.com/MachoThemes/speed-booster-pack/issues/11
-* Fixed #12 - https://github.com/MachoThemes/speed-booster-pack/issues/12
-* Implemented #13 - https://github.com/MachoThemes/speed-booster-pack/issues/13
-* Implemented #14 - https://github.com/MachoThemes/speed-booster-pack/issues/14
-* Implemented #15 - https://github.com/MachoThemes/speed-booster-pack/issues/15
-* Implemented #16 - https://github.com/MachoThemes/speed-booster-pack/issues/16
+* (Hopefully) fixed the issue affecting relative/absolute paths when using minify CSS
+* Wrongfully used escape functions
+* Should use -> done instead of -> queue
+* Update Use Google Libraries 3rd party dependency
+* Can't be fully translated because of one wrong text-domain string
+* Change UI to WordPress Core UI
+* Added plugin uninstall feedback
+* Added plugin (dedicated) support tab && moved plugin feedback section only to support tab
+* Added tooltips to all fields
+* Re-worked the page load / site stats bar & added a bit more info
+* Removed the old way of handling the uninstall hook & deletion of the sbp_integer variable from SBP when you uninstall it. In case you change your mind & reactivate the plugin, your former image compression value's there waiting for you.
+* Addressed a small issue with the "Exclude scripts from being moved to footer" display
+* Made all of the plugin's link send to MachoTheme's docs instead of Tiguan
+* Updated jQuery UI CSS to latest version & included the PNG sprites that come by default with jQuery UI, eliminating some back-end "asset not found" errors
+* Removed unused CSS files
+* Full list of changes for v3.7, here: https://github.com/MachoThemes/speed-booster-pack/milestone/1?closed=1
 
 = 3.6.1 =
  * Added a section for feedback in the plugin's dashboard

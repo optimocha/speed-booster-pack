@@ -28,6 +28,10 @@
     FOUNDATION, INC., 51 FRANKLIN ST, FIFTH FLOOR, BOSTON, MA  02110-1301  USA
 */
 
+//@todo: replace current minifier with: https://github.com/matthiasmullie/minify
+//@todo: rework the CSS Async functionality
+//@todo: rewrite all the JS so it sits in one file
+
 /*----------------------------------------------------------------------------------------------------------
 	Global Variables
 -----------------------------------------------------------------------------------------------------------*/
@@ -180,7 +184,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 		-----------------------------------------------------------------------------------------------------------*/
 
 		public static function sbp_deactivate() {
-			delete_option( 'sbp_integer' );
 		}
 
 
@@ -204,8 +207,8 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 			if ( $hook != $sbp_settings_page ) {
 				return;
 			}
-			wp_enqueue_style( 'sbp-styles', plugin_dir_url( __FILE__ ) . 'css/style.dev.css' );    //	change to style.dev.css to debug the plugin style  sbp_style.min
-			wp_enqueue_style( 'jquery-ui', plugin_dir_url( __FILE__ ) . 'css/jquery-ui.min.css' );
+			wp_enqueue_style( 'sbp-styles', plugin_dir_url( __FILE__ ) . 'css/style.css' );
+			wp_enqueue_style( 'jquery-ui', plugin_dir_url( __FILE__ ) . 'css/vendors/jquery-ui/jquery-ui.min.css' );
 
 		}    //	End function sbp_enqueue_styles
 
@@ -231,14 +234,8 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 
 			wp_enqueue_script( 'sbp-plugin-install', plugins_url( 'inc/js/plugin-install.js', __FILE__ ), array(
 				'jquery',
-				'updates'
+				'updates',
 			), SPEED_BOOSTER_PACK_VERSION, true );
-
-			wp_enqueue_script( 'sbp-slide', plugins_url( 'inc/js/sbp-slide.js', __FILE__ ), array(
-				'jquery',
-				'jquery-ui-slider',
-			), SPEED_BOOSTER_PACK_VERSION, true );
-			wp_enqueue_script( 'sbp-hide', plugins_url( 'inc/js/sbp-hide.js', __FILE__ ), array( 'jquery' ), SPEED_BOOSTER_PACK_VERSION, true );
 
 		}
 
@@ -262,7 +259,7 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 
 		function sbp_settings_link( $links ) {
 
-			$settings_link = ' <a href="options-general.php?page=sbp-options">Settings</a > ';
+			$settings_link = ' <a href="admin.php?page=sbp-options">Settings</a > ';
 			array_unshift( $links, $settings_link );
 
 			return $links;

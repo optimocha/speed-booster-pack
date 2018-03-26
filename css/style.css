@@ -774,3 +774,95 @@ p.description-link {
 
 /* Support Page */
 .center-support {text-align: center;}
+
+/* Fast as a rabbit, slow as a snail box */
+.sbp-fast-as-a-rabbit {
+	background-color: #fff;
+	width: 100%;
+	border-radius: 5px;
+	position: relative;
+	margin: 15px auto;
+}
+
+.sbp-fast-as-a-rabbit > div {
+	display: inline-block;
+	border-right: 1px solid #f3f3f3;
+	padding: 10px 20px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.sbp-fast-as-a-rabbit > div > i {margin-right: 8px;}
+
+.sbp-fast-as-a-rabbit > div > span { font-weight: bold;}
+
+/*
+.sbp-fast-as-a-rabbit > div:last-of-type .button {border-radius: 5px;}
+
+.sbp-fast-as-a-rabbit > div:last-of-type .button-secondary { color: #9a9a9a;}
+
+.sbp-fast-as-a-rabbit > div:last-of-type .button-primary {padding-left: 20px; padding-right: 20px;}
+
+.sbp-fast-as-a-rabbit > div:last-of-type .dashicons {
+	vertical-align: middle;
+	height: 24px;
+}
+
+.sbp-fast-as-a-rabbit > div:last-of-type {
+	text-align: right;
+	position: absolute;
+	right: 0;
+	top: 50%;
+	margin-top: -26px;
+}
+
+*/
+
+
+.sbp-fast-as-a-rabbit > div:nth-of-type(4),
+.sbp-fast-as-a-rabbit > div:nth-of-type(5) {
+	border-right: 0;
+}
+
+/* Progress bars */
+.sbp-fast-as-a-rabbit progress {
+	margin-left: 8px;
+}
+
+.sbp-progress-bar {
+	padding: 5px;
+}
+
+.sbp-progress-bar progress {
+	background-color: #f3f3f3;
+	border: 1px solid #ececec;
+	border-radius: 9px;
+	margin-right: 8px;
+}
+
+.sbp-progress-bar progress::-webkit-progress-bar {
+	background-color: #f3f3f3;
+	border-radius: 9px;
+}
+
+.sbp-progress-bar progress::-webkit-progress-value {
+	background: green;
+	border-radius: 9px;
+}
+
+.sbp-progress-bar progress::-moz-progress-bar {
+	background: green;
+	border-radius: 9px;
+}
+
+.sbp-progress-bar progress.sbp-progress-red::-webkit-progress-value {background: red;}
+.sbp-progress-bar progress.sbp-progress-red::-moz-progress-bar {background: red;}
+
+.sbp-progress-bar .progress-value {
+	padding: 0px 5px;
+	line-height: 20px;
+	margin-left: 5px;
+	font-size: .8em;
+	color: #555;
+	height: 18px;
+}

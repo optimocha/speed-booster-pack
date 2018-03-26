@@ -1,20 +1,17 @@
 <?php
 
-$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'general-options';
-
-
 // handle closed postboxes
 $user_id     = get_current_user_id();
 $option_name = 'closedpostboxes_' . 'toplevel_page_sbp-options'; // use the "pagehook" ID
 $option_arr  = get_user_option( $option_name, $user_id ); // get the options for that page
 
 
-if ( is_array($option_arr) && in_array( 'exclude-from-footer', $option_arr ) ) {
+if ( is_array( $option_arr ) && in_array( 'exclude-from-footer', $option_arr ) ) {
 	$closed = true;
 }
 
 
-if ( is_array($option_arr) && in_array( 'defer-from-footer', $option_arr ) ) {
+if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 	$closed_defer = true;
 }
 
@@ -28,17 +25,69 @@ if ( is_array($option_arr) && in_array( 'defer-from-footer', $option_arr ) ) {
 		<div class="about-text">
 			<?php
 			/* Translators: Welcome Screen Description. */
-			echo esc_html__( 'Speed Booster Pack is a lightweight, frequently updated, easy to use and well supported plugin which allows you to improve your website’s loading speed. Visitors usually close a website if it doesn’t load in a few seconds and the slower a site loads the greater the chances are that the visitors will leave. And you don’t want that to happen, do you? 🙂
+			echo esc_html__( 'Speed Booster Pack is a lightweight, frequently updated, easy to use and well supported plugin which allows you to improve your website’s loading speed. Visitors usually close a website if it doesn’t load in a few seconds and the slower a site loads the greater the chances are that the visitors will leave. And you don’t want that to happen, do you? 
 ', 'sb-pack' );
 			?>
 		</div>
 		<div class="wp-badge sbp-welcome-logo"></div>
 
+		<div class="sbp-fast-as-a-rabbit">
+			<div class="sbp-speed-page-load">
+				<?php _e( 'Page load: ', 'sb-pack' ); ?>
+				<span><?php echo esc_html( $page_time ) . __( ' sec', 'sb-pack' ); ?></span>
+				<span class="sbp-progress-bar">
+					<?php if ( $page_time < 10 ) { ?>
+					<progress max="100" value="<?php echo $page_time * 10; ?>">
+						<?php } else { ?>
+						<progress max="100" value="100" class="sbp-progress-red">
+							<?php } ?>
+						</progress>
+
+						<?php if ( ( $page_time ) > 10 ) { ?>
+							<img draggable="false" class="emoji" title="Your page loading time just made us cry" alt="😥" src="https://s.w.org/images/core/emoji/2.4/svg/1f625.svg">
+						<?php } else if ( ( $page_time ) > 8 && ( $page_time ) < 10 ) { ?>
+							<img draggable="false" class="emoji" title="Your page loading time just made us cry" alt="😥" src="https://s.w.org/images/core/emoji/2.4/svg/1f625.svg">
+						<?php } else if ( ( $page_time ) > 6 && ( $page_time ) < 8 ) { ?>
+							<img draggable="false" class="emoji" title="I'm not gonna lie, things aren't looking to good" alt="😮" src="https://s.w.org/images/core/emoji/2.4/svg/1f62e.svg">
+						<?php } else if ( ( $page_time ) > 4 && ( $page_time ) < 6 ) { ?>
+							<img draggable="false" class="emoji" title="Could be better" alt="🙄" src="https://s.w.org/images/core/emoji/2.4/svg/1f644.svg">
+						<?php } else if ( ( $page_time ) > 2 && ( $page_time ) < 4 ) { ?>
+							<img draggable="false" class="emoji" title="Going strong" alt="😥" src="https://s.w.org/images/core/emoji/2.4/svg/1f625.svg">
+						<?php } else if ( ( $page_time ) < 2 ) { ?>
+							<img draggable="false" title="You're a star" class="emoji" alt="⭐" src="https://s.w.org/images/core/emoji/2.4/svg/2b50.svg">
+						<?php } ?>
+				</span>
+
+			</div>
+			<div class="sbp-speed-db-queries">
+				<i class="dashicons dashicons-dashboard"></i><span><?php echo esc_html( $page_queries ); ?></span> <?php _e( 'DB Queries', 'sb-pack' ); ?>
+			</div>
+
+			<div class="sbp-speed-memory-usage">
+				<i class="dashicons dashicons-chart-pie"></i>
+				<?php _e( 'Memory: ', 'sb-pack' ); ?>
+				<span><?php echo number_format( ( memory_get_peak_usage() / 1024 / 1024 ), 1, ',', '' ) . ' / ' . ini_get( 'memory_limit' ), '<br />'; ?></span>
+
+			</div>
+
+			<div class="sbp-speed-plugin-number">
+				<i class="dashicons dashicons-admin-plugins"></i>
+				<?php _e( 'Plugins: ', 'sb-pack' ); ?>
+				<span><?php echo count( get_option( 'active_plugins' ) ); ?></span>
+			</div>
+
+			<div class="sbp-speed-info-analyze-container">
+				<!-- <a href="#" class="button button-secondary"><i class="dashicons dashicons-info"></i></a> -->
+				<!-- <a href="#" class="button button-primary"><i class="dashicons dashicons-search"></i><?php _e( 'Analyse', 'sb-pack' ); ?> -->
+				</a>
+			</div>
+		</div>
+
 		<h2 class="nav-tab-wrapper wp-clearfix">
-			<a class="nav-tab <?php echo $tab == 'general-options' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=sbp-options&tab=general-options' ) ); ?>">General</a>
-			<a class="nav-tab <?php echo $tab == 'advanced-options' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=sbp-options&tab=advanced-options' ) ); ?>">Advanced</a>
-			<a class="nav-tab <?php echo $tab == 'image-options' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=sbp-options&tab=image-options' ) ); ?>">Image Optimization</a>
-			<a class="nav-tab <?php echo $tab == 'support' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( 'admin.php?page=sbp-options&tab=support' ) ); ?>">Support</a>
+			<a class="nav-tab" href="#general-options"><?php _e( 'General', 'sb-pack' ); ?></a>
+			<a class="nav-tab" href="#advanced-options"><?php _e( 'Advanced', 'sb-pack' ); ?></a>
+			<a class="nav-tab" href="#image-options"><?php _e( 'Image Optimization', 'sb-pack' ); ?></a>
+			<a class="nav-tab" href="#support"><?php _e( 'Support', 'sb-pack' ); ?></a>
 		</h2>
 
 		<form method="post" action="options.php">
@@ -47,7 +96,7 @@ if ( is_array($option_arr) && in_array( 'defer-from-footer', $option_arr ) ) {
 			<?php wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false ); ?>
 			<?php settings_fields( 'speed_booster_settings_group' ); ?>
 
-			<div class="sb-pack-<?php echo $tab == 'general-options' ? 'show' : 'hide'; ?>">
+			<div id="general-options" class="sb-pack-tab">
 
 				<h3><?php _e( 'General', 'sb-pack' ); ?></h3>
 
@@ -247,7 +296,7 @@ if ( is_array($option_arr) && in_array( 'defer-from-footer', $option_arr ) ) {
 				</div><!--#sbp-css-content-->
 
 			</div>
-			<div class="sb-pack-<?php echo $tab == 'advanced-options' ? 'show' : 'hide'; ?>">
+			<div id="advanced-options" class="sb-pack-tab">
 
 				<br />
 				<div id="poststuff">
@@ -319,7 +368,7 @@ if ( is_array($option_arr) && in_array( 'defer-from-footer', $option_arr ) ) {
 											<div class="td-border-last"></div>
 
 											<p>
-											<h4 class="hndle"><?php _e( 'As a guidance, here is a list of script handles and script paths of each enqueued script detected by our plugin:', 'sb-pack' ); ?></h4>
+											<h4><?php _e( 'As a guidance, here is a list of script handles and script paths of each enqueued script detected by our plugin:', 'sb-pack' ); ?></h4>
 											</p>
 
 											<div class="sbp-all-enqueued">
@@ -332,11 +381,33 @@ if ( is_array($option_arr) && in_array( 'defer-from-footer', $option_arr ) ) {
 												<div class="sbp-inline-wrap">
 
 													<div class="sbp-columns1 sbp-width">
-														<?php echo get_option( 'all_theme_scripts_handle' ); ?>
+														<?php
+														$all_script_handles = get_option( 'all_theme_scripts_handle' );
+
+														$all_script_handles = explode( '<br />', $all_script_handles );
+
+														foreach ( $all_script_handles as $key => $value ) {
+															if ( ! empty( $value ) ) {
+																echo '<p>' . esc_html( $value ) . '</p>';
+															}
+														}
+														?>
 													</div>
 
 													<div class="sbp-columns2 sbp-width">
-														<?php echo get_option( 'all_theme_scripts_src' ); ?>
+														<?php
+														$all_scripts_src = get_option( 'all_theme_scripts_src' );
+
+														$all_scripts_src = explode( '<br />', $all_scripts_src );
+
+														foreach ( $all_scripts_src as $key => $value ) {
+															if ( ! empty( $value ) ) {
+																$value = parse_url( $value );
+																echo '<p>' . esc_html( str_replace( '/wp-content', '', $value['path'] ) ) . '</p>';
+															}
+
+														}
+														?>
 													</div>
 
 												</div>
@@ -397,7 +468,7 @@ if ( is_array($option_arr) && in_array( 'defer-from-footer', $option_arr ) ) {
 						</div>
 					</div>
 
-					<div class="sb-pack-<?php echo $tab == 'image-options' ? 'show' : 'hide'; ?>">
+					<div id="image-options" class="sb-pack-tab">
 
 						<br />
 						<?php
@@ -443,8 +514,8 @@ if ( is_array($option_arr) && in_array( 'defer-from-footer', $option_arr ) ) {
 
 									if ( is_plugin_active( $plugin_path ) ) {
 										$label  = __( 'Activated', 'sb-pack' );
-										$action = 'disbple';
-										$class  = 'disbpled';
+										$action = 'disable';
+										$class  = 'disabled';
 									} else {
 										$label  = __( 'Activate & get 500 free credits', 'sb-pack' );
 										$action = 'activate';
@@ -500,7 +571,7 @@ if ( is_array($option_arr) && in_array( 'defer-from-footer', $option_arr ) ) {
 						<br>
 
 					</div>
-					<div class="sb-pack-<?php echo $tab == 'support' ? 'show' : 'hide'; ?>">
+					<div id="support" class="sb-pack-tab">
 
 						<?php
 						if ( ! defined( 'WPINC' ) ) {

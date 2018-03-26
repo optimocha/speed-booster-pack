@@ -1,7 +1,7 @@
 <div class='notice notice-warning' id='sbp-news' style="padding-top: 7px">
     <div style="float:right;"><a href="javascript:dismissNews()" class="button" style="margin-top:10px;"><?php _e('Dismiss','sb-pack');?></a></div>
     <strong><?php _e('Speed Booster Pack','sb-pack');?></strong>
-    <p><?php printf(__('Check out the %s Plugin settings %s for new features that can make your site load faster.','sb-pack'), '<a href="options-general.php?page=sbp-options">', '</a>');?></p>
+    <p><?php printf(__('Check out the %s Plugin settings %s for new features that can make your site load faster.','sb-pack'), '<a href="admin.php?page=sbp-options">', '</a>');?></p>
 </div>
 <script>
     function dismissNews() {
