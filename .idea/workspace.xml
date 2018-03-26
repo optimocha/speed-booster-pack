@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6514dd6e-0bd1-4961-a39a-b51c5d84cb1d" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/css/vendors/jquery-ui/jquery-ui.min.css" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/css/jquery-ui.min.css" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/css/sbp_style.min.css" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/css/style.dev.css" afterPath="$PROJECT_DIR$/css/style.css" />
-      <change beforePath="$PROJECT_DIR$/inc/js/admin-scripts.js" afterPath="$PROJECT_DIR$/inc/js/admin-scripts.js" />
-      <change beforePath="$PROJECT_DIR$/inc/js/sbp-hide.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/inc/template/notice.php" afterPath="$PROJECT_DIR$/inc/template/notice.php" />
       <change beforePath="$PROJECT_DIR$/inc/template/options.php" afterPath="$PROJECT_DIR$/inc/template/options.php" />
-      <change beforePath="$PROJECT_DIR$/readme.txt" afterPath="$PROJECT_DIR$/readme.txt" />
-      <change beforePath="$PROJECT_DIR$/speed-booster-pack.php" afterPath="$PROJECT_DIR$/speed-booster-pack.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -34,11 +23,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="options.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="options.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/inc/template/options.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="19" column="29" lean-forward="true" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+            <state relative-caret-position="447">
+              <caret line="278" column="50" lean-forward="true" selection-start-line="278" selection-start-column="50" selection-end-line="278" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -64,7 +53,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sbp-minifier.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="sbp-minifier.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inc/sbp-minifier.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="210">
@@ -96,7 +85,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>uninstall</find>
       <find>[ simpl</find>
       <find>reddit</find>
       <find>saboxplugin-icon-snapchat</find>
@@ -124,8 +112,9 @@
       <find>sb-pack-hide</find>
       <find>jquery-ui</find>
       <find>favicon</find>
-      <find>$tab</find>
       <find>sbp_settings_link</find>
+      <find>$tab</find>
+      <find>hndle</find>
     </findStrings>
     <replaceStrings>
       <replace>sbpack-</replace>
@@ -221,8 +210,8 @@
         <option value="$USER_HOME$/Downloads/old-sbp/speed-booster-pack.php" />
         <option value="$PROJECT_DIR$/speed-booster-pack.php" />
         <option value="$PROJECT_DIR$/inc/js/admin-scripts.js" />
-        <option value="$PROJECT_DIR$/inc/template/options.php" />
         <option value="$PROJECT_DIR$/inc/sbp-minifier.php" />
+        <option value="$PROJECT_DIR$/inc/template/options.php" />
       </list>
     </option>
   </component>
@@ -810,14 +799,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inc/template/options.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="29" lean-forward="true" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/speed-booster-pack.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="424">
@@ -838,6 +819,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="210">
           <caret line="16" column="32" lean-forward="true" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inc/template/options.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="278" column="50" lean-forward="true" selection-start-line="278" selection-start-column="50" selection-end-line="278" selection-end-column="50" />
           <folding />
         </state>
       </provider>

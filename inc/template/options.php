@@ -220,7 +220,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 					</span>
 				</p>
 
-				<h3 class="hndle"><?php _e( 'Need even more speed?', 'sb-pack' ); ?></h3>
+				<h3><?php _e( 'Need even more speed?', 'sb-pack' ); ?></h3>
 
 				<p>
 					<input id="sbp_css_async" name="sbp_settings[sbp_css_async]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['sbp_css_async'] ) ); ?> />
@@ -273,7 +273,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 					<div class="td-border-last"></div>
 
 					<p>
-					<h4 class="hndle"><?php _e( 'As a guidance, here is a list of css handles of each enqueued style detected by our plugin:', 'sb-pack' ); ?></h4>
+					<h4><?php _e( 'As a guidance, here is a list of css handles of each enqueued style detected by our plugin:', 'sb-pack' ); ?></h4>
 					</p>
 
 					<div class="sbp-all-enqueued">
