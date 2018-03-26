@@ -120,6 +120,15 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 				</p>
 
 				<p>
+					<input id="sbp_settings[minify_html_js]" name="sbp_settings[minify_html_js]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['minify_html_js'] ) ); ?> />
+					<label for="sbp_settings[minify_html_js]"><?php _e( 'Minify HTML and JS', 'sb-pack' ); ?></label>
+					<span class="tooltip-right"
+					      data-tooltip="<?php echo __( 'Activate this option only if you don’t want to use other minify plugins or other speed optimization plugin that has minify option included. If something goes wrong, simply uncheck this option and save the settings.', 'sb-pack' ); ?>">
+						<i class="dashicons dashicons-editor-help"></i>
+					</span>
+				</p>
+
+				<p>
 					<input id="sbp_settings[defer_parsing]" name="sbp_settings[defer_parsing]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['defer_parsing'] ) ); ?> />
 					<label for="sbp_settings[defer_parsing]"><?php _e( 'Defer parsing of javascript files', 'sb-pack' ); ?></label>
 					<span class="tooltip-right"
@@ -166,14 +175,16 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 
 				<h3> <?php _e( 'More settings', 'sb-pack' ); ?></h3>
 
+
 				<p>
-					<input id="sbp_settings[minify_html_js]" name="sbp_settings[minify_html_js]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['minify_html_js'] ) ); ?> />
-					<label for="sbp_settings[minify_html_js]"><?php _e( 'Minify HTML and JS', 'sb-pack' ); ?></label>
+					<input id="sbp_settings[remove_emojis]" name="sbp_settings[remove_emojis]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['remove_emojis'] ) ); ?> />
+					<label for="sbp_settings[remove_emojis]"><?php _e( 'Remove WordPress Emoji scripts', 'sb-pack' ); ?></label>
 					<span class="tooltip-right"
-					      data-tooltip="<?php echo __( 'Activate this option only if you don’t want to use other minify plugins or other speed optimization plugin that has minify option included. If something goes wrong, simply uncheck this option and save the settings.', 'sb-pack' ); ?>">
+					      data-tooltip="<?php echo __( 'Emojis are fun and all, but if you are aren’t using them they actually load a JavaScript file (wp-emoji-release.min.js) on every page of your website. For a lot of businesses, this is not needed and simply adds load time to your site. So we recommend disabling this.', 'sb-pack' ); ?>">
 						<i class="dashicons dashicons-editor-help"></i>
 					</span>
 				</p>
+
 
 				<p>
 					<input id="sbp_settings[remove_wsl]" name="sbp_settings[remove_wsl]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['remove_wsl'] ) ); ?> />
@@ -203,6 +214,15 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 				</p>
 
 				<p>
+					<input id="sbp_settings[rsd_link]" name="sbp_settings[rsd_link]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['rsd_link'] ) ); ?> />
+					<label for="sbp_settings[rsd_link]"><?php _e( 'Remove RSD(Really Simple Discovery) Link', 'sb-pack' ); ?></label>
+					<span class="tooltip-right"
+					      data-tooltip="<?php echo __( 'This type of link is used by blog clients. If you edit your site from your browser then you don’t need this. It is also used by some 3rd party applications that utilize XML-RPC requests. In most cases, this is just unnecessary code.', 'sb-pack' ); ?>">
+						<i class="dashicons dashicons-editor-help"></i>
+					</span>
+				</p>
+
+				<p>
 					<input id="sbp_settings[wp_generator]" name="sbp_settings[wp_generator]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['wp_generator'] ) ); ?> />
 					<label for="sbp_settings[wp_generator]"><?php _e( 'Remove the WordPress Version', 'sb-pack' ); ?></label>
 					<span class="tooltip-right"
@@ -220,6 +240,15 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 					</span>
 				</p>
 
+				<p>
+					<input id="sbp_settings[disable_xmlrpc]" name="sbp_settings[disable_xmlrpc]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['disable_xmlrpc'] ) ); ?> />
+					<label for="sbp_settings[disable_xmlrpc]"><?php _e( 'Disable XML-RPC', 'sb-pack' ); ?></label>
+					<span class="tooltip-right"
+					      data-tooltip="<?php echo __( 'XML-RPC was added in WordPress 3.5 and allows for remote connections, and unless you are using your mobile device to post to WordPress it does more bad than good. In fact, it can open your site up to a bunch of security risks. There are a few plugins that utilize this such as JetPack, but we don’t recommend using JetPack for performance reasons.', 'sb-pack' ); ?>">
+						<i class="dashicons dashicons-editor-help"></i>
+					</span>
+				</p>
+
 				<h3><?php _e( 'Need even more speed?', 'sb-pack' ); ?></h3>
 
 				<p>
@@ -230,6 +259,8 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 								<i class="dashicons dashicons-editor-help"></i>
 							</span>
 				</p>
+
+
 
 				<div id="sbp-css-content">
 

@@ -98,6 +98,9 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 * Made all of the plugin's link send to MachoTheme's docs instead of Tiguan
 * Updated jQuery UI CSS to latest version & included the PNG sprites that come by default with jQuery UI, eliminating some back-end "asset not found" errors
 * Removed unused CSS files
+* Added feature: "Remove Emoji scripts"
+* Added feature: "Disable XML-RPC" pings
+* Added default values. Now it's even easier to get speed boosts without actually having to toggle stuff
 * Full list of changes for v3.7, here: https://github.com/MachoThemes/speed-booster-pack/milestone/1?closed=1
 
 = 3.6.1 =

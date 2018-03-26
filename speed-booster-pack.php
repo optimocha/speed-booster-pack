@@ -28,15 +28,39 @@
     FOUNDATION, INC., 51 FRANKLIN ST, FIFTH FLOOR, BOSTON, MA  02110-1301  USA
 */
 
+//@todo: filter jquery and don't move it to the footer, always keep it in the header
 //@todo: replace current minifier with: https://github.com/matthiasmullie/minify
 //@todo: rework the CSS Async functionality
-//@todo: rewrite all the JS so it sits in one file
+//@todo: fix lazyLoad with WooCommerce <- it actually works flawlessly, it doesn't seem to work with AO and/or Cloudflare hosted CSS
+//@todo: add system info menu page (see Elementor)
 
 /*----------------------------------------------------------------------------------------------------------
 	Global Variables
 -----------------------------------------------------------------------------------------------------------*/
 
-$sbp_options = get_option( 'sbp_settings' );    // retrieve the plugin settings from the options table
+/**
+ * Default plugin values
+ *
+ * @since 3.7
+ */
+$sbp_defaults = array(
+	'remove_emojis'    => 1, // remove emoji scripts
+	'remove_wsl'       => 1, // remove WSL link in header
+	'remove_adjacent'  => 1, // remove post adjacent links
+	'wml_link'         => 1, // remove Windows Manifest Live link
+	'rsd_link'         => 1, // remove really simple discovery
+	'wp_generator'     => 1, // remove WP version
+	'remove_all_feeds' => 1, // remove all WP feeds
+	'disable_xmlrpc'   => 1, // disable XML-RPC pingbacks
+	'font_awesome'     => 1, // remove extra font awesome styles
+	'query_strings'    => 1, // remove query strings
+	'jquery_to_footer' => 1, // move all scripts to footer
+	'use_google_libs'  => 1, // serve JS assets (when possible) from Google CDN
+	'lazy_load'        => 1, // lazyLoad images
+
+);
+
+$sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrieve the plugin settings from the options table
 
 /*----------------------------------------------------------------------------------------------------------
 	Define some useful plugin constants
@@ -67,7 +91,7 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 
 			// Enqueue admin scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'sbp_admin_enqueue_scripts' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'sbp_collapsible' ) );
+
 
 			// load plugin textdomain
 			add_action( 'plugins_loaded', array( $this, 'sbp_load_translation' ) );
@@ -89,7 +113,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 			if ( isset( $sbp_options['lazy_load'] ) ) {
 				add_action( 'wp_head', array( $this, 'sbp_fade_in_style' ), 100 );
 			}
-
 
 			// Filters
 			$this->path = plugin_basename( __FILE__ );
@@ -236,19 +259,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 				'jquery',
 				'updates',
 			), SPEED_BOOSTER_PACK_VERSION, true );
-
-		}
-
-
-		/*----------------------------------------------------------------------------------------------------------
-			Enqueue script to plugin options page for collapsible options
-		-----------------------------------------------------------------------------------------------------------*/
-
-		function sbp_collapsible( $sbp_suffix ) {
-			global $sbp_settings_page;
-			if ( $sbp_suffix != $sbp_settings_page ) {
-				return;
-			}
 
 		}
 
