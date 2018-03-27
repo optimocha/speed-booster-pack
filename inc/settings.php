@@ -33,11 +33,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Options' ) ) {
 			register_setting( 'speed_booster_settings_group', 'sbp_js_footer_exceptions3' );
 			register_setting( 'speed_booster_settings_group', 'sbp_js_footer_exceptions4' );
 
-			register_setting( 'speed_booster_settings_group', 'sbp_head_html_script1' );
-			register_setting( 'speed_booster_settings_group', 'sbp_head_html_script2' );
-			register_setting( 'speed_booster_settings_group', 'sbp_head_html_script3' );
-			register_setting( 'speed_booster_settings_group', 'sbp_head_html_script4' );
-
 			register_setting( 'speed_booster_settings_group', 'sbp_defer_exceptions1' );
 			register_setting( 'speed_booster_settings_group', 'sbp_defer_exceptions2' );
 			register_setting( 'speed_booster_settings_group', 'sbp_defer_exceptions3' );
@@ -155,30 +150,17 @@ if ( ! class_exists( 'Speed_Booster_Pack_Options' ) ) {
 
 				switch ( $key ) {
 					case 'sbp_js_footer_exceptions1':
-						$output[ $key ] = wp_filter_post_kses( $tigu );
+						$output[ $key ] = esc_html( $tigu );
 						break;
 					case 'sbp_js_footer_exceptions2':
-						$output[ $key ] = wp_filter_post_kses( $tigu );
+						$output[ $key ] = esc_html( $tigu );
 						break;
 					case 'sbp_js_footer_exceptions3':
-						$output[ $key ] = wp_filter_post_kses( $tigu );
+						$output[ $key ] = esc_html( $tigu );
 						break;
 					case 'sbp_js_footer_exceptions4':
-						$output[ $key ] = wp_filter_post_kses( $tigu );
+						$output[ $key ] = esc_html( $tigu );
 						break;
-					case 'sbp_head_html_script1':
-						$output[ $key ] = wp_filter_post_kses( $tigu );
-						break;
-					case 'sbp_head_html_script2':
-						$output[ $key ] = wp_kses_stripslashes( $tigu );
-						break;
-					case 'sbp_head_html_script3':
-						$output[ $key ] = wp_kses_stripslashes( $tigu );
-						break;
-					case 'sbp_head_html_script4':
-						$output[ $key ] = wp_kses_stripslashes( $tigu );
-						break;
-
 				}
 
 			}
@@ -267,31 +249,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Options' ) ) {
 
 			/*--------------------------------------------------------------------------------------------------------*/
 
-			if ( get_option( 'sbp_head_html_script1' ) ) {
-				$sbp_html_script1 = get_option( 'sbp_head_html_script1' );
-			} else {
-				$sbp_html_script1 = '';
-			}
 
-			if ( get_option( 'sbp_head_html_script2' ) ) {
-				$sbp_html_script2 = get_option( 'sbp_head_html_script2' );
-			} else {
-				$sbp_html_script2 = '';
-			}
-
-			if ( get_option( 'sbp_head_html_script3' ) ) {
-				$sbp_html_script3 = get_option( 'sbp_head_html_script3' );
-			} else {
-				$sbp_html_script3 = '';
-			}
-
-			if ( get_option( 'sbp_head_html_script4' ) ) {
-				$sbp_html_script4 = get_option( 'sbp_head_html_script4' );
-			} else {
-				$sbp_html_script4 = '';
-			}
-
-			/*--------------------------------------------------------------------------------------------------------*/
 
 			if ( get_option( 'sbp_defer_exceptions1' ) ) {
 				$defer_exceptions1 = get_option( 'sbp_defer_exceptions1' );

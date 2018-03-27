@@ -101,6 +101,10 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 * Added feature: "Remove Emoji scripts"
 * Added feature: "Disable XML-RPC" pings
 * Added default values. Now it's even easier to get speed boosts without actually having to toggle stuff
+* Removed po/mo files from SBP since translations are now handled here: https://translate.wordpress.org/projects/wp-plugins/speed-booster-pack
+* Added a very crude form of validation and user feedback when you choose to move scripts to footer / defer scripts.
+* jQuery will always be enqueued in the header, as a security/fallback measure.
+* Fixed the way "exclude scripts from footer" works. It's now usable and only requires the script handle. Added backwards compat as well
 * Full list of changes for v3.7, here: https://github.com/MachoThemes/speed-booster-pack/milestone/1?closed=1
 
 = 3.6.1 =

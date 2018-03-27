@@ -33,6 +33,7 @@
 //@todo: rework the CSS Async functionality
 //@todo: fix lazyLoad with WooCommerce <- it actually works flawlessly, it doesn't seem to work with AO and/or Cloudflare hosted CSS
 //@todo: add system info menu page (see Elementor)
+//@todo: automatically collapse accordeons on "advanced" tab
 
 /*----------------------------------------------------------------------------------------------------------
 	Global Variables
@@ -57,7 +58,6 @@ $sbp_defaults = array(
 	'jquery_to_footer' => 1, // move all scripts to footer
 	'use_google_libs'  => 1, // serve JS assets (when possible) from Google CDN
 	'lazy_load'        => 1, // lazyLoad images
-
 );
 
 $sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrieve the plugin settings from the options table

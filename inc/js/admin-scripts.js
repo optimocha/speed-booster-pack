@@ -89,6 +89,35 @@
 			event.preventDefault();
 
 		} );
+	}
+
+	/**
+	 * Function used to disable/enable the "defer parsing of javascript files" based on the value of "move scripts to footer"
+	 */
+	function v37_handle_field_usage() {
+
+		var disable_by = '#sbp_settings\\[jquery_to_footer\\]';
+		var disable_to = '#sbp_settings\\[defer_parsing\\]';
+		var disable_metabox = '#postbox-container-defer-scripts .sbp-disable-on-value';
+
+		//default scenario
+		if ( $( disable_by ).is( ':checked' ) ) {
+			$( disable_to ).prop( 'disabled', true );
+			$( disable_metabox ).addClass( 'show' );
+		}
+
+		// on-click
+		$( disable_by ).click( function( e ) {
+			if ( $( disable_by ).is( ':checked' ) ) {
+				$( disable_to ).prop( 'disabled', true );
+				if ( !$( disable_metabox ).hasClass( 'show' ) ) {
+					$( disable_metabox ).addClass( 'show' );
+				}
+			} else {
+				$( disable_to ).prop( 'disabled', false );
+				$( disable_metabox ).removeClass( 'show' );
+			}
+		} );
 
 	}
 
@@ -96,6 +125,7 @@
 		admin_postboxes();
 		admin_jquery_sliders();
 		admin_tab_switching();
+		v37_handle_field_usage();
 
 	} );
 

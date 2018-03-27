@@ -16,8 +16,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'sbp_move_scripts_to_footer' ) );
 			if ( ! is_admin() and isset( $sbp_options['jquery_to_footer'] ) ) {
 				add_action( 'wp_head', array( $this, 'sbp_scripts_to_head' ) );
-				add_action( 'wp_print_scripts', array( $this, 'sbp_exclude_scripts' ), 100 );
-				add_action( 'wp_enqueue_scripts', array( $this, 'sbp_exclude_scripts' ), 100 );
 			}
 			add_action( 'init', array( $this, 'sbp_show_page_load_stats' ), 999 );
 			add_action( 'after_setup_theme', array( $this, 'sbp_junk_header_tags' ) );
@@ -246,89 +244,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
 
 		/*--------------------------------------------------------------------------------------------------------
-			Exclude scripts from "Move scripts to footer" option
-		---------------------------------------------------------------------------------------------------------*/
-
-		public function sbp_exclude_scripts() {
-
-
-			if ( get_option( 'sbp_js_footer_exceptions1' ) ) {
-				$sbp_handle1 = get_option( 'sbp_js_footer_exceptions1' );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions2' ) ) {
-				$sbp_handle2 = get_option( 'sbp_js_footer_exceptions2' );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions3' ) ) {
-				$sbp_handle3 = get_option( 'sbp_js_footer_exceptions3' );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions4' ) ) {
-				$sbp_handle4 = get_option( 'sbp_js_footer_exceptions4' );
-			}
-
-			$sbp_enq  = 'enqueued';
-			$sbp_reg  = 'registered';
-			$sbp_done = 'done';
-
-			/*--------------------------------------------------------------------------------------------------------*/
-
-			if ( get_option( 'sbp_js_footer_exceptions1' ) and wp_script_is( $sbp_handle1, $sbp_enq ) ) {
-				wp_dequeue_script( $sbp_handle1 );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions2' ) and wp_script_is( $sbp_handle2, $sbp_enq ) ) {
-				wp_dequeue_script( $sbp_handle2 );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions3' ) and wp_script_is( $sbp_handle3, $sbp_enq ) ) {
-				wp_dequeue_script( $sbp_handle3 );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions4' ) and wp_script_is( $sbp_handle4, $sbp_enq ) ) {
-				wp_dequeue_script( $sbp_handle4 );
-			}
-
-			/*--------------------------------------------------------------------------------------------------------*/
-
-			if ( get_option( 'sbp_js_footer_exceptions1' ) and wp_script_is( $sbp_handle1, $sbp_reg ) ) {
-				wp_deregister_script( $sbp_handle1 );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions2' ) and wp_script_is( $sbp_handle2, $sbp_reg ) ) {
-				wp_deregister_script( $sbp_handle2 );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions3' ) and wp_script_is( $sbp_handle3, $sbp_reg ) ) {
-				wp_deregister_script( $sbp_handle3 );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions4' ) and wp_script_is( $sbp_handle4, $sbp_reg ) ) {
-				wp_deregister_script( $sbp_handle4 );
-			}
-
-			/*--------------------------------------------------------------------------------------------------------*/
-
-			if ( get_option( 'sbp_js_footer_exceptions1' ) and wp_script_is( $sbp_handle1, $sbp_done ) ) {
-				wp_deregister_script( $sbp_handle1 );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions2' ) and wp_script_is( $sbp_handle2, $sbp_done ) ) {
-				wp_deregister_script( $sbp_handle2 );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions3' ) and wp_script_is( $sbp_handle3, $sbp_done ) ) {
-				wp_deregister_script( $sbp_handle3 );
-			}
-
-			if ( get_option( 'sbp_js_footer_exceptions4' ) and wp_script_is( $sbp_handle4, $sbp_done ) ) {
-				wp_deregister_script( $sbp_handle4 );
-			}
-
-		}
-
-		/*--------------------------------------------------------------------------------------------------------
 			Put scripts back to the head
 		---------------------------------------------------------------------------------------------------------*/
 
@@ -350,6 +265,167 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			if ( get_option( 'sbp_head_html_script4' ) ) {
 				echo get_option( 'sbp_head_html_script4' ) . "\n";
 			}
+
+			/**
+			 * Default: add jQuery to header always
+			 *
+			 * @since 3.7
+			 */
+			global $wp_scripts;
+			$js_footer_exceptions1 = '';
+			$js_footer_exceptions2 = '';
+			$js_footer_exceptions3 = '';
+			$js_footer_exceptions4 = '';
+
+			if ( get_option( 'sbp_js_footer_exceptions1' ) ) {
+				$js_footer_exceptions1 = get_option( 'sbp_js_footer_exceptions1' );
+			}
+
+			if ( get_option( 'sbp_js_footer_exceptions2' ) ) {
+				$js_footer_exceptions2 = get_option( 'sbp_js_footer_exceptions2' );
+			}
+
+			if ( get_option( 'sbp_js_footer_exceptions3' ) ) {
+				$js_footer_exceptions3 = get_option( 'sbp_js_footer_exceptions3' );
+			}
+
+			if ( get_option( 'sbp_js_footer_exceptions4' ) ) {
+				$js_footer_exceptions4 = get_option( 'sbp_js_footer_exceptions4' );
+			}
+
+			$sbp_enq  = 'enqueued';
+			$sbp_reg  = 'registered';
+			$sbp_done = 'done';
+
+			/**
+			 * Echo jQuery in header all the time, if none of the other options contain in
+			 *
+			 * @since 3.7
+			 *
+			 * New solution, going forward so not to crash so many sites anymore
+			 *
+			 *        This should come BEFORE the fallback function, since jQuery should be ALWAYS
+			 *        the first loaded script.
+			 *
+			 */
+			if ( $js_footer_exceptions1 !== 'jquery-core' || $js_footer_exceptions2 !== 'jquery-core' || $js_footer_exceptions3 !== 'jquery-core' || $js_footer_exceptions4 !== 'jquery-core' ) {
+
+				// if the script actually exists, dequeue it and re-add it for header inclusion
+				$script_src = $wp_scripts->registered['jquery-core']->src;
+
+				if ( strpos( $script_src, 'wp-includes' ) == true ) { // it's a local resource, append wordpress installation URL
+					echo '<script type="text/javascript" src="' . get_site_url() . esc_attr( $script_src ) . '"></script>';
+				} else {
+					echo '<script type="text/javascript" src="' . esc_attr( $script_src ) . '"></script>';
+				}
+
+				// deregister & dequeue the script
+				wp_deregister_script( 'jquery-core' );
+				wp_dequeue_script( 'jquery-core' );
+			}
+
+
+			/**
+			 * Echo the scripts in the header
+			 *
+			 * @since 3.7
+			 *
+			 * Fallback for previous plugin users
+			 *
+			 */
+			if ( array_key_exists( $js_footer_exceptions1, $wp_scripts->registered ) ) {
+				$script_src = '';
+				// if the script actually exists, dequeue it and re-add it for header inclusion
+				$script_src = $wp_scripts->registered[ $js_footer_exceptions1 ]->src;
+
+				if ( strpos( $script_src, 'wp-includes' ) == true ) { // it's a local resource, append wordpress installation URL
+					echo '<script type="text/javascript" src="' . esc_attr( $script_src ) . '"></script>';
+				} else {
+					echo '<script type="text/javascript" src="' . esc_attr( $script_src ) . '"></script>';
+				}
+			}
+
+			if ( array_key_exists( $js_footer_exceptions2, $wp_scripts->registered ) ) {
+				$script_src = '';
+				// if the script actually exists, dequeue it and re-add it for header inclusion
+				$script_src = $wp_scripts->registered[ $js_footer_exceptions2 ]->src;
+
+				if ( strpos( $script_src, 'wp-includes' ) == true ) {
+					echo '<script type="text/javascript" src="' . get_site_url() . esc_attr( $script_src ) . '"></script>';
+				} else {
+					echo '<script type="text/javascript" src="' . esc_attr( $script_src ) . '"></script>';
+				}
+			}
+
+			if ( array_key_exists( $js_footer_exceptions3, $wp_scripts->registered ) ) {
+				$script_src = '';
+				// if the script actually exists, dequeue it and re-add it for header inclusion
+				$script_src = $wp_scripts->registered[ $js_footer_exceptions3 ]->src;
+
+				if ( strpos( $script_src, 'wp-includes' ) == true ) {
+					echo '<script type="text/javascript" src="' . get_site_url() . esc_attr( $script_src ) . '"></script>';
+				} else {
+					echo '<script type="text/javascript" src="' . esc_attr( $script_src ) . '"></script>';
+				}
+
+			}
+
+			if ( array_key_exists( $js_footer_exceptions4, $wp_scripts->registered ) ) {
+				$script_src = '';
+				// if the script actually exists, dequeue it and re-add it for header inclusion
+				$script_src = $wp_scripts->registered[ $js_footer_exceptions4 ]->src;
+
+				if ( strpos( $script_src, 'wp-includes' ) == true ) { // it's a local resource, append wordpress installation URL
+					echo '<script type="text/javascript" src="' . get_site_url() . esc_attr( $script_src ) . '"></script>';
+				} else {
+					echo '<script type="text/javascript" src="' . esc_attr( $script_src ) . '"></script>';
+				}
+			}
+
+
+			/**
+			 * De-register the scripts from other parts of the site since they're already echo-ed in the header
+			 */
+			/*--------------------------------------------------------------------------------------------------------*/
+			if ( ! empty( $sbp_js_footer_exceptions1 ) and wp_script_is( $js_footer_exceptions1, $sbp_enq ) ) {
+				wp_dequeue_script( $js_footer_exceptions1 );
+			}
+			if ( ! empty( $sbp_js_footer_exceptions2 ) and wp_script_is( $js_footer_exceptions2, $sbp_enq ) ) {
+				wp_dequeue_script( $js_footer_exceptions2 );
+			}
+			if ( ! empty( $sbp_js_footer_exceptions3 ) and wp_script_is( $js_footer_exceptions3, $sbp_enq ) ) {
+				wp_dequeue_script( $sbp_js_footer_exceptions3 );
+			}
+			if ( ! empty( $sbp_js_footer_exceptions4 ) and wp_script_is( $js_footer_exceptions4, $sbp_enq ) ) {
+				wp_dequeue_script( $sbp_js_footer_exceptions4 );
+			}
+			/*--------------------------------------------------------------------------------------------------------*/
+			if ( ! empty( $js_footer_exceptions1 ) and wp_script_is( $js_footer_exceptions1, $sbp_reg ) ) {
+				wp_deregister_script( $js_footer_exceptions1 );
+			}
+			if ( ! empty( $js_footer_exceptions2 ) and wp_script_is( $js_footer_exceptions2, $sbp_reg ) ) {
+				wp_deregister_script( $js_footer_exceptions2 );
+			}
+			if ( ! empty( $js_footer_exceptions3 ) and wp_script_is( $js_footer_exceptions3, $sbp_reg ) ) {
+				wp_deregister_script( $js_footer_exceptions3 );
+			}
+			if ( ! empty( $js_footer_exceptions4 ) and wp_script_is( $js_footer_exceptions4, $sbp_reg ) ) {
+				wp_deregister_script( $js_footer_exceptions4 );
+			}
+			/*--------------------------------------------------------------------------------------------------------*/
+			if ( ! empty( $js_footer_exceptions1 ) and wp_script_is( $js_footer_exceptions1, $sbp_done ) ) {
+				wp_deregister_script( $js_footer_exceptions1 );
+			}
+			if ( ! empty( $js_footer_exceptions2 ) and wp_script_is( $js_footer_exceptions2, $sbp_done ) ) {
+				wp_deregister_script( $js_footer_exceptions2 );
+			}
+			if ( ! empty( $js_footer_exceptions3 ) and wp_script_is( $js_footer_exceptions3, $sbp_done ) ) {
+				wp_deregister_script( $js_footer_exceptions3 );
+			}
+			if ( ! empty( $js_footer_exceptions4 ) and wp_script_is( $js_footer_exceptions4, $sbp_done ) ) {
+				wp_deregister_script( $js_footer_exceptions4 );
+			}
+
 		}
 
 
