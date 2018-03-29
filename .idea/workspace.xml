@@ -6,16 +6,8 @@
       <change beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
       <change beforePath="$PROJECT_DIR$/inc/core.php" afterPath="$PROJECT_DIR$/inc/core.php" />
       <change beforePath="$PROJECT_DIR$/inc/js/admin-scripts.js" afterPath="$PROJECT_DIR$/inc/js/admin-scripts.js" />
-      <change beforePath="$PROJECT_DIR$/inc/js/sbp-slide.js" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/inc/settings.php" afterPath="$PROJECT_DIR$/inc/settings.php" />
+      <change beforePath="$PROJECT_DIR$/inc/sbp-minifier.php" afterPath="$PROJECT_DIR$/inc/sbp-minifier.php" />
       <change beforePath="$PROJECT_DIR$/inc/template/options.php" afterPath="$PROJECT_DIR$/inc/template/options.php" />
-      <change beforePath="$PROJECT_DIR$/lang/es_ES.mo" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/lang/es_ES.po" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/lang/ro_RO.mo" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/lang/ro_RO.po" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/lang/sb-pack.mo" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/lang/sb-pack.po" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/lang/sb-pack.pot" afterPath="" />
       <change beforePath="$PROJECT_DIR$/readme.txt" afterPath="$PROJECT_DIR$/readme.txt" />
       <change beforePath="$PROJECT_DIR$/speed-booster-pack.php" afterPath="$PROJECT_DIR$/speed-booster-pack.php" />
     </list>
@@ -31,47 +23,8 @@
       <file leaf-file-name="readme.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/readme.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="990">
-              <caret line="106" column="136" lean-forward="false" selection-start-line="106" selection-start-column="136" selection-end-line="106" selection-end-column="136" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="admin-scripts.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/inc/js/admin-scripts.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1175">
-              <caret line="127" column="10" lean-forward="true" selection-start-line="127" selection-start-column="10" selection-end-line="127" selection-end-column="10" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="options.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/inc/template/options.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="318" column="0" lean-forward="true" selection-start-line="318" selection-start-column="0" selection-end-line="318" selection-end-column="0" />
-              <folding>
-                <element signature="n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-                <element signature="n#div#2;n#div#0;n#div#0;n#!!top" expanded="false" />
-                <element signature="n#h2#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-                <element signature="n#div#0;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-                <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-                <element signature="n#div#2;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-                <element signature="n#div#3;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-                <element signature="n#div#1;n#div#3;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="style.css" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/css/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="905">
-              <caret line="874" column="17" lean-forward="true" selection-start-line="874" selection-start-column="17" selection-end-line="874" selection-end-column="17" />
+            <state relative-caret-position="1485">
+              <caret line="99" column="17" lean-forward="false" selection-start-line="99" selection-start-column="17" selection-end-line="99" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -80,8 +33,28 @@
       <file leaf-file-name="core.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inc/core.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="590">
-              <caret line="297" column="31" lean-forward="false" selection-start-line="297" selection-start-column="30" selection-end-line="297" selection-end-column="31" />
+            <state relative-caret-position="424">
+              <caret line="512" column="74" lean-forward="false" selection-start-line="512" selection-start-column="49" selection-end-line="512" selection-end-column="74" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="css-optimizer.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inc/css-optimizer.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="545">
+              <caret line="71" column="42" lean-forward="true" selection-start-line="71" selection-start-column="42" selection-end-line="71" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="options.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inc/template/options.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1830">
+              <caret line="122" column="90" lean-forward="false" selection-start-line="122" selection-start-column="90" selection-end-line="122" selection-end-column="90" />
               <folding />
             </state>
           </provider>
@@ -90,19 +63,21 @@
       <file leaf-file-name="settings.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inc/settings.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="458">
-              <caret line="247" column="13" lean-forward="false" selection-start-line="225" selection-start-column="12" selection-end-line="247" selection-end-column="13" />
+            <state relative-caret-position="575">
+              <caret line="253" column="51" lean-forward="false" selection-start-line="253" selection-start-column="30" selection-end-line="253" selection-end-column="51" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="speed-booster-pack.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="speed-booster-pack.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/speed-booster-pack.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="855">
+              <caret line="57" column="58" lean-forward="true" selection-start-line="57" selection-start-column="58" selection-end-line="57" selection-end-column="58" />
+              <folding>
+                <element signature="e#6#529#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -119,39 +94,38 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>insert_jquery</find>
-      <find>sbp_show_page_load_stats</find>
-      <find>sbp_junk_header_tags</find>
-      <find>remove_rsd_link</find>
-      <find>jquery</find>
-      <find>exclude scripts from be</find>
+      <find>defer</find>
+      <find>defer_parsing_of_js</find>
+      <find>wp_prind_scripts</find>
       <find>sbp_defer_exceptions1</find>
       <find>sbp_defer_parsing_of_js</find>
-      <find>sbp_exclude_scripts</find>
-      <find>Copy the HTML code of the script from your page source and add it below</find>
-      <find>sbp_sanitize</find>
-      <find>sbp_head_html_script1</find>
-      <find>class=&quot;widefat&quot;</find>
-      <find>the list may</find>
-      <find>jquery_to</find>
-      <find>jquery_to_footer</find>
-      <find>body:before</find>
-      <find>sbp_exclude</find>
-      <find>sbp_js_footer_exceptions1</find>
-      <find>'google'</find>
-      <find>! strpos</find>
-      <find>postbox-container-2</find>
-      <find>deferring</find>
-      <find>sbp_scripts_to_head</find>
-      <find>meta-box-sortables</find>
-      <find>textri</find>
-      <find>class=&quot;clear&quot;</find>
-      <find>clear</find>
-      <find>show</find>
-      <find>value</find>
+      <find>sbp_detect_enqueued_scripts</find>
+      <find>sbp_detect</find>
+      <find>$new_handle</find>
+      <find>move_scripts</find>
+      <find>sbp-disabled</find>
+      <find>defer_parsing</find>
+      <find>query</find>
+      <find>sbp_remove_query_strings_2</find>
+      <find>sbp_remove_query</find>
+      <find>remove_query_strings</find>
+      <find>perfmatters_remove_query</find>
+      <find>open-sans</find>
+      <find>async</find>
+      <find>sbp_except_admin_bar_css</find>
+      <find>sbp_minifier</find>
+      <find>minify html</find>
+      <find>minifyHTML</find>
+      <find>sbp_html_minifier_startsbp_html_minifier_start</find>
+      <find>minify_html_j</find>
+      <find>minify_html_js</find>
+      <find>minify</find>
+      <find>sbp_css_minify</find>
+      <find>sbp_inline_css</find>
+      <find>20176</find>
+      <find>filters</find>
     </findStrings>
     <replaceStrings>
-      <replace>sbpack</replace>
       <replace>$this-&gt;sbp_options</replace>
       <replace>$this-&gt;options</replace>
       <replace>.sbp-tooltip</replace>
@@ -181,6 +155,7 @@
       <replace>id</replace>
       <replace>'googleapis'</replace>
       <replace>strpos</replace>
+      <replace>$handle</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\xampp\htdocs\wordpress\wp-content\plugins\simple-author-box</dir>
@@ -195,7 +170,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/inc/class-speed-booster-pack-admin.page.php" />
         <option value="$PROJECT_DIR$/inc/admin/support.php" />
         <option value="$PROJECT_DIR$/css/sbpack-admin-style.css" />
         <option value="$PROJECT_DIR$/inc/class-speed-booster-admin-page.php" />
@@ -237,15 +211,16 @@
         <option value="$USER_HOME$/Downloads/old-sbp/inc/template/notice.php" />
         <option value="$PROJECT_DIR$/inc/template/notice.php" />
         <option value="$USER_HOME$/Downloads/old-sbp/speed-booster-pack.php" />
-        <option value="$PROJECT_DIR$/inc/sbp-minifier.php" />
-        <option value="$PROJECT_DIR$/speed-booster-pack.php" />
         <option value="$PROJECT_DIR$/inc/settings.php" />
         <option value="$PROJECT_DIR$/../../themes/twentyfifteen/style.css" />
-        <option value="$PROJECT_DIR$/inc/core.php" />
-        <option value="$PROJECT_DIR$/inc/template/options.php" />
-        <option value="$PROJECT_DIR$/readme.txt" />
         <option value="$PROJECT_DIR$/inc/js/admin-scripts.js" />
         <option value="$PROJECT_DIR$/css/style.css" />
+        <option value="$PROJECT_DIR$/../../themes/twentyfifteen/functions.php" />
+        <option value="$PROJECT_DIR$/inc/core.php" />
+        <option value="$PROJECT_DIR$/inc/template/options.php" />
+        <option value="$PROJECT_DIR$/inc/sbp-minifier.php" />
+        <option value="$PROJECT_DIR$/readme.txt" />
+        <option value="$PROJECT_DIR$/speed-booster-pack.php" />
       </list>
     </option>
   </component>
@@ -259,9 +234,9 @@
     <servers />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="y" value="22" />
-    <option name="width" value="1280" />
+    <option name="width" value="2560" />
     <option name="height" value="1362" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -280,7 +255,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -326,14 +301,15 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.vagrant" />
+    <property name="settings.editor.selected.configurable" value="tasks.servers" />
+    <property name="tasks.open.task.update.state.enabled" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -464,7 +440,24 @@
       <workItem from="1521541417312" duration="49000" />
       <workItem from="1521541529644" duration="152000" />
     </task>
-    <servers />
+    <servers>
+      <GitHub shared="false" url="https://github.com">
+        <option name="assignedIssuesOnly" value="true" />
+        <commitMessageFormat>{id} {summary}</commitMessageFormat>
+        <password />
+        <token>df9bdf9edfcbdf9adf9cdf9cdf92df9edf9ddf93dfcfdf9edfcbdfc9df9fdfccdf98df9fdfccdfccdf92dfcedf9edf9bdf98df9fdf92df9adf9fdf93df9edf9adfcfdf98dfc8df93df98dfcedfcbdf9f</token>
+        <option name="loginAnonymously" value="false" />
+        <option name="preferredCloseTaskState" />
+        <option name="preferredOpenTaskState" />
+        <option name="repoAuthor" value="machothemes" />
+        <option name="repoName" value="speed-booster-pack" />
+        <option name="shouldFormatCommitMessage" value="false" />
+        <option name="useHttpAuthentication" value="false" />
+        <option name="useProxy" value="false" />
+        <option name="user" value="cristianraiber" />
+        <username />
+      </GitHub>
+    </servers>
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="119170000" />
@@ -475,19 +468,21 @@
     </todo-panel>
     <todo-panel id="all">
       <are-packages-shown value="true" />
+      <are-modules-shown value="true" />
       <is-autoscroll-to-source value="true" />
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="2560" height="1362" extended-state="6" />
+    <frame x="0" y="22" width="2560" height="1362" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11596505" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13496448" sideWeight="0.49676898" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="CSS Styles" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991317" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15210484" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1436464" sideWeight="0.49676898" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991317" sideWeight="0.503231" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3291239" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32991952" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -513,73 +508,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="6" />
+      <option name="time" value="7" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../modula-best-grid-gallery/admin/scripts/editor-plugin.js" />
-    <entry file="file://$PROJECT_DIR$/recommended-plugins/plugins.php" />
-    <entry file="file://$PROJECT_DIR$/feedback/class-epsilon-feedback.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="104" column="35" lean-forward="false" selection-start-line="104" selection-start-column="35" selection-end-line="104" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../simple-author-box/assets/js/plugin-install.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../modula-best-grid-gallery/Modula.php" />
-    <entry file="file://$PROJECT_DIR$/../shortpixel-image-optimiser/class/view/shortpixel_view.php" />
-    <entry file="file://$PROJECT_DIR$/../shortpixel-image-optimiser/class/wp-short-pixel.php" />
-    <entry file="file://$PROJECT_DIR$/../simple-author-box/inc/class-simple-author-box.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-283">
-          <caret line="57" column="42" lean-forward="false" selection-start-line="57" selection-start-column="42" selection-end-line="57" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../simple-author-box/inc/admin/plugins.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1064">
-          <caret line="82" column="30" lean-forward="false" selection-start-line="80" selection-start-column="12" selection-end-line="82" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../simple-author-box/inc/admin/support.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="43" column="16" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../modula-best-grid-gallery/admin/upgrade.php" />
-    <entry file="file://$PROJECT_DIR$/../merge-minify-refresh/Minify/data/js/operators.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../merge-minify-refresh/Minify/src/JS.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="24" column="28" lean-forward="false" selection-start-line="24" selection-start-column="28" selection-end-line="24" selection-end-column="14349" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inc/js/jquery.unveil.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/inc/js/lazyload.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -707,19 +640,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inc/js/sbp-slide.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="69" lean-forward="true" selection-start-line="1" selection-start-column="4" selection-end-line="11" selection-end-column="69" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/inc/js/sbp-slide.js" />
     <entry file="file://$PROJECT_DIR$/css/vendors/jquery-ui/jquery-ui.min.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2023">
           <caret line="3" column="675" lean-forward="false" selection-start-line="3" selection-start-column="675" selection-end-line="3" selection-end-column="675" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -735,7 +660,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="11" column="37" lean-forward="true" selection-start-line="11" selection-start-column="37" selection-end-line="11" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -743,22 +667,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
           <caret line="202" column="156" lean-forward="true" selection-start-line="202" selection-start-column="92" selection-end-line="202" selection-end-column="156" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inc/sbp-minifier.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="16" column="32" lean-forward="false" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../perfmatters/inc/functions.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="24" column="0" lean-forward="true" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -773,23 +681,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5325">
           <caret line="355" column="23" lean-forward="false" selection-start-line="355" selection-start-column="23" selection-end-line="355" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/speed-booster-pack.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="40" column="0" lean-forward="false" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inc/settings.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="458">
-          <caret line="247" column="13" lean-forward="false" selection-start-line="225" selection-start-column="12" selection-end-line="247" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -797,56 +688,195 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
           <caret line="5892" column="0" lean-forward="false" selection-start-line="5892" selection-start-column="0" selection-end-line="5892" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inc/core.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="590">
-          <caret line="297" column="31" lean-forward="false" selection-start-line="297" selection-start-column="30" selection-end-line="297" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inc/template/options.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="318" column="0" lean-forward="true" selection-start-line="318" selection-start-column="0" selection-end-line="318" selection-end-column="0" />
-          <folding>
-            <element signature="n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#2;n#div#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#h2#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#2;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#3;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#1;n#div#3;n#form#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readme.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="106" column="136" lean-forward="false" selection-start-line="106" selection-start-column="136" selection-end-line="106" selection-end-column="136" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inc/js/admin-scripts.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1175">
-          <caret line="127" column="10" lean-forward="true" selection-start-line="127" selection-start-column="10" selection-end-line="127" selection-end-column="10" />
+        <state relative-caret-position="1010">
+          <caret line="93" column="0" lean-forward="false" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="905">
-          <caret line="874" column="17" lean-forward="true" selection-start-line="874" selection-start-column="17" selection-end-line="874" selection-end-column="17" />
+        <state relative-caret-position="1130">
+          <caret line="867" column="1" lean-forward="false" selection-start-line="867" selection-start-column="1" selection-end-line="867" selection-end-column="1" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../themes/twentyfifteen/functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-10">
+          <caret line="383" column="3" lean-forward="false" selection-start-line="383" selection-start-column="3" selection-end-line="383" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../merge-minify-refresh/admin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../perfmatters/inc/functions.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="285" column="22" lean-forward="false" selection-start-line="284" selection-start-column="4" selection-end-line="285" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/classes/autoptimizeSpeedupper.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-520">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#6#102#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/classes/autoptimizeBase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-9505">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/classes/autoptimizeScripts.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7360">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/classes/autoptimizeHTML.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-715">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#6#47#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/classes/autoptimizeCSSmin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#6#95#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/classes/external/do_not_donate_smallest.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/classes/autoptimizeVersionUpdatesHandler.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1839">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/autoptimize_helper.php_example">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="18" lean-forward="true" selection-start-line="16" selection-start-column="18" selection-end-line="16" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../merge-minify-refresh/readme.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/classes/external/php/yui-php-cssmin-bundled/Minifier.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="101" column="22" lean-forward="false" selection-start-line="101" selection-start-column="22" selection-end-line="101" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../autoptimize-beta/classes/external/php/jsmin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="56" column="16" lean-forward="false" selection-start-line="56" selection-start-column="16" selection-end-line="56" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inc/settings.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="253" column="51" lean-forward="false" selection-start-line="253" selection-start-column="30" selection-end-line="253" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inc/css-optimizer.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="71" column="42" lean-forward="true" selection-start-line="71" selection-start-column="42" selection-end-line="71" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inc/sbp-minifier.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="10" column="36" lean-forward="false" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inc/core.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="512" column="74" lean-forward="false" selection-start-line="512" selection-start-column="49" selection-end-line="512" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/readme.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1485">
+          <caret line="99" column="17" lean-forward="false" selection-start-line="99" selection-start-column="17" selection-end-line="99" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inc/template/options.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1830">
+          <caret line="122" column="90" lean-forward="false" selection-start-line="122" selection-start-column="90" selection-end-line="122" selection-end-column="90" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/speed-booster-pack.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="855">
+          <caret line="57" column="58" lean-forward="true" selection-start-line="57" selection-start-column="58" selection-end-line="57" selection-end-column="58" />
+          <folding>
+            <element signature="e#6#529#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

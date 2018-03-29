@@ -11,7 +11,7 @@
  * License: GPLv2
  */
 
-/*  Copyright 2017 Macho Themes (email : support [at] machothemes [dot] com)
+/*  Copyright 2018 Macho Themes (email : support [at] machothemes [dot] com)
 
     THIS PROGRAM IS FREE SOFTWARE; YOU CAN REDISTRIBUTE IT AND/OR MODIFY
     IT UNDER THE TERMS OF THE GNU GENERAL PUBLIC LICENSE AS PUBLISHED BY
@@ -28,12 +28,12 @@
     FOUNDATION, INC., 51 FRANKLIN ST, FIFTH FLOOR, BOSTON, MA  02110-1301  USA
 */
 
-//@todo: filter jquery and don't move it to the footer, always keep it in the header
-//@todo: replace current minifier with: https://github.com/matthiasmullie/minify
+
 //@todo: rework the CSS Async functionality
 //@todo: fix lazyLoad with WooCommerce <- it actually works flawlessly, it doesn't seem to work with AO and/or Cloudflare hosted CSS
-//@todo: add system info menu page (see Elementor)
+//@todo: add system info menu page
 //@todo: automatically collapse accordeons on "advanced" tab
+
 
 /*----------------------------------------------------------------------------------------------------------
 	Global Variables
@@ -55,7 +55,7 @@ $sbp_defaults = array(
 	'disable_xmlrpc'   => 1, // disable XML-RPC pingbacks
 	'font_awesome'     => 1, // remove extra font awesome styles
 	'query_strings'    => 1, // remove query strings
-	'jquery_to_footer' => 1, // move all scripts to footer
+	'jquery_to_footer' => 0, // move all scripts to footer
 	'use_google_libs'  => 1, // serve JS assets (when possible) from Google CDN
 	'lazy_load'        => 1, // lazyLoad images
 );
@@ -67,7 +67,7 @@ $sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrie
 -----------------------------------------------------------------------------------------------------------*/
 
 define( 'SPEED_BOOSTER_PACK_PATH', plugin_dir_path( __FILE__ ) );                    // Defining plugin dir path
-define( 'SPEED_BOOSTER_PACK_VERSION', '4.0' );                                       // Defining plugin version
+define( 'SPEED_BOOSTER_PACK_VERSION', '3.7' );                                       // Defining plugin version
 define( 'SBP_FOOTER', 10 );                                                          // Defining css position
 define( 'SBP_FOOTER_LAST', 99999 );                                                  // Defining css last position
 if ( ! defined( 'SHORTPIXEL_AFFILIATE_CODE' ) ) {

@@ -120,7 +120,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 
 				<p>
 					<input id="sbp_settings[minify_html_js]" name="sbp_settings[minify_html_js]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['minify_html_js'] ) ); ?> />
-					<label for="sbp_settings[minify_html_js]"><?php _e( 'Minify HTML and JS', 'sb-pack' ); ?></label>
+					<label for="sbp_settings[minify_html_js]"><?php _e( 'Minify HTML & CSS', 'sb-pack' ); ?></label>
 					<span class="tooltip-right"
 					      data-tooltip="<?php echo __( 'Activate this option only if you don’t want to use other minify plugins or other speed optimization plugin that has minify option included. If something goes wrong, simply uncheck this option and save the settings.', 'sb-pack' ); ?>">
 						<i class="dashicons dashicons-editor-help"></i>
@@ -421,9 +421,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 								<?php } else { ?>
 								<div class="postbox" id="defer-from-footer">
 									<?Php } ?>
-									<div class="sbp-disable-on-value">
-										<span><?php _e( 'This is currently disabled because Move to scripts options is enabled in General tab', 'sb-pack' ); ?></span>
-									</div>
+
 									<button type="button" class="handlediv" aria-expanded="true">
 										<span class="screen-reader-text"><?php _e( 'Exclude scripts from being deferred', 'sb-pack' ); ?></span>
 										<span class="toggle-indicator" aria-hidden="true"></span>
@@ -459,8 +457,8 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 							</div>
 						</div>
 					</div>
-				</div>
-			</div><!--#advanced-options-->
+
+
 			<div id="image-options" class="sb-pack-tab">
 
 				<br />
@@ -647,7 +645,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 
 			<div class="textright">
 				<hr />
-				<?php submit_button( '', 'button button-primary button-hero' ) ?>
+				<?php submit_button( '', 'button button-primary button-hero' ); ?>
 			</div>
 
 

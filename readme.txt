@@ -85,7 +85,7 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 * Bumped FontAwesome bundled CSS version from 4.1 -> 4.7 and changed to using MaxCDN
 * (Hopefully) fixed the issue affecting relative/absolute paths when using minify CSS
 * Wrongfully used escape functions
-* Should use -> done instead of -> queue
+* Should use wp_scripts-> done instead of wp_scripts->queue
 * Update Use Google Libraries 3rd party dependency
 * Can't be fully translated because of one wrong text-domain string
 * Change UI to WordPress Core UI
@@ -97,14 +97,15 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 * Addressed a small issue with the "Exclude scripts from being moved to footer" display
 * Made all of the plugin's link send to MachoTheme's docs instead of Tiguan
 * Updated jQuery UI CSS to latest version & included the PNG sprites that come by default with jQuery UI, eliminating some back-end "asset not found" errors
-* Removed unused CSS files
+* Removed unused files
 * Added feature: "Remove Emoji scripts"
 * Added feature: "Disable XML-RPC" pings
 * Added default values. Now it's even easier to get speed boosts without actually having to toggle stuff
 * Removed po/mo files from SBP since translations are now handled here: https://translate.wordpress.org/projects/wp-plugins/speed-booster-pack
-* Added a very crude form of validation and user feedback when you choose to move scripts to footer / defer scripts.
 * jQuery will always be enqueued in the header, as a security/fallback measure.
 * Fixed the way "exclude scripts from footer" works. It's now usable and only requires the script handle. Added backwards compat as well
+* Fixed the way script deferring works, it's now actually usable. Introduced a filter: sbp_exclude_defer_scripts so users can exclude more than 4 scripts from being deferred
+* Rewrote the way the plugin was handling removal of query strings from assets
 * Full list of changes for v3.7, here: https://github.com/MachoThemes/speed-booster-pack/milestone/1?closed=1
 
 = 3.6.1 =

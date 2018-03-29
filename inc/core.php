@@ -45,43 +45,32 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
 			//	Defer parsing of JavaScript
 			if ( ! is_admin() and isset( $sbp_options['defer_parsing'] ) ) {
-				add_filter( 'clean_url', array( $this, 'sbp_defer_parsing_of_js' ), 11, 1 );
+				add_filter( 'script_loader_tag', array( $this, 'sbp_defer_parsing_of_js' ), 10, 3 );
 			}
 
 			//	Remove query strings from static resources
 			if ( ! is_admin() and isset( $sbp_options['query_strings'] ) ) {
-				add_filter( 'script_loader_src', array( $this, 'sbp_remove_query_strings_1' ), 15, 1 );
+				add_filter( 'script_loader_src', array( $this, 'sbp_remove_query_strings' ), 15, 1 );
+				add_filter( 'style_loader_src', array( $this, 'sbp_remove_query_strings' ), 15, 1 );
 			}
 
-			if ( ! is_admin() and isset( $sbp_options['query_strings'] ) ) {
-				add_filter( 'style_loader_src', array( $this, 'sbp_remove_query_strings_1' ), 15, 1 );
-			}
-
-			if ( ! is_admin() and isset( $sbp_options['query_strings'] ) ) {
-				add_filter( 'script_loader_src', array( $this, 'sbp_remove_query_strings_2' ), 15, 1 );
-			}
-
-			if ( ! is_admin() and isset( $sbp_options['query_strings'] ) ) {
-				add_filter( 'style_loader_src', array( $this, 'sbp_remove_query_strings_2' ), 15, 1 );
-			}
-
-			if ( ! is_admin() and isset( $sbp_options['query_strings'] ) ) {
-				add_filter( 'script_loader_src', array( $this, 'sbp_remove_query_strings_3' ), 15, 1 );
-			}
-
-			if ( ! is_admin() and isset( $sbp_options['query_strings'] ) ) {
-				add_filter( 'style_loader_src', array( $this, 'sbp_remove_query_strings_3' ), 15, 1 );
-			}
 
 			// JPEG  Compression filter
 			add_filter( 'jpeg_quality', array( $this, 'filter_image_quality' ) );
 			add_filter( 'wp_editor_set_quality', array( $this, 'filter_image_quality' ) );
 
+
+			/**
+			 * @since 3.7
+			 */
 			// Disable emojis
 			if ( ! is_admin() && isset( $sbp_options['remove_emojis'] ) ) {
 				add_action( 'init', array( $this, 'sbp_disable_emojis' ) );
 			}
 
+			/**
+			 * @since 3.7
+			 */
 			// Disable XML-RPC
 			if ( ! isset( $sbp_options['disable_xmlrpc'] ) ) {
 				add_filter( 'xmlrpc_enabled', '__return_false' );
@@ -119,7 +108,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 		function sbp_except_admin_bar_css() {
 
 			if ( is_admin_bar_showing() ) { // enqueue the admin tolbar styles only if active
-				wp_enqueue_style( 'open-sans' );
 				wp_enqueue_style( 'dashicons' );
 				wp_enqueue_style( 'admin-bar' );
 			}
@@ -494,7 +482,12 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			Defer parsing of JavaScript and exclusion files
 		---------------------------------------------------------------------------------------------------------*/
 
-		function sbp_defer_parsing_of_js( $url ) {
+		function sbp_defer_parsing_of_js( $tag, $handle, $src ) {
+
+			$defer_exclude1 = '';
+			$defer_exclude2 = '';
+			$defer_exclude3 = '';
+			$defer_exclude4 = '';
 
 			if ( get_option( 'sbp_defer_exceptions1' ) ) {
 				$defer_exclude1 = get_option( 'sbp_defer_exceptions1' );
@@ -512,29 +505,20 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 				$defer_exclude4 = get_option( 'sbp_defer_exceptions4' );
 			}
 
+			$array_with_values[] = $defer_exclude1;
+			$array_with_values[] = $defer_exclude2;
+			$array_with_values[] = $defer_exclude3;
+			$array_with_values[] = $defer_exclude4;
 
-			if ( false === strpos( $url, '.js' ) ) {
-				return $url;
+			$array_with_values = apply_filters( 'sbp_exclude_defer_scripts', $array_with_values ); // possibility of extending this via filters
+			$array_with_values = array_filter( $array_with_values ); // remove empty entries
+
+
+			if ( ! in_array( $handle, $array_with_values ) ) {
+				return '<script src="' . $src . '" defer="defer" type="text/javascript"></script>' . "\n";
 			}
 
-
-			if ( get_option( 'sbp_defer_exceptions1' ) and strpos( $url, $defer_exclude1 ) ) {
-				return $url;
-			}
-
-			if ( get_option( 'sbp_defer_exceptions2' ) and strpos( $url, $defer_exclude2 ) ) {
-				return $url;
-			}
-
-			if ( get_option( 'sbp_defer_exceptions3' ) and strpos( $url, $defer_exclude3 ) ) {
-				return $url;
-			}
-
-			if ( get_option( 'sbp_defer_exceptions4' ) and strpos( $url, $defer_exclude4 ) ) {
-				return $url;
-			}
-
-			return "$url' defer='defer";
+			return $tag;
 
 		}    //	END function sbp_defer_parsing_of_js
 
@@ -543,22 +527,12 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			Remove query strings from static resources
 		---------------------------------------------------------------------------------------------------------*/
 
-		function sbp_remove_query_strings_1( $src ) {    //	remove "?ver" string
-			$rqsfsr = explode( '?ver', $src );
+		function sbp_remove_query_strings( $src ) {    //	remove "?ver" string
 
-			return $rqsfsr[0];
-		}
+			$output = preg_split( "/(\?rev|&ver|\?ver)/", $src );
 
-		function sbp_remove_query_strings_2( $src ) {    //	remove "&ver" string
-			$rqsfsr = explode( '&ver', $src );
+			return $output[0];
 
-			return $rqsfsr[0];
-		}
-
-		function sbp_remove_query_strings_3( $src ) {    //	remove "?rev" string from Revolution Slider plugin
-			$rqsfsr = explode( '?rev', $src );
-
-			return $rqsfsr[0];
 		}
 
 		/*--------------------------------------------------------------------------------------------------------
