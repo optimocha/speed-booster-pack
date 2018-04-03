@@ -92,6 +92,14 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 			// Enqueue admin scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'sbp_admin_enqueue_scripts' ) );
 
+			/**
+			 * Should remain disabled until we release wpspeedbooster.com
+			 *
+			 * @since: 3.7
+			 *
+			*/
+			//add_action( 'wp_dashboard_setup', [ $this, 'sbp_load_dashboard_widget' ] );
+
 
 			// load plugin textdomain
 			add_action( 'plugins_loaded', array( $this, 'sbp_load_translation' ) );
@@ -124,6 +132,12 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 
 		}    // END public function __construct
 
+
+		function sbp_load_dashboard_widget() {
+
+			require_once plugin_dir_path( __FILE__ ) . 'widgets/dashboard-widget.php';
+
+		}
 
 		/*----------------------------------------------------------------------------------------------------------
 			Load plugin textdomain
@@ -190,7 +204,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 			if ( get_option( 'all_theme_styles_handle' ) == '' ) {
 				update_option( 'all_theme_styles_handle', $get_enqueued_styles_handle );
 			}
-
 
 		} // END public static function sb_activate
 
@@ -268,8 +281,7 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 			return $links;
 
 		}    //	End function sbp_settings_link
-	}    //	End class Speed_Booster_Pack
-
+	}//	End class Speed_Booster_Pack
 }    //	End if (!class_exists("Speed_Booster_Pack")) (1)
 
 if ( class_exists( 'Speed_Booster_Pack' ) ) {

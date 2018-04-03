@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6514dd6e-0bd1-4961-a39a-b51c5d84cb1d" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/widgets/dashboard-widget.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/core.php" beforeDir="false" afterPath="$PROJECT_DIR$/inc/core.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/css-optimizer.php" beforeDir="false" afterPath="$PROJECT_DIR$/inc/css-optimizer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/js/admin-scripts.js" beforeDir="false" afterPath="$PROJECT_DIR$/inc/js/admin-scripts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/sbp-minifier.php" beforeDir="false" afterPath="$PROJECT_DIR$/inc/sbp-minifier.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inc/template/options.php" beforeDir="false" afterPath="$PROJECT_DIR$/inc/template/options.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/readme.txt" beforeDir="false" afterPath="$PROJECT_DIR$/readme.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/speed-booster-pack.php" beforeDir="false" afterPath="$PROJECT_DIR$/speed-booster-pack.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,11 +27,29 @@
       <file leaf-file-name="speed-booster-pack.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/speed-booster-pack.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+            <state relative-caret-position="1319">
+              <caret line="172" column="117" lean-forward="true" selection-start-line="171" selection-start-column="31" selection-end-line="172" selection-end-column="117" />
               <folding>
                 <element signature="e#6#529#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="dashboard-widget.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/widgets/dashboard-widget.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1035">
+              <caret line="69" column="1" lean-forward="true" selection-start-line="69" selection-start-column="1" selection-end-line="69" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="admin.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../elementor/includes/admin.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2079">
+              <caret line="690" column="21" selection-start-line="690" selection-start-column="21" selection-end-line="690" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -45,7 +58,7 @@
         <entry file="file://$PROJECT_DIR$/inc/core.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1555">
-              <caret line="172" column="60" lean-forward="true" selection-start-line="172" selection-start-column="60" selection-end-line="172" selection-end-column="60" />
+              <caret line="172" column="60" selection-start-line="172" selection-start-column="60" selection-end-line="172" selection-end-column="60" />
             </state>
           </provider>
         </entry>
@@ -54,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/inc/css-optimizer.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1859">
-              <caret line="201" column="63" lean-forward="true" selection-start-line="201" selection-start-column="63" selection-end-line="201" selection-end-column="63" />
+              <caret line="201" column="63" selection-start-line="201" selection-start-column="63" selection-end-line="201" selection-end-column="63" />
               <folding>
                 <element signature="e#7#262#0#PHP" expanded="true" />
               </folding>
@@ -92,9 +105,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>converter</find>
-      <find>do_action('compress_css')</find>
-      <find>add_action</find>
       <find>should_mmr</find>
       <find>compress_css_action</find>
       <find>do_action</find>
@@ -122,9 +132,11 @@
       <find>checked</find>
       <find>is_css_excluded</find>
       <find>css_async</find>
+      <find>e-dashboard-overview</find>
+      <find>primary_outut</find>
+      <find>wp_dashboard_primary_output</find>
     </findStrings>
     <replaceStrings>
-      <replace>sbpack_settings</replace>
       <replace>sbp_settings</replace>
       <replace>epfw</replace>
       <replace>EPFW__</replace>
@@ -154,6 +166,7 @@
       <replace>Minify</replace>
       <replace>Minify/</replace>
       <replace>/Minify/</replace>
+      <replace>sbp_dashboard_primary_output</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\xampp\htdocs\wordpress\wp-content\plugins\simple-author-box</dir>
@@ -169,8 +182,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/inc/admin/assets/js/sbpack-admin.js" />
-        <option value="$PROJECT_DIR$/inc/admin/assets/js/postbox-edit.js" />
         <option value="$PROJECT_DIR$/../gonzales/gonzales.php" />
         <option value="$PROJECT_DIR$/inc/js/lazyload.js" />
         <option value="$PROJECT_DIR$/inc/js/jquery.unveil.js" />
@@ -219,6 +230,8 @@
         <option value="$PROJECT_DIR$/inc/js/admin-scripts.js" />
         <option value="$PROJECT_DIR$/inc/css-optimizer.php" />
         <option value="$PROJECT_DIR$/inc/template/options.php" />
+        <option value="$PROJECT_DIR$/../elementor/includes/admin.php" />
+        <option value="$PROJECT_DIR$/widgets/dashboard-widget.php" />
         <option value="$PROJECT_DIR$/speed-booster-pack.php" />
       </list>
     </option>
@@ -254,13 +267,21 @@
             <path>
               <item name="speed-booster-pack" type="b2602c69:ProjectViewProjectNode" />
               <item name="speed-booster-pack" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="inc" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="widgets" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
             <path>
               <item name="speed-booster-pack" type="b2602c69:ProjectViewProjectNode" />
-              <item name="speed-booster-pack" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="inc" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="js" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="elementor" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="speed-booster-pack" type="b2602c69:ProjectViewProjectNode" />
+              <item name="elementor" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="core" type="2a2b976b:PhpTreeStructureProvider$1" />
+            </path>
+            <path>
+              <item name="speed-booster-pack" type="b2602c69:ProjectViewProjectNode" />
+              <item name="elementor" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="includes" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
           </expand>
           <select />
@@ -429,8 +450,8 @@
     <frame x="0" y="22" width="1440" height="2483" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19456366" />
-      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49676898" weight="0.1436464" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.23462088" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49676898" weight="0.14333613" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.503231" side_tool="true" weight="0.32991317" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32885376" />
@@ -450,6 +471,28 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23462088" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="CSS Styles" order="7" weight="0.32991317" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49676898" weight="0.14333613" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32885376" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.503231" side_tool="true" weight="0.32991317" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Version Control" order="12" weight="0.32991952" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -478,40 +521,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/speed-booster-pack.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1140">
-          <caret line="86" column="44" lean-forward="true" selection-start-line="86" selection-start-column="44" selection-end-line="86" selection-end-column="44" />
-          <folding>
-            <element signature="e#6#529#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readme.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1620">
-          <caret line="108" column="126" selection-start-line="108" selection-start-column="126" selection-end-line="108" selection-end-column="126" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/speed-booster-pack.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
-          <folding>
-            <element signature="e#6#529#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/readme.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1620">
-          <caret line="108" column="126" selection-start-line="108" selection-start-column="126" selection-end-line="108" selection-end-column="126" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/speed-booster-pack.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3960">
@@ -807,14 +816,14 @@
     <entry file="file://$PROJECT_DIR$/inc/core.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1555">
-          <caret line="172" column="60" lean-forward="true" selection-start-line="172" selection-start-column="60" selection-end-line="172" selection-end-column="60" />
+          <caret line="172" column="60" selection-start-line="172" selection-start-column="60" selection-end-line="172" selection-end-column="60" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inc/css-optimizer.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1859">
-          <caret line="201" column="63" lean-forward="true" selection-start-line="201" selection-start-column="63" selection-end-line="201" selection-end-column="63" />
+          <caret line="201" column="63" selection-start-line="201" selection-start-column="63" selection-end-line="201" selection-end-column="63" />
           <folding>
             <element signature="e#7#262#0#PHP" expanded="true" />
           </folding>
@@ -828,10 +837,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../elementor/includes/widgets/wordpress.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../elementor/includes/api.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2236">
+          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../elementor/includes/admin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2079">
+          <caret line="690" column="21" selection-start-line="690" selection-start-column="21" selection-end-line="690" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/widgets/dashboard-widget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="69" column="1" lean-forward="true" selection-start-line="69" selection-start-column="1" selection-end-line="69" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/speed-booster-pack.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+        <state relative-caret-position="1319">
+          <caret line="172" column="117" lean-forward="true" selection-start-line="171" selection-start-column="31" selection-end-line="172" selection-end-column="117" />
           <folding>
             <element signature="e#6#529#0#PHP" expanded="true" />
           </folding>
