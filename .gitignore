@@ -1,4 +1,4 @@
+.idea
 *.log
 /node_modules/
-.idea
-/.standard.json.idea
+/.standard.json
