@@ -250,25 +250,25 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 
 				<p>
 					<input id="sbp_css_async" name="sbp_settings[sbp_css_async]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['sbp_css_async'] ) ); ?> />
-					<label for="sbp_css_async"><?php _e( 'Load CSS asynchronously', 'sb-pack' ); ?></label>
+					<label for="sbp_css_async"><?php _e( 'Inline all CSS styles', 'sb-pack' ); ?></label>
 					<span class="tooltip-right"
-					      data-tooltip="<?php echo __( 'Loading CSS asynchronously will render your page more quickly to get a higher score on the major speed testing services.', 'sb-pack' ); ?>">
+					      data-tooltip="<?php echo __( 'Checking this option will inline the contents of all your stylesheets. This helps with the annoying render blocking error Google Page Speed Insights displays.', 'sb-pack' ); ?>">
 								<i class="dashicons dashicons-editor-help"></i>
 							</span>
 				</p>
 
 				<p>
 					<input id="sbp_settings[sbp_css_minify]" name="sbp_settings[sbp_css_minify]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['sbp_css_minify'] ) ); ?> />
-					<label for="sbp_settings[sbp_css_minify]"><?php _e( 'Minify all CSS styles', 'sb-pack' ); ?></label>
+					<label for="sbp_settings[sbp_css_minify]"><?php _e( 'Minify all (previously) inlined CSS styles', 'sb-pack' ); ?></label>
 					<span class="tooltip-right"
-					      data-tooltip="<?php echo __( 'Minifying and inline all CSS styles will optimize the CSS delivery and will eliminate the anoying message on Google Page Speed regarding to render-blocking css.', 'sb-pack' ); ?>">
+					      data-tooltip="<?php echo __( 'Minifying all inlined CSS styles will optimize the CSS delivery and will eliminate the annoying message on Google Page Speed regarding to render-blocking css.', 'sb-pack' ); ?>">
 								<i class="dashicons dashicons-editor-help"></i>
 							</span>
 				</p>
 
 				<p>
 					<input id="sbp_settings[sbp_footer_css]" name="sbp_settings[sbp_footer_css]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['sbp_footer_css'] ) ); ?> />
-					<label for="sbp_settings[sbp_footer_css]"><?php _e( 'Insert all CSS styles inline to the footer', 'sb-pack' ); ?></label>
+					<label for="sbp_settings[sbp_footer_css]"><?php _e( 'Move all inlined CSS into the footer', 'sb-pack' ); ?></label>
 					<span class="tooltip-right"
 					      data-tooltip="<?php echo __( 'Inserting all CSS styles inline to the footer is a sensitive option that will eliminate render-blocking CSS warning in Google Page Speed test. If there is something broken after activation, you need to disable this option. Please note that before enabling this sensitive option, it is strongly recommended that you also enable the “ Move scripts to the footer” option.', 'sb-pack' ); ?>">
 								<i class="dashicons dashicons-editor-help"></i>
@@ -286,9 +286,9 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 
 				<div class="td-border-last"></div>
 
-				<h4><?php _e( 'Exclude styles from asynchronously option: ', 'sb-pack' ); ?></h4>
+				<h4><?php _e( 'Exclude styles from being inlined and/or minified option: ', 'sb-pack' ); ?></h4>
 				<p>
-					<textarea cols="50" rows="3" name="sbp_css_exceptions" id="sbp_css_exceptions" value="<?php echo $css_exceptions; ?>" /><?php echo $css_exceptions; ?></textarea>
+					<textarea cols="50" rows="3" name="sbp_css_exceptions" id="sbp_css_exceptions" value="<?php echo esc_attr( $css_exceptions ); ?>" /><?php echo wp_kses_post( $css_exceptions ); ?></textarea>
 				</p>
 				<p class="description">
 					<?php _e( 'Enter one by line, the handles of css files or the final part of the style URL. For example: <code>font-awesome</code> or <code>font-awesome.min.css</code>', 'sb-pack' ); ?>
@@ -315,7 +315,6 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 
 			</div><!--#general-options-->
 			<div id="advanced-options" class="sb-pack-tab">
-
 
 				<div id="poststuff">
 					<div id="postbox-container-exclude-footer-scripts" class="postbox-container">
@@ -458,199 +457,196 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 						</div>
 					</div>
 
+					<div id="image-options" class="sb-pack-tab">
 
-			<div id="image-options" class="sb-pack-tab">
-
-				<br />
-				<?php
-				$plugins = array(
-					'shortpixel-image-optimiser' => array(
-						'title'       => esc_html__( 'ShortPixel Image Optimizer', 'sb-pack' ),
-						'description' => esc_html__( 'Increase your website’s SEO ranking, number of visitors and ultimately your sales by optimizing any image or PDF document on your website. ', 'sb-pack' ),
-						'more'        => 'https://shortpixel.com/h/af/IVAKFSX31472',
-					),
-
-				);
-
-				if ( ! function_exists( 'get_plugins' ) || ! function_exists( 'is_plugin_active' ) ) {
-					require_once ABSPATH . 'wp-admin/includes/plugin.php';
-				}
-
-				$installed_plugins = get_plugins();
-
-				function sbp_get_plugin_basename_from_slug( $slug, $installed_plugins ) {
-					$keys = array_keys( $installed_plugins );
-					foreach ( $keys as $key ) {
-						if ( preg_match( '|^' . $slug . '/|', $key ) ) {
-							return $key;
-						}
-					}
-
-					return $slug;
-				}
-
-				?>
-
-				<div class="sbp-recommended-plugins">
-					<?php
-					foreach ( $plugins as $slug => $plugin ) {
-
-						$label       = __( 'Install + Activate & get 500 free credits', 'sb-pack' );
-						$action      = 'install';
-						$plugin_path = sbp_get_plugin_basename_from_slug( $slug, $installed_plugins );
-						$url         = '#';
-						$class       = '';
-
-						if ( file_exists( ABSPATH . 'wp-content/plugins/' . $plugin_path ) ) {
-
-							if ( is_plugin_active( $plugin_path ) ) {
-								$label  = __( 'Activated', 'sb-pack' );
-								$action = 'disable';
-								$class  = 'disabled';
-							} else {
-								$label  = __( 'Activate & get 500 free credits', 'sb-pack' );
-								$action = 'activate';
-								$url    = wp_nonce_url( add_query_arg( array(
-									'action' => 'activate',
-									'plugin' => $plugin_path,
-								), admin_url( 'plugins.php' ) ), 'activate-plugin_' . $plugin_path );
-							}
-						}
-
-						?>
-						<div class="sbp-recommended-plugin">
-							<div class="plugin-image">
-								<img src="https://ps.w.org/shortpixel-image-optimiser/assets/icon-128x128.png?rev=1038819">
-							</div>
-							<div class="plugin-information">
-								<h3 class="plugin-name">
-									<strong><?php echo esc_html( $plugin['title'] ); ?></strong></h3>
-								<p class="plugin-description"><?php echo esc_html( $plugin['description'] ); ?></p>
-
-								<a href="<?php echo esc_url( $url ); ?>" data-action="<?php echo esc_attr( $action ); ?>" data-slug="<?php echo esc_attr( $plugin_path ); ?>" data-message="<?php esc_html_e( 'Activated', 'sb-pack' ); ?>" class="button-primary sbp-plugin-button <?php echo esc_attr( $class ); ?>"><?php echo esc_html( $label ); ?></a>
-								<?php if ( isset( $plugin['more'] ) ) : ?>
-									<a href="<?php echo esc_url( $plugin['more'] ); ?>" class="button-secondary" target="_blank"><?php esc_html_e( 'Test your site for free', 'sb-pack' ); ?></a>
-								<?php endif ?>
-							</div>
-						</div>
-					<?php } ?>
-				</div>
-
-				<h3><?php _e( 'Change the default image compression level', 'sb-pack' ); ?></h3>
-
-				<script type='text/javascript'>
-					var jpegCompression = '<?php echo $this->image_compression; ?>';
-				</script>
-
-				<p class="sbp-amount">
-					<?php _e( 'Compression level:', 'sb-pack' ); ?>
-					<input type="text" class="sbp-amount" id="sbp-amount" />
-				</p>
-
-				<p>
-				<div class="sbp-slider" id="sbp-slider"></div>
-				<input type="hidden" name="sbp_integer" id="sbp_integer" value="<?php echo $this->image_compression; ?>" />
-				</p>
-
-				<p class="description">
-					<?php _e( 'The default image compression setting in WordPress is 90%. Compressing your images further than the default will make your file sizes even smaller and will boost your site performance. As a reference, a lower level of compression means more performance but might induce quality loss. We recommend you choose a compression level between 50 and 75.', 'sb-pack' ); ?>
-					<br />
-				</p>
-				<p class="description"><strong>
-						<?php _e( 'Note that any changes you make will only affect new images uploaded to your site. A specialized plugin can optimize all your present images and will also optimize new ones as they are added. ', 'sb-pack' ); ?>
-					</strong></p>
-				<br>
-
-			</div><!--#image-options-->
-			<div id="support" class="sb-pack-tab">
-
-				<?php
-				if ( ! defined( 'WPINC' ) ) {
-					die;
-				}
-				?>
-				<div class="feature-section sbp-support">
-					<div class="row two-col center-support">
-
-						<h3>
-							<i class="dashicons dashicons-sos" style="display: inline-block;vertical-align: middle;margin-right: 5px"></i><?php esc_html_e( 'Contact Support', 'sb-pack' ); ?>
-						</h3>
-						<p>
-							<i><?php esc_html_e( 'We offer support through WordPress.org\'s support forums.', 'sb-pack' ); ?></i>
-						</p>
-						<p>
-							<a target="_blank" class="button button-hero button-primary" href="<?php echo esc_url( 'https://wordpress.org/support/plugin/speed-booster-pack#new-post' ); ?>"><?php esc_html_e( 'Post on our support forums', 'sb-pack' ); ?></a>
-						</p>
-
-					</div>
-					<div class="row">
-						<h2 class="sbp-title">Looking for better WP hosting ?</h2>
-					</div>
-					<div class="row sbp-blog three-col">
-						<div class="col">
-							<h3>
-								<i class="dashicons dashicons-performance" style="display: inline-block;vertical-align: middle;margin-right: 5px"></i><?php esc_html_e( 'Our Bluehost Hosting Review', 'sb-pack' ); ?>
-							</h3>
-							<p>
-								<i><?php esc_html_e( 'Despite its popularity, though, Bluehost often carries a negative perception among WordPress professionals. So as we dig into this Bluehost review, we\'ll be looking to figure out whether Bluehost\'s performance and features actually justify that reputation.', 'sb-pack' ); ?></i>
-							</p>
-							<p>
-								<a target="_blank" href="<?php echo esc_url( 'https://www.machothemes.com/blog/bluehost-review/?utm_source=sbp&utm_medium=about-page&utm_campaign=blog-links' ); ?>"><?php esc_html_e( 'Read more', 'sb-pack' ); ?></a>
-							</p>
-						</div><!--/.col-->
-
-						<div class="col">
-							<h3>
-								<i class="dashicons dashicons-performance" style="display: inline-block;vertical-align: middle;margin-right: 5px"></i><?php esc_html_e( 'Our InMotion Hosting Review', 'sb-pack' ); ?>
-							</h3>
-							<p>
-								<i><?php esc_html_e( 'InMotion Hosting is a popular independent web host that serves over 300,000 customers. They\'re notably not a part of the EIG behemoth (the parent company behind Bluehost, HostGator, and more), which is a plus in my book.', 'sb-pack' ); ?></i>
-							</p>
-							<p>
-								<a target="_blank" href="<?php echo esc_url( 'https://www.machothemes.com/blog/inmotion-hosting-review/?utm_source=sbp&utm_medium=about-page&utm_campaign=blog-links' ); ?>"><?php esc_html_e( 'Read more', 'sb-pack' ); ?></a>
-							</p>
-						</div><!--/.col-->
-
-						<div class="col">
-							<h3>
-								<i class="dashicons dashicons-performance" style="display: inline-block;vertical-align: middle;margin-right: 5px"></i><?php esc_html_e( 'Our A2 Hosting Review', 'sb-pack' ); ?>
-							</h3>
-							<p>
-								<i><?php esc_html_e( 'When it comes to affordable WordPress hosting, A2 Hosting is a name that often comes up in various WordPress groups for offering quick-loading performance that belies its low price tag.', 'sb-pack' ); ?></i>
-							</p>
-							<p>
-								<a target="_blank" href="<?php echo esc_url( 'https://www.machothemes.com/blog/a2-hosting-review/?utm_source=sbp&utm_medium=about-page&utm_campaign=blog-links' ); ?>"><?php esc_html_e( 'Read more', 'sb-pack' ); ?></a>
-							</p>
-						</div><!--/.col-->
-					</div>
-				</div><!--/.feature-section-->
-
-				<div class="col-fulwidth feedback-box">
-					<h3>
-						<?php esc_html_e( 'Lend a hand & share your thoughts', 'sb-pack' ); ?>
-						<img src="<?php echo $this->plugin_url . "inc/images/handshake.png"; ?>">
-					</h3>
-					<p>
+						<br />
 						<?php
-						echo vsprintf( // Translators: 1 is Theme Name, 2 is opening Anchor, 3 is closing.
-							__( 'We\'ve been working hard on making %1$s the best one out there. We\'re interested in hearing your thoughts about %1$s and what we could do to <u>make it even better</u>.<br/> <br/> %2$sHave your say%3$s', 'sb-pack' ), array(
-							'Speed Booster Pack',
-							'<a class="button button-feedback" target="_blank" href="http://bit.ly/feedback-speed-booster-pack">',
-							'</a>',
-						) );
+						$plugins = array(
+							'shortpixel-image-optimiser' => array(
+								'title'       => esc_html__( 'ShortPixel Image Optimizer', 'sb-pack' ),
+								'description' => esc_html__( 'Increase your website’s SEO ranking, number of visitors and ultimately your sales by optimizing any image or PDF document on your website. ', 'sb-pack' ),
+								'more'        => 'https://shortpixel.com/h/af/IVAKFSX31472',
+							),
+
+						);
+
+						if ( ! function_exists( 'get_plugins' ) || ! function_exists( 'is_plugin_active' ) ) {
+							require_once ABSPATH . 'wp-admin/includes/plugin.php';
+						}
+
+						$installed_plugins = get_plugins();
+
+						function sbp_get_plugin_basename_from_slug( $slug, $installed_plugins ) {
+							$keys = array_keys( $installed_plugins );
+							foreach ( $keys as $key ) {
+								if ( preg_match( '|^' . $slug . '/|', $key ) ) {
+									return $key;
+								}
+							}
+
+							return $slug;
+						}
+
 						?>
-					</p>
-				</div>
-			</div><!--#support-->
 
-			<div class="textright">
-				<hr />
-				<?php submit_button( '', 'button button-primary button-hero' ); ?>
-			</div>
+						<div class="sbp-recommended-plugins">
+							<?php
+							foreach ( $plugins as $slug => $plugin ) {
 
+								$label       = __( 'Install + Activate & get 500 free credits', 'sb-pack' );
+								$action      = 'install';
+								$plugin_path = sbp_get_plugin_basename_from_slug( $slug, $installed_plugins );
+								$url         = '#';
+								$class       = '';
+
+								if ( file_exists( ABSPATH . 'wp-content/plugins/' . $plugin_path ) ) {
+
+									if ( is_plugin_active( $plugin_path ) ) {
+										$label  = __( 'Activated', 'sb-pack' );
+										$action = 'disable';
+										$class  = 'disabled';
+									} else {
+										$label  = __( 'Activate & get 500 free credits', 'sb-pack' );
+										$action = 'activate';
+										$url    = wp_nonce_url( add_query_arg( array(
+											'action' => 'activate',
+											'plugin' => $plugin_path,
+										), admin_url( 'plugins.php' ) ), 'activate-plugin_' . $plugin_path );
+									}
+								}
+
+								?>
+								<div class="sbp-recommended-plugin">
+									<div class="plugin-image">
+										<img src="https://ps.w.org/shortpixel-image-optimiser/assets/icon-128x128.png?rev=1038819">
+									</div>
+									<div class="plugin-information">
+										<h3 class="plugin-name">
+											<strong><?php echo esc_html( $plugin['title'] ); ?></strong></h3>
+										<p class="plugin-description"><?php echo esc_html( $plugin['description'] ); ?></p>
+
+										<a href="<?php echo esc_url( $url ); ?>" data-action="<?php echo esc_attr( $action ); ?>" data-slug="<?php echo esc_attr( $plugin_path ); ?>" data-message="<?php esc_html_e( 'Activated', 'sb-pack' ); ?>" class="button-primary sbp-plugin-button <?php echo esc_attr( $class ); ?>"><?php echo esc_html( $label ); ?></a>
+										<?php if ( isset( $plugin['more'] ) ) : ?>
+											<a href="<?php echo esc_url( $plugin['more'] ); ?>" class="button-secondary" target="_blank"><?php esc_html_e( 'Test your site for free', 'sb-pack' ); ?></a>
+										<?php endif ?>
+									</div>
+								</div>
+							<?php } ?>
+						</div>
+
+						<h3><?php _e( 'Change the default image compression level', 'sb-pack' ); ?></h3>
+
+						<script type='text/javascript'>
+							var jpegCompression = '<?php echo $this->image_compression; ?>';
+						</script>
+
+						<p class="sbp-amount">
+							<?php _e( 'Compression level:', 'sb-pack' ); ?>
+							<input type="text" class="sbp-amount" id="sbp-amount" />
+						</p>
+
+						<p>
+						<div class="sbp-slider" id="sbp-slider"></div>
+						<input type="hidden" name="sbp_integer" id="sbp_integer" value="<?php echo $this->image_compression; ?>" />
+						</p>
+
+						<p class="description">
+							<?php _e( 'The default image compression setting in WordPress is 90%. Compressing your images further than the default will make your file sizes even smaller and will boost your site performance. As a reference, a lower level of compression means more performance but might induce quality loss. We recommend you choose a compression level between 50 and 75.', 'sb-pack' ); ?>
+							<br />
+						</p>
+						<p class="description"><strong>
+								<?php _e( 'Note that any changes you make will only affect new images uploaded to your site. A specialized plugin can optimize all your present images and will also optimize new ones as they are added. ', 'sb-pack' ); ?>
+							</strong></p>
+						<br>
+
+					</div><!--#image-options-->
+					<div id="support" class="sb-pack-tab">
+
+						<?php
+						if ( ! defined( 'WPINC' ) ) {
+							die;
+						}
+						?>
+						<div class="feature-section sbp-support">
+							<div class="row two-col center-support">
+
+								<h3>
+									<i class="dashicons dashicons-sos" style="display: inline-block;vertical-align: middle;margin-right: 5px"></i><?php esc_html_e( 'Contact Support', 'sb-pack' ); ?>
+								</h3>
+								<p>
+									<i><?php esc_html_e( 'We offer support through WordPress.org\'s support forums.', 'sb-pack' ); ?></i>
+								</p>
+								<p>
+									<a target="_blank" class="button button-hero button-primary" href="<?php echo esc_url( 'https://wordpress.org/support/plugin/speed-booster-pack#new-post' ); ?>"><?php esc_html_e( 'Post on our support forums', 'sb-pack' ); ?></a>
+								</p>
+
+							</div>
+							<div class="row">
+								<h2 class="sbp-title">Looking for better WP hosting ?</h2>
+							</div>
+							<div class="row sbp-blog three-col">
+								<div class="col">
+									<h3>
+										<i class="dashicons dashicons-performance" style="display: inline-block;vertical-align: middle;margin-right: 5px"></i><?php esc_html_e( 'Our Bluehost Hosting Review', 'sb-pack' ); ?>
+									</h3>
+									<p>
+										<i><?php esc_html_e( 'Despite its popularity, though, Bluehost often carries a negative perception among WordPress professionals. So as we dig into this Bluehost review, we\'ll be looking to figure out whether Bluehost\'s performance and features actually justify that reputation.', 'sb-pack' ); ?></i>
+									</p>
+									<p>
+										<a target="_blank" href="<?php echo esc_url( 'https://www.machothemes.com/blog/bluehost-review/?utm_source=sbp&utm_medium=about-page&utm_campaign=blog-links' ); ?>"><?php esc_html_e( 'Read more', 'sb-pack' ); ?></a>
+									</p>
+								</div><!--/.col-->
+
+								<div class="col">
+									<h3>
+										<i class="dashicons dashicons-performance" style="display: inline-block;vertical-align: middle;margin-right: 5px"></i><?php esc_html_e( 'Our InMotion Hosting Review', 'sb-pack' ); ?>
+									</h3>
+									<p>
+										<i><?php esc_html_e( 'InMotion Hosting is a popular independent web host that serves over 300,000 customers. They\'re notably not a part of the EIG behemoth (the parent company behind Bluehost, HostGator, and more), which is a plus in my book.', 'sb-pack' ); ?></i>
+									</p>
+									<p>
+										<a target="_blank" href="<?php echo esc_url( 'https://www.machothemes.com/blog/inmotion-hosting-review/?utm_source=sbp&utm_medium=about-page&utm_campaign=blog-links' ); ?>"><?php esc_html_e( 'Read more', 'sb-pack' ); ?></a>
+									</p>
+								</div><!--/.col-->
+
+								<div class="col">
+									<h3>
+										<i class="dashicons dashicons-performance" style="display: inline-block;vertical-align: middle;margin-right: 5px"></i><?php esc_html_e( 'Our A2 Hosting Review', 'sb-pack' ); ?>
+									</h3>
+									<p>
+										<i><?php esc_html_e( 'When it comes to affordable WordPress hosting, A2 Hosting is a name that often comes up in various WordPress groups for offering quick-loading performance that belies its low price tag.', 'sb-pack' ); ?></i>
+									</p>
+									<p>
+										<a target="_blank" href="<?php echo esc_url( 'https://www.machothemes.com/blog/a2-hosting-review/?utm_source=sbp&utm_medium=about-page&utm_campaign=blog-links' ); ?>"><?php esc_html_e( 'Read more', 'sb-pack' ); ?></a>
+									</p>
+								</div><!--/.col-->
+							</div>
+						</div><!--/.feature-section-->
+
+						<div class="col-fulwidth feedback-box">
+							<h3>
+								<?php esc_html_e( 'Lend a hand & share your thoughts', 'sb-pack' ); ?>
+								<img src="<?php echo $this->plugin_url . "inc/images/handshake.png"; ?>">
+							</h3>
+							<p>
+								<?php
+								echo vsprintf( // Translators: 1 is Theme Name, 2 is opening Anchor, 3 is closing.
+									__( 'We\'ve been working hard on making %1$s the best one out there. We\'re interested in hearing your thoughts about %1$s and what we could do to <u>make it even better</u>.<br/> <br/> %2$sHave your say%3$s', 'sb-pack' ), array(
+									'Speed Booster Pack',
+									'<a class="button button-feedback" target="_blank" href="http://bit.ly/feedback-speed-booster-pack">',
+									'</a>',
+								) );
+								?>
+							</p>
+						</div>
+					</div><!--#support-->
+
+					<div class="textright">
+						<hr />
+						<?php submit_button( '', 'button button-primary button-hero' ); ?>
+					</div>
 
 		</form>
-
 
 	</div><!--/.sb-pack-->
 </div> <!-- end wrap div -->

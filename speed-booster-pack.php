@@ -130,7 +130,7 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 		-----------------------------------------------------------------------------------------------------------*/
 
 		function sbp_load_translation() {
-			load_plugin_textdomain( 'sb - pack', false, SPEED_BOOSTER_PACK_PATH . ' / lang / ' );
+			load_plugin_textdomain( 'sb-pack', false, SPEED_BOOSTER_PACK_PATH . '/lang/' );
 		}
 
 
@@ -191,13 +191,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 				update_option( 'all_theme_styles_handle', $get_enqueued_styles_handle );
 			}
 
-
-			if ( get_option( 'sbp_css_async' ) === false ) {
-				update_option( 'sbp_css_async', 1 );
-				update_option( 'sbp_css_minify', 1 );
-				update_option( 'sbp_footer_css', 0 );
-				update_option( 'sbp_is_mobile', 0 );
-			}
 
 		} // END public static function sb_activate
 
@@ -289,3 +282,5 @@ if ( class_exists( 'Speed_Booster_Pack' ) ) {
 	$speed_booster_pack = new Speed_Booster_Pack();
 
 }    //	End if (!class_exists("Speed_Booster_Pack")) (2)
+
+// make sure to update the path to where you cloned the projects to!

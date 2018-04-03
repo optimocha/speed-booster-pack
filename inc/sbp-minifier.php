@@ -4,7 +4,7 @@
     MINIFIER - increase your page load speed by minifying JavaScript and HTML
     ---------------------------------------------------------------------------------------------------------*/
 
-	//@todo: replace this with proper minifiers; inline JS minification is turned OFF until we replace the whole minifier libraries with something better
+
     class SBP_HTML_Minifier {
     // Minify settings
     	protected $minify_css = true;

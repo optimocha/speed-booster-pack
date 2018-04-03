@@ -91,12 +91,10 @@
 		} );
 	}
 
-
 	$( document ).ready( function() {
 		admin_postboxes();
 		admin_jquery_sliders();
 		admin_tab_switching();
-
 	} );
 
 })( jQuery );

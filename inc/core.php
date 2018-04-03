@@ -21,11 +21,9 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			add_action( 'after_setup_theme', array( $this, 'sbp_junk_header_tags' ) );
 			add_action( 'init', array( $this, 'sbp_init' ) );
 
+
 			$this->sbp_css_optimizer(); // CSS Optimizer functions
 
-			if ( isset( $sbp_options['sbp_css_async'] ) ) {
-				add_action( 'wp_head', array( $this, 'sbp_except_admin_bar_css' ) );
-			}
 
 			//	Use Google Libraries
 			if ( ! is_admin() and isset( $sbp_options['use_google_libs'] ) ) {
@@ -41,7 +39,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			if ( ! is_admin() and isset( $sbp_options['minify_html_js'] ) ) {
 				$this->sbp_minifier();
 			}
-
 
 			//	Defer parsing of JavaScript
 			if ( ! is_admin() and isset( $sbp_options['defer_parsing'] ) ) {
@@ -102,20 +99,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
 
 		/*--------------------------------------------------------------------------------------------------------
-			Add except for the admin toolbar css since the Async CSS removes the dashicons from the toolbar.
-		---------------------------------------------------------------------------------------------------------*/
-
-		function sbp_except_admin_bar_css() {
-
-			if ( is_admin_bar_showing() ) { // enqueue the admin tolbar styles only if active
-				wp_enqueue_style( 'dashicons' );
-				wp_enqueue_style( 'admin-bar' );
-			}
-
-		}
-
-
-		/*--------------------------------------------------------------------------------------------------------
 			Get image quality value if it's set. Otherwise it's set to 90
 		---------------------------------------------------------------------------------------------------------*/
 
@@ -139,10 +122,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			global $sbp_styles_are_async;
 			global $sbp_styles;
 			global $sbp_options;
-
-			if ( is_admin() || ! empty( $sbp_styles_are_async ) ) {
-				return;
-			}
 
 			if ( isset( $sbp_options['sbp_css_minify'] ) ) {
 				$minify = true;
@@ -182,7 +161,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 		---------------------------------------------------------------------------------------------------------*/
 
 		function sbp_print_delayed_styles() {
-
 			global $sbp_styles;
 			global $sbp_options;
 
@@ -476,7 +454,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			require_once( SPEED_BOOSTER_PACK_PATH . 'inc/css-optimizer.php' );
 
 		}    //	End function sbp_css_optimizer()
-
 
 		/*--------------------------------------------------------------------------------------------------------
 			Defer parsing of JavaScript and exclusion files

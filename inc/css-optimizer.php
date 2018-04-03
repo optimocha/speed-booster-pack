@@ -102,7 +102,7 @@ function sbp_rebuilding_css_urls( $css, $url ) {
 	//$css     = preg_replace( "/url\((?!data:)['\"]?([^\/][^'\"\)]*)['\"]?\)/i", "url({$css_dir}/$1)", $css );
 
 	// new regex expression
-	$css     = preg_replace( "/url(?!\(['\"]?(data:|http:))\(['\"]?([^\/][^'\"\)]*)['\"]?\)/i", "url({$css_dir}/$2)", $css );
+	$css = preg_replace( "/url(?!\(['\"]?(data:|http:))\(['\"]?([^\/][^'\"\)]*)['\"]?\)/i", "url({$css_dir}/$2)", $css );
 
 
 	return $css;
@@ -179,15 +179,29 @@ function sbp_remove_multiline_comments( $code, $method = 0 ) {
 
 function sbp_style_exceptions() {
 
+	/**
+	 * Never include these CSS handles/files
+	 *
+	 * @since 3.7
+	 */
+	$default = array(
+		'admin-bar',
+		'dashicons',
+	);
+
 	$array          = explode( "\n", get_option( 'sbp_css_exceptions' ) );
 	$css_exceptions = array();
 	foreach ( $array as $key => $ex ) {
 		if ( trim( $ex ) != '' ) {
 			$css_exceptions[ $key ] = trim( $ex );
+
 		}
 	}
 
-	return $css_exceptions;
+	// merge defaults with our actual exceptions
+	$css_exceptions = array_merge( $css_exceptions, $default );
+
+	return (array) $css_exceptions;
 }
 
 

@@ -106,6 +106,7 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 * Fixed the way "exclude scripts from footer" works. It's now usable and only requires the script handle. Added backwards compat as well
 * Fixed the way script deferring works, it's now actually usable. Introduced a filter: sbp_exclude_defer_scripts so users can exclude more than 4 scripts from being deferred
 * Rewrote the way the plugin was handling removal of query strings from assets
+* Automatically exclude certain known CSS assets from being async/minifed and/or moved from header (ex: dashicons / admin-bar)
 * Full list of changes for v3.7, here: https://github.com/MachoThemes/speed-booster-pack/milestone/1?closed=1
 
 = 3.6.1 =
