@@ -120,7 +120,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 
 				<p>
 					<input id="sbp_settings[minify_html_js]" name="sbp_settings[minify_html_js]" type="checkbox" value="1" <?php checked( 1, isset( $sbp_options['minify_html_js'] ) ); ?> />
-					<label for="sbp_settings[minify_html_js]"><?php _e( 'Minify HTML & CSS', 'sb-pack' ); ?></label>
+					<label for="sbp_settings[minify_html_js]"><?php _e( 'Minify HTML', 'sb-pack' ); ?></label>
 					<span class="tooltip-right"
 					      data-tooltip="<?php echo __( 'Activate this option only if you don’t want to use other minify plugins or other speed optimization plugin that has minify option included. If something goes wrong, simply uncheck this option and save the settings.', 'sb-pack' ); ?>">
 						<i class="dashicons dashicons-editor-help"></i>
