@@ -1,11 +1,11 @@
 === Speed Booster Pack ===
-Contributors: machothemes
+Contributors: machothemes, silkalns
 Donate link:
 Tags: speed, optimization, performance, scripts to the footer, google libraries, font awesome cdn, defer parsing of javascript, remove query strings, lazy load images, gtmetrix, google pageSpeed, yslow, eliminate external render-blocking javascript and css, compression, async, render-blocking css
 Requires at least: 3.6
 Tested up to: 4.9
 Requires PHP: 5.6
-Stable tag: 3.7
+Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,8 +80,11 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 
 == Changelog ==
 
-= 3.7 =
+= 3.7.1 = 
+* version bump
+* minor plugin tweaks
 
+= 3.7 =
 * Bumped FontAwesome bundled CSS version from 4.1 -> 4.7 and changed to using MaxCDN
 * (Hopefully) fixed the issue affecting relative/absolute paths when using minify CSS
 * Wrongfully used escape functions

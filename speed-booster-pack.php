@@ -5,10 +5,10 @@
  * Description: Speed Booster Pack allows you to improve your page loading speed and get a higher score on the major
  * speed testing services such as <a href="http://gtmetrix.com/">GTmetrix</a>, <a
  * href="http://developers.google.com/speed/pagespeed/insights/">Google PageSpeed</a> or other speed testing tools.
- * Version: 3.7
+ * Version: 3.7.1
  * Author: Macho Themes
  * Author URI: https://www.machothemes.com/
- * License: GPLv2
+ * License: GPLv3
  */
 
 /*  Copyright 2018 Macho Themes (email : support [at] machothemes [dot] com)
