@@ -5,7 +5,7 @@
  * Description: Speed Booster Pack allows you to improve your page loading speed and get a higher score on the major
  * speed testing services such as <a href="http://gtmetrix.com/">GTmetrix</a>, <a
  * href="http://developers.google.com/speed/pagespeed/insights/">Google PageSpeed</a> or other speed testing tools.
- * Version: 3.7.1
+ * Version: 3.7.4
  * Author: Macho Themes
  * Author URI: https://www.machothemes.com/
  * License: GPLv3
@@ -45,19 +45,18 @@
  * @since 3.7
  */
 $sbp_defaults = array(
-	'remove_emojis'    => 1, // remove emoji scripts
-	'remove_wsl'       => 1, // remove WSL link in header
-	'remove_adjacent'  => 1, // remove post adjacent links
-	'wml_link'         => 1, // remove Windows Manifest Live link
-	'rsd_link'         => 1, // remove really simple discovery
-	'wp_generator'     => 1, // remove WP version
-	'remove_all_feeds' => 1, // remove all WP feeds
-	'disable_xmlrpc'   => 1, // disable XML-RPC pingbacks
-	'font_awesome'     => 1, // remove extra font awesome styles
-	'query_strings'    => 1, // remove query strings
-	'jquery_to_footer' => 0, // move all scripts to footer
-	'use_google_libs'  => 1, // serve JS assets (when possible) from Google CDN
-	'lazy_load'        => 1, // lazyLoad images
+	'remove_emojis'       => 1, // remove emoji scripts
+	'remove_wsl'          => 1, // remove WSL link in header
+	'remove_adjacent'     => 1, // remove post adjacent links
+	'wml_link'            => 1, // remove Windows Manifest Live link
+	'rsd_link'            => 1, // remove really simple discovery
+	'wp_generator'        => 1, // remove WP version
+	'remove_all_feeds'    => 1, // remove all WP feeds
+	'disable_xmlrpc'      => 1, // disable XML-RPC pingbacks
+	'font_awesome'        => 1, // remove extra font awesome styles
+	'query_strings'       => 1, // remove query strings
+	'use_google_libs'     => 1, // serve JS assets (when possible) from Google CDN
+	'heartbeat_frequency' => 15
 );
 
 $sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrieve the plugin settings from the options table
@@ -67,12 +66,9 @@ $sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrie
 -----------------------------------------------------------------------------------------------------------*/
 
 define( 'SPEED_BOOSTER_PACK_PATH', plugin_dir_path( __FILE__ ) );                    // Defining plugin dir path
-define( 'SPEED_BOOSTER_PACK_VERSION', '3.7' );                                       // Defining plugin version
+define( 'SPEED_BOOSTER_PACK_VERSION', '3.7.2' );                                       // Defining plugin version
 define( 'SBP_FOOTER', 10 );                                                          // Defining css position
 define( 'SBP_FOOTER_LAST', 99999 );                                                  // Defining css last position
-if ( ! defined( 'SHORTPIXEL_AFFILIATE_CODE' ) ) {
-	define( 'SHORTPIXEL_AFFILIATE_CODE', 'U3NQVWK31472' );
-}
 
 /*----------------------------------------------------------------------------------------------------------
 	Main Plugin Class
@@ -97,7 +93,7 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 			 *
 			 * @since: 3.7
 			 *
-			*/
+			 */
 			//add_action( 'wp_dashboard_setup', [ $this, 'sbp_load_dashboard_widget' ] );
 
 
@@ -118,9 +114,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 			// Enqueue admin style
 			add_action( 'admin_enqueue_scripts', array( $this, 'sbp_enqueue_styles' ) );
 
-			if ( isset( $sbp_options['lazy_load'] ) ) {
-				add_action( 'wp_head', array( $this, 'sbp_fade_in_style' ), 100 );
-			}
 
 			// Filters
 			$this->path = plugin_basename( __FILE__ );
@@ -213,15 +206,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 		-----------------------------------------------------------------------------------------------------------*/
 
 		public static function sbp_deactivate() {
-		}
-
-
-		/*-----------------------------------------------------------------------------------------------------------------------------------------
-			Add a small css to activate a fade-in effect on lazy load images & wll be also used to output some frontend css in future development
-		--------------------------------------------------------------------------------------------------------------------------------------------*/
-
-		public function sbp_fade_in_style() {
-			echo "<style>img.crazy_lazy {opacity:0}</style>";
 		}
 
 

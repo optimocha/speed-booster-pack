@@ -357,8 +357,8 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                     <select id="sbp_settings[autosave_interval]" name="sbp_settings[autosave_interval]">
                         <option value="1" <?php selected( "1", $autosave, true ); ?>>1 minute ( default )</option>
                         <option value="2" <?php selected( "2", $autosave, true ); ?>>2 minutes</option>
-                        <option value="3" <?php selected( "3", $autosave, true ); ?>>3  minutes</option>
-                        <option value="4" <?php selected( "4", $autosave, true ); ?>>4  minutes</option>
+                        <option value="3" <?php selected( "3", $autosave, true ); ?>>3 minutes</option>
+                        <option value="4" <?php selected( "4", $autosave, true ); ?>>4 minutes</option>
                         <option value="5" <?php selected( "5", $autosave, true ); ?>>5 minutes</option>
                     </select>
                 </p>
@@ -377,13 +377,14 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                 </p>
 
                 <p>
+					<?php $login_url = ( isset( $sbp_options['login_url'] ) ) ? $sbp_options['login_url'] : ""; ?>
                     <label for="sbp_settings[login_url]"><?php _e( 'Change login url', 'sb-pack' ); ?></label>
                     <span class="tooltip-right"
                           data-tooltip="<?php echo __( 'Disable heartbeat everywhere ( used for autosaving and revision tracking ). ', 'sb-pack' ); ?>">
 						<i class="dashicons dashicons-editor-help"></i>
 					</span>
-                    <input id="sbp_settings[login_url]" name="sbp_settings[login_url]" type="text" vlue="<?php echo esc_attr($sbp_options['login_url']);  ?>" />
-
+                    <input id="sbp_settings[login_url]" name="sbp_settings[login_url]" type="text"
+                           vlue="<?php echo esc_attr( $sbp_options['login_url'] ); ?>"/>
                 </p>
 
 
