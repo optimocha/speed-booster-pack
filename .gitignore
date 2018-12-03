@@ -2,3 +2,4 @@
 *.log
 /node_modules/
 /.standard.json
+.DS_STORE
