@@ -384,7 +384,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 						<i class="dashicons dashicons-editor-help"></i>
 					</span>
                     <input id="sbp_settings[login_url]" name="sbp_settings[login_url]" type="text"
-                           vlue="<?php echo esc_attr( $sbp_options['login_url'] ); ?>"/>
+                           vlue="<?php echo esc_attr( $login_url ); ?>"/>
                 </p>
 
 
