@@ -332,8 +332,6 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                         ?>
                     </div>
                 <?php } ?>
-            </div>
-
                 <div class="td-border-last"></div>
 
                 <h4><?php _e( 'Exclude styles from being inlined and/or minified option: ', 'sb-pack' ); ?></h4>
