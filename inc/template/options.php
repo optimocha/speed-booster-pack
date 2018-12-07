@@ -274,7 +274,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
             <div id="general-options" class="sb-pack-tab">
                  <?php
                  foreach ( $sbp_options_array as $k => $values ) {
-                    $class = strtolower(str_replace(' ','',$k));
+                    $class = strtolower(str_replace(' ','-',$k));
                     ?>
                     <div class="<?php echo $class; ?> sb-pack" >
                         <h3><?php echo $k; ?></h3>
