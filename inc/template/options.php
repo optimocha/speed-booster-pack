@@ -298,8 +298,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                                 <p>
                                     <label for="sbp_settings[<?php echo $k_v; ?>]"><?php echo $value['label']; ?></label>
                                     <span class="tooltip-right"
-                                          data-tooltip="<?php echo $value['tooltip'];
-                                          s ?>">
+                                          data-tooltip="<?php echo $value['tooltip']; ?>">
                             <i class="dashicons dashicons-editor-help"></i>
                         </span>
                                     <select id="sbp_settings[<?php echo $k_v; ?>]" name="sbp_settings[<?php echo $k_v; ?>]">
