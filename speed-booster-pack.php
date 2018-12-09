@@ -291,7 +291,7 @@ function sb_pack_check_for_review() {
     require_once SPEED_BOOSTER_PACK_PATH . 'inc/class-sb-pack-review.php';
 
     SB_Pack_Review::get_instance( array(
-        'slug' => 'colorlib-404-customizer',
+        'slug' => 'speed-booster-pack',
     ) );
 }
 
