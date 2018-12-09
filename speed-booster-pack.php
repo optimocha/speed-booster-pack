@@ -45,18 +45,20 @@
  * @since 3.7
  */
 $sbp_defaults = array(
-	'remove_emojis'       => 1, // remove emoji scripts
-	'remove_wsl'          => 1, // remove WSL link in header
-	'remove_adjacent'     => 1, // remove post adjacent links
-	'wml_link'            => 1, // remove Windows Manifest Live link
-	'rsd_link'            => 1, // remove really simple discovery
-	'wp_generator'        => 1, // remove WP version
-	'remove_all_feeds'    => 1, // remove all WP feeds
-	'disable_xmlrpc'      => 1, // disable XML-RPC pingbacks
-	'font_awesome'        => 1, // remove extra font awesome styles
-	'query_strings'       => 1, // remove query strings
-	'use_google_libs'     => 1, // serve JS assets (when possible) from Google CDN
-	'heartbeat_frequency' => 15
+	'remove_emojis'          => 1, // remove emoji scripts
+	'remove_wsl'             => 1, // remove WSL link in header
+	'remove_adjacent'        => 1, // remove post adjacent links
+	'wml_link'               => 1, // remove Windows Manifest Live link
+	'rsd_link'               => 1, // remove really simple discovery
+	'wp_generator'           => 1, // remove WP version
+	'remove_all_feeds'       => 1, // remove all WP feeds
+	'disable_xmlrpc'         => 1, // disable XML-RPC pingbacks
+	'font_awesome'           => 1, // remove extra font awesome styles
+	'query_strings'          => 1, // remove query strings
+	'use_google_libs'        => 1, // serve JS assets (when possible) from Google CDN
+	'heartbeat_frequency'    => 15,
+	'autosave_interval'      => 1,
+	'limit_post_revisions'   => 30
 );
 
 $sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrieve the plugin settings from the options table
@@ -280,3 +282,17 @@ if ( class_exists( 'Speed_Booster_Pack' ) ) {
 }    //	End if (!class_exists("Speed_Booster_Pack")) (2)
 
 // make sure to update the path to where you cloned the projects to!
+
+//review function
+function sb_pack_check_for_review() {
+    if ( ! is_admin() ) {
+        return;
+    }
+    require_once SPEED_BOOSTER_PACK_PATH . 'inc/class-sb-pack-review.php';
+
+    SB_Pack_Review::get_instance( array(
+        'slug' => 'colorlib-404-customizer',
+    ) );
+}
+
+sb_pack_check_for_review();
