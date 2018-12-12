@@ -20,20 +20,16 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			add_action( 'init', array( $this, 'sbp_show_page_load_stats' ), 999 );
 			add_action( 'after_setup_theme', array( $this, 'sbp_junk_header_tags' ) );
 			add_action( 'init', array( $this, 'sbp_init' ) );
-            //enable cdn rewrite
-            if(!empty($sbp_options['sbp_enable_cdn']) && $sbp_options['sbp_enable_cdn'] == "1" && !empty($sbp_options['sbp_cdn_url'])) {
-                add_action('template_redirect', 'sbp_cdn_rewrite');
-            }
 
 
-
-            $this->sbp_css_optimizer(); // CSS Optimizer functions
+			$this->sbp_css_optimizer(); // CSS Optimizer functions
 
 
 			//	Use Google Libraries
 			if ( ! is_admin() and isset( $sbp_options['use_google_libs'] ) ) {
 				$this->sbp_use_google_libraries();
 			}
+
 
 
 			// Minifier
@@ -76,132 +72,8 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 				add_filter( 'pings_open', '__return_false', 9999 );
 			}
 
-			// Disable Self Pingbacks
-			if ( ! isset( $sbp_options['disable_self_pingbacks'] ) ) {
-				add_action( 'pre_ping', 'sbp_remove_self_ping' );
-			}
-
-			// Remove REST API Links
-			if ( ! isset( $sbp_options['remove_rest_api_links'] ) ) {
-				remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
-			}
-
-			//Disable Dash icons
-			if ( ! empty( $sbp_options['disable_dashicons'] ) && $sbp_options['disable_dashicons'] == "1" ) {
-				add_action( 'wp_enqueue_scripts', array( $this, 'sbp_disable_dash_icons' ) );
-			}
-
-			if ( ! empty( $sbp_options['disable_google_maps'] ) && $sbp_options['disable_google_maps'] == "1" ) {
-				add_action( 'wp_loaded', array( $this, 'sbp_disable_google_maps' ) );
-			}
-
-			if ( ! empty( $sbp_options['disable_password_strength_meter'] ) && $sbp_options['disable_password_strength_meter'] == "1" ) {
-				add_action( 'wp_print_scripts', array( $this, 'sbp_disable_password_strength_meter' ), 100 );
-			}
-
-			if ( ! empty( $sbp_options['disable_heartbeat'] ) && $sbp_options['disable_heartbeat'] == "1" ) {
-				add_action( 'init', array( $this, 'sbp_disable_heartbeat' ), 1 );
-			}
-
-			if ( ! empty( $sbp_options['heartbeat_frequency'] ) ) {
-				add_filter( 'heartbeat_settings', array( $this, 'sbp_heartbeat_frequency' ), 1 );
-			}
-
-			if ( ! empty( $sbp_options['limit_post_revisions'] ) ) {
-				define( 'WP_POST_REVISIONS', $sbp_options['limit_post_revisions'] );
-			}
-
-			if ( ! empty( $sbp_options['autosave_interval'] ) ) {
-				define( 'AUTOSAVE_INTERVAL', $sbp_options['autosave_interval'] );
-			}
-
-
-			/*---------------------------------------------------
-			Change login url
-			----------------------------------------------------*/
-			$sbp_wp_login = false;
-
-			if ( ! empty( $sbp_options['login_url'] ) && ! defined( 'WP_CLI' ) ) {
-				add_action( 'plugins_loaded', array( $this, 'sbp_plugins_loaded' ), 2 );
-				add_action( 'wp_loaded', array( $this, 'sbp_wp_loaded' ) );
-				add_action( 'setup_theme', array( $this, 'sbp_disable_customize_php' ), 1 );
-				add_filter( 'site_url', array( $this, 'sbp_site_url' ), 10, 4 );
-				add_filter( 'network_site_url', array( $this, 'sbp_network_site_url' ), 10, 3 );
-				add_filter( 'wp_redirect', array( $this, 'sbp_wp_redirect' ), 10, 2 );
-				add_filter( 'site_option_welcome_email', array( $this, 'sbp_welcome_email' ) );
-				remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
-			}
-
 		}  //  END public public function __construct
 
-		/*--------------------------------------------------------------------------------------------------------
-					Disable Dash icons
-		---------------------------------------------------------------------------------------------------------*/
-		function sbp_disable_dash_icons() {
-			if ( ! is_user_logged_in() ) {
-				wp_dequeue_style( 'dashicons' );
-				wp_deregister_style( 'dashicons' );
-			}
-		}
-
-		/*--------------------------------------------------------------------------------------------------------
-					Disable Heartbeat
-		---------------------------------------------------------------------------------------------------------*/
-
-		function sbp_disable_heartbeat() {
-			wp_deregister_script( 'heartbeat' );
-		}
-
-		/*--------------------------------------------------------------------------------------------------------
-					Heartbeat Frequency
-		---------------------------------------------------------------------------------------------------------*/
-
-		function sbp_heartbeat_frequency() {
-			global $sbp_options;
-			$settings['interval'] = $sbp_options['heartbeat_frequency']; //Anything between 15-120
-
-			return $settings;
-		}
-
-		/*--------------------------------------------------------------------------------------------------------
-				 Disable Google Maps
-		---------------------------------------------------------------------------------------------------------*/
-
-		function sbp_disable_google_maps() {
-			ob_start( array( $this, 'sbp_disable_google_maps_regex' ) );
-		}
-
-		function sbp_disable_google_maps_regex( $html ) {
-			$html = preg_replace( '/<script[^<>]*\/\/maps.(googleapis|google|gstatic).com\/[^<>]*><\/script>/i', '', $html );
-
-			return $html;
-		}
-
-		/*--------------------------------------------------------------------------------------------------------
-			 Disable Password Strength Meter
-			---------------------------------------------------------------------------------------------------------*/
-
-		function sbp_disable_password_strength_meter() {
-			global $wp;
-
-			$wp_check = isset( $wp->query_vars['lost-password'] ) || ( isset( $_GET['action'] ) && $_GET['action'] === 'lostpassword' ) || is_page( 'lost_password' );
-
-			$wc_check = ( class_exists( 'WooCommerce' ) && ( is_account_page() || is_checkout() ) );
-
-			if ( ! $wp_check && ! $wc_check ) {
-				if ( wp_script_is( 'zxcvbn-async', 'enqueued' ) ) {
-					wp_dequeue_script( 'zxcvbn-async' );
-				}
-
-				if ( wp_script_is( 'password-strength-meter', 'enqueued' ) ) {
-					wp_dequeue_script( 'password-strength-meter' );
-				}
-
-				if ( wp_script_is( 'wc-password-strength-meter', 'enqueued' ) ) {
-					wp_dequeue_script( 'wc-password-strength-meter' );
-				}
-			}
-		}
 
 		/*--------------------------------------------------------------------------------------------------------
 			Init the CSS Optimizer actions
@@ -272,8 +144,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 				if ( ! empty( $not_inlined ) ) {
 					foreach ( $not_inlined as $style ) {
 						?>
-                        <link rel="stylesheet" href="<?php echo $style['src'] ?>"
-                              type="text/css" <?php echo $style['media'] ? "media=\"{$style['media']}\"" : '' ?> /><?php
+						<link rel="stylesheet" href="<?php echo $style['src'] ?>" type="text/css" <?php echo $style['media'] ? "media=\"{$style['media']}\"" : '' ?> /><?php
 					}
 				}
 			}
@@ -309,8 +180,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 				if ( ! empty( $not_inlined ) ) {
 					foreach ( $not_inlined as $style ) {
 						?>
-                        <link rel="stylesheet" href="<?php echo $style['src'] ?>"
-                              type="text/css" <?php echo $style['media'] ? "media=\"{$style['media']}\"" : '' ?> /><?php
+						<link rel="stylesheet" href="<?php echo $style['src'] ?>" type="text/css" <?php echo $style['media'] ? "media=\"{$style['media']}\"" : '' ?> /><?php
 					}
 				}
 			}
@@ -550,6 +420,8 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 		}    //	End function sbp_use_google_libraries()
 
 
+
+
 		/*--------------------------------------------------------------------------------------------------------
 			Minify HTML and Javascripts
 		---------------------------------------------------------------------------------------------------------*/
@@ -671,20 +543,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 		}
 
 		/*--------------------------------------------------------------------------------------------------------
-			Disable Self Pingbacks
-		---------------------------------------------------------------------------------------------------------*/
-
-		function sbp_remove_self_ping( &$links ) {
-			$home = get_option( 'home' );
-			foreach ( $links as $l => $link ) {
-				if ( 0 === strpos( $link, $home ) ) {
-					unset( $links[ $l ] );
-				}
-			}
-		}
-
-
-		/*--------------------------------------------------------------------------------------------------------
 			Dequeue extra Font Awesome stylesheet
 		---------------------------------------------------------------------------------------------------------*/
 
@@ -749,253 +607,5 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			}
 
 		}    //	END public function sbp_junk_header_tags
-
-
-        /*--------------------------------
-         Change Login URL
-        --------------------------------*/
-
-
-		function sbp_site_url( $url, $path, $scheme, $blog_id ) {
-			return $this->sbp_filter_wp_login( $url, $scheme );
-		}
-
-		function sbp_network_site_url( $url, $path, $scheme ) {
-			return $this->sbp_filter_wp_login( $url, $scheme );
-		}
-
-		function sbp_wp_redirect( $location, $status ) {
-			return $this->sbp_filter_wp_login( $location );
-		}
-
-		function sbp_filter_wp_login( $url, $scheme = null ) {
-
-			//wp-login.php Being Requested
-			if ( strpos( $url, 'wp-login.php' ) !== false ) {
-
-				//Set HTTPS Scheme if SSL
-				if ( is_ssl() ) {
-					$scheme = 'https';
-				}
-
-				//Check for Query String and Craft New Login URL
-				$query_string = explode( '?', $url );
-				if ( isset( $query_string[1] ) ) {
-					parse_str( $query_string[1], $query_string );
-					$url = add_query_arg( $query_string, $this->sbp_login_url( $scheme ) );
-				} else {
-					$url = $this->sbp_login_url( $scheme );
-				}
-			}
-
-			//Return Finished Login URL
-			return $url;
-		}
-
-		function sbp_login_url( $scheme = null ) {
-
-			//Return Full New Login URL Based on Permalink Structure
-			if ( get_option( 'permalink_structure' ) ) {
-				return $this->sbp_trailingslashit( home_url( '/', $scheme ) . $this->sbp_login_slug() );
-			} else {
-				return home_url( '/', $scheme ) . '?' . $this->sbp_login_slug();
-			}
-		}
-
-		function sbp_trailingslashit( $string ) {
-
-			//Check for Permalink Trailing Slash and Add to String
-			if ( ( substr( get_option( 'permalink_structure' ), - 1, 1 ) ) === '/' ) {
-				return trailingslashit( $string );
-			} else {
-				return untrailingslashit( $string );
-			}
-		}
-
-		function sbp_login_slug() {
-
-			//Declare Global Variable
-			global $sbp_options;
-
-			//Return Login URL Slug if Available
-			if ( ! empty( $sbp_options['login_url'] ) ) {
-				return $sbp_options['login_url'];
-			}
-		}
-
-		function sbp_plugins_loaded() {
-
-			//Declare Global Variables
-			global $pagenow;
-			global $sbp_wp_login;
-
-			//Parse Requested URI
-			$URI  = parse_url( $_SERVER['REQUEST_URI'] );
-			$path = untrailingslashit( $URI['path'] );
-			$slug = $this->sbp_login_slug();
-
-			//Non Admin wp-login.php URL
-			if ( ! is_admin() && ( strpos( rawurldecode( $_SERVER['REQUEST_URI'] ), 'wp-login.php' ) !== false || $path === site_url( 'wp-login', 'relative' ) ) ) {
-
-				//Set Flag
-				$sbp_wp_login = true;
-
-				//Prevent Redirect to Hidden Login
-				$_SERVER['REQUEST_URI'] = $this->sbp_trailingslashit( '/' . str_repeat( '-/', 10 ) );
-				$pagenow                = 'index.php';
-			} //Hidden Login URL
-            elseif ( $path === home_url( $slug, 'relative' ) || ( ! get_option( 'permalink_structure' ) && isset( $_GET[ $slug ] ) && empty( $_GET[ $slug ] ) ) ) {
-
-				//Override Current Page w/ wp-login.php
-				$pagenow = 'wp-login.php';
-			}
-		}
-
-		function sbp_wp_loaded() {
-
-			//Declare Global Variables
-			global $pagenow;
-			global $sbp_wp_login;
-
-			//Parse Requested URI
-			$URI = parse_url( $_SERVER['REQUEST_URI'] );
-
-			//Disable Normal WP-Admin
-			if ( is_admin() && ! is_user_logged_in() && ! defined( 'DOING_AJAX' ) && $pagenow !== 'admin-post.php' && ( isset( $_GET ) && empty( $_GET['adminhash'] ) && empty( $_GET['newuseremail'] ) ) ) {
-				wp_die( __( 'This has been disabled.', 'sb-pack' ), 403 );
-			}
-
-			//Requesting Hidden Login Form - Path Mismatch
-			if ( $pagenow === 'wp-login.php' && $URI['path'] !== $this->sbp_trailingslashit( $URI['path'] ) && get_option( 'permalink_structure' ) ) {
-
-				//Local Redirect to Hidden Login URL
-				$URL = $this->sbp_trailingslashit( $this->sbp_login_url() ) . ( ! empty( $_SERVER['QUERY_STRING'] ) ? '?' . $_SERVER['QUERY_STRING'] : '' );
-				wp_safe_redirect( $URL );
-				die();
-			} //Requesting wp-login.php Directly, Disabled
-            elseif ( $sbp_wp_login ) {
-				wp_die( __( 'This has been disabled.', 'sb-pack' ), 403 );
-			} //Requesting Hidden Login Form
-            elseif ( $pagenow === 'wp-login.php' ) {
-
-				//Declare Global Variables
-				global $error, $interim_login, $action, $user_login;
-
-				//User Already Logged In
-				if ( is_user_logged_in() && ! isset( $_REQUEST['action'] ) ) {
-					wp_safe_redirect( admin_url() );
-					die();
-				}
-
-				//Include Login Form
-				@require_once ABSPATH . 'wp-login.php';
-				die();
-			}
-		}
-
-		function sbp_disable_customize_php() {
-
-			//Declare Global Variable
-			global $pagenow;
-
-			//Disable customize.php from Redirecting to Login URL
-			if ( ! is_user_logged_in() && $pagenow === 'customize.php' ) {
-				wp_die( __( 'This has been disabled.', 'sb-pack' ), 403 );
-			}
-		}
-
-		function sbp_welcome_email( $value ) {
-
-			//Declare Global Variable
-			global $sbp_options;
-
-			//Check for Custom Login URL and Replace
-			if ( ! empty( $sbp_options['login_url'] ) ) {
-				$value = str_replace( array(
-					'wp-login.php',
-					'wp-admin'
-				), trailingslashit( $sbp_options['login_url'] ), $value );
-			}
-
-			return $value;
-		}
-
-    /*--------------------------------
-       CDN Rewrite URLs
-    ---------------------------------*/
-
-    function sbp_cdn_rewrite() {
-        ob_start('sbp_cdn_rewriter');
-    }
-
-    function sbp_cdn_rewriter($html) {
-        global $sbp_options;
-        $sbp_cdn_directories = $sbp_options['sbp_cdn_included_directories'];
-
-        //Prep Site URL
-        $escapedSiteURL = quotemeta(get_option('home'));
-        $regExURL = '(https?:|)' . substr($escapedSiteURL, strpos($escapedSiteURL, '//'));
-
-        //Prep Included Directories
-        $directories = 'wp\-content|wp\-includes';
-        if(!empty($sbp_cdn_directories)) {
-            $directoriesArray = array_map('trim', explode(',', $sbp_cdn_directories));
-            if(count($directoriesArray) > 0) {
-                $directories = implode('|', array_map('quotemeta', array_filter($directoriesArray)));
-            }
-        }
-
-        //Rewrite URLs + Return
-        $regEx = '#(?<=[(\"\'])(?:' . $regExURL . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
-        $cdnHTML = preg_replace_callback($regEx, 'sbp_cdn_rewrite_url', $html);
-        return $cdnHTML;
-    }
-
-    function sbp_cdn_rewrite_url($url) {
-        global $sbp_options;
-        $sbp_cdn_url = $sbp_options['sbp_cdn_url'];
-        $sbp_cdn_excluded = $sbp_options['sbp_cdn_exclusions'];
-
-        //Make Sure CDN URL is Set
-        if(!empty($sbp_cdn_url)) {
-
-            //Don't Rewrite if Excluded
-            if(!empty($sbp_cdn_excluded)) {
-                $exclusions = array_map('trim', explode(',', $sbp_cdn_excluded));
-                foreach($exclusions as $exclusion) {
-                    if(!empty($exclusion) && stristr($url[0], $exclusion) != false) {
-                        return $url[0];
-                    }
-                }
-            }
-
-            //Don't Rewrite if Previewing
-            if(is_admin_bar_showing() && isset($_GET['preview']) && $_GET['preview'] == 'true') {
-                return $url[0];
-            }
-
-            //Prep Site URL
-            $siteURL = get_option('home');
-            $siteURL = substr($siteURL, strpos($siteURL, '//'));
-
-            //Replace URL w/ No HTTP/S Prefix
-            if(strpos($url[0], '//') === 0) {
-                return str_replace($siteURL, $sbp_cdn_url, $url[0]);
-            }
-
-            //Found Site URL, Replace Non Relative URL w/ HTTP/S Prefix
-            if(strstr($url[0], $siteURL)) {
-                return str_replace(array('http:' . $siteURL, 'https:' . $siteURL), $sbp_cdn_url, $url[0]);
-            }
-
-            //Replace Relative URL
-            return $sbp_cdn_url . $url[0];
-        }
-
-        //Return Original URL
-        return $url[0];
-    }
-
-
 	}   //  END class Speed_Booster_Pack_Core
 }   //  END if(!class_exists('Speed_Booster_Pack_Core'))

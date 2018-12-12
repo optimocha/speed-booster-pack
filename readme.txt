@@ -1,13 +1,12 @@
 === Speed Booster Pack ===
 Contributors: machothemes, silkalns
-Donate link:
-Tags: speed, optimization, performance, scripts to the footer, google libraries, font awesome cdn, defer parsing of javascript, remove query strings, lazy load images, gtmetrix, google pageSpeed, yslow, eliminate external render-blocking javascript and css, compression, async, render-blocking css
+Tags: speed, optimization, performance, scripts to the footer, google libraries, font awesome cdn, defer parsing of javascript, remove query strings, gtmetrix, google pageSpeed, yslow, compression, render-blocking css
 Requires at least: 3.6
-Tested up to: 4.9
+Tested up to: 5.0
 Requires PHP: 5.6
-Stable tag: trunk
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 3.7.5
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 A light, frequently updated and easy to use plugin to make your site load faster and score higher on Google PSI.
 
@@ -33,7 +32,6 @@ Speed Booster Pack is a plugin that can help you speed up your website by tweaki
 * **Load CSS asynchronously** to render your page more quickly and get a higher score on the major speed testing services.
 * **Minify and inline all CSS styles and move them to the footer** to eliminate external render-blocking CSS and optimize CSS delivery.
 * ** Minify HTML and JavaScript to increase your page load speed.
-* **Lazy loads images** to improve page load times and save bandwidth.
 * **Change image compression level** to keep file sizes smaller; Change JPG quality.
 * **Load javascript files from Google Libraries** rather than serving them from your WordPress install directly, to reduce latency, increase parallelism and improve browser caching.
 * **Defer parsing of javascript files** to reduce the initial load time of your page.
@@ -64,7 +62,7 @@ Future Development:
 * [Simple Author Box](http://wordpress.org/plugins/simple-author-box/) - A simple but cool author box with social icons.
 
 **About us:**
-We are a young team of WordPress aficionados who love building WordPress plugins & <a href="https://www.machothemes.com/" target="_blank" title="Premium WordPress themes">Premium WordPress themes</a> over on our theme shop. We’re also blogging and wish to help our users find the <a href="https://www.machothemes.com/blog/best-cheap-wordpress-hosting/" target="_blank" title="Best Cheap WordPress Hosting">Best Cheap WordPress Hosting</a> available on the market. Check out our blog. 
+We are a young team of WordPress aficionados who love building WordPress plugins & <a href="https://www.machothemes.com/" target="_blank" title="Premium WordPress themes">Premium WordPress themes</a> over on our theme shop. We’re also blogging and wish to help our users find the <a href="https://www.machothemes.com/blog/best-cheap-wordpress-hosting/" target="_blank" title="Best Cheap WordPress Hosting">Best Cheap WordPress Hosting</a> available on the market. Check out our blog.
 
 
 == Installation ==
@@ -80,11 +78,25 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 
 == Changelog ==
 
-= 3.7.1 = 
-* version bump
-* minor plugin tweaks
+= 3.7.5 =
+* removed uninstall feedback
+
+= 3.7.4 =
+* minor backend tweaks - notice
+* added language files
+
+= 3.7.3 =
+* minor backend tweaks
+
+= 3.7.2 =
+* minor tweaks & version bump
+* removed ShortPixel aff integration
+
+= 3.7.1 =
+* Temporarily remove lazyLoad as the bundled JS files, namely, CrazyLazy don't seem to be working properly with the latest jQuery version.
 
 = 3.7 =
+
 * Bumped FontAwesome bundled CSS version from 4.1 -> 4.7 and changed to using MaxCDN
 * (Hopefully) fixed the issue affecting relative/absolute paths when using minify CSS
 * Wrongfully used escape functions
