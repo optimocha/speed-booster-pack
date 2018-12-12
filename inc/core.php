@@ -20,9 +20,14 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			add_action( 'init', array( $this, 'sbp_show_page_load_stats' ), 999 );
 			add_action( 'after_setup_theme', array( $this, 'sbp_junk_header_tags' ) );
 			add_action( 'init', array( $this, 'sbp_init' ) );
+            //enable cdn rewrite
+            if(!empty($sbp_options['sbp_enable_cdn']) && $sbp_options['sbp_enable_cdn'] == "1" && !empty($sbp_options['sbp_cdn_url'])) {
+                add_action('template_redirect', 'sbp_cdn_rewrite');
+            }
 
 
-			$this->sbp_css_optimizer(); // CSS Optimizer functions
+
+            $this->sbp_css_optimizer(); // CSS Optimizer functions
 
 
 			//	Use Google Libraries
@@ -746,8 +751,9 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 		}    //	END public function sbp_junk_header_tags
 
 
-		/* Change Login URL
-/***********************************************************************/
+        /*--------------------------------
+         Change Login URL
+        --------------------------------*/
 
 
 		function sbp_site_url( $url, $path, $scheme, $blog_id ) {
@@ -913,6 +919,82 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
 			return $value;
 		}
+
+    /*--------------------------------
+       CDN Rewrite URLs
+    ---------------------------------*/
+
+    function sbp_cdn_rewrite() {
+        ob_start('sbp_cdn_rewriter');
+    }
+
+    function sbp_cdn_rewriter($html) {
+        global $sbp_options;
+        $sbp_cdn_directories = $sbp_options['sbp_cdn_included_directories'];
+
+        //Prep Site URL
+        $escapedSiteURL = quotemeta(get_option('home'));
+        $regExURL = '(https?:|)' . substr($escapedSiteURL, strpos($escapedSiteURL, '//'));
+
+        //Prep Included Directories
+        $directories = 'wp\-content|wp\-includes';
+        if(!empty($sbp_cdn_directories)) {
+            $directoriesArray = array_map('trim', explode(',', $sbp_cdn_directories));
+            if(count($directoriesArray) > 0) {
+                $directories = implode('|', array_map('quotemeta', array_filter($directoriesArray)));
+            }
+        }
+
+        //Rewrite URLs + Return
+        $regEx = '#(?<=[(\"\'])(?:' . $regExURL . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
+        $cdnHTML = preg_replace_callback($regEx, 'sbp_cdn_rewrite_url', $html);
+        return $cdnHTML;
+    }
+
+    function sbp_cdn_rewrite_url($url) {
+        global $sbp_options;
+        $sbp_cdn_url = $sbp_options['sbp_cdn_url'];
+        $sbp_cdn_excluded = $sbp_options['sbp_cdn_exclusions'];
+
+        //Make Sure CDN URL is Set
+        if(!empty($sbp_cdn_url)) {
+
+            //Don't Rewrite if Excluded
+            if(!empty($sbp_cdn_excluded)) {
+                $exclusions = array_map('trim', explode(',', $sbp_cdn_excluded));
+                foreach($exclusions as $exclusion) {
+                    if(!empty($exclusion) && stristr($url[0], $exclusion) != false) {
+                        return $url[0];
+                    }
+                }
+            }
+
+            //Don't Rewrite if Previewing
+            if(is_admin_bar_showing() && isset($_GET['preview']) && $_GET['preview'] == 'true') {
+                return $url[0];
+            }
+
+            //Prep Site URL
+            $siteURL = get_option('home');
+            $siteURL = substr($siteURL, strpos($siteURL, '//'));
+
+            //Replace URL w/ No HTTP/S Prefix
+            if(strpos($url[0], '//') === 0) {
+                return str_replace($siteURL, $sbp_cdn_url, $url[0]);
+            }
+
+            //Found Site URL, Replace Non Relative URL w/ HTTP/S Prefix
+            if(strstr($url[0], $siteURL)) {
+                return str_replace(array('http:' . $siteURL, 'https:' . $siteURL), $sbp_cdn_url, $url[0]);
+            }
+
+            //Replace Relative URL
+            return $sbp_cdn_url . $url[0];
+        }
+
+        //Return Original URL
+        return $url[0];
+    }
 
 
 	}   //  END class Speed_Booster_Pack_Core
