@@ -96,7 +96,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			 * @since 3.7
 			 */
 			// Disable XML-RPC
-			if ( ! isset( $sbp_options['disable_xmlrpc'] ) ) {
+			if ( isset( $sbp_options['disable_xmlrpc'] ) ) {
 				add_filter( 'xmlrpc_enabled', '__return_false' );
 				add_filter( 'wp_headers', array( $this, 'sbp_remove_x_pingback' ) );
 				add_filter( 'pings_open', '__return_false', 9999 );
