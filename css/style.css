@@ -929,3 +929,110 @@ p.description-link {
 	display:inline-block;
 	min-width:200px;
 }
+
+.sb-pack .onoffswitch-wrapper {
+	position: relative;
+	width:100%;
+	margin-bottom:15px;
+}
+
+.sb-pack .onoffswitch-wrapper span.chekbox-title {
+	vertical-align: middle;
+	display:inline-block;
+	margin-left:15px;
+}
+
+.sb-pack .onoffswitch_label {
+	display: inline-block;
+	vertical-align: top;
+	margin-right: 21px;
+	margin-top: -1px;
+}
+
+.sb-pack .onoffswitch {
+	position: relative;
+	width: 52px;
+	display: inline-block;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	vertical-align:middle;
+}
+
+.sb-pack .onoffswitch-checkbox {
+	display: none !important;
+}
+
+.sb-pack .onoffswitch-label {
+	display: block;
+	overflow: hidden;
+	cursor: pointer;
+	height: 22px;
+	padding: 0;
+	line-height: 19px;
+	transition: background-color 0.2s ease-in;
+	-webkit-border-radius: 11px;
+	-moz-border-radius: 11px;
+	border-radius: 30px;
+	background-color: #c4c4c4;
+	-webkit-box-shadow: inset 0 2px 1px rgba(0, 0, 0, 0.11);
+	-moz-box-shadow: inset 0 2px 1px rgba(0, 0, 0, 0.11);
+	box-shadow: inset 0 2px 1px rgba(0, 0, 0, 0.11);
+}
+
+.sb-pack .onoffswitch-label:before {
+	content: "";
+	display: block;
+	width: 18px;
+	height: 18px;
+	margin: 0;
+	position: absolute;
+	top: 2px;
+	bottom: 0;
+	right: 32px;
+	background-color: #fff;
+	-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	transition: all 0.2s ease-in 0s;
+}
+
+.sb-pack .onoffswitch-label:after {
+	content: "OFF";
+	display: block;
+	color: #fff;
+	position: absolute;
+	top: 2px;
+	bottom: 2px;
+	right: 6px;
+	font-size: 11px;
+	font-family: 'Arial';
+}
+
+.sb-pack .onoffswitch-checkbox:checked + .onoffswitch-label {
+	background-color: #3caf0e;
+}
+
+.sb-pack .onoffswitch-checkbox:checked + .onoffswitch-label,
+.sb-pack .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+	border-color: #3caf0e;
+}
+
+.sb-pack .onoffswitch-checkbox:checked + .onoffswitch-label:before {
+	right: 2px;
+}
+
+.sb-pack .onoffswitch-checkbox:checked + .onoffswitch-label:after {
+	content: "ON";
+	display: block;
+	color: #fff;
+	position: absolute;
+	top: 2px;
+	bottom: 2px;
+	right: 27px;
+	font-size: 11px;
+	font-family: 'Arial';
+}

@@ -527,19 +527,22 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                                 foreach ($section_value['items'] as $item => $item_value) {
 
                                     if ('checkbox' == $item_value['type']) { ?>
-                                        <p>
-                                            <input id="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>"
-                                                   name="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>"
-                                                   type="checkbox"
-                                                   value="1" <?php checked(1, isset($sbp_options[$item])); ?> />
-                                            <label for="sbp_settings[<?php echo $item; ?>]"><?php echo (isset($item_value['label'])) ? $item_value['label'] : ''; ?></label>
-                                            <?php if (isset($itme_value['tooltip'])) { ?>
-                                                <span class="tooltip-right"
-                                                      data-tooltip="<?php echo $item_value['tooltip']; ?>">
-                                                    <i class="dashicons dashicons-editor-help"></i>
-                                                </span>
-                                            <?php } ?>
-                                        </p>
+                                        <div class="onoffswitch-wrapper">
+                                            <div class="onoffswitch">
+                                                <input id="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>"
+                                                       name="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>"
+                                                       type="checkbox"
+                                                       value="1" <?php checked(1, isset($sbp_options[$item])); ?> class="onoffswitch-checkbox" />
+                                                <label for="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>" class="onoffswitch-label"></label>
+                                                <?php if (isset($itme_value['tooltip'])) { ?>
+                                                    <span class="tooltip-right"
+                                                          data-tooltip="<?php echo $item_value['tooltip']; ?>">
+                                                        <i class="dashicons dashicons-editor-help"></i>
+                                                    </span>
+                                                <?php } ?>
+                                            </div>
+                                            <span class="chekbox-title"><?php echo (isset($item_value['label'])) ? $item_value['label'] : ''; ?></span>
+                                        </div>
                                     <?php }
                                     if ('select' == $item_value['type']) { ?>
                                         <p>
