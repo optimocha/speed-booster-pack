@@ -25,7 +25,33 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
                 add_action('template_redirect', 'sbp_cdn_rewrite');
             }
 
+            // Start GA
+            if(!empty($sbp_options['sbp_enable_local_analytics']) && $sbp_options['sbp_enable_local_analytics'] == "1") {
+                if(!wp_next_scheduled('sbp_update_ga')) {
+                    wp_schedule_event(time(), 'daily', 'sbp_update_ga');
+                }
 
+                if(!empty($sbp_options['sbp_monsterinsights']) && $sbp_options['sbp_monsterinsights'] == "1") {
+                    add_filter('monsterinsights_frontend_output_analytics_src', 'sbp_monster_ga', 1000);
+                }
+                else {
+                    if(!empty($sbp_options['sbp_tracking_position']) && $sbp_options['sbp_tracking_position'] == 'footer') {
+                        $tracking_code_position = 'wp_footer';
+                    }
+                    else {
+                        $tracking_code_position = 'wp_head';
+                    }
+                    add_action($tracking_code_position, 'sbp_print_ga', 0);
+                }
+            }
+            else {
+                if(wp_next_scheduled('sbp_update_ga')) {
+                    wp_clear_scheduled_hook('sbp_update_ga');
+                }
+            }
+
+            add_action('sbp_update_ga', 'sbp_update_ga');
+            // End GA
 
             $this->sbp_css_optimizer(); // CSS Optimizer functions
 
@@ -994,6 +1020,105 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
         //Return Original URL
         return $url[0];
+    }
+
+    /*--------------------------------------------
+    Google Analytics
+    --------------------------------------------*/
+
+//update analytics.js
+    function sbp_update_ga() {
+        //paths
+        $local_file = SPEED_BOOSTER_PACK_PATH. '/inc/js/analytics.js';
+        $host = 'www.google-analytics.com';
+        $path = '/analytics.js';
+
+        //open connection
+        $fp = @fsockopen($host, '80', $errno, $errstr, 10);
+
+        if($fp){
+            //send headers
+            $header = "GET $path HTTP/1.0\r\n";
+            $header.= "Host: $host\r\n";
+            $header.= "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6\r\n";
+            $header.= "Accept: */*\r\n";
+            $header.= "Accept-Language: en-us,en;q=0.5\r\n";
+            $header.= "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7\r\n";
+            $header.= "Keep-Alive: 300\r\n";
+            $header.= "Connection: keep-alive\r\n";
+            $header.= "Referer: https://$host\r\n\r\n";
+            fwrite($fp, $header);
+            $response = '';
+
+            //get response
+            while($line = fread($fp, 4096)) {
+                $response.= $line;
+            }
+
+            //close connection
+            fclose($fp);
+
+            //remove headers
+            $position = strpos($response, "\r\n\r\n");
+            $response = substr($response, $position + 4);
+
+            //create file if needed
+            if(!file_exists($local_file)) {
+                fopen($local_file, 'w');
+            }
+
+            //write response to file
+            if(is_writable($local_file)) {
+                if($fp = fopen($local_file, 'w')) {
+                    fwrite($fp, $response);
+                    fclose($fp);
+                }
+            }
+        }
+    }
+
+
+    //print analytics script
+    function sbp_print_ga() {
+        global $sbp_options;
+
+        //dont print for logged in admins
+        if(current_user_can('manage_options') && empty($sbp_options['sbp_track_loggedin_admins'])) {
+            return;
+        }
+
+        if(!empty($sbp_options['sbp_ga_tracking_id'])) {
+            echo "<!-- Local Analytics generated with speed booster pack. -->";
+            echo "<script>";
+            echo "(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+					})(window,document,'script','" . SPEED_BOOSTER_PACK_PATH . "/inc/js/analytics.js','ga');";
+            echo "ga('create', '" . $sbp_options['sbp_ga_tracking_id'] . "', 'auto');";
+
+            //disable display features
+            if(!empty($sbp_options['sbp_disable_display_features']) && $sbp_options['sbp_disable_display_features'] == "1") {
+                echo "ga('set', 'allowAdFeatures', false);";
+            }
+
+            //anonymize ip
+            if(!empty($sbp_options['sbp_anonymize_ip']) && $sbp_options['sbp_anonymize_ip'] == "1") {
+                echo "ga('set', 'anonymizeIp', true);";
+            }
+
+            echo "ga('send', 'pageview');";
+
+            //adjusted bounce rate
+            if(!empty($sbp_options['sbp_bounce_rate'])) {
+                echo 'setTimeout("ga(' . "'send','event','adjusted bounce rate','" . $sbp_options['sbp_bounce_rate'] . " seconds')" . '"' . "," . $sbp_options['sbp_bounce_rate'] * 1000 . ");";
+            }
+            echo "</script>";
+        }
+    }
+
+    //return local anlytics url for Monster Insights
+    function sbp_monster_ga($url) {
+        return SPEED_BOOSTER_PACK_PATH . "/inc/js/analytics.js";
     }
 
 
