@@ -35,7 +35,6 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 			<a class="nav-tab" href="#advanced-options"><?php esc_html_e( 'Advanced', 'sb-pack' ); ?></a>
 			<a class="nav-tab" href="#cdn-options"><?php esc_html_e( 'CDN', 'sb-pack' ); ?></a>
 			<a class="nav-tab" href="#google-analytics"><?php esc_html_e( 'Google Analytics', 'sb-pack' ); ?></a>
-			<a class="nav-tab" href="#support"><?php esc_html_e( 'Support', 'sb-pack' ); ?></a>
 			<a class="nav-tab" href="#optimize-more"><?php esc_html_e( 'Optimize More', 'sb-pack' ); ?></a>
 		</h2>
 
@@ -646,32 +645,6 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 					</div><!-- Advanced Options sections || Sections For General Options -->
 				</div> <!-- Tab sections  -->
 				<?php } ?>
-
-				<div id="support" class="sb-pack-tab">
-
-					<?php
-					if ( ! defined( 'WPINC' ) ) {
-						die;
-					}
-					?>
-					<div class="feature-section sbp-support">
-						<div class="row two-col center-support">
-
-							<h3>
-								<i class="dashicons dashicons-sos"
-								   style="display: inline-block;vertical-align: middle;margin-right: 5px"></i><?php esc_html_e( 'Contact Support', 'sb-pack' ); ?>
-							</h3>
-							<p>
-								<i><?php esc_html_e( 'We offer support through WordPress.org\'s support forums.', 'sb-pack' ); ?></i>
-							</p>
-							<p>
-								<a target="_blank" class="button button-hero button-primary"
-								   href="<?php echo esc_url( 'https://wordpress.org/support/plugin/speed-booster-pack#new-post' ); ?>"><?php esc_html_e( 'Post on our support forums', 'sb-pack' ); ?></a>
-							</p>
-
-						</div>
-					</div><!--/.feature-section-->
-				</div><!--#support-->
 
 				<div id="optimize-more" class="sb-pack-tab three-col">
 
