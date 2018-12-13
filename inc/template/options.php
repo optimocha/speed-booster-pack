@@ -29,64 +29,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 			?>
         </div>
         <div class="wp-badge sbp-welcome-logo"></div>
-        <div class="sbp-fast-as-a-rabbit">
-            <div class="sbp-speed-page-load">
-				<?php _e( 'Page load: ', 'sb-pack' ); ?>
-                <span><?php echo esc_html( $page_time ) . __( ' sec', 'sb-pack' ); ?></span>
-                <span class="sbp-progress-bar">
-					<?php if ( $page_time < 10 ) { ?>
-                    <progress max="100" value="<?php echo $page_time * 10; ?>">
-						<?php } else { ?>
-                        <progress max="100" value="100" class="sbp-progress-red">
-							<?php } ?>
-						</progress>
 
-						<?php if ( ( $page_time ) > 10 ) { ?>
-                            <img draggable="false" class="emoji" title="Your page loading time just made us cry"
-                                 alt="😥" src="https://s.w.org/images/core/emoji/2.4/svg/1f625.svg">
-						<?php } else if ( ( $page_time ) > 8 && ( $page_time ) < 10 ) { ?>
-                            <img draggable="false" class="emoji" title="Your page loading time just made us cry"
-                                 alt="😥" src="https://s.w.org/images/core/emoji/2.4/svg/1f625.svg">
-						<?php } else if ( ( $page_time ) > 6 && ( $page_time ) < 8 ) { ?>
-                            <img draggable="false" class="emoji"
-                                 title="I'm not gonna lie, things aren't looking to good" alt="😮"
-                                 src="https://s.w.org/images/core/emoji/2.4/svg/1f62e.svg">
-						<?php } else if ( ( $page_time ) > 4 && ( $page_time ) < 6 ) { ?>
-                            <img draggable="false" class="emoji" title="Could be better" alt="🙄"
-                                 src="https://s.w.org/images/core/emoji/2.4/svg/1f644.svg">
-						<?php } else if ( ( $page_time ) > 2 && ( $page_time ) < 4 ) { ?>
-                            <img draggable="false" class="emoji" title="Going strong" alt="😥"
-                                 src="https://s.w.org/images/core/emoji/2.4/svg/1f625.svg">
-						<?php } else if ( ( $page_time ) < 2 ) { ?>
-                            <img draggable="false" title="You're a star" class="emoji" alt="⭐"
-                                 src="https://s.w.org/images/core/emoji/2.4/svg/2b50.svg">
-						<?php } ?>
-				</span>
-
-            </div>
-            <div class="sbp-speed-db-queries">
-                <i class="dashicons dashicons-dashboard"></i><span><?php echo esc_html( $page_queries ); ?></span> <?php _e( 'DB Queries', 'sb-pack' ); ?>
-            </div>
-
-            <div class="sbp-speed-memory-usage">
-                <i class="dashicons dashicons-chart-pie"></i>
-				<?php _e( 'Memory: ', 'sb-pack' ); ?>
-                <span><?php echo number_format( ( memory_get_peak_usage() / 1024 / 1024 ), 1, ',', '' ) . ' / ' . ini_get( 'memory_limit' ), '<br />'; ?></span>
-
-            </div>
-
-            <div class="sbp-speed-plugin-number">
-                <i class="dashicons dashicons-admin-plugins"></i>
-				<?php _e( 'Plugins: ', 'sb-pack' ); ?>
-                <span><?php echo count( get_option( 'active_plugins' ) ); ?></span>
-            </div>
-
-            <div class="sbp-speed-info-analyze-container">
-                <!-- <a href="#" class="button button-secondary"><i class="dashicons dashicons-info"></i></a> -->
-                <!-- <a href="#" class="button button-primary"><i class="dashicons dashicons-search"></i><?php _e( 'Analyse', 'sb-pack' ); ?> -->
-                </a>
-            </div>
-        </div>
 
         <h2 class="nav-tab-wrapper wp-clearfix">
             <a class="nav-tab" href="#general-options"><?php esc_html_e( 'General', 'sb-pack' ); ?></a>

@@ -198,10 +198,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Options' ) ) {
 			global $sbp_options;
 
 			//  Global variables used in plugin options page
-			$url                         = get_site_url();
-			$response                    = wp_remote_get( $url, array() );
-			$page_time                   = get_option( 'sbp_page_time' );
-			$page_queries                = get_option( 'sbp_page_queries' );
 			$get_enqueued_scripts_handle = get_option( 'all_theme_scripts_handle' );
 			$get_enqueued_scripts_src    = get_option( 'all_theme_scripts_src' );
 			$get_enqueued_styles_handle  = get_option( 'all_theme_styles_handle' );

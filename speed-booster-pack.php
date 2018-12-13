@@ -28,13 +28,6 @@
     FOUNDATION, INC., 51 FRANKLIN ST, FIFTH FLOOR, BOSTON, MA  02110-1301  USA
 */
 
-
-//@todo: rework the CSS Async functionality
-//@todo: fix lazyLoad with WooCommerce <- it actually works flawlessly, it doesn't seem to work with AO and/or Cloudflare hosted CSS
-//@todo: add system info menu page
-//@todo: automatically collapse accordeons on "advanced" tab
-
-
 /*----------------------------------------------------------------------------------------------------------
 	Global Variables
 -----------------------------------------------------------------------------------------------------------*/
