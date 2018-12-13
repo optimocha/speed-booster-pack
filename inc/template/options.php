@@ -531,17 +531,16 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                                             <div class="onoffswitch">
                                                 <input id="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>"
                                                        name="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>"
-                                                       type="checkbox"
-                                                       value="1" <?php checked(1, isset($sbp_options[$item])); ?> class="onoffswitch-checkbox" />
+                                                       type="checkbox" value="1" <?php checked(1, isset($sbp_options[$item])); ?> class="onoffswitch-checkbox" />
                                                 <label for="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>" class="onoffswitch-label"></label>
-                                                <?php if (isset($itme_value['tooltip'])) { ?>
-                                                    <span class="tooltip-right"
-                                                          data-tooltip="<?php echo $item_value['tooltip']; ?>">
-                                                        <i class="dashicons dashicons-editor-help"></i>
-                                                    </span>
-                                                <?php } ?>
                                             </div>
                                             <span class="chekbox-title"><?php echo (isset($item_value['label'])) ? $item_value['label'] : ''; ?></span>
+                                            <?php if (isset($item_value['tooltip'])) { ?>
+                                                <span class="tooltip-right"
+                                                      data-tooltip="<?php echo $item_value['tooltip']; ?>">
+                                                        <i class="dashicons dashicons-editor-help"></i>
+                                                    </span>
+                                            <?php } ?>
                                         </div>
                                     <?php }
                                     if ('select' == $item_value['type']) { ?>
