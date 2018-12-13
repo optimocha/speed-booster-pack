@@ -467,39 +467,6 @@ p.description-link {
 	}
 }
 
-/* Feedback Box */
-.feedback-box {
-	border: 1px dashed #555;
-	background: #fff;
-	width: 100%;
-	padding: 40px;
-	text-align: center;
-	margin-top: 15px;
-	box-sizing: border-box;
-}
-
-.feedback-box .button.button-feedback {
-	padding: 10px 40px;
-	height: initial;
-}
-
-#sbp-current-image img {
-	max-width: 130px;
-	height: auto;
-}
-
-.feedback-box h3 {
-	font-weight: 700;
-}
-
-.feedback-box h3 > img {
-	width: 30px;
-}
-
-.feedback-box > p {
-	max-width: 720px;
-	margin: 0 auto;
-}
 
 /* sbp-tooltips */
 /**
@@ -709,58 +676,6 @@ p.description-link {
 	margin-bottom: -16px;
 }
 
-/* ShortPixel Banner Styling */
-.sbp-recommended-plugins {
-	border: 1px solid #e5e5e5;
-	box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
-	margin-top: 1em;
-}
-
-.sbp-recommended-plugins h3 {
-	margin: 0 0 15px 0;
-}
-
-.sbp-recommended-plugins .sbp-recommended-plugin {
-	background-color: #fff;
-	display: flex;
-	align-items: center;
-	padding: 2em 1em;
-}
-
-.sbp-recommended-plugins .sbp-recommended-plugin:nth-child( even ) {
-	background-color: #fcfcfc;
-	border-top: 1px solid #e5e5e5;
-	border-bottom: 1px solid #e5e5e5;
-}
-
-.sbp-recommended-plugins .sbp-recommended-plugin .plugin-image {
-	width: 128px;
-}
-
-.sbp-recommended-plugins .sbp-recommended-plugin .plugin-information {
-	padding-left: 30px;
-	box-sizing: border-box;
-	width: calc(100% - 128px);
-}
-
-.sbp-recommended-plugins .sbp-recommended-plugin .plugin-information .plugin-name,
-.sbp-recommended-plugins .sbp-recommended-plugin .plugin-information .plugin-description {
-	margin: 0;
-}
-
-.sbp-recommended-plugins .sbp-recommended-plugin .plugin-information .plugin-description {
-	margin-bottom: 10px;
-}
-
-.sbp-recommended-plugins .sbp-recommended-plugin .sbp-plugin-button.sbp-updating:before {
-	font: normal 20px/1 dashicons;
-	display: inline-block;
-	content: "\f463";
-	-webkit-animation: rotation 2s infinite linear;
-	animation: rotation 2s infinite linear;
-	margin: 3px 5px 0 -2px;
-	vertical-align: top;
-}
 
 /* Welcome Logo*/
 .wp-badge.sbp-welcome-logo {
@@ -775,159 +690,11 @@ p.description-link {
 /* Support Page */
 .center-support {text-align: center;}
 
-/* Fast as a rabbit, slow as a snail box */
-.sbp-fast-as-a-rabbit {
-	background-color: #fff;
-	width: 100%;
-	border-radius: 5px;
-	position: relative;
-	margin: 15px auto;
-}
-
-.sbp-fast-as-a-rabbit > div {
-	display: inline-block;
-	border-right: 1px solid #f3f3f3;
-	padding: 10px 20px;
-	text-align: center;
-	vertical-align: middle;
-}
-
-.sbp-fast-as-a-rabbit > div > i {margin-right: 8px;}
-
-.sbp-fast-as-a-rabbit > div > span { font-weight: bold;}
-
-/*
-.sbp-fast-as-a-rabbit > div:last-of-type .button {border-radius: 5px;}
-
-.sbp-fast-as-a-rabbit > div:last-of-type .button-secondary { color: #9a9a9a;}
-
-.sbp-fast-as-a-rabbit > div:last-of-type .button-primary {padding-left: 20px; padding-right: 20px;}
-
-.sbp-fast-as-a-rabbit > div:last-of-type .dashicons {
-	vertical-align: middle;
-	height: 24px;
-}
-
-.sbp-fast-as-a-rabbit > div:last-of-type {
-	text-align: right;
-	position: absolute;
-	right: 0;
-	top: 50%;
-	margin-top: -26px;
-}
-
-*/
-
-.sbp-fast-as-a-rabbit > div:nth-of-type(4),
-.sbp-fast-as-a-rabbit > div:nth-of-type(5) {
-	border-right: 0;
-}
-
-/* Progress bars */
-.sbp-fast-as-a-rabbit progress {
-	margin-left: 8px;
-}
-
-.sbp-progress-bar {
-	padding: 5px;
-}
-
-.sbp-progress-bar progress {
-	background-color: #f3f3f3;
-	border: 1px solid #ececec;
-	border-radius: 9px;
-	margin-right: 8px;
-}
-
-.sbp-progress-bar progress::-webkit-progress-bar {
-	background-color: #f3f3f3;
-	border-radius: 9px;
-}
-
-.sbp-progress-bar progress::-webkit-progress-value {
-	background: green;
-	border-radius: 9px;
-}
-
-.sbp-progress-bar progress::-moz-progress-bar {
-	background: green;
-	border-radius: 9px;
-}
-
-.sbp-progress-bar progress.sbp-progress-red::-webkit-progress-value {background: red;}
-
-.sbp-progress-bar progress.sbp-progress-red::-moz-progress-bar {background: red;}
-
-.sbp-progress-bar .progress-value {
-	padding: 0px 5px;
-	line-height: 20px;
-	margin-left: 5px;
-	font-size: .8em;
-	color: #555;
-	height: 18px;
-}
-
-/* Box */
-/*.sbp-box {
-	height: 330px;
-    margin-top: 15px;
-    text-align: center;
-    background: #FFF;
-    position: relative;
-    border: 1px solid rgba(0, 0, 0, .1);
-    float: left;
-}
-
-.sbp-box img {
-    width: 125px;
-    height: 125px;
-    margin: 0 auto;
-    margin-bottom: 15px;
-    display: block;
-    border: none;
-}
-
-.sbp-box__name {
-	margin-bottom: 10px;
-	padding: 0 26px;
-	font-weight: 600;
-}
-
-.sbp-box__description {
-	font-size: 0.9em;
-}
-
-.sbp-box__action-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    font-size: 15px;
-    margin: 0;
-    padding: 15px;
-    -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1);
-    box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1);
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    background: rgba(255, 255, 255, .65);
-    text-align: left;
-}
-
-.sbp-box__action-button {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    padding: 9px 10px 10px;
-    background: #f6f6f6;
-    border-top: 1px solid rgba(0, 0, 0, .1);
-    text-align: center;
-    width: 100%;
-}*/
 
 /* Update design */
 .sb-pack .label-text {
 	display:inline-block;
-	min-width:200px;
+	min-width: 350px;
 }
 
 .sb-pack .onoffswitch-wrapper {
@@ -939,7 +706,7 @@ p.description-link {
 .sb-pack .onoffswitch-wrapper span.chekbox-title {
 	vertical-align: middle;
 	display:inline-block;
-	margin-left:15px;
+	min-width: 350px;
 }
 
 .sb-pack .onoffswitch_label {

@@ -16,31 +16,7 @@
 		$( '.postbox .hndle' ).css( 'cursor', 'pointer' );
 	}
 
-	/**
-	 * Function used for the image compression slider under "Image Optimization"
-	 */
-	function admin_jquery_sliders() {
 
-		var slider_selector = ".sbp-slider";
-		var slider_amount = ".sbp-amount";
-		var slider_integer = "#sbp_integer";
-
-		if ( $( slider_selector ).length > 0 ) {
-
-			$( slider_selector ).slider( {
-				value: jpegCompression,
-				min: 0,
-				max: 100,
-				step: 1,
-				slide: function( event, ui ) {
-					jQuery( slider_amount ).val( ui.value );
-					jQuery( slider_integer ).val( ui.value );
-				}
-			} );
-
-			$( slider_amount ).val( $( slider_selector ).slider( "value" ) );
-		}
-	}
 
 	/**
 	 * Handle UI tab switching via jQuery instead of relying on CSS only
@@ -93,7 +69,6 @@
 
 	$( document ).ready( function() {
 		admin_postboxes();
-		admin_jquery_sliders();
 		admin_tab_switching();
 	} );
 
