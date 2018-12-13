@@ -866,3 +866,66 @@ p.description-link {
 	color: #555;
 	height: 18px;
 }
+
+/* Box */
+/*.sbp-box {
+	height: 330px;
+    margin-top: 15px;
+    text-align: center;
+    background: #FFF;
+    position: relative;
+    border: 1px solid rgba(0, 0, 0, .1);
+    float: left;
+}
+
+.sbp-box img {
+    width: 125px;
+    height: 125px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    display: block;
+    border: none;
+}
+
+.sbp-box__name {
+	margin-bottom: 10px;
+	padding: 0 26px;
+	font-weight: 600;
+}
+
+.sbp-box__description {
+	font-size: 0.9em;
+}
+
+.sbp-box__action-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: 15px;
+    margin: 0;
+    padding: 15px;
+    -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1);
+    box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    background: rgba(255, 255, 255, .65);
+    text-align: left;
+}
+
+.sbp-box__action-button {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    padding: 9px 10px 10px;
+    background: #f6f6f6;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+    text-align: center;
+    width: 100%;
+}*/
+
+/* Update design */
+.sb-pack .label-text {
+	display:inline-block;
+	min-width:200px;
+}

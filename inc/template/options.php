@@ -543,7 +543,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                                     <?php }
                                     if ('select' == $item_value['type']) { ?>
                                         <p>
-                                            <label for="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>"><?php echo (isset($item_value['label'])) ? $item_value['label'] : ''; ?></label>
+                                            <label for="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>" class="<?php echo (isset($item_value['label'])) ? 'label-text' : ''; ?>"><?php echo (isset($item_value['label'])) ? $item_value['label'] : ''; ?></label>
                                             <?php if (isset($item_value['tooltip'])) { ?>
                                                 <span class="tooltip-right"
                                                       data-tooltip="<?php echo $item_value['tooltip']; ?>">
@@ -566,7 +566,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                                     if ('text' == $item_value['type']) { ?>
                                         <p>
                                             <?php $op_text = (isset($sbp_options[$item])) ? $sbp_options[$item] : ""; ?>
-                                            <label for="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>"><?php echo (isset($item_value['label'])) ? $item_value['label'] : ''; ?></label>
+                                            <label for="<?php echo (isset($item_value['options_group'])) ? $item_value['options_group'].'['.$item.']' : $item; ?>" class="<?php echo (isset($item_value['label'])) ? 'label-text' : ''; ?>"><?php echo (isset($item_value['label'])) ? $item_value['label'] : ''; ?></label>
                                             <?php if (isset($item_value['tooltip'])) { ?>
                                                 <span class="tooltip-right"
                                                       data-tooltip="<?php echo $item_value['tooltip']; ?>">
