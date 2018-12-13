@@ -14,7 +14,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
 			add_action( 'wp_enqueue_scripts', array( $this, 'sbp_no_more_fontawesome' ), 9999 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'sbp_move_scripts_to_footer' ) );
-			if ( ! is_admin() and isset( $sbp_options['jquery_to_footer'] ) ) {
+			if ( ! is_admin() and !isset( $sbp_options['jquery_to_footer'] ) ) {
 				add_action( 'wp_head', array( $this, 'sbp_scripts_to_head' ) );
 			}
 			add_action( 'init', array( $this, 'sbp_show_page_load_stats' ), 999 );
@@ -113,19 +113,19 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			}
 
 			//Disable Dash icons
-			if ( ! empty( $sbp_options['disable_dashicons'] ) && $sbp_options['disable_dashicons'] == "1" ) {
+			if ( isset( $sbp_options['disable_dashicons'] ) ) {
 				add_action( 'wp_enqueue_scripts', array( $this, 'sbp_disable_dash_icons' ) );
 			}
 
-			if ( ! empty( $sbp_options['disable_google_maps'] ) && $sbp_options['disable_google_maps'] == "1" ) {
+			if ( isset( $sbp_options['disable_google_maps'] ) ) {
 				add_action( 'wp_loaded', array( $this, 'sbp_disable_google_maps' ) );
 			}
 
-			if ( ! empty( $sbp_options['disable_password_strength_meter'] ) && $sbp_options['disable_password_strength_meter'] == "1" ) {
+			if ( isset( $sbp_options['disable_password_strength_meter'] )  ) {
 				add_action( 'wp_print_scripts', array( $this, 'sbp_disable_password_strength_meter' ), 100 );
 			}
 
-			if ( ! empty( $sbp_options['disable_heartbeat'] ) && $sbp_options['disable_heartbeat'] == "1" ) {
+			if (  isset( $sbp_options['disable_heartbeat'] ) ) {
 				add_action( 'init', array( $this, 'sbp_disable_heartbeat' ), 1 );
 			}
 
