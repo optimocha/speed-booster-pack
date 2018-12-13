@@ -25,8 +25,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
         <div class="about-text">
 			<?php
 			/* Translators: Welcome Screen Description. */
-			echo esc_html__( 'Speed Booster Pack is a lightweight, frequently updated, easy to use and well supported plugin which allows you to improve your website’s loading speed. Visitors usually close a website if it doesn’t load in a few seconds and the slower a site loads the greater the chances are that the visitors will leave. And you don’t want that to happen, do you?
-', 'sb-pack' );
+			echo esc_html__( 'Speed Booster Pack is a lightweight, frequently updated, easy to use and well supported plugin which allows you to improve your website’s loading speed. Visitors usually close a website if it doesn’t load in a few seconds and the slower a site loads the greater the chances are that the visitors will leave. And you don’t want that to happen, do you?', 'sb-pack' );
 			?>
         </div>
         <div class="wp-badge sbp-welcome-logo"></div>
@@ -93,6 +92,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
             <a class="nav-tab" href="#general-options"><?php esc_html_e( 'General', 'sb-pack' ); ?></a>
             <a class="nav-tab" href="#advanced-options"><?php esc_html_e( 'Advanced', 'sb-pack' ); ?></a>
             <a class="nav-tab" href="#cdn-options"><?php esc_html_e( 'CDN', 'sb-pack' ); ?></a>
+            <a class="nav-tab" href="#google-analytics"><?php esc_html_e( 'Google Analytics', 'sb-pack' ); ?></a>
             <a class="nav-tab" href="#image-options"><?php esc_html_e( 'Image Optimization', 'sb-pack' ); ?></a>
             <a class="nav-tab" href="#support"><?php esc_html_e( 'Support', 'sb-pack' ); ?></a>
             <a class="nav-tab" href="#optimize-more"><?php esc_html_e( 'Optimize More', 'sb-pack' ); ?></a>
@@ -389,7 +389,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                             'label' => __('CDN', 'sb-pack'),
                             'description' => __('CDN options that allow you to rewrite your site URLs with your CDN URLs.','sb-pack'),
                             'items' => array(
-                                    'enable_cdn' => array(
+                                    'sbp_enable_cdn' => array(
                                         'type'           =>'checkbox',
                                         'label'          => __('Enable CDN Rewrite','sb-pack'),
                                         'tooltip'        => __('Enables rewriting of your site URLs with your CDN URLs','sb-pack'),
@@ -415,6 +415,68 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
                                     )
                              ),
                         )
+                    )
+                ),
+                'google-analytics' => array(
+                    'sections' => array(array(
+                        'type' => 'section',
+                        'label' => __('Google Analytics', 'sb-pack'),
+                        'description' => __('Optimization options for Google Analytics.','sb-pack'),
+                        'items' => array(
+                            'sbp_enable_local_analytics' => array(
+                                'type'           =>'checkbox',
+                                'label'          => __('Enable Local Analytics','sb-pack'),
+                                'tooltip'        => __('Enable syncing og the Google Analytics script to your own server.','sb-pack'),
+                                'options_group'  => 'sbp_settings'
+                            ),
+                            'sbp_ga_tracking_id' => array(
+                                'type'    => 'text',
+                                'label'   => __('Tracking ID','sb-pack'),
+                                'tooltip' => __('Enter your Google Analytics tracking ID','sb-pack'),
+                                'options_group'  => 'sbp_settings'
+                            ),
+                            'sbp_tracking_position' => array(
+                                'type'    => 'select',
+                                'label'   => __('Tracking code position','sb-pack'),
+                                'tooltip' => __('Load your analytics script in the header or footer of the site. Default - header','sb-pack'),
+                                'options_group'  => 'sbp_settings',
+                                'options' => array(
+                                    'header' => 'Header ( default )',
+                                    'footer' => 'Footer'
+                                )
+                            ),
+                            'sbp_disable_display_features' => array(
+                                'type'    => 'checkbox',
+                                'label'   => __('Disable Display Features','sb-pack'),
+                                'tooltip' => __('Disable marketing and advertising which generates a 2nd HTTP request','sb-pack'),
+                                'options_group'  => 'sbp_settings'
+                            ),
+                            'sbp_anonymize_ip' => array(
+                                'type'    => 'checkbox',
+                                'label'   => __('Anonymize IP','sb-pack'),
+                                'tooltip' => __('Shorten visitor IP to comply with privacy restrictions in some countries.','sb-pack'),
+                                'options_group'  => 'sbp_settings'
+                            ),
+                            'sbp_track_loggedin_admins' => array(
+                                'type'    => 'checkbox',
+                                'label'   => __('Track Logged In Admins','sb-pack'),
+                                'tooltip' => __('Include logged in Wordpress admins in your GA report.','sb-pack'),
+                                'options_group'  => 'sbp_settings'
+                            ),
+                            'sbp_bounce_rate' => array(
+                                'type'    => 'text',
+                                'label'   => __('Adjusted Bounce Rate','sb-pack'),
+                                'tooltip' => __('Set a timeout limit in seconds to better evaluate the quality of your traffic ( 1 - 100 )','sb-pack'),
+                                'options_group'  => 'sbp_settings'
+                            ),
+                            'sbp_monsterinsights' => array(
+                                'type'    => 'checkbox',
+                                'label'   => __('User MonsterInsights','sb-pack'),
+                                'tooltip' => __('Allows MonsterInsights to manage your Google Analaytics while still using the locally hosted analytics.js generated by Speed Booster Pack','sb-pack'),
+                                'options_group'  => 'sbp_settings'
+                            )
+                        ),
+                    )
                     )
                 )
             );

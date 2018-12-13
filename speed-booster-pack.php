@@ -58,7 +58,8 @@ $sbp_defaults = array(
 	'use_google_libs'        => 1, // serve JS assets (when possible) from Google CDN
 	'heartbeat_frequency'    => 15,
 	'autosave_interval'      => 1,
-	'limit_post_revisions'   => 30
+	'limit_post_revisions'   => 30,
+    'sbp_tracking_position'   => 'header'
 );
 
 $sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrieve the plugin settings from the options table
