@@ -108,7 +108,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			}
 
 			// Remove REST API Links
-			if ( ! isset( $sbp_options['remove_rest_api_links'] ) ) {
+			if ( isset( $sbp_options['remove_rest_api_links'] ) ) {
 				remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
 			}
 
