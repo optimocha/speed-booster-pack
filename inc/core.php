@@ -103,7 +103,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			}
 
 			// Disable Self Pingbacks
-			if ( ! isset( $sbp_options['disable_self_pingbacks'] ) ) {
+			if ( isset( $sbp_options['disable_self_pingbacks'] ) ) {
 				add_action( 'pre_ping', 'sbp_remove_self_ping' );
 			}
 
