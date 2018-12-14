@@ -104,7 +104,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
 			// Disable Self Pingbacks
 			if ( isset( $sbp_options['disable_self_pingbacks'] ) ) {
-				add_action( 'pre_ping', 'sbp_remove_self_ping' );
+				add_action( 'pre_ping', array($this,'sbp_remove_self_ping' ));
 			}
 
 			// Remove REST API Links
@@ -701,12 +701,14 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 		---------------------------------------------------------------------------------------------------------*/
 
 		function sbp_remove_self_ping( &$links ) {
+
 			$home = get_option( 'home' );
 			foreach ( $links as $l => $link ) {
 				if ( 0 === strpos( $link, $home ) ) {
 					unset( $links[ $l ] );
 				}
 			}
+
 		}
 
 
