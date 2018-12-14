@@ -22,7 +22,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 			add_action( 'init', array( $this, 'sbp_init' ) );
             //enable cdn rewrite
             if(!empty($sbp_options['sbp_enable_cdn']) && $sbp_options['sbp_enable_cdn'] == "1" && !empty($sbp_options['sbp_cdn_url'])) {
-                add_action('template_redirect', 'sbp_cdn_rewrite');
+                add_action('template_redirect', array($this,'sbp_cdn_rewrite'));
             }
 
             // Start GA
@@ -32,7 +32,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
                 }
 
                 if(!empty($sbp_options['sbp_monsterinsights']) && $sbp_options['sbp_monsterinsights'] == "1") {
-                    add_filter('monsterinsights_frontend_output_analytics_src', 'sbp_monster_ga', 1000);
+                    add_filter('monsterinsights_frontend_output_analytics_src', array($this,'sbp_monster_ga'), 1000);
                 }
                 else {
                     if(!empty($sbp_options['sbp_tracking_position']) && $sbp_options['sbp_tracking_position'] == 'footer') {
@@ -41,7 +41,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
                     else {
                         $tracking_code_position = 'wp_head';
                     }
-                    add_action($tracking_code_position, 'sbp_print_ga', 0);
+                    add_action($tracking_code_position, array($this,'sbp_print_ga'), 0);
                 }
             }
             else {
@@ -50,7 +50,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
                 }
             }
 
-            add_action('sbp_update_ga', 'sbp_update_ga');
+            add_action('sbp_update_ga', array($this,'sbp_update_ga'));
             // End GA
 
             $this->sbp_css_optimizer(); // CSS Optimizer functions
