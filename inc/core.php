@@ -1120,7 +1120,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
     //return local anlytics url for Monster Insights
     function sbp_monster_ga($url) {
-        return SPEED_BOOSTER_PACK_PATH . "/inc/js/analytics.js";
+        return SPEED_BOOSTER_PACK_URL . "/inc/js/analytics.js";
     }
 
 
