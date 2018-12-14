@@ -61,7 +61,8 @@ $sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrie
 	Define some useful plugin constants
 -----------------------------------------------------------------------------------------------------------*/
 
-define( 'SPEED_BOOSTER_PACK_PATH', plugin_dir_path( __FILE__ ) );                    // Defining plugin dir path
+define( 'SPEED_BOOSTER_PACK_PATH', plugin_dir_path( __FILE__ ) );
+define( 'SPEED_BOOSTER_PACK_URL', plugin_dir_url( __FILE__ ) );// Defining plugin dir path
 define( 'SPEED_BOOSTER_PACK_VERSION', '3.7.2' );                                       // Defining plugin version
 define( 'SBP_FOOTER', 10 );                                                          // Defining css position
 define( 'SBP_FOOTER_LAST', 99999 );                                                  // Defining css last position
