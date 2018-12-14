@@ -953,7 +953,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
     ---------------------------------*/
 
     function sbp_cdn_rewrite() {
-        ob_start('sbp_cdn_rewriter');
+        ob_start(array($this,'sbp_cdn_rewriter'));
     }
 
     function sbp_cdn_rewriter($html) {
@@ -975,7 +975,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
         //Rewrite URLs + Return
         $regEx = '#(?<=[(\"\'])(?:' . $regExURL . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
-        $cdnHTML = preg_replace_callback($regEx, 'sbp_cdn_rewrite_url', $html);
+        $cdnHTML = preg_replace_callback($regEx, array($this,'sbp_cdn_rewrite_url'), $html);
         return $cdnHTML;
     }
 
@@ -1015,7 +1015,6 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
             if(strstr($url[0], $siteURL)) {
                 return str_replace(array('http:' . $siteURL, 'https:' . $siteURL), $sbp_cdn_url, $url[0]);
             }
-
             //Replace Relative URL
             return $sbp_cdn_url . $url[0];
         }
