@@ -812,3 +812,8 @@ p.description-link {
 .epsilon-toggle__input[type=checkbox]:checked + .epsilon-toggle__items .epsilon-toggle__on {
 	display: inline-block;
 }
+
+.sb-pack-tab .tooltip-right {
+	display:inline-block;
+	vertical-align: middle;
+}
