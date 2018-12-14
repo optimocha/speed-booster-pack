@@ -349,12 +349,14 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 									'label'         => __( 'Included Directories', 'sb-pack' ),
 									'tooltip'       => __( 'Enter any directories you would like to be included in CDN rewriting, separated by commas (,). Default: wp-content,wp-includes', 'sb-pack' ),
 									'options_group' => 'sbp_settings',
+                                    'default' => 'wp-content,wp-includes',
 								),
 								'sbp_cdn_exclusions'           => array(
 									'type'          => 'text',
 									'label'         => __( 'CDN Exclusions', 'sb-pack' ),
 									'tooltip'       => __( 'Enter any directories or file extensions you would like to be excluded from CDN rewriting, separated by commas (,). Default: .php', 'sb-pack' ),
 									'options_group' => 'sbp_settings',
+                                    'default' => '.php'
 								),
 							),
 						),
@@ -525,10 +527,11 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 								if ( 'text' == $item_value['type'] ) { ?>
 									<p>
 										<?php
+                                        $default_value = (isset($item_value[ 'default' ])) ? $item_value[ 'default' ] : "";
 										if ( isset( $item_value['options_group'] ) ) {
-											$op_text = ( isset( $sbp_options[ $item ] ) ) ? $sbp_options[ $item ] : '';
+											$op_text = ( isset( $sbp_options[ $item ] ) && "" !=  $sbp_options[ $item ]) ? $sbp_options[ $item ] : $default_value;
 										} else {
-											$op_text = ( get_option( $item ) ) ? get_option( $item ) : '';
+											$op_text = ( get_option( $item ) ) ? get_option( $item ) : $default_value;
 										}
 
 										?>
@@ -541,7 +544,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 										<label for="<?php echo ( isset( $item_value['options_group'] ) ) ? $item_value['options_group'] . '[' . $item . ']' : $item; ?>" class="<?php echo ( isset( $item_value['label'] ) ) ? 'label-text' : ''; ?>"><?php echo ( isset( $item_value['label'] ) ) ? $item_value['label'] : ''; ?></label>
 
 										<input id="<?php echo ( isset( $item_value['options_group'] ) ) ? $item_value['options_group'] . '[' . $item . ']' : $item; ?>"
-										       name="<?php echo ( isset( $item_value['options_group'] ) ) ? $item_value['options_group'] . '[' . $item . ']' : $item; ?>" type="text" value="<?php echo esc_attr( $op_text ); ?>" />
+										       name="<?php echo ( isset( $item_value['options_group'] ) ) ? $item_value['options_group'] . '[' . $item . ']' : $item; ?>" type="text"  value="<?php echo esc_attr( $op_text ); ?>" />
 									</p>
 								<?php }
 
