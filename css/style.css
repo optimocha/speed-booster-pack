@@ -160,9 +160,9 @@ p.description-link {
 	border: 1px solid #e5e5e5;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 	padding: 15px;
-	margin-bottom: 15px;
+	margin: 15px 0;
 	position: relative;
-	overflow: hidden;
+	text-align: center;
 }
 
 .wrap .sb-pack .sbp-box p {
@@ -252,221 +252,6 @@ p.description-link {
 	font: normal 30px/1 'dashicons';
 	vertical-align: top;
 }
-
-/* Jquery UI slider
--------------------------------------------------------------- */
-
-.wrap .sb-pack.ui-state-default,
-.wrap .sb-pack .ui-widget-content .ui-state-default,
-.wrap .sb-pack .ui-widget-header .ui-state-default {
-	border: 1px solid #1a9e51;
-	background-color: #2dcb73;
-	font-weight: 400;
-	color: #555;
-	outline: 0 none;
-	cursor: pointer;
-}
-
-.wrap .sb-pack .ui-state-default:before,
-.wrap .sb-pack .ui-widget-content .ui-state-default:before,
-.wrap .sb-pack .ui-widget-header .ui-state-default:before {
-	content: "\2630";
-	display: inline-block;
-	-webkit-font-smoothing: antialiased;
-	color: #fff;
-	font-weight: 700;
-	text-shadow: 0 1px #1a9e51;
-	line-height: 1.8em;
-}
-
-.wrap .sb-pack .ui-state-default a,
-.wrap .sb-pack .ui-state-default a:link,
-.wrap .sb-pack .ui-state-default a:visited {
-	color: #fff;
-	text-decoration: none;
-}
-
-.wrap .sb-pack .ui-state-focus,
-.wrap .sb-pack .ui-state-hover,
-.wrap .sb-pack .ui-widget-content .ui-state-focus,
-.wrap .sb-pack .ui-widget-content .ui-state-hover,
-.wrap .sb-pack .ui-widget-header .ui-state-focus,
-.wrap .sb-pack .ui-widget-header .ui-state-hover {
-	background: #3ce281;
-}
-
-.wrap .sb-pack .ui-corner-all,
-.wrap .sb-pack .ui-corner-top,
-.wrap .sb-pack .ui-corner-left,
-.wrap .sb-pack .ui-corner-tl {
-	border-top-left-radius: 0;
-}
-
-.wrap .sb-pack .ui-corner-all,
-.wrap .sb-pack .ui-corner-top,
-.wrap .sb-pack .ui-corner-right,
-.wrap .sb-pack .ui-corner-tr {
-	border-top-right-radius: 0;
-}
-
-.wrap .sb-pack .ui-corner-bottom,
-.wrap .sb-pack .ui-corner-left,
-.wrap .sb-pack .ui-corner-bl {
-	border-bottom-left-radius: 0;
-}
-
-.wrap .sb-pack .ui-corner-all,
-.wrap .sb-pack .ui-corner-bottom,
-.wrap .sb-pack .ui-corner-right,
-.wrap .sb-pack .ui-corner-br {
-	border-bottom-right-radius: 0;
-}
-
-.wrap .sb-pack .ui-corner-all,
-.wrap .sb-pack .ui-corner-bottom,
-.wrap .sb-pack .ui-corner-left,
-.wrap .sb-pack .ui-corner-bl {
-	border-bottom-left-radius: 0;
-}
-
-.wrap .sb-pack .ui-slider-horizontal {
-	height: 1.3em;
-}
-
-.wrap .sb-pack .ui-slider .ui-slider-handle {
-	width: 1.8em;
-	height: 1.8em;
-	cursor: pointer;
-	text-align: center;
-}
-
-.wrap .sb-pack .ui-widget-content {
-	-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
-	-moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
-	border: 1px solid #b2bfca;
-	background: #f1f2f7;
-	color: #222
-}
-
-/* Progress Bars
--------------------------------------------------------------- */
-.wrap .sb-pack .sbp-progress.time,
-.wrap .sb-pack .sbp-progress.queries {
-	height: 30px;
-	width: 77%;
-	display: inline-block;
-	position: relative;
-	background-color: #f1f2f7;
-	overflow: hidden;
-	-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-	-moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.wrap .sbp-progress.time > span,
-.wrap .sbp-progress.queries > span {
-	background-color: #7edba5;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #7edba5), color-stop(1, #2dcb73));
-	background-image: -webkit-linear-gradient(top, #7edba5, #2dcb73);
-	background-image: -moz-linear-gradient(top, #7edba5, #2dcb73);
-	background-image: -ms-linear-gradient(top, #7edba5, #2dcb73);
-	background-image: -o-linear-gradient(top, #7edba5, #f36d0a);
-	color: #fff;
-	width: 0%;
-	max-width: 98%;
-	float: left;
-	display: block;
-	height: 100%;
-	position: relative;
-	overflow: hidden;
-}
-
-.wrap .sb-pack .sbp-progress.time > span {
-	-webkit-animation: progress-bar-time 2s 1 forwards;
-	-moz-animation: progress-bar-time 2s 1 forwards;
-	-ms-animation: progress-bar-time 2s 1 forwards;
-	-o-animation: progress-bar-time 2s 1 forwards;
-	animation: progress-bar-time 2s 1 forwards;
-}
-
-.wrap .sb-pack .sbp-progress.queries > span {
-	-webkit-animation: progress-bar-queries 2s 1 forwards;
-	-moz-animation: progress-bar-queries 2s 1 forwards;
-	-ms-animation: progress-bar-queries 2s 1 forwards;
-	-o-animation: progress-bar-queries 2s 1 forwards;
-	animation: progress-bar-queries 2s 1 forwards;
-}
-
-.wrap .sb-pack .sbp-values {
-	float: right;
-	padding: 0 5px;
-	background-color: #1ab4ef;
-	color: #fff;
-	width: 18%;
-	height: 30px;
-	line-height: 30px;
-	text-align: center;
-	text-shadow: 0px -2px #1ab4ef;
-}
-
-.wrap .sb-pack .sbp-numbers {
-	-webkit-animation: opacity 2s; /* Safari and Chrome */
-	-moz-animation: opacity 2s; /* Firefox */
-	-ms-animation: opacity 2s; /* Internet Explorer */
-	-o-animation: opacity 2s; /* Opera */
-	animation: opacity 2s;
-	transition-delay: 2s;
-	-moz-transition-delay: 2s; /* Firefox 4 */
-	-webkit-transition-delay: 2s; /* Safari and Chrome */
-	-o-transition-delay: 2s; /* Opera */
-}
-
-@keyframes opacity {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-/* Firefox */
-@-moz-keyframes opacity {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-/* Safari and Chrome */
-@-webkit-keyframes opacity {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-/* Internet Explorer */
-@-ms-keyframes opacity {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-​
-
-/* Opera */
-@-o-keyframes opacity {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-
-​
-
-@media screen and (max-width: 783px) {
-	.wrap .sb-pack input.regular-text {
-		width: 14em;
-	}
-}
-
-@media screen and (min-width: 784px) {
-	.wrap .sb-pack input.regular-text {
-		width: 45em;
-	}
-}
-
 
 /* sbp-tooltips */
 /**
@@ -820,13 +605,11 @@ p.description-link {
 
 +/* Box */
 .sbp-box {
-	height: 330px;
 	margin-top: 15px;
 	text-align: center;
 	background: #FFF;
 	position: relative;
 	border: 1px solid rgba(0, 0, 0, .1);
-	float: left;
 }
 
 .sbp-box img {
@@ -845,16 +628,12 @@ p.description-link {
 }
 
 .sbp-box__description {
-	font-size: 0.9em;
+	font-size: 0.875em;
+	margin-bottom: 15px;
+	font-style: italic;
 }
 
 .sbp-box__action-bar {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	font-size: 15px;
-	margin: 0;
 	padding: 15px;
 	-webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1);
 	box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1);

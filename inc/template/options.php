@@ -319,7 +319,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 								'info'                  => array(
 									'type'             => 'guidance',
 									'description_only' => true,
-									'description'      => __('Enter one by text field, the handle part of the js files that you want to be excluded from defer parsing option. For example: <code>jquery-core</code> If you want to exclude more than 4 scripts, you can use the following filter: <code>sbp_exclude_defer_scripts</code> which takes an array of script handles as params. If you don\'t know how to handle this, feel free to post on our support forums.','speed-booster-pack'),
+									'description'      => __( 'Enter one by text field, the handle part of the js files that you want to be excluded from defer parsing option. For example: <code>jquery-core</code> If you want to exclude more than 4 scripts, you can use the following filter: <code>sbp_exclude_defer_scripts</code> which takes an array of script handles as params. If you don\'t know how to handle this, feel free to post on our support forums.', 'speed-booster-pack' ),
 								),
 							),
 						),
@@ -349,14 +349,14 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 									'label'         => __( 'Included Directories', 'speed-booster-pack' ),
 									'tooltip'       => __( 'Enter any directories you would like to be included in CDN rewriting, separated by commas (,). Default: wp-content,wp-includes', 'speed-booster-pack' ),
 									'options_group' => 'sbp_settings',
-                                    'default' => 'wp-content,wp-includes',
+									'default'       => 'wp-content,wp-includes',
 								),
 								'sbp_cdn_exclusions'           => array(
 									'type'          => 'text',
 									'label'         => __( 'CDN Exclusions', 'speed-booster-pack' ),
 									'tooltip'       => __( 'Enter any directories or file extensions you would like to be excluded from CDN rewriting, separated by commas (,). Default: .php', 'speed-booster-pack' ),
 									'options_group' => 'sbp_settings',
-                                    'default' => '.php'
+									'default'       => '.php',
 								),
 							),
 						),
@@ -438,6 +438,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 				if ( $k == 'advanced-options' ) {
 				?>
 				<!-- Advanced Options sections -->
+				<h3><?php _e('Advanced', 'speed-bosoter-pack'); ?></h3>
 				<div id="poststuff">
 
 					<?php
@@ -527,9 +528,9 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 								if ( 'text' == $item_value['type'] ) { ?>
 									<p>
 										<?php
-                                        $default_value = (isset($item_value[ 'default' ])) ? $item_value[ 'default' ] : "";
+										$default_value = ( isset( $item_value['default'] ) ) ? $item_value['default'] : "";
 										if ( isset( $item_value['options_group'] ) ) {
-											$op_text = ( isset( $sbp_options[ $item ] ) && "" !=  $sbp_options[ $item ]) ? $sbp_options[ $item ] : $default_value;
+											$op_text = ( isset( $sbp_options[ $item ] ) && "" != $sbp_options[ $item ] ) ? $sbp_options[ $item ] : $default_value;
 										} else {
 											$op_text = ( get_option( $item ) ) ? get_option( $item ) : $default_value;
 										}
@@ -544,7 +545,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 										<label for="<?php echo ( isset( $item_value['options_group'] ) ) ? $item_value['options_group'] . '[' . $item . ']' : $item; ?>" class="<?php echo ( isset( $item_value['label'] ) ) ? 'label-text' : ''; ?>"><?php echo ( isset( $item_value['label'] ) ) ? $item_value['label'] : ''; ?></label>
 
 										<input id="<?php echo ( isset( $item_value['options_group'] ) ) ? $item_value['options_group'] . '[' . $item . ']' : $item; ?>"
-										       name="<?php echo ( isset( $item_value['options_group'] ) ) ? $item_value['options_group'] . '[' . $item . ']' : $item; ?>" type="text"  value="<?php echo esc_attr( $op_text ); ?>" />
+										       name="<?php echo ( isset( $item_value['options_group'] ) ) ? $item_value['options_group'] . '[' . $item . ']' : $item; ?>" type="text" value="<?php echo esc_attr( $op_text ); ?>" />
 									</p>
 								<?php }
 
@@ -649,14 +650,15 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 				</div> <!-- Tab sections  -->
 				<?php } ?>
 
-				<div id="optimize-more" class="sb-pack-tab three-col">
+				<div id="optimize-more" class="sb-pack-tab">
+					<div class="feature-section three-col">
 
 					<div class="col sbp-box">
 						<img src="https://ps.w.org/shortpixel-image-optimiser/assets/icon-128x128.png?rev=1038819">
 						<div class="sbp-box__name"><?php esc_html_e( 'ShortPixel Image Optimizer', 'speed-booster-pack' ); ?></div>
 
 						<div class="sbp-box__description">
-							<?php esc_html_e( 'Increase your website’s SEO ranking, number of visitors and ultimately your sales by optimizing any image or PDF document on your website. ', 'speed-booster-pack' ); ?>
+							<?php esc_html_e( 'Increase your website’s SEO ranking, number of visitors and ultimately your sales by optimizing any image. ', 'speed-booster-pack' ); ?>
 						</div>
 
 						<div class="sbp-box__action-bar">
@@ -668,6 +670,46 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 						</div>
 					</div>
 
+					<div class="col sbp-box">
+						<img src="https://ps.w.org/optimole-wp/assets/icon-128x128.png?rev=1975706">
+						<div class="sbp-box__name"><?php esc_html_e( 'Optimole', 'speed-booster-pack' ); ?></div>
+
+						<div class="sbp-box__description">
+							<?php esc_html_e( 'Image optimization & resizing. Image acceleration through CDN. On-the-fly image handling. ', 'speed-booster-pack' ); ?>
+						</div>
+
+						<div class="sbp-box__action-bar">
+								<span class="sbp-box__action-button">
+									<a class="button"
+									   href="<?php echo esc_url( 'https://optimole.com' ); ?>"
+									   target="_blank"><?php esc_html_e( 'Check it out for free', 'speed-booster-pack' ); ?></a>
+								</span>
+						</div>
+					</div>
+
+
+						<div class="col sbp-box">
+							<img src="https://kinsta.com/assets/banners/kinsta-125x125-1.png?ver=2">
+							<div class="sbp-box__name"><?php esc_html_e( 'Kinsta Managed WP Hosting', 'speed-booster-pack' ); ?></div>
+
+							<div class="sbp-box__description">
+								<?php esc_html_e( 'Managed WordPress Hosting @ Kinsta from $30 / month with free CDN & SSL; SSD storage, PHP7, HTTP/2.', 'speed-booster-pack' ); ?>
+							</div>
+
+							<div class="sbp-box__action-bar">
+								<span class="sbp-box__action-button">
+									<a class="button button-primary"
+									   href="<?php echo esc_url( 'https://kinsta.com/plans/?kaid=VCFBHRKVKRRS' ); ?>"
+									   target="_blank"><?php esc_html_e( 'Get a faster host now', 'speed-booster-pack' ); ?></a>
+								</span>
+							</div>
+						</div>
+
+
+
+
+
+					</div>
 				</div><!--#optimize-more-->
 
 				<div class="textright">
