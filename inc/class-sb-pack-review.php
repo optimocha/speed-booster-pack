@@ -19,10 +19,10 @@ class SB_Pack_Review {
         $this->value = $this->value();
 
         $this->messages = array(
-            'notice'  => __( "Hey, I noticed you have installed our plugin for %s day(s) - that's awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.", 'sb-pack' ),
-            'rate'    => __( 'Ok, you deserve it', 'sb-pack' ),
-            'rated'   => __( 'I already did', 'sb-pack' ),
-            'no_rate' => __( 'No, not good enough', 'sb-pack' ),
+            'notice'  => __( "Hey, I noticed you have installed our plugin for %s day(s) - that's awesome! Could you please do me a BIG favor and give it a 5-star rating on WordPress? Just to help us spread the word and boost our motivation.", 'speed-booster-pack' ),
+            'rate'    => __( 'Ok, you deserve it', 'speed-booster-pack' ),
+            'rated'   => __( 'I already did', 'speed-booster-pack' ),
+            'no_rate' => __( 'No, not good enough', 'speed-booster-pack' ),
         );
 
         if ( isset( $args['messages'] ) ) {

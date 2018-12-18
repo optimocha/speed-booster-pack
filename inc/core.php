@@ -890,7 +890,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
 			//Disable Normal WP-Admin
 			if ( is_admin() && ! is_user_logged_in() && ! defined( 'DOING_AJAX' ) && $pagenow !== 'admin-post.php' && ( isset( $_GET ) && empty( $_GET['adminhash'] ) && empty( $_GET['newuseremail'] ) ) ) {
-				wp_die( __( 'This has been disabled.', 'sb-pack' ), 403 );
+				wp_die( __( 'This has been disabled.', 'speed-booster-pack' ), 403 );
 			}
 
 			//Requesting Hidden Login Form - Path Mismatch
@@ -902,7 +902,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 				die();
 			} //Requesting wp-login.php Directly, Disabled
             elseif ( $sbp_wp_login ) {
-				wp_die( __( 'This has been disabled.', 'sb-pack' ), 403 );
+				wp_die( __( 'This has been disabled.', 'speed-booster-pack' ), 403 );
 			} //Requesting Hidden Login Form
             elseif ( $pagenow === 'wp-login.php' ) {
 
@@ -928,7 +928,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
 			//Disable customize.php from Redirecting to Login URL
 			if ( ! is_user_logged_in() && $pagenow === 'customize.php' ) {
-				wp_die( __( 'This has been disabled.', 'sb-pack' ), 403 );
+				wp_die( __( 'This has been disabled.', 'speed-booster-pack' ), 403 );
 			}
 		}
 
