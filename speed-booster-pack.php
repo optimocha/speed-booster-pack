@@ -5,10 +5,12 @@
  * Description: Speed Booster Pack allows you to improve your page loading speed and get a higher score on the major
  * speed testing services such as <a href="http://gtmetrix.com/">GTmetrix</a>, <a
  * href="http://developers.google.com/speed/pagespeed/insights/">Google PageSpeed</a> or other speed testing tools.
- * Version: 3.7.4
+ * Version: 3.7.5
  * Author: Macho Themes
  * Author URI: https://www.machothemes.com/
  * License: GPLv3
+ * Text Domain : speed-booster-pack
+ * Domain Path: /lang
  */
 
 /*  Copyright 2018 Macho Themes (email : support [at] machothemes [dot] com)
@@ -63,7 +65,7 @@ $sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrie
 
 define( 'SPEED_BOOSTER_PACK_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SPEED_BOOSTER_PACK_URL', plugin_dir_url( __FILE__ ) );// Defining plugin dir path
-define( 'SPEED_BOOSTER_PACK_VERSION', '3.7.2' );                                       // Defining plugin version
+define( 'SPEED_BOOSTER_PACK_VERSION', '3.7.5' );                                       // Defining plugin version
 define( 'SBP_FOOTER', 10 );                                                          // Defining css position
 define( 'SBP_FOOTER_LAST', 99999 );                                                  // Defining css last position
 
@@ -116,9 +118,6 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 			$this->path = plugin_basename( __FILE__ );
 			add_filter( "plugin_action_links_$this->path", array( $this, 'sbp_settings_link' ) );
 
-			// load the uninstall feedback class
-			require_once 'feedback/class-epsilon-feedback.php';
-			new Epsilon_Feedback( __FILE__ );
 
 		}    // END public function __construct
 
