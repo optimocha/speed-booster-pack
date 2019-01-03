@@ -208,12 +208,6 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 									),
 									'options_group' => 'sbp_settings',
 								),
-								'login_url'              => array(
-									'type'          => 'text',
-									'label'         => __( 'Change login url', 'speed-booster-pack' ),
-									'tooltip'       => __( 'Change login url used to log into admin.', 'speed-booster-pack' ),
-									'options_group' => 'sbp_settings',
-								),
 								'remove_rest_api_links'  => array(
 									'type'          => 'checkbox',
 									'label'         => __( 'Remove REST API Links', 'speed-booster-pack' ),
