@@ -131,7 +131,7 @@ if ( ! class_exists( 'Speed_Booster_Pack' ) ) {
 		-----------------------------------------------------------------------------------------------------------*/
 
 		function sbp_load_translation() {
-			load_plugin_textdomain( 'sb-pack', false, SPEED_BOOSTER_PACK_PATH . '/lang/' );
+			load_plugin_textdomain( 'speed-booster-pack', false, SPEED_BOOSTER_PACK_PATH . '/lang/' );
 		}
 
 
