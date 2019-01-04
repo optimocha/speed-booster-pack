@@ -656,52 +656,41 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 						</div>
 
 						<div class="sbp-box__action-bar">
-								<span class="sbp-box__action-button">
-									<a class="button"
-									   href="<?php echo esc_url( 'https://shortpixel.com/h/af/IVAKFSX31472' ); ?>"
-									   target="_blank"><?php esc_html_e( 'Test your site for free', 'speed-booster-pack' ); ?></a>
-								</span>
+							<span class="sbp-box__action-button">
+								<a class="button" href="<?php echo esc_url( 'https://shortpixel.com/h/af/IVAKFSX31472' ); ?>" target="_blank"><?php esc_html_e( 'Test your site for free', 'speed-booster-pack' ); ?></a>
+							</span>
 						</div>
 					</div>
 
 					<div class="col sbp-box">
 						<img src="https://ps.w.org/optimole-wp/assets/icon-128x128.png?rev=1975706">
 						<div class="sbp-box__name"><?php esc_html_e( 'Optimole', 'speed-booster-pack' ); ?></div>
-
 						<div class="sbp-box__description">
 							<?php esc_html_e( 'Image optimization & resizing. Image acceleration through CDN. On-the-fly image handling. ', 'speed-booster-pack' ); ?>
 						</div>
 
 						<div class="sbp-box__action-bar">
-								<span class="sbp-box__action-button">
-									<a class="button"
-									   href="<?php echo esc_url( 'https://optimole.com' ); ?>"
-									   target="_blank"><?php esc_html_e( 'Check it out for free', 'speed-booster-pack' ); ?></a>
-								</span>
+							<span class="sbp-box__action-button">
+								<a class="button" href="<?php echo esc_url( 'https://optimole.com' ); ?>" target="_blank"><?php esc_html_e( 'Check it out for free', 'speed-booster-pack' ); ?></a>
+							</span>
 						</div>
 					</div>
 
 
-						<div class="col sbp-box">
-							<img src="https://kinsta.com/assets/banners/kinsta-125x125-1.png?ver=2">
-							<div class="sbp-box__name"><?php esc_html_e( 'Kinsta Managed WP Hosting', 'speed-booster-pack' ); ?></div>
+					<div class="col sbp-box">
+						<img src="<?php echo SPEED_BOOSTER_PACK_URL ?>/inc/images/hostinger-official.jpg">
+						<div class="sbp-box__name"><?php esc_html_e( 'Hostinger', 'speed-booster-pack' ); ?></div>
 
-							<div class="sbp-box__description">
-								<?php esc_html_e( 'Managed WordPress Hosting @ Kinsta from $30 / month with free CDN & SSL; SSD storage, PHP7, HTTP/2.', 'speed-booster-pack' ); ?>
-							</div>
-
-							<div class="sbp-box__action-bar">
-								<span class="sbp-box__action-button">
-									<a class="button button-primary"
-									   href="<?php echo esc_url( 'https://kinsta.com/plans/?kaid=VCFBHRKVKRRS' ); ?>"
-									   target="_blank"><?php esc_html_e( 'Get a faster host now', 'speed-booster-pack' ); ?></a>
-								</span>
-							</div>
+						<div class="sbp-box__description">
+							<?php esc_html_e( 'They are offering the best cheap WordPress hosting on the market right now at 1.45$ / month', 'speed-booster-pack' ); ?>
 						</div>
 
-
-
-
+						<div class="sbp-box__action-bar">
+							<span class="sbp-box__action-button">
+								<a class="button button-primary" href="<?php echo esc_url( 'https://www.hostg.xyz/SHA' ); ?>" target="_blank"><?php esc_html_e( 'Get a faster host now', 'speed-booster-pack' ); ?></a>
+							</span>
+						</div>
+					</div>
 
 					</div>
 				</div><!--#optimize-more-->

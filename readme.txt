@@ -4,7 +4,7 @@ Tags: speed, optimization, performance, scripts to the footer, google libraries,
 Requires at least: 3.6
 Tested up to: 5.0
 Requires PHP: 5.6
-Stable tag: 3.7.5
+Stable tag: 3.7.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -77,6 +77,21 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 1. Plugin options page, simple view (v2.5)
 
 == Changelog ==
+
+= 3.7.6 =
+* Improved admin UI
+* Added "Disable Self Pingbacks" option
+* Added "Disable Dashicons" option
+* Added "Disable Google Maps" option
+* Added "Disable Heartbeat" option
+* Added "Heartbeat frequency" option
+* Added "Autosave interval" option
+* Added "Remove REST API Links" option
+* Added "Limit Post Revision" option
+* Added CDN options
+* Added Google Analytics options
+* Removed "Remove RSD(Really Simple Discovery) Link" option
+* Removed "Image compression level" option
 
 = 3.7.5 =
 * removed uninstall feedback

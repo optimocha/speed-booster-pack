@@ -2,10 +2,8 @@
 /**
  * Plugin Name: Speed Booster Pack
  * Plugin URI: http://wordpress.org/plugins/speed-booster-pack/
- * Description: Speed Booster Pack allows you to improve your page loading speed and get a higher score on the major
- * speed testing services such as <a href="http://gtmetrix.com/">GTmetrix</a>, <a
- * href="http://developers.google.com/speed/pagespeed/insights/">Google PageSpeed</a> or other speed testing tools.
- * Version: 3.7.5
+ * Description: Speed Booster Pack allows you to improve your page loading speed and get a higher score on the major speed testing services such as <a href="http://gtmetrix.com/">GTmetrix</a>, <a href="http://developers.google.com/speed/pagespeed/insights/">Google PageSpeed</a> or other speed testing tools.
+ * Version: 3.7.6
  * Author: Macho Themes
  * Author URI: https://www.machothemes.com/
  * License: GPLv3
@@ -50,7 +48,7 @@ $sbp_defaults = array(
 	'disable_xmlrpc'         => 1, // disable XML-RPC pingbacks
 	'font_awesome'           => 1, // remove extra font awesome styles
 	'query_strings'          => 1, // remove query strings
-	'use_google_libs'        => 1, // serve JS assets (when possible) from Google CDN
+	'use_google_libs'        => 0, // serve JS assets (when possible) from Google CDN
 	'heartbeat_frequency'    => 15,
 	'autosave_interval'      => 1,
 	'limit_post_revisions'   => 30,
@@ -65,7 +63,7 @@ $sbp_options = get_option( 'sbp_settings', (array) $sbp_defaults );    // retrie
 
 define( 'SPEED_BOOSTER_PACK_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SPEED_BOOSTER_PACK_URL', plugin_dir_url( __FILE__ ) );// Defining plugin dir path
-define( 'SPEED_BOOSTER_PACK_VERSION', '3.7.5' );                                       // Defining plugin version
+define( 'SPEED_BOOSTER_PACK_VERSION', '3.7.6' );                                       // Defining plugin version
 define( 'SBP_FOOTER', 10 );                                                          // Defining css position
 define( 'SBP_FOOTER_LAST', 99999 );                                                  // Defining css last position
 
