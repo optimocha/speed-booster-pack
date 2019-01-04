@@ -422,9 +422,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 			);
 
 			//Start the tabs
-			foreach ( $sbp_options_array
-
-			as $k => $values ) { ?>
+			foreach ( $sbp_options_array as $k => $values ) { ?>
 			<!--  Tab sections  -->
 			<div id="<?php echo $k; ?>" class="sb-pack-tab">
 
