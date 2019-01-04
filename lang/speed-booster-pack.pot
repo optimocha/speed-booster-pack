@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "Project-Id-Version: Speed Booster Pack\n"
-"POT-Creation-Date: 2018-12-03 17:01+0200\n"
-"PO-Revision-Date: 2018-12-03 17:01+0200\n"
+"POT-Creation-Date: 2019-01-04 15:59+0200\n"
+"PO-Revision-Date: 2019-01-04 15:59+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,71 +21,24 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: feedback/class-epsilon-feedback.php:63
-msgid "Allow us to get more information in order to improve our plugin"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:67
-msgid "Submitting form"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:68
-msgid "Just Deactivate"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:68
-msgid "Submit and Deactivate"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:158
-msgid "What was the dificult part ?"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:159
-msgid "What can we describe more ?"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:160
-#: feedback/class-epsilon-feedback.php:235
-msgid "How could we improve ?"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:161
-msgid "Can you mention it ?"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:162
-msgid "With what plugin or theme is incompatible ?"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:226
-msgid "Sorry to see you go"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:227
+#: inc/class-sb-pack-review.php:22
+#, php-format
 msgid ""
-"Before you deactivate the plugin, would you quickly give us your reason for "
-"doing so?"
+"Hey, I noticed you have installed our plugin for %s day(s) - that's awesome! "
+"Could you please do me a BIG favor and give it a 5-star rating on WordPress? "
+"Just to help us spread the word and boost our motivation."
 msgstr ""
 
-#: feedback/class-epsilon-feedback.php:229
-msgid "Set up is too difficult"
+#: inc/class-sb-pack-review.php:23
+msgid "Ok, you deserve it"
 msgstr ""
 
-#: feedback/class-epsilon-feedback.php:230
-msgid "Lack of documentation"
+#: inc/class-sb-pack-review.php:24
+msgid "I already did"
 msgstr ""
 
-#: feedback/class-epsilon-feedback.php:231
-msgid "Not the features I wanted"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:232
-msgid "Found a better plugin"
-msgstr ""
-
-#: feedback/class-epsilon-feedback.php:233
-msgid "Incompatible with theme or plugin"
+#: inc/class-sb-pack-review.php:25
+msgid "No, not good enough"
 msgstr ""
 
 #: inc/settings.php:179
@@ -100,22 +53,22 @@ msgstr ""
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: inc/template/notice.php:4
+#: inc/template/notice.php:3
 msgid "Welcome to Speed Booster Pack"
 msgstr ""
 
-#: inc/template/notice.php:6
+#: inc/template/notice.php:4
 #, php-format
 msgid ""
 "Welcome! Thank you for installing Speed Booster Pack! Check out the %sPlugin "
 "settings%s for new features that can make your site load faster."
 msgstr ""
 
-#: inc/template/notice.php:8
+#: inc/template/notice.php:6
 msgid "Get started with Speed Booster Pack"
 msgstr ""
 
-#: inc/template/notice.php:10
+#: inc/template/notice.php:9
 msgid "Dismiss this notice."
 msgstr ""
 
@@ -125,91 +78,67 @@ msgid ""
 "well supported plugin which allows you to improve your website’s loading "
 "speed. Visitors usually close a website if it doesn’t load in a few seconds "
 "and the slower a site loads the greater the chances are that the visitors "
-"will leave. And you don’t want that to happen, do you?\n"
+"will leave. And you don’t want that to happen, do you?"
 msgstr ""
 
-#: inc/template/options.php:35
-msgid "Page load: "
-msgstr ""
-
-#: inc/template/options.php:36
-msgid " sec"
-msgstr ""
-
-#: inc/template/options.php:62
-msgid "DB Queries"
-msgstr ""
-
-#: inc/template/options.php:67
-msgid "Memory: "
-msgstr ""
-
-#: inc/template/options.php:74
-msgid "Plugins: "
-msgstr ""
-
-#: inc/template/options.php:80
-msgid "Analyse"
-msgstr ""
-
-#: inc/template/options.php:86 inc/template/options.php:101
+#: inc/template/options.php:34 inc/template/options.php:56
 msgid "General"
 msgstr ""
 
-#: inc/template/options.php:87
+#: inc/template/options.php:35 inc/template/options.php:433
 msgid "Advanced"
 msgstr ""
 
-#: inc/template/options.php:88
-msgid "Image Optimization"
+#: inc/template/options.php:36 inc/template/options.php:326
+msgid "CDN"
 msgstr ""
 
-#: inc/template/options.php:89
-msgid "Support"
+#: inc/template/options.php:37 inc/template/options.php:363
+msgid "Google Analytics"
 msgstr ""
 
-#: inc/template/options.php:90
+#: inc/template/options.php:38
 msgid "Optimize More"
 msgstr ""
 
-#: inc/template/options.php:105
-msgid "Move scripts to the footer"
+#: inc/template/options.php:60
+msgid "Move scripts to footer"
 msgstr ""
 
-#: inc/template/options.php:107
+#: inc/template/options.php:61
 msgid ""
 "This option move all scripts to the footer while keeping stylesheets in the "
 "header to improve page loading speed and get a higher score on the major "
-"speed testing sites such as GTmetrix or other website speed testing tools."
+"speed testing sites such as GTmetrix or other website speed testing tools"
 msgstr ""
 
-#: inc/template/options.php:115
+#: inc/template/options.php:66
 msgid "Load JS from Google Libraries"
 msgstr ""
 
-#: inc/template/options.php:117
+#: inc/template/options.php:67
 msgid ""
 "Loading WordPress javascript files from Google’s Libraries rather than "
 "serving it from your WordPress install directly, will reduce latency, "
 "increase parallelism and improve caching."
 msgstr ""
 
-#: inc/template/options.php:124
+#: inc/template/options.php:72
 msgid "Minify HTML"
 msgstr ""
 
-#: inc/template/options.php:126
+#: inc/template/options.php:73
 msgid ""
 "Activate this option only if you don’t want to use other minify plugins or "
 "other speed optimization plugin that has minify option included. If "
 "something goes wrong, simply uncheck this option and save the settings."
 msgstr ""
 
-#: inc/template/options.php:133
+#: inc/template/options.php:78
 msgid "Defer parsing of javascript files"
 msgstr ""
 
-#: inc/template/options.php:135
+#: inc/template/options.php:79
 msgid ""
 "!!!Note: This will be disabled IF Move Scripts to Footer is enabled. By "
 "deferring parsing of unneeded JavaScript until it needs to be executed, you "
@@ -218,11 +147,11 @@ msgid ""
 "Libraries option is not checked."
 msgstr ""
 
-#: inc/template/options.php:142
+#: inc/template/options.php:84
 msgid "Remove query strings"
 msgstr ""
 
-#: inc/template/options.php:144
+#: inc/template/options.php:85
 msgid ""
 "Since most proxies do not cache resources with a ? in their URL, this option "
 "allows you to remove any query strings (version numbers) from static "
@@ -230,11 +159,11 @@ msgid ""
 "like GTmetrix, PageSpeed, YSlow and Pingdoom."
 msgstr ""
 
-#: inc/template/options.php:151
+#: inc/template/options.php:90
 msgid "Removes extra Font Awesome styles"
 msgstr ""
 
-#: inc/template/options.php:153
+#: inc/template/options.php:91
 msgid ""
 "Use this option only if your theme uses Font Awesome, to prevent other "
 "plugins that uses Font Awesome, to add their stylesheets to your theme. In "
@@ -242,15 +171,15 @@ msgid ""
 "your theme by certain plugins."
 msgstr ""
 
-#: inc/template/options.php:158
+#: inc/template/options.php:99
 msgid "More settings"
 msgstr ""
 
-#: inc/template/options.php:162
+#: inc/template/options.php:103
 msgid "Remove WordPress Emoji scripts"
 msgstr ""
 
-#: inc/template/options.php:164
+#: inc/template/options.php:104
 msgid ""
 "Emojis are fun and all, but if you are aren’t using them they actually load "
 "a JavaScript file (wp-emoji-release.min.js) on every page of your website. "
@@ -258,21 +187,21 @@ msgid ""
 "your site. So we recommend disabling this."
 msgstr ""
 
-#: inc/template/options.php:171
+#: inc/template/options.php:109
 msgid "Remove WordPress Shortlink"
 msgstr ""
 
-#: inc/template/options.php:173
+#: inc/template/options.php:110
 msgid ""
 "WordPress URL shortening is sometimes useful, but it automatically adds an "
 "ugly code in your header, so you can remove it."
 msgstr ""
 
-#: inc/template/options.php:180
+#: inc/template/options.php:115
 msgid "Remove Adjacent Posts Links"
 msgstr ""
 
-#: inc/template/options.php:182
+#: inc/template/options.php:116
 msgid ""
 "WordPress incorrectly implements this feature that supposedly should fix a "
 "pagination issues but it messes up, so there is no reason to keep these "
@@ -280,53 +209,37 @@ msgid ""
 "site, although you can remove it if you run a well designed theme."
 msgstr ""
 
-#: inc/template/options.php:189
+#: inc/template/options.php:121
 msgid "Remove Windows Manifest"
 msgstr ""
 
-#: inc/template/options.php:191
+#: inc/template/options.php:122 inc/template/options.php:128
 msgid ""
 "Windows Live Writer (WLW) is a Microsoft application for composing and "
 "managing blog posts offline and publish them later. If you are not using "
 "Windows Live Writer application, you can remove it from the WP head."
 msgstr ""
 
-#: inc/template/options.php:198
-msgid "Remove RSD(Really Simple Discovery) Link"
-msgstr ""
-
-#: inc/template/options.php:200
-msgid ""
-"This type of link is used by blog clients. If you edit your site from your "
-"browser then you don’t need this. It is also used by some 3rd party "
-"applications that utilize XML-RPC requests. In most cases, this is just "
-"unnecessary code."
-msgstr ""
-
-#: inc/template/options.php:207
+#: inc/template/options.php:127
 msgid "Remove the WordPress Version"
 msgstr ""
 
-#: inc/template/options.php:209
-msgid "This option is added for security reasons and cleaning the header."
-msgstr ""
-
-#: inc/template/options.php:216
+#: inc/template/options.php:133
 msgid "Remove all rss feed links"
 msgstr ""
 
-#: inc/template/options.php:218
+#: inc/template/options.php:134
 msgid ""
 "This option wil remove all rss feed links to cleanup your WordPress header. "
 "It is also useful on Unicorn – The W3C Markup Validation Service to get rid "
 "out the “feed does not validate” error."
 msgstr ""
 
-#: inc/template/options.php:225
+#: inc/template/options.php:139
 msgid "Disable XML-RPC"
 msgstr ""
 
-#: inc/template/options.php:227
+#: inc/template/options.php:140
 msgid ""
 "XML-RPC was added in WordPress 3.5 and allows for remote connections, and "
 "unless you are using your mobile device to post to WordPress it does more "
@@ -335,37 +248,127 @@ msgid ""
 "don’t recommend using JetPack for performance reasons."
 msgstr ""
 
-#: inc/template/options.php:232
+#: inc/template/options.php:145
+msgid "Disable Self Pingbacks"
+msgstr ""
+
+#: inc/template/options.php:146
+msgid ""
+"A pingback is a special type of comment that’s created when you link to "
+"another blog post, as long as the other blog is set to accept pingbacks."
+msgstr ""
+
+#: inc/template/options.php:151
+msgid "Disable Dashicons"
+msgstr ""
+
+#: inc/template/options.php:152
+msgid "Disable dashicons from front end."
+msgstr ""
+
+#: inc/template/options.php:157
+msgid "Disable Google Maps"
+msgstr ""
+
+#: inc/template/options.php:158
+msgid "Disable Google Maps from front end. "
+msgstr ""
+
+#: inc/template/options.php:163
+msgid "Disable Heartbeat"
+msgstr ""
+
+#: inc/template/options.php:164
+msgid ""
+"Disable heartbeat everywhere ( used for autosaving and revision tracking )."
+msgstr ""
+
+#: inc/template/options.php:169
+msgid "Heartbeat frequency"
+msgstr ""
+
+#: inc/template/options.php:170
+msgid "Controls how often the Wordpress Heartbeat API is allowed to run. "
+msgstr ""
+
+#: inc/template/options.php:181
+msgid "Limit Post Revision"
+msgstr ""
+
+#: inc/template/options.php:182
+msgid "Controls how many Revisions Wordpress will save "
+msgstr ""
+
+#: inc/template/options.php:200
+msgid "Autosave interval"
+msgstr ""
+
+#: inc/template/options.php:201
+msgid "Controls how wordpress will autosave posts and pages while editing."
+msgstr ""
+
+#: inc/template/options.php:203
+msgid "1 minute ( default )"
+msgstr ""
+
+#: inc/template/options.php:204
+msgid "2 minutes"
+msgstr ""
+
+#: inc/template/options.php:205
+msgid "3 minutes"
+msgstr ""
+
+#: inc/template/options.php:206
+msgid "4 minutes"
+msgstr ""
+
+#: inc/template/options.php:207
+msgid "5 minutes"
+msgstr ""
+
+#: inc/template/options.php:213
+msgid "Remove REST API Links"
+msgstr ""
+
+#: inc/template/options.php:214
+msgid ""
+"The WordPress REST API provides API endpoints for WordPress data types that "
+"allow developers to interact with sites remotely by sending and receiving "
+"JSON (JavaScript Object Notation) objects."
+msgstr ""
+
+#: inc/template/options.php:222
 msgid "Need even more speed?"
 msgstr ""
 
-#: inc/template/options.php:236
+#: inc/template/options.php:226
 msgid "Inline all CSS styles"
 msgstr ""
 
-#: inc/template/options.php:238
+#: inc/template/options.php:227
 msgid ""
 "Checking this option will inline the contents of all your stylesheets. This "
 "helps with the annoying render blocking error Google Page Speed Insights "
 "displays."
 msgstr ""
 
-#: inc/template/options.php:245
+#: inc/template/options.php:232
 msgid "Minify all (previously) inlined CSS styles"
 msgstr ""
 
-#: inc/template/options.php:247
+#: inc/template/options.php:233
 msgid ""
 "Minifying all inlined CSS styles will optimize the CSS delivery and will "
 "eliminate the annoying message on Google Page Speed regarding to render-"
 "blocking css."
 msgstr ""
 
-#: inc/template/options.php:254
+#: inc/template/options.php:238
 msgid "Move all inlined CSS into the footer"
 msgstr ""
 
-#: inc/template/options.php:256
+#: inc/template/options.php:239
 msgid ""
 "Inserting all CSS styles inline to the footer is a sensitive option that "
 "will eliminate render-blocking CSS warning in Google Page Speed test. If "
@@ -374,77 +377,55 @@ msgid ""
 "recommended that you also enable the “ Move scripts to the footer” option."
 msgstr ""
 
-#: inc/template/options.php:263
+#: inc/template/options.php:244
 msgid "Disable all above CSS options on mobile devices"
 msgstr ""
 
-#: inc/template/options.php:265
+#: inc/template/options.php:245
 msgid ""
 "Disable all above CSS options on mobile devices: this option was added to "
 "avoid some appearance issues on mobile devices."
 msgstr ""
 
-#: inc/template/options.php:272
+#: inc/template/options.php:256
 msgid "Exclude styles from being inlined and/or minified option: "
 msgstr ""
 
-#: inc/template/options.php:277
+#: inc/template/options.php:257
 msgid ""
 "Enter one by line, the handles of css files or the final part of the style "
-"URL. For example: <code>font-awesome</code> or <code>font-awesome.min.css</"
-"code>"
+"URL."
 msgstr ""
 
-#: inc/template/options.php:283
+#: inc/template/options.php:262
 msgid ""
 "As a guidance, here is a list of css handles of each enqueued style detected "
 "by our plugin:"
 msgstr ""
 
-#: inc/template/options.php:289
-msgid "CSS Handle"
-msgstr ""
-
-#: inc/template/options.php:311 inc/template/options.php:315
+#: inc/template/options.php:274
 msgid "Exclude scripts from being moved to the footer"
 msgstr ""
 
-#: inc/template/options.php:320 inc/template/options.php:352
-msgid "Script Handle"
+#: inc/template/options.php:275
+msgid ""
+"Enter one js handle per text field. Read more <a href=\"https://docs."
+"machothemes.com/article/119-plugin-options-explained#exclude-scripts-from-"
+"being-moved-to-the-footer-50\">detailed instructions</a> on this option on "
+"plugin documentation."
 msgstr ""
 
-#: inc/template/options.php:322
-msgid "Enter one js handle per text field."
-msgstr ""
-
-#: inc/template/options.php:322 inc/template/options.php:503
-#: inc/template/options.php:515 inc/template/options.php:527
-msgid "Read more"
-msgstr ""
-
-#: inc/template/options.php:323
-msgid "detailed instructions"
-msgstr ""
-
-#: inc/template/options.php:323
-msgid "on this option on plugin documentation."
-msgstr ""
-
-#: inc/template/options.php:346
+#: inc/template/options.php:292
 msgid ""
 "As a guidance, here is a list of script handles and script paths of each "
 "enqueued script detected by our plugin:"
 msgstr ""
 
-#: inc/template/options.php:353
-msgid "Script Path"
-msgstr ""
-
-#: inc/template/options.php:408 inc/template/options.php:412
+#: inc/template/options.php:299
 msgid "Exclude scripts from being deferred"
 msgstr ""
 
-#: inc/template/options.php:434
+#: inc/template/options.php:316
 msgid ""
 "Enter one by text field, the handle part of the js files that you want to be "
 "excluded from defer parsing option. For example: <code>jquery-core</code> If "
@@ -454,100 +435,176 @@ msgid ""
 "on our support forums."
 msgstr ""
 
-#: inc/template/options.php:444
-msgid "Change the default image compression level"
-msgstr ""
-
-#: inc/template/options.php:451
-msgid "Compression level:"
-msgstr ""
-
-#: inc/template/options.php:461
+#: inc/template/options.php:327
 msgid ""
-"The default image compression setting in WordPress is 90%. Compressing your "
-"images further than the default will make your file sizes even smaller and "
-"will boost your site performance. As a reference, a lower level of "
-"compression means more performance but might induce quality loss. We "
-"recommend you choose a compression level between 50 and 75."
+"CDN options that allow you to rewrite your site URLs with your CDN URLs."
 msgstr ""
 
-#: inc/template/options.php:465
+#: inc/template/options.php:331
+msgid "Enable CDN Rewrite"
+msgstr ""
+
+#: inc/template/options.php:332
+msgid "Enables rewriting of your site URLs with your CDN URLs"
+msgstr ""
+
+#: inc/template/options.php:337
+msgid "CDN URL"
+msgstr ""
+
+#: inc/template/options.php:338
 msgid ""
-"Note that any changes you make will only affect new images uploaded to your "
-"site. A specialized plugin can optimize all your present images and will "
-"also optimize new ones as they are added. "
+"Enter your CDN URL without the trailing backslash. Example: https://cdn."
+"example.com"
 msgstr ""
 
-#: inc/template/options.php:481
-msgid "Contact Support"
+#: inc/template/options.php:343
+msgid "Included Directories"
 msgstr ""
 
-#: inc/template/options.php:484
-msgid "We offer support through WordPress.org's support forums."
-msgstr ""
-
-#: inc/template/options.php:487
-msgid "Post on our support forums"
-msgstr ""
-
-#: inc/template/options.php:497
-msgid "Our Bluehost Hosting Review"
-msgstr ""
-
-#: inc/template/options.php:500
+#: inc/template/options.php:344
 msgid ""
-"Despite its popularity, though, Bluehost often carries a negative perception "
-"among WordPress professionals. So as we dig into this Bluehost review, we'll "
-"be looking to figure out whether Bluehost's performance and features "
-"actually justify that reputation."
+"Enter any directories you would like to be included in CDN rewriting, "
+"separated by commas (,). Default: wp-content,wp-includes"
 msgstr ""
 
-#: inc/template/options.php:509
-msgid "Our InMotion Hosting Review"
+#: inc/template/options.php:350
+msgid "CDN Exclusions"
 msgstr ""
 
-#: inc/template/options.php:512
+#: inc/template/options.php:351
 msgid ""
-"InMotion Hosting is a popular independent web host that serves over 300,000 "
-"customers. They're notably not a part of the EIG behemoth (the parent "
-"company behind Bluehost, HostGator, and more), which is a plus in my book."
+"Enter any directories or file extensions you would like to be excluded from "
+"CDN rewriting, separated by commas (,). Default: .php"
 msgstr ""
 
-#: inc/template/options.php:521
-msgid "Our A2 Hosting Review"
+#: inc/template/options.php:364
+msgid "Optimization options for Google Analytics."
 msgstr ""
 
-#: inc/template/options.php:524
+#: inc/template/options.php:368
+msgid "Enable Local Analytics"
+msgstr ""
+
+#: inc/template/options.php:369
+msgid "Enable syncing og the Google Analytics script to your own server."
+msgstr ""
+
+#: inc/template/options.php:374
+msgid "Tracking ID"
+msgstr ""
+
+#: inc/template/options.php:375
+msgid "Enter your Google Analytics tracking ID"
+msgstr ""
+
+#: inc/template/options.php:380
+msgid "Tracking code position"
+msgstr ""
+
+#: inc/template/options.php:381
 msgid ""
-"When it comes to affordable WordPress hosting, A2 Hosting is a name that "
-"often comes up in various WordPress groups for offering quick-loading "
-"performance that belies its low price tag."
+"Load your analytics script in the header or footer of the site. Default - "
+"header"
 msgstr ""
 
-#: inc/template/options.php:535
-msgid "Lend a hand & share your thoughts"
+#: inc/template/options.php:390
+msgid "Disable Display Features"
 msgstr ""
 
-#: inc/template/options.php:541
-#, php-format
+#: inc/template/options.php:391
+msgid "Disable marketing and advertising which generates a 2nd HTTP request"
+msgstr ""
+
+#: inc/template/options.php:396
+msgid "Anonymize IP"
+msgstr ""
+
+#: inc/template/options.php:397
 msgid ""
-"We've been working hard on making %1$s the best one out there. We're "
-"interested in hearing your thoughts about %1$s and what we could do to "
-"<u>make it even better</u>.<br/> <br/> %2$sHave your say%3$s"
+"Shorten visitor IP to comply with privacy restrictions in some countries."
 msgstr ""
 
-#: inc/template/options.php:555
+#: inc/template/options.php:402
+msgid "Track Logged In Admins"
+msgstr ""
+
+#: inc/template/options.php:403
+msgid "Include logged in Wordpress admins in your GA report."
+msgstr ""
+
+#: inc/template/options.php:408
+msgid "Adjusted Bounce Rate"
+msgstr ""
+
+#: inc/template/options.php:409
+msgid ""
+"Set a timeout limit in seconds to better evaluate the quality of your "
+"traffic ( 1 - 100 )"
+msgstr ""
+
+#: inc/template/options.php:414
+msgid "User MonsterInsights"
+msgstr ""
+
+#: inc/template/options.php:415
+msgid ""
+"Allows MonsterInsights to manage your Google Analaytics while still using "
+"the locally hosted analytics.js generated by Speed Booster Pack"
+msgstr ""
+
+#: inc/template/options.php:570
+msgid "CSS Handle"
+msgstr ""
+
+#: inc/template/options.php:587
+msgid "Script Handle"
+msgstr ""
+
+#: inc/template/options.php:588
+msgid "Script Path"
+msgstr ""
+
+#: inc/template/options.php:650
 msgid "ShortPixel Image Optimizer"
 msgstr ""
 
-#: inc/template/options.php:558
+#: inc/template/options.php:653
 msgid ""
 "Increase your website’s SEO ranking, number of visitors and ultimately your "
-"sales by optimizing any image or PDF document on your website. "
+"sales by optimizing any image. "
 msgstr ""
 
-#: inc/template/options.php:563
+#: inc/template/options.php:658
 msgid "Test your site for free"
+msgstr ""
+
+#: inc/template/options.php:665
+msgid "Optimole"
+msgstr ""
+
+#: inc/template/options.php:667
+msgid ""
+"Image optimization & resizing. Image acceleration through CDN. On-the-fly "
+"image handling. "
+msgstr ""
+
+#: inc/template/options.php:672
+msgid "Check it out for free"
+msgstr ""
+
+#: inc/template/options.php:680
+msgid "Hostinger"
+msgstr ""
+
+#: inc/template/options.php:683
+msgid ""
+"They are offering the best cheap WordPress hosting on the market right now "
+"at 1.45$ / month"
+msgstr ""
+
+#: inc/template/options.php:688
+msgid "Get a faster host now"
 msgstr ""
 
 #: widgets/dashboard-widget.php:4 widgets/dashboard-widget.php:44
@@ -574,7 +631,9 @@ msgstr ""
 #. Description of the plugin/theme
 msgid ""
 "Speed Booster Pack allows you to improve your page loading speed and get a "
-"higher score on the major"
+"higher score on the major speed testing services such as <a href=\"http://"
+"gtmetrix.com/\">GTmetrix</a>, <a href=\"http://developers.google.com/speed/"
+"pagespeed/insights/\">Google PageSpeed</a> or other speed testing tools."
 msgstr ""
 
 #. Author of the plugin/theme
