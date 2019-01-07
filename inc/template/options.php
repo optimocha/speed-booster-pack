@@ -125,7 +125,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 								'wp_generator'           => array(
 									'type'          => 'checkbox',
 									'label'         => __( 'Remove the WordPress Version', 'speed-booster-pack' ),
-									'tooltip'       => __( 'Windows Live Writer (WLW) is a Microsoft application for composing and managing blog posts offline and publish them later. If you are not using Windows Live Writer application, you can remove it from the WP head.', 'speed-booster-pack' ),
+									'tooltip'       => __( 'Remove WordPress version meta tag.', 'speed-booster-pack' ),
 									'options_group' => 'sbp_settings',
 								),
 								'remove_all_feeds'       => array(
@@ -137,7 +137,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 								'disable_xmlrpc'         => array(
 									'type'          => 'checkbox',
 									'label'         => __( 'Disable XML-RPC', 'speed-booster-pack' ),
-									'tooltip'       => __( 'XML-RPC was added in WordPress 3.5 and allows for remote connections, and unless you are using your mobile device to post to WordPress it does more bad than good. In fact, it can open your site up to a bunch of security risks. There are a few plugins that utilize this such as JetPack, but we don’t recommend using JetPack for performance reasons.', 'speed-booster-pack' ),
+									'tooltip'       => __( 'XML-RPC was added in WordPress 3.5 and allows for remote connections, and unless you are using your mobile device to post to WordPress it does more bad than good. In fact, it can open your site up to a bunch of security risks. There are a few plugins that utilize this such as JetPack.', 'speed-booster-pack' ),
 									'options_group' => 'sbp_settings',
 								),
 								'disable_self_pingbacks' => array(
@@ -155,7 +155,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 								'disable_google_maps'    => array(
 									'type'          => 'checkbox',
 									'label'         => __( 'Disable Google Maps', 'speed-booster-pack' ),
-									'tooltip'       => __( 'Disable Google Maps from front end. ', 'speed-booster-pack' ),
+									'tooltip'       => __( 'Remove any instance of Google Maps being loaded across the entire site. ', 'speed-booster-pack' ),
 									'options_group' => 'sbp_settings',
 								),
 								'disable_heartbeat'      => array(
@@ -430,7 +430,7 @@ if ( is_array( $option_arr ) && in_array( 'defer-from-footer', $option_arr ) ) {
 				if ( $k == 'advanced-options' ) {
 				?>
 				<!-- Advanced Options sections -->
-				<h3><?php _e('Advanced', 'speed-bosoter-pack'); ?></h3>
+				<h3><?php _e('Advanced', 'speed-booster-pack'); ?></h3>
 				<div id="poststuff">
 
 					<?php
