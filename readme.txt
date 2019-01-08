@@ -2,9 +2,9 @@
 Contributors: machothemes, silkalns
 Tags: speed, optimization, performance, scripts to the footer, google libraries, font awesome cdn, defer parsing of javascript, remove query strings, gtmetrix, google pageSpeed, yslow, compression, render-blocking css
 Requires at least: 3.6
-Tested up to: 5.0
+Tested up to: 5.0.2
 Requires PHP: 5.6
-Stable tag: 3.7.6
+Stable tag: 3.7.7
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -77,6 +77,9 @@ We are a young team of WordPress aficionados who love building WordPress plugins
 1. Plugin options page, simple view (v2.5)
 
 == Changelog ==
+
+= 3.7.7 =
+* Double jquery.js fix
 
 = 3.7.6 =
 * Improved admin UI

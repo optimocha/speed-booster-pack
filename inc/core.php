@@ -14,7 +14,7 @@ if ( ! class_exists( 'Speed_Booster_Pack_Core' ) ) {
 
 			add_action( 'wp_enqueue_scripts', array( $this, 'sbp_no_more_fontawesome' ), 9999 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'sbp_move_scripts_to_footer' ) );
-			if ( ! is_admin() and !isset( $sbp_options['jquery_to_footer'] ) ) {
+			if ( ! is_admin() and isset( $sbp_options['jquery_to_footer'] ) ) {
 				add_action( 'wp_head', array( $this, 'sbp_scripts_to_head' ) );
 			}
 			add_action( 'init', array( $this, 'sbp_show_page_load_stats' ), 999 );
