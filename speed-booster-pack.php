@@ -31,12 +31,12 @@ define( 'SBP_VERSION', '4.0.0' );
 /**
  * Plugin Path
  */
-define( 'SBP_URL', plugin_dir_url(__FILE__) . '/' );
+define( 'SBP_URL', plugin_dir_url( __FILE__ ) . '/' );
 
 /**
  * Plugin Path
  */
-define( 'SBP_PATH', realpath(dirname(__FILE__)) . '/' );
+define( 'SBP_PATH', realpath( dirname( __FILE__ ) ) . '/' );
 
 /**
  * Plugin includes path
@@ -47,6 +47,16 @@ define( 'SBP_INC_PATH', SBP_PATH . 'includes/' );
  * Plugin libraries path
  */
 define( 'SBP_LIB_PATH', SBP_INC_PATH . 'libs/' );
+
+/**
+ * Cache directory path
+ */
+define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster' );
+
+/**
+ * Cache directory url
+ */
+define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster' );
 
 
 /**
@@ -76,6 +86,17 @@ register_deactivation_hook( __FILE__, 'deactivate_speed_booster_pack' );
  */
 require SBP_INC_PATH . 'class-speed-booster-pack.php';
 
+if ( ! function_exists( 'sbp_get_option' ) ) {
+	function sbp_get_option( $option = '', $default = null ) {
+
+		// Attention: Its your unique id of the framework
+		$options = get_option( 'speed-booster' );
+
+		return ( isset( $options[ $option ] ) ) ? $options[ $option ] : $default;
+
+	}
+}
+
 /**
  * Begins execution of the plugin.
  *
@@ -91,4 +112,5 @@ function run_speed_booster_pack() {
 	$plugin->run();
 
 }
+
 run_speed_booster_pack();

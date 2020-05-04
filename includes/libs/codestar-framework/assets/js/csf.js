@@ -232,7 +232,7 @@
           }
 
           var $section = $('#csf-section-'+slug);
-          $section.css({display: 'block'});
+          $section.show();
           $section.csf_reload_script();
 
           $hidden.val(slug);
@@ -277,7 +277,7 @@
         $link.addClass('csf-section-active');
 
         var $section = $('#csf-section-'+section_id);
-        $section.css({display: 'block'});
+        $section.show();
         $section.csf_reload_script();
 
         CSF.helper.set_cookie('csf-last-metabox-tab-'+ post_id +'-'+ unique_id, section_id);

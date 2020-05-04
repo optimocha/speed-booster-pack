@@ -34,7 +34,7 @@ class Speed_Booster_Pack {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Speed_Booster_Pack_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Speed_Booster_Pack_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -43,7 +43,7 @@ class Speed_Booster_Pack {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
 	protected $plugin_name;
 
@@ -52,7 +52,7 @@ class Speed_Booster_Pack {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
+	 * @var      string $version The current version of the plugin.
 	 */
 	protected $version;
 
@@ -109,6 +109,8 @@ class Speed_Booster_Pack {
 		 * of the plugin.
 		 */
 		require_once SBP_INC_PATH . 'class-speed-booster-pack-i18n.php';
+
+		require_once SBP_INC_PATH . 'classes/class-sbp-localize-tracker.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -187,8 +189,8 @@ class Speed_Booster_Pack {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -197,8 +199,8 @@ class Speed_Booster_Pack {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    Speed_Booster_Pack_Loader    Orchestrates the hooks of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -207,8 +209,8 @@ class Speed_Booster_Pack {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
 	 * @return    string    The version number of the plugin.
+	 * @since     1.0.0
 	 */
 	public function get_version() {
 		return $this->version;

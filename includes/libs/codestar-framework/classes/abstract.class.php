@@ -108,7 +108,7 @@ if ( ! class_exists( 'CSF_Abstract' ) ) {
       $this->output_css = apply_filters( "csf_{$this->unique}_output_css", $this->output_css, $this );
 
       if ( ! empty( $this->output_css ) ) {
-        echo '<style type="text/css">'. wp_kses( $this->output_css, array() ) . '</style>';
+        echo '<style type="text/css">'. wp_strip_all_tags( $this->output_css ) .'</style>';
       }
 
     }

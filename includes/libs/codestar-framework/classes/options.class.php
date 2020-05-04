@@ -221,9 +221,6 @@ if ( ! class_exists( 'CSF_Options' ) ) {
 
     public function ajax_save() {
 
-      // Sanitizing post data to ajax save.
-      $_POST = ( ! empty( $_POST['data'] ) ) ? wp_kses_post_deep( json_decode( wp_unslash( trim( $_POST['data'] ) ), true ) ) : array();
-
       $result = $this->set_options( true );
 
       if ( ! $result ) {
@@ -264,30 +261,40 @@ if ( ! class_exists( 'CSF_Options' ) ) {
     // set options
     public function set_options( $ajax = false ) {
 
-      $noncekey    = 'csf_options_nonce'. $this->unique;
-      $nonce       = ( ! empty( $_POST[ $noncekey ] ) ) ? sanitize_text_field( wp_unslash( $_POST[ $noncekey ] ) ) : '';
-      $request     = ( ! empty( $_POST[ $this->unique ] ) ) ? wp_kses_post_deep( $_POST[ $this->unique ] ) : array();
-      $transient   = ( ! empty( $_POST[ 'csf_transient' ] ) ) ? wp_kses_post_deep( $_POST[ 'csf_transient' ] ) : array();
-      $import_data = ( ! empty( $_POST[ 'csf_import_data' ] ) ) ? wp_kses_post_deep( json_decode( wp_unslash( trim( $_POST[ 'csf_import_data' ] ) ), true ) ) : array();
+      // XSS ok.
+      // No worries, This "POST" requests is sanitizing in the below foreach. see #L337 - #L341
+      $response    = ( $ajax && ! empty( $_POST['data'] ) ) ? json_decode( wp_unslash( trim( $_POST['data'] ) ), true ) : $_POST;
+
+      // Set variables.
+      $data      = array();
+      $noncekey  = 'csf_options_nonce'. $this->unique;
+      $nonce     = ( ! empty( $response[$noncekey] ) ) ? $response[$noncekey] : '';
+      $options   = ( ! empty( $response[$this->unique] ) ) ? $response[$this->unique] : array();
+      $transient = ( ! empty( $response['csf_transient'] ) ) ? $response['csf_transient'] : array();
 
       if ( wp_verify_nonce( $nonce, 'csf_options_nonce' ) ) {
 
         $importing  = false;
         $section_id = ( ! empty( $transient['section'] ) ) ? $transient['section'] : '';
 
-        // import data
-        if ( is_array( $import_data ) && ! empty( $import_data ) ) {
+        if ( ! $ajax && ! empty( $response[ 'csf_import_data' ] ) ) {
 
-          $request   = $import_data;
-          $importing = true;
+          $importing   = true;
+
+          // XSS ok.
+          // No worries, This "POST" requests is sanitizing in the below foreach. see #L337 - #L341
+          $import_data  = json_decode( wp_unslash( trim( $response[ 'csf_import_data' ] ) ), true );
+          $options  = ( is_array( $import_data ) && ! empty( $import_data ) ) ? $import_data : array();
 
           $this->notice = esc_html__( 'Success. Imported backup options.', 'csf' );
 
-        } else if ( ! empty( $transient['reset'] ) ) {
+        }
+
+        if ( ! empty( $transient['reset'] ) ) {
 
           foreach ( $this->pre_fields as $field ) {
             if ( ! empty( $field['id'] ) ) {
-              $request[$field['id']] = $this->get_default( $field );
+              $data[$field['id']] = $this->get_default( $field );
             }
           }
 
@@ -299,7 +306,7 @@ if ( ! class_exists( 'CSF_Options' ) ) {
 
             foreach ( $this->pre_sections[$section_id-1]['fields'] as $field ) {
               if ( ! empty( $field['id'] ) ) {
-                $request[$field['id']] = $this->get_default( $field );
+                $data[$field['id']] = $this->get_default( $field );
               }
             }
 
@@ -314,31 +321,49 @@ if ( ! class_exists( 'CSF_Options' ) ) {
 
             if ( ! empty( $field['id'] ) ) {
 
-              // sanitize
-              if ( ! empty( $field['sanitize'] ) ) {
+              $field_id    = $field['id'];
+              $field_value = isset( $options[$field_id] ) ? $options[$field_id] : '';
 
-                $sanitize = $field['sanitize'];
-                $value_sanitize = isset( $request[$field['id']] ) ? $request[$field['id']] : '';
-                $request[$field['id']] = call_user_func( $sanitize, $value_sanitize );
-
+              // Ajax and Importing doing wp_unslash already.
+              if ( ! $ajax && ! $importing ) {
+                $field_value = wp_unslash( $field_value );
               }
 
-              // validate
-              if ( ! empty( $field['validate'] ) ) {
+              // Sanitize "post" request of field.
+              if ( ! isset( $field['sanitize'] ) ) {
 
-                $value_validate = isset( $request[$field['id']] ) ? $request[$field['id']] : '';
-                $has_validated  = call_user_func( $field['validate'], $value_validate );
+                if( is_array( $field_value ) ) {
 
-                if ( ! empty( $has_validated ) ) {
-                  $request[$field['id']] = ( isset( $this->options[$field['id']] ) ) ? $this->options[$field['id']] : '';
-                  $this->errors[$field['id']] = $has_validated;
+                  $data[$field_id] = wp_kses_post_deep( $field_value );
+
+                } else {
+
+                  $data[$field_id] = wp_kses_post( $field_value );
+
                 }
 
+              } else if( isset( $field['sanitize'] ) && function_exists( $field['sanitize'] ) ) {
+
+                $data[$field_id] = call_user_func( $field['sanitize'], $field_value );
+
+              } else {
+
+                $data[$field_id] = $field_value;
+
               }
 
-              // auto sanitize
-              if ( ! isset( $request[$field['id']] ) || is_null( $request[$field['id']] ) ) {
-                $request[$field['id']] = '';
+              // Validate "post" request of field.
+              if ( isset( $field['validate'] ) && function_exists( $field['validate'] ) ) {
+
+                $has_validated = call_user_func( $field['validate'], $field_value );
+
+                if ( ! empty( $has_validated ) ) {
+
+                  $data[$field_id] = ( isset( $this->options[$field_id] ) ) ? $this->options[$field_id] : '';
+                  $this->errors[$field_id] = $has_validated;
+
+                }
+
               }
 
             }
@@ -347,23 +372,15 @@ if ( ! class_exists( 'CSF_Options' ) ) {
 
         }
 
-        // ignore nonce requests
-        if ( isset( $request['_nonce'] ) ) { unset( $request['_nonce'] ); }
+        $data = apply_filters( "csf_{$this->unique}_save", $data, $this );
 
-        // Ajax and Importing doing wp_unslash already.
-        if ( ! $ajax && ! $importing ) {
-          $request = wp_unslash( $request );
-        }
+        do_action( "csf_{$this->unique}_save_before", $data, $this );
 
-        $request = apply_filters( "csf_{$this->unique}_save", $request, $this );
+        $this->options = $data;
 
-        do_action( "csf_{$this->unique}_save_before", $request, $this );
+        $this->save_options( $data );
 
-        $this->options = $request;
-
-        $this->save_options( $request );
-
-        do_action( "csf_{$this->unique}_save_after", $request, $this );
+        do_action( "csf_{$this->unique}_save_after", $data, $this );
 
         if ( empty( $this->notice ) ) {
           $this->notice = esc_html__( 'Settings saved.', 'csf' );
@@ -378,19 +395,19 @@ if ( ! class_exists( 'CSF_Options' ) ) {
     }
 
     // save options database
-    public function save_options( $request ) {
+    public function save_options( $data ) {
 
       if ( $this->args['database'] === 'transient' ) {
-        set_transient( $this->unique, $request, $this->args['transient_time'] );
+        set_transient( $this->unique, $data, $this->args['transient_time'] );
       } else if ( $this->args['database'] === 'theme_mod' ) {
-        set_theme_mod( $this->unique, $request );
+        set_theme_mod( $this->unique, $data );
       } else if ( $this->args['database'] === 'network' ) {
-        update_site_option( $this->unique, $request );
+        update_site_option( $this->unique, $data );
       } else {
-        update_option( $this->unique, $request );
+        update_option( $this->unique, $data );
       }
 
-      do_action( "csf_{$this->unique}_saved", $request, $this );
+      do_action( "csf_{$this->unique}_saved", $data, $this );
 
     }
 

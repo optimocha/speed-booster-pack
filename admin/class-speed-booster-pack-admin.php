@@ -86,34 +86,109 @@ class Speed_Booster_Pack_Admin {
 
 	public function create_settings_page() {
 		// Check core class for avoid errors
-		if ( class_exists( 'CSF' ) ) {
-
+		if( class_exists( 'CSF' ) ) {
 			// Set a unique slug-like ID
-			$prefix = 'sbp_options';
+			$prefix = 'speed-booster';
 
+			//
 			// Create options
 			CSF::createOptions( $prefix, array(
-				'menu_title' => 'Speed Booster Pack',
+				'framework_title' => 'Speed Booster Pack <small>by Optimocha</small>',
+				'menu_title' => 'Speed Booster',
 				'menu_slug'  => 'speed-booster',
 				'menu_icon' => SBP_URL . 'admin/images/icon-16x16.png',
+				'show_reset_all' => false,
+				'theme' => 'light',
 			) );
 
-			// Create a section
+			//
+			// Create Analytics Tab
 			CSF::createSection( $prefix, array(
-				'title'  => 'Tab Title 1',
+				'id'    => 'special_tab', // Set a unique slug-like ID
+				'title' => 'Specials',
+			) );
+
+			//
+			// Create a sub-tab
+			CSF::createSection( $prefix, [
+				'parent' => 'special_tab', // The slug id of the parent section
+				'title'  => 'Localize Trackers',
+				'fields' => [
+					[
+						'type' => 'heading',
+						'title' => 'Localize Analytics',
+					],
+					[
+						'id' => 'localize-analytics',
+						'type' => 'switcher',
+						'title' => 'Localize Analytics',
+					],
+					[
+						'id' => 'use-minimal-analytics',
+						'type' => 'switcher',
+						'title' => 'Use Minimal Analytics',
+						'dependency' => ['localize-analytics', '==', 'true'],
+					],
+					[
+						'id'    => 'tracking-id',
+						'type'  => 'text',
+						'title' => 'Tracking ID',
+						'dependency' => ['use-minimal-analytics', '==', 'true'],
+					],
+					[
+						'id' => 'tracking-position',
+						'type' => 'radio',
+						'title' => 'Tracking Position',
+						'options' => [
+							'footer' => 'Footer',
+							'header' => 'Header',
+						],
+						'dependency' => ['use-minimal-analytics', '==', 'true'],
+					],
+				],
+			]);
+
+			//
+			// Create a sub-tab
+			CSF::createSection( $prefix, array(
+				'parent' => 'primary_tab',
+				'title'  => 'Sub Tab 2',
 				'fields' => array(
 
-					// A text field
+					// A textarea field
 					array(
-						'id'    => 'opt-text',
-						'type'  => 'text',
-						'title' => 'Simple Text',
+						'id'    => 'opt-textarea',
+						'type'  => 'textarea',
+						'title' => 'Simple Textarea',
 					),
 
 				)
 			) );
-		} else {
-			die('Not found');
+
+			//
+			// Create a top-tab
+			CSF::createSection( $prefix, array(
+				'id'    => 'cache_tab', // Set a unique slug-like ID
+				'title' => 'Cache',
+			) );
+
+
+			//
+			// Create a sub-tab
+			CSF::createSection( $prefix, array(
+				'parent' => 'cache_tab', // The slug id of the parent section
+				'title'  => 'General',
+				'fields' => array(
+
+					// A switcher field
+					array(
+						'id'    => 'opt-switcher',
+						'type'  => 'switcher',
+						'title' => 'Simple Switcher',
+					),
+
+				)
+			) );
 		}
 	}
 

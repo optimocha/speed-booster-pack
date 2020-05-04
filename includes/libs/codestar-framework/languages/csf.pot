@@ -9,77 +9,77 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: classes/comment-metabox.class.php:194 classes/metabox.class.php:259
-#: classes/options.class.php:661
+#: classes/comment-metabox.class.php:198 classes/metabox.class.php:259
+#: classes/options.class.php:678
 msgid "No option provided by developer."
 msgstr ""
 
-#: classes/comment-metabox.class.php:212 classes/metabox.class.php:277
+#: classes/comment-metabox.class.php:217 classes/metabox.class.php:278
 msgid "Restore"
 msgstr ""
 
-#: classes/comment-metabox.class.php:213 classes/metabox.class.php:278
+#: classes/comment-metabox.class.php:218 classes/metabox.class.php:279
 msgid "update post for restore "
 msgstr ""
 
-#: classes/comment-metabox.class.php:213 classes/metabox.class.php:278
+#: classes/comment-metabox.class.php:218 classes/metabox.class.php:279
 msgid "Cancel"
 msgstr ""
 
-#: classes/options.class.php:230
+#: classes/options.class.php:227
 msgid "Error while saving."
 msgstr ""
 
-#: classes/options.class.php:284
+#: classes/options.class.php:289
 msgid "Success. Imported backup options."
 msgstr ""
 
-#: classes/options.class.php:294
+#: classes/options.class.php:301
 msgid "Default options restored."
 msgstr ""
 
-#: classes/options.class.php:308
+#: classes/options.class.php:315
 msgid "Default options restored for only this section."
 msgstr ""
 
-#: classes/options.class.php:369
+#: classes/options.class.php:386
 msgid "Settings saved."
 msgstr ""
 
-#: classes/options.class.php:552
+#: classes/options.class.php:569
 msgid "Settings have changed, you should save them!"
 msgstr ""
 
-#: classes/options.class.php:554
+#: classes/options.class.php:571
 msgid "show all options"
 msgstr ""
 
-#: classes/options.class.php:556
+#: classes/options.class.php:573
 msgid "Search option(s)"
 msgstr ""
 
-#: classes/options.class.php:559 classes/options.class.php:686
+#: classes/options.class.php:576 classes/options.class.php:703
 msgid "Save"
 msgstr ""
 
-#: classes/options.class.php:559 classes/options.class.php:686
+#: classes/options.class.php:576 classes/options.class.php:703
 msgid "Saving..."
 msgstr ""
 
-#: classes/options.class.php:560 classes/options.class.php:687
+#: classes/options.class.php:577 classes/options.class.php:704
 msgid "Reset Section"
 msgstr ""
 
-#: classes/options.class.php:560 classes/options.class.php:687
+#: classes/options.class.php:577 classes/options.class.php:704
 msgid "Are you sure to reset this section options?"
 msgstr ""
 
-#: classes/options.class.php:561 classes/options.class.php:688
+#: classes/options.class.php:578 classes/options.class.php:705
 #: fields/backup/backup.php:34
 msgid "Reset All"
 msgstr ""
 
-#: classes/options.class.php:561 classes/options.class.php:688
+#: classes/options.class.php:578 classes/options.class.php:705
 msgid "Are you sure to reset all options?"
 msgstr ""
 
