@@ -165,10 +165,24 @@ class Speed_Booster_Pack_Admin {
 
 					// A switcher field
 					array(
-						'id'    => 'opt-switcher',
+						'id'    => 'enable-cache',
 						'type'  => 'switcher',
-						'title' => 'Simple Switcher',
+						'title' => 'Enable/Disable Caching',
 					),
+
+					// A switcher field
+					array(
+						'id'    => 'separate-mobile-cache',
+						'type'  => 'switcher',
+						'title' => 'Separate Mobile Cache',
+					),
+
+					[
+						'id' => 'cache-expire-time',
+						'type' => 'number',
+						'default' => '604800',
+						'title' => 'Cache expire time in seconds'
+					],
 
 				)
 			) );
