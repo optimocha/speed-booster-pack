@@ -27,7 +27,7 @@ class Speed_Booster_Pack_Public {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var      string $plugin_name The ID of this plugin.
 	 */
 	private $plugin_name;
 
@@ -36,21 +36,22 @@ class Speed_Booster_Pack_Public {
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var      string $version The current version of this plugin.
 	 */
 	private $version;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param string $plugin_name The name of the plugin.
+	 * @param string $version The version of this plugin.
+	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of the plugin.
-	 * @param      string    $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+		$this->version     = $version;
 
 	}
 
@@ -98,6 +99,19 @@ class Speed_Booster_Pack_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/speed-booster-pack-public.js', array( 'jquery' ), $this->version, false );
 
+	}
+
+	/**
+	 * @param string $html html response from output buffer
+	 */
+	public function template_redirect() {
+		ob_start([$this, 'output_buffer']);
+	}
+
+	public function output_buffer($html) {
+		$html = apply_filters('sbp_output_buffer', $html);
+
+		return $html;
 	}
 
 }

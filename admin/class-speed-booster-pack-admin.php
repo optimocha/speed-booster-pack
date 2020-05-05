@@ -149,23 +149,6 @@ class Speed_Booster_Pack_Admin {
 			]);
 
 			//
-			// Create a sub-tab
-			CSF::createSection( $prefix, array(
-				'parent' => 'primary_tab',
-				'title'  => 'Sub Tab 2',
-				'fields' => array(
-
-					// A textarea field
-					array(
-						'id'    => 'opt-textarea',
-						'type'  => 'textarea',
-						'title' => 'Simple Textarea',
-					),
-
-				)
-			) );
-
-			//
 			// Create a top-tab
 			CSF::createSection( $prefix, array(
 				'id'    => 'cache_tab', // Set a unique slug-like ID
@@ -189,6 +172,24 @@ class Speed_Booster_Pack_Admin {
 
 				)
 			) );
+
+			CSF::createSection($prefix, [
+				'id' => 'assets_tab',
+				'title' => 'Assets',
+			]);
+
+			CSF::createSection($prefix, [
+				'parent' => 'assets_tab',
+				'id' => 'font-optimizer',
+				'title' => 'Font Optimizer',
+				'fields' => [
+					[
+						'id' => 'optimize-fonts',
+						'title' => 'Optimize Google Fonts',
+						'type' => 'switcher',
+					]
+				],
+			]);
 		}
 	}
 

@@ -112,6 +112,8 @@ class Speed_Booster_Pack {
 
 		require_once SBP_INC_PATH . 'classes/class-sbp-localize-tracker.php';
 
+		require_once SBP_INC_PATH . 'classes/class-sbp-font-optimizer.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -173,6 +175,7 @@ class Speed_Booster_Pack {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect' );
 
 	}
 

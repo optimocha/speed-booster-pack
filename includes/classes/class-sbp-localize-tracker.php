@@ -22,10 +22,12 @@ class SBP_Localize_Tracker {
 			}
 			add_action( $tracking_code_position, [ $this, 'insert_minimal_analytics' ] );
 		} else {
-			add_action( 'template_redirect', function () {
-				ob_start( [ $this, 'replace_url' ] );
-			} );
+			add_filter('sbp_output_buffer', [$this, 'replace_url']);
 		}
+	}
+
+	public function test($html) {
+		return 'zahid';
 	}
 
 	public function replace_url( $html ) {
