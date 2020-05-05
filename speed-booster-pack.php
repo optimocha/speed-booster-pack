@@ -90,7 +90,7 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 	function sbp_get_option( $option = '', $default = null ) {
 
 		// Attention: Its your unique id of the framework
-		$options = get_option( 'speed-booster' );
+		$options = get_option( 'speed_booster' );
 
 		return ( isset( $options[ $option ] ) ) ? $options[ $option ] : $default;
 

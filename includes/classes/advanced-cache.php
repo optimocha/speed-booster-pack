@@ -1,185 +1,79 @@
 <?php
 
+header('X-Test: Lahmacun');
+
 // check if request method is GET
 if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET' ) {
-    return false;
+	return false;
 }
 
-// path to cached variants
-$path_html = $path . 'index.html';
-$path_gzip = $path . 'index.html.gz';
-$path_webp_html = $path . 'index-webp.html';
-$path_webp_gzip = $path . 'index-webp.html.gz';
-
-
-// if we don't have a cache copy, we do not need to proceed
-if ( !is_readable( $path_html ) ) {
-    return false;
+// base path
+$cache_file_path = get_cache_file_path() . 'index.html';
+if ( ! is_readable( $cache_file_path ) ) {
+	return false;
 }
 
-// check if there are settings passed out to us
-$settings_file = sprintf('%s-%s%s.json',
-    WP_CONTENT_DIR. "/cache/cache-enabler-advcache",
-    parse_url(
-        'http://' .strtolower($_SERVER['HTTP_HOST']),
-        PHP_URL_HOST
-    ),
-    is_multisite() ? '-'. abs(intval($blog_id)) : ''
-);
-$settings = _read_settings($settings_file);
-
-// if post path excluded
-if ( !empty($settings['excl_regexp']) ) {
-    $url_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-    if ( preg_match($settings['excl_regexp'], $url_path) ) {
-        return false;
-    }
-}
+$settings_file = WP_CONTENT_DIR . '/cache/speed-booster/settings.json';
+$settings      = parse_settings_file( $settings_file );
 
 // check GET variables
-if ( !empty($_GET) ) {
-    // set regex of analytics campaign tags that shall not prevent caching
-    if ( !empty($settings['incl_attributes']) ) {
-        $attributes_regex = $settings['incl_attributes'];
-    } else {
-        $attributes_regex = '/^utm_(source|medium|campaign|term|content)$/';
-    }
-    // prevent cache use if there is any GET variable not covered by the campaign tag regex
-    if ( sizeof( preg_grep( $attributes_regex, array_keys( $_GET ), PREG_GREP_INVERT ) ) > 0 ) {
-        return false;
-    }
+if ( ! empty( $_GET ) ) {
+	$excluded_parameters = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+	if (count(array_intersect(array_keys($_GET), $excluded_parameters)) > 0) {
+		return false;
+	}
 }
 
-// check cookie values
-if ( !empty($_COOKIE) ) {
-    // check cookie values
-    if ( !empty($settings['excl_cookies']) ) {
-        // if custom cookie regexps exist, we merge them
-        $cookies_regex = $settings['excl_cookies'];
-    } else {
-        $cookies_regex = '/^(wp-postpass|wordpress_logged_in|comment_author)_/';
-    }
-
-    foreach ( $_COOKIE as $k => $v) {
-        if ( preg_match($cookies_regex, $k) ) {
-            return false;
-        }
-    }
-}
-
-// if an expiry time is set, check the file against it
-if ( isset($settings["expires"]) and $settings["expires"] > 0 ) {
-    $now = time();
-    $expires_seconds = 3600*$settings["expires"];
-
-    // check if asset has expired
-    if ( ( filemtime($path_html) + $expires_seconds ) <= $now ) {
-        return false;
-    }
-}
-
-// if a cache timeout is set, check if we have to bypass the cache
-if ( !empty($settings["cache_timeout"]) ) {
-    $now = time();
-
-    // check if timeout has been reached
-    if ( $settings["cache_timeout"] <= $now ) {
-        return false;
-    }
-}
-
-// check if we need drop the ball to cause a redirect
-if ( isset($settings["permalink_trailing_slash"]) ) {
-    if ( ! preg_match("/\/(|\?.*)$/", $_SERVER["REQUEST_URI"]) ) {
-        return false;
-    }
-}
-
-// set cache handler header
-header('x-cache-handler: wp');
-
-// get if-modified request headers
-if ( function_exists( 'apache_request_headers' ) ) {
-    $headers = apache_request_headers();
-    $http_if_modified_since = ( isset( $headers[ 'If-Modified-Since' ] ) ) ? $headers[ 'If-Modified-Since' ] : '';
-    $http_accept = ( isset( $headers[ 'Accept' ] ) ) ? $headers[ 'Accept' ] : '';
-    $http_accept_encoding = ( isset( $headers[ 'Accept-Encoding' ] ) ) ? $headers[ 'Accept-Encoding' ] : '';
-} else {
-    $http_if_modified_since = ( isset( $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] ) ) ? $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ] : '';
-    $http_accept = ( isset( $_SERVER[ 'HTTP_ACCEPT' ] ) ) ? $_SERVER[ 'HTTP_ACCEPT' ] : '';
-    $http_accept_encoding = ( isset( $_SERVER[ 'HTTP_ACCEPT_ENCODING' ] ) ) ? $_SERVER[ 'HTTP_ACCEPT_ENCODING' ] : '';
-}
-
-// check modified since with cached file and return 304 if no difference
-if ( $http_if_modified_since && ( strtotime( $http_if_modified_since ) >= filemtime( $path_html ) ) ) {
-    header( $_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified', true, 304 );
-    exit;
-}
-
-header( 'Last-Modified: ' . gmdate("D, d M Y H:i:s",filemtime( $path_html )).' GMT' );
-
-// check webp and deliver gzip webp file if support
-if ( $http_accept && ( strpos($http_accept, 'webp') !== false ) ) {
-    if ( is_readable( $path_webp_gzip ) ) {
-        header('Content-Encoding: gzip');
-        readfile( $path_webp_gzip );
-        exit;
-    } elseif ( is_readable( $path_webp_html ) ) {
-        readfile( $path_webp_html );
-        exit;
-    }
-}
-
-// check encoding and deliver gzip file if support
-if ( $http_accept_encoding && ( strpos($http_accept_encoding, 'gzip') !== false ) && is_readable( $path_gzip )  ) {
-    header('Content-Encoding: gzip');
-    readfile( $path_gzip );
-    exit;
+// TODO: This is not finished yet.
+if (isset($settings['exclude_urls'])) {
+	$exclude_urls = array_map('trim', explode(PHP_EOL, $settings['exclude_urls']));
+	if (count($exclude_urls) > 0 && in_array($_SERVER['REQUEST_URI'], $exclude_urls)) {
+		return false;
+	}
 }
 
 // deliver cached file (default)
-readfile( $path_html );
+readfile( $cache_file_path );
 exit;
 
 
 // generate cache path
-function _ce_file_path($path = NULL) {
-    $path = sprintf(
-        '%s%s%s%s',
-        WP_CONTENT_DIR . '/cache/cache-enabler',
-        DIRECTORY_SEPARATOR,
-        parse_url(
-            'http://' .strtolower($_SERVER['HTTP_HOST']),
-            PHP_URL_HOST
-        ),
-        parse_url(
-            ( $path ? $path : $_SERVER['REQUEST_URI'] ),
-            PHP_URL_PATH
-        )
-    );
+function get_cache_file_path() {
+	$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster';
+//	if ( wp_is_mobile() && sbp_get_option( 'separate-mobile-cache', false ) ) {
+//		$cache_dir = SBP_CACHE_DIR . '/.mobile';
+//	}
 
-    if ( is_file($path) > 0 ) {
-        header( $_SERVER['SERVER_PROTOCOL'] . ' 404 Not Found', true, 404 );
-        exit;
-    }
+	$path = sprintf(
+		'%s%s%s%s',
+		$cache_dir,
+		DIRECTORY_SEPARATOR,
+		parse_url(
+			'http://' . strtolower( $_SERVER['HTTP_HOST'] ),
+			PHP_URL_HOST
+		),
+		parse_url(
+			$_SERVER['REQUEST_URI'],
+			PHP_URL_PATH
+		)
+	);
 
-    // add trailing slash
-    $path = rtrim( $path, '/\\' ) . '/';
+	if ( is_file( $path ) > 0 ) {
+		wp_die( 'Error occured on SBP cache. Please contact you webmaster.' );
+	}
 
-    return $path;
+	return rtrim( $path, "/" ) . "/";
 }
 
 // read settings file
-function _read_settings($settings_file) {
-    if (! file_exists($settings_file) ) {
-        return [];
-    }
+function parse_settings_file( $settings_file ) {
+	if ( ! file_exists( $settings_file ) ) {
+		return [];
+	}
 
-    if ( ! $settings = json_decode(file_get_contents($settings_file), true) ) {
-        // if there is an error reading our settings
-        return [];
-    }
+	if ( ! $settings = json_decode( file_get_contents( $settings_file ), true ) ) {
+		return [];
+	}
 
-    return $settings;
+	return $settings;
 }

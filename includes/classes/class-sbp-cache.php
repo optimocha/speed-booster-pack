@@ -2,7 +2,7 @@
 
 class SBP_Cache {
 	private $options = [
-		'cache-expire-time'       => 604800, // Expire time in seconds
+		'cache_expire_time'       => 604800, // Expire time in seconds
 		// Bypass options
 		'disable_cache_on_login'  => false,
 		'disable_cache_on_mobile' => false,
@@ -17,6 +17,10 @@ class SBP_Cache {
 
 		// Clear cache hook
 		add_action( 'admin_init', [ $this, 'clear_total_cache' ] );
+
+		if (sbp_get_option('enable-cache')) {
+			$this->set_wp_cache_constant( true );
+		}
 
 		// Handle The Cache
 		add_filter( 'sbp_output_buffer', [ $this, 'handle_cache' ] );
@@ -96,7 +100,7 @@ class SBP_Cache {
 	private function set_options() {
 		global $sbp_options;
 		$setting_names = [
-			'cache-expire-time',
+			'cache_expire_time',
 			'cache_file_name',
 			'cache_gzip_file_name',
 			'cache_do_not_logged_in',
@@ -148,16 +152,12 @@ class SBP_Cache {
 			return $html;
 		}
 
-		global $wp_filesystem;
-
-
-		require_once( ABSPATH . '/wp-admin/includes/file.php' );
-		WP_Filesystem();
+		$wp_filesystem = $this->get_filesystem();
 
 		// Read cache file
 		$cache_file_path = $this->get_cache_file_path() . 'index.html';
 
-		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $this->options['cache-expire-time'] < time();
+		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $this->options['cache_expire_time'] < time();
 
 		if ( $wp_filesystem->exists( $cache_file_path ) && ! $has_file_expired ) {
 			header( 'X-Cache-Provider: Speed-Booster-Pack' );
@@ -207,5 +207,49 @@ class SBP_Cache {
 		}
 
 		return rtrim( $path, "/" ) . "/";
+	}
+
+	/**
+	 * Parts of this class was inspired from Cache Enabler's codebase.
+	 *
+	 * @param bool $wp_cache
+	 */
+	private function set_wp_cache_constant( $wp_cache = true ) {
+		$wp_config_file = ABSPATH . 'wp-config.php';
+
+		if ( file_exists( $wp_config_file ) && is_writable( $wp_config_file ) ) {
+			// get wp config as array
+			$wp_config = file( $wp_config_file );
+
+			if ( $wp_cache ) {
+				$append_line = "define('WP_CACHE', true); // Added by Speed Booster Pack" . "\r\n";
+			} else {
+				$append_line = '';
+			}
+
+			$found_wp_cache = false;
+
+			foreach ( $wp_config as &$line ) {
+				if ( preg_match( '/^\s*define\s*\(\s*[\'\"]WP_CACHE[\'\"]\s*,\s*(.*)\s*\)/', $line ) ) {
+					$line           = $append_line;
+					$found_wp_cache = true;
+					break;
+				}
+			}
+
+			// add wp cache ce line if not found yet
+			if ( ! $found_wp_cache ) {
+				array_shift( $wp_config );
+				array_unshift( $wp_config, "<?php\r\n", $append_line );
+			}
+
+			// write wp-config.php file
+			$fh = @fopen( $wp_config_file, 'w' );
+			foreach ( $wp_config as $ln ) {
+				@fwrite( $fh, $ln );
+			}
+
+			@fclose( $fh );
+		}
 	}
 }

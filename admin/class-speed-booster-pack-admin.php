@@ -54,8 +54,28 @@ class Speed_Booster_Pack_Admin {
 		$this->version     = $version;
 
 		$this->load_dependencies();
-		$this->create_settings_page();
+		add_action( 'csf_speed_booster_saved', function() {
+			$settings = [
+				'cache_expire_time'       => 604800, // Expire time in seconds
+				// Bypass options
+				'disable_cache_on_login'  => false,
+				'disable_cache_on_mobile' => false,
+				'exclude_urls'            => '',
+			];
 
+			foreach ( $settings as $option => $default_value ) {
+				$settings[ $option ] = sbp_get_option( $option, $default_value );
+			}
+
+			global $wp_filesystem;
+
+			require_once( ABSPATH . '/wp-admin/includes/file.php' );
+			WP_Filesystem();
+
+			$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );
+		});
+
+		$this->create_settings_page();
 	}
 
 	/**
@@ -86,19 +106,19 @@ class Speed_Booster_Pack_Admin {
 
 	public function create_settings_page() {
 		// Check core class for avoid errors
-		if( class_exists( 'CSF' ) ) {
+		if ( class_exists( 'CSF' ) ) {
 			// Set a unique slug-like ID
-			$prefix = 'speed-booster';
+			$prefix = 'speed_booster';
 
 			//
 			// Create options
 			CSF::createOptions( $prefix, array(
 				'framework_title' => 'Speed Booster Pack <small>by Optimocha</small>',
-				'menu_title' => 'Speed Booster',
-				'menu_slug'  => 'speed-booster',
-				'menu_icon' => SBP_URL . 'admin/images/icon-16x16.png',
-				'show_reset_all' => false,
-				'theme' => 'light',
+				'menu_title'      => 'Speed Booster',
+				'menu_slug'       => 'speed-booster',
+				'menu_icon'       => SBP_URL . 'admin/images/icon-16x16.png',
+				'show_reset_all'  => false,
+				'theme'           => 'light',
 			) );
 
 			//
@@ -115,38 +135,38 @@ class Speed_Booster_Pack_Admin {
 				'title'  => 'Localize Trackers',
 				'fields' => [
 					[
-						'type' => 'heading',
+						'type'  => 'heading',
 						'title' => 'Localize Analytics',
 					],
 					[
-						'id' => 'localize-analytics',
-						'type' => 'switcher',
+						'id'    => 'localize-analytics',
+						'type'  => 'switcher',
 						'title' => 'Localize Analytics',
 					],
 					[
-						'id' => 'use-minimal-analytics',
-						'type' => 'switcher',
-						'title' => 'Use Minimal Analytics',
-						'dependency' => ['localize-analytics', '==', 'true'],
+						'id'         => 'use-minimal-analytics',
+						'type'       => 'switcher',
+						'title'      => 'Use Minimal Analytics',
+						'dependency' => [ 'localize-analytics', '==', 'true' ],
 					],
 					[
-						'id'    => 'tracking-id',
-						'type'  => 'text',
-						'title' => 'Tracking ID',
-						'dependency' => ['use-minimal-analytics', '==', 'true'],
+						'id'         => 'tracking-id',
+						'type'       => 'text',
+						'title'      => 'Tracking ID',
+						'dependency' => [ 'use-minimal-analytics', '==', 'true' ],
 					],
 					[
-						'id' => 'tracking-position',
-						'type' => 'radio',
-						'title' => 'Tracking Position',
-						'options' => [
+						'id'         => 'tracking-position',
+						'type'       => 'radio',
+						'title'      => 'Tracking Position',
+						'options'    => [
 							'footer' => 'Footer',
 							'header' => 'Header',
 						],
-						'dependency' => ['use-minimal-analytics', '==', 'true'],
+						'dependency' => [ 'use-minimal-analytics', '==', 'true' ],
 					],
 				],
-			]);
+			] );
 
 			//
 			// Create a top-tab
@@ -178,32 +198,41 @@ class Speed_Booster_Pack_Admin {
 					),
 
 					[
-						'id' => 'cache-expire-time',
-						'type' => 'number',
+						'id'      => 'cache-expire-time',
+						'type'    => 'number',
 						'default' => '604800',
-						'title' => 'Cache expire time in seconds'
+						'title'   => 'Cache expire time in seconds'
+					],
+
+					[
+						'id'          => 'exclude_urls',
+						'type'        => 'textarea',
+						'default'     => '',
+						'title'       => 'Exclude url\'s from caching',
+						'subtitle'    => 'Write url each line',
+						'placeholder' => '/some/relative/path',
 					],
 
 				)
 			) );
 
-			CSF::createSection($prefix, [
-				'id' => 'assets_tab',
+			CSF::createSection( $prefix, [
+				'id'    => 'assets_tab',
 				'title' => 'Assets',
-			]);
+			] );
 
-			CSF::createSection($prefix, [
+			CSF::createSection( $prefix, [
 				'parent' => 'assets_tab',
-				'id' => 'font-optimizer',
-				'title' => 'Font Optimizer',
+				'id'     => 'font-optimizer',
+				'title'  => 'Font Optimizer',
 				'fields' => [
 					[
-						'id' => 'optimize-fonts',
+						'id'    => 'optimize-fonts',
 						'title' => 'Optimize Google Fonts',
-						'type' => 'switcher',
+						'type'  => 'switcher',
 					]
 				],
-			]);
+			] );
 		}
 	}
 
