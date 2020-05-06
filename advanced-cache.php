@@ -20,7 +20,13 @@ if ( ! empty( $_COOKIE ) ) {
 $settings_file = WP_CONTENT_DIR . '/cache/speed-booster/settings.json';
 $settings      = sbp_parse_settings_file( $settings_file );
 
+// Set default file name
 $filename = 'index.html';
+
+// Check if mobile cache is active
+if ( sbp_is_mobile() && isset( $settings['show_mobile_cache'] ) && ! $settings['show_mobile_cache'] ) {
+	return false;
+}
 
 // Check for query strings
 if ( ! empty( $_GET ) && isset( $settings['include_query_strings'] ) ) {
@@ -28,11 +34,15 @@ if ( ! empty( $_GET ) && isset( $settings['include_query_strings'] ) ) {
 	$include_query_strings = sbp_explode_lines( $settings['include_query_strings'] );
 
 	$query_string_file_name = '';
+	// Put all query string parameters in order to generate same filename even if parameter order is different
+	ksort( $_GET );
+
 	foreach ( $_GET as $key => $value ) {
 		if ( in_array( $key, $include_query_strings ) ) {
 			$query_string_file_name .= "$key-$value-";
 		}
 	}
+
 	if ( '' !== $query_string_file_name ) {
 		$query_string_file_name .= '.html';
 		$filename               = $query_string_file_name;
@@ -45,16 +55,13 @@ if ( ! is_readable( $cache_file_path ) ) {
 	return false;
 }
 
-// check GET variables
-if ( ! empty( $_GET ) ) {
-
-	$excluded_parameters = [ 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content' ];
-	if ( count( array_intersect( array_keys( $_GET ), $excluded_parameters ) ) > 0 ) {
+// Check if cache file is expired
+if ( isset( $settings['cache_expire_time'] ) && ! empty( $settings['cache_expire_time'] ) ) {
+	if ( ( filemtime( $cache_file_path ) + $settings['cache_expire_time'] ) < time() ) {
 		return false;
 	}
 }
 
-// TODO: This is not finished yet.
 if ( isset( $settings['exclude_urls'] ) ) {
 	$exclude_urls = array_map( 'trim', explode( PHP_EOL, $settings['exclude_urls'] ) );
 	if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
@@ -62,17 +69,42 @@ if ( isset( $settings['exclude_urls'] ) ) {
 	}
 }
 
-// deliver cached file (default)
+// output cached file
 readfile( $cache_file_path );
 exit;
+
+/**
+ * Copied from WordPress wp_is_mobile
+ *
+ * @return bool
+ */
+function sbp_is_mobile() {
+	if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
+		$is_mobile = false;
+	} elseif ( strpos( $_SERVER['HTTP_USER_AGENT'], 'Mobile' ) !== false // Many mobile devices (all iPhone, iPad, etc.)
+	           || strpos( $_SERVER['HTTP_USER_AGENT'], 'Android' ) !== false
+	           || strpos( $_SERVER['HTTP_USER_AGENT'], 'Silk/' ) !== false
+	           || strpos( $_SERVER['HTTP_USER_AGENT'], 'Kindle' ) !== false
+	           || strpos( $_SERVER['HTTP_USER_AGENT'], 'BlackBerry' ) !== false
+	           || strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mini' ) !== false
+	           || strpos( $_SERVER['HTTP_USER_AGENT'], 'Opera Mobi' ) !== false ) {
+		$is_mobile = true;
+	} else {
+		$is_mobile = false;
+	}
+
+	return $is_mobile;
+}
 
 
 // generate cache path
 function get_cache_file_path() {
+	global $settings;
 	$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster';
-//	if ( wp_is_mobile() && sbp_get_option( 'separate-mobile-cache', false ) ) {
-//		$cache_dir = SBP_CACHE_DIR . '/.mobile';
-//	}
+
+	if ( sbp_is_mobile() && isset( $settings['show_mobile_cache'] ) && $settings['show_mobile_cache'] && isset( $settings['separate_mobile_cache'] ) && $settings['separate_mobile_cache'] ) {
+		$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster/.mobile';
+	}
 
 	$path = sprintf(
 		'%s%s%s%s',
@@ -89,7 +121,7 @@ function get_cache_file_path() {
 	);
 
 	if ( is_file( $path ) > 0 ) {
-		wp_die( 'Error occured on SBP cache. Please contact you webmaster.' );
+		wp_die( __('Error occured on SBP cache. Please contact you webmaster.', 'speed-booster') );
 	}
 
 	return rtrim( $path, "/" ) . "/";

@@ -2,10 +2,11 @@
 
 class SBP_Cache {
 	private $options = [
-		'cache_expire_time'       => 604800, // Expire time in seconds
-		// Bypass options
-		'disable_cache_on_login'  => false,
-		'disable_cache_on_mobile' => false,
+		'cache_expire_time'     => 604800, // Expire time in seconds
+		'exclude_urls'          => '',
+		'include_query_strings' => '',
+		'show_mobile_cache'     => false,
+		'separate_mobile_cache' => false,
 	];
 
 	private $file_name = 'index.html';
@@ -18,7 +19,7 @@ class SBP_Cache {
 		add_action( 'admin_bar_menu', [ $this, 'admin_bar_links' ] );
 
 		// Clear cache hook
-		add_action( 'admin_init', [ $this, 'clear_total_cache' ] );
+		add_action( 'admin_init', [ $this, 'clear_cache_request' ] );
 
 		if ( sbp_get_option( 'enable-cache' ) ) {
 			$this->set_wp_cache_constant( true );
@@ -34,7 +35,7 @@ class SBP_Cache {
 
 	private function should_bypass_cache() {
 		// Check if cache is enabled
-		if ( ! sbp_get_option( 'enable-cache' ) ) {
+		if ( ! sbp_get_option( 'enable_cache' ) ) {
 			return true;
 		}
 
@@ -82,7 +83,18 @@ class SBP_Cache {
 			return true;
 		}
 
+		if ( wp_is_mobile() && ! sbp_get_option( 'show_mobile_cache', false ) ) {
+			return true;
+		}
+
 		return false;
+	}
+
+	public function clear_cache_link() {
+		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' ) {
+			self::clear_total_cache();
+			wp_redirect( admin_url( 'admin.php?page=sbp-options#sbp-cache' ) );
+		}
 	}
 
 	private function get_filesystem() {
@@ -95,20 +107,8 @@ class SBP_Cache {
 	}
 
 	private function set_options() {
-		global $sbp_options;
-		$setting_names = [
-			'cache_expire_time',
-			'cache_file_name',
-			'cache_gzip_file_name',
-			'cache_do_not_logged_in',
-			'cache_separate_mobile',
-			'cache_do_not_query_string',
-		];
-
-		foreach ( $setting_names as $name ) {
-			if ( sbp_get_option( $name ) ) {
-				$this->options[ $name ] = sbp_get_option( $name );
-			}
+		foreach ( $this->options as $option => $default_value ) {
+			$this->options[ $option ] = sbp_get_option( $option, $default_value );
 		}
 	}
 
@@ -123,17 +123,37 @@ class SBP_Cache {
 		$admin_bar->add_menu( $cache_items );
 	}
 
-	public function clear_total_cache() {
-		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' ) {
-			self::delete_dir( SBP_CACHE_DIR );
-			wp_redirect( admin_url( 'admin.php?page=sbp-options#sbp-cache' ) );
-		}
+	public static function clear_total_cache() {
+		self::delete_dir( SBP_CACHE_DIR );
 	}
 
-	private function delete_dir( $dir ) {
-		$filesystem = $this->get_filesystem();
+	public static function delete_dir( $dir ) {
+		if ( ! is_dir( $dir ) ) {
+			return;
+		}
 
-		return $filesystem->rmdir( $dir, true );
+		$dir_objects = @scandir( $dir );
+		$objects     = array_filter( $dir_objects, function ( $object ) {
+			return $object != '.' && $object != '..';
+		} );
+
+		if ( empty( $objects ) ) {
+			return;
+		}
+
+		foreach ( $objects as $object ) {
+			$object = $dir . DIRECTORY_SEPARATOR . $object;
+
+			if ( is_dir( $object ) ) {
+				self::delete_dir( $object );
+			} else {
+				@unlink( $object );
+			}
+		}
+
+		@rmdir( $dir );
+
+		clearstatcache();
 	}
 
 	public function start_buffer() {
@@ -155,6 +175,8 @@ class SBP_Cache {
 			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'include_query_strings', '' ) );
 
 			$query_string_file_name = '';
+			// Order get parameters alphabetically (to get same filename for every order of query parameters)
+			ksort( $_GET );
 			foreach ( $_GET as $key => $value ) {
 				if ( in_array( $key, $include_query_strings ) ) {
 					$query_string_file_name .= "$key-$value-";
@@ -174,8 +196,6 @@ class SBP_Cache {
 		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $this->options['cache_expire_time'] < time();
 
 		if ( $wp_filesystem->exists( $cache_file_path ) && ! $has_file_expired ) {
-			header( 'X-Cache-Provider: Speed-Booster-Pack' );
-
 			return $wp_filesystem->get_contents( $cache_file_path );
 		}
 
@@ -198,7 +218,7 @@ class SBP_Cache {
 
 	private function get_cache_file_path() {
 		$cache_dir = SBP_CACHE_DIR;
-		if ( wp_is_mobile() && sbp_get_option( 'separate-mobile-cache', false ) ) {
+		if ( wp_is_mobile() && sbp_get_option( 'show_mobile_cache', false ) && sbp_get_option( 'separate_mobile_cache', false ) ) {
 			$cache_dir = SBP_CACHE_DIR . '/.mobile';
 		}
 
@@ -217,7 +237,7 @@ class SBP_Cache {
 		);
 
 		if ( is_file( $path ) > 0 ) {
-			wp_die( 'Error occured on SBP cache. Please contact you webmaster.' );
+			wp_die( __('Error occured on SBP cache. Please contact you webmaster.', 'speed-booster') );
 		}
 
 		return rtrim( $path, "/" ) . "/";
@@ -228,7 +248,7 @@ class SBP_Cache {
 	 *
 	 * @param bool $wp_cache
 	 */
-	private function set_wp_cache_constant( $wp_cache = true ) {
+	public static function set_wp_cache_constant( $wp_cache = true ) {
 		$wp_config_file = ABSPATH . 'wp-config.php';
 
 		if ( file_exists( $wp_config_file ) && is_writable( $wp_config_file ) ) {

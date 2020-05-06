@@ -57,11 +57,10 @@ class Speed_Booster_Pack_Admin {
 		add_action( 'csf_speed_booster_saved', function () {
 			$settings = [
 				'cache_expire_time'       => 604800, // Expire time in seconds
-				// Bypass options
-				'disable_cache_on_login'  => false,
-				'disable_cache_on_mobile' => false,
 				'exclude_urls'            => '',
 				'include_query_strings'   => '',
+				'show_mobile_cache' => false,
+				'separate_mobile_cache' => false,
 			];
 
 			foreach ( $settings as $option => $default_value ) {
@@ -186,28 +185,28 @@ class Speed_Booster_Pack_Admin {
 
 					// A switcher field
 					array(
-						'id'    => 'enable-cache',
+						'id'    => 'enable_cache',
 						'type'  => 'switcher',
 						'title' => 'Enable/Disable Caching',
 					),
 
 					// A switcher field
 					array(
-						'id'    => 'show-mobile-cache',
+						'id'    => 'show_mobile_cache',
 						'type'  => 'switcher',
 						'title' => 'Show Cache For Mobile Devices',
 					),
 
 					// A switcher field
 					array(
-						'id'    => 'separate-mobile-cache',
+						'id'    => 'separate_mobile_cache',
 						'type'  => 'switcher',
 						'title' => 'Separate Mobile Cache',
-						'dependency' => ['show-mobile-cache', '==', 'true'],
+						'dependency' => ['show_mobile_cache', '==', 'true'],
 					),
 
 					[
-						'id'      => 'cache-expire-time',
+						'id'      => 'cache_expire_time',
 						'type'    => 'number',
 						'default' => '604800',
 						'title'   => 'Cache expire time in seconds'
