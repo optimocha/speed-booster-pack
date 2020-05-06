@@ -54,13 +54,14 @@ class Speed_Booster_Pack_Admin {
 		$this->version     = $version;
 
 		$this->load_dependencies();
-		add_action( 'csf_speed_booster_saved', function() {
+		add_action( 'csf_speed_booster_saved', function () {
 			$settings = [
 				'cache_expire_time'       => 604800, // Expire time in seconds
 				// Bypass options
 				'disable_cache_on_login'  => false,
 				'disable_cache_on_mobile' => false,
 				'exclude_urls'            => '',
+				'include_query_strings'   => '',
 			];
 
 			foreach ( $settings as $option => $default_value ) {
@@ -73,7 +74,7 @@ class Speed_Booster_Pack_Admin {
 			WP_Filesystem();
 
 			$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );
-		});
+		} );
 
 		$this->create_settings_page();
 	}
@@ -192,9 +193,17 @@ class Speed_Booster_Pack_Admin {
 
 					// A switcher field
 					array(
+						'id'    => 'show-mobile-cache',
+						'type'  => 'switcher',
+						'title' => 'Show Cache For Mobile Devices',
+					),
+
+					// A switcher field
+					array(
 						'id'    => 'separate-mobile-cache',
 						'type'  => 'switcher',
 						'title' => 'Separate Mobile Cache',
+						'dependency' => ['show-mobile-cache', '==', 'true'],
 					),
 
 					[
@@ -206,9 +215,18 @@ class Speed_Booster_Pack_Admin {
 
 					[
 						'id'          => 'exclude_urls',
-						'type'        => 'textarea',
+						'type'        => 'code_editor',
 						'default'     => '',
 						'title'       => 'Exclude url\'s from caching',
+						'subtitle'    => 'Write url each line',
+						'placeholder' => '/some/relative/path',
+					],
+
+					[
+						'id'          => 'include_query_strings',
+						'type'        => 'code_editor',
+						'default'     => '',
+						'title'       => 'Include Query Strings',
 						'subtitle'    => 'Write url each line',
 						'placeholder' => '/some/relative/path',
 					],

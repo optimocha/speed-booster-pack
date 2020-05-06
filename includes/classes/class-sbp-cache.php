@@ -8,6 +8,8 @@ class SBP_Cache {
 		'disable_cache_on_mobile' => false,
 	];
 
+	private $file_name = 'index.html';
+
 	public function __construct() {
 		// Set caching options
 		$this->set_options();
@@ -18,7 +20,7 @@ class SBP_Cache {
 		// Clear cache hook
 		add_action( 'admin_init', [ $this, 'clear_total_cache' ] );
 
-		if (sbp_get_option('enable-cache')) {
+		if ( sbp_get_option( 'enable-cache' ) ) {
 			$this->set_wp_cache_constant( true );
 		}
 
@@ -77,11 +79,6 @@ class SBP_Cache {
 
 		// Check for UTM parameters for affiliates
 		if ( isset( $_GET['utm_source'] ) || isset( $_GET['utm_medium'] ) || isset( $_GET['utm_campaign'] ) || isset( $_GET['utm_term'] ) || isset( $_GET['utm_content'] ) ) {
-			return true;
-		}
-
-		// Check if query string exists
-		if ( count( $_GET ) > 0 ) {
 			return true;
 		}
 
@@ -152,10 +149,27 @@ class SBP_Cache {
 			return $html;
 		}
 
+		// Check for query strings
+		if ( ! empty( $_GET ) ) {
+			// Get included rules
+			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'include_query_strings', '' ) );
+
+			$query_string_file_name = '';
+			foreach ( $_GET as $key => $value ) {
+				if ( in_array( $key, $include_query_strings ) ) {
+					$query_string_file_name .= "$key-$value-";
+				}
+			}
+			if ( '' !== $query_string_file_name ) {
+				$query_string_file_name .= '.html';
+				$this->file_name        = $query_string_file_name;
+			}
+		}
+
 		$wp_filesystem = $this->get_filesystem();
 
 		// Read cache file
-		$cache_file_path = $this->get_cache_file_path() . 'index.html';
+		$cache_file_path = $this->get_cache_file_path() . $this->file_name;
 
 		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $this->options['cache_expire_time'] < time();
 
@@ -174,7 +188,7 @@ class SBP_Cache {
 
 	private function create_cache_file( $html ) {
 		$dir_path  = $this->get_cache_file_path();
-		$file_path = $dir_path . 'index.html';
+		$file_path = $dir_path . $this->file_name;
 
 		wp_mkdir_p( $dir_path );
 		$file = @fopen( $file_path, 'w+' );

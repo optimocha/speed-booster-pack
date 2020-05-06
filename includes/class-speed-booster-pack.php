@@ -110,6 +110,8 @@ class Speed_Booster_Pack {
 		 */
 		require_once SBP_INC_PATH . 'class-speed-booster-pack-i18n.php';
 
+		require_once SBP_INC_PATH . 'classes/class-sbp-utils.php';
+
 		require_once SBP_INC_PATH . 'classes/class-sbp-localize-tracker.php';
 
 		require_once SBP_INC_PATH . 'classes/class-sbp-font-optimizer.php';
