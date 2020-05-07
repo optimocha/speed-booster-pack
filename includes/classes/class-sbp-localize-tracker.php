@@ -61,7 +61,6 @@ class SBP_Localize_Tracker {
 			if ( ! $this->save_file( $this->analytics_url ) ) {
 				return $html;
 			}
-			$html .= 'analytics worked';
 		}
 
 
@@ -93,7 +92,6 @@ class SBP_Localize_Tracker {
 			if ( ! $this->save_file( $this->gtm_url ) ) {
 				return $html;
 			}
-			$html .= 'gtm worked';
 		}
 
 		// Find Google Analytics script
@@ -124,7 +122,6 @@ class SBP_Localize_Tracker {
 			if ( ! $this->save_file( $this->gtag_url ) ) {
 				return $html;
 			}
-			$html .= 'gtag worked';
 		}
 
 		// Find Gtag script
