@@ -35,6 +35,7 @@ if ( ! class_exists( 'CSF_Options' ) ) {
       'menu_position'           => null,
       'menu_hidden'             => false,
       'menu_parent'             => '',
+      'sub_menu_title'          => '',
 
       // menu extras
       'show_bar_menu'           => true,
@@ -279,13 +280,11 @@ if ( ! class_exists( 'CSF_Options' ) ) {
 
         if ( ! $ajax && ! empty( $response[ 'csf_import_data' ] ) ) {
 
-          $importing   = true;
-
           // XSS ok.
           // No worries, This "POST" requests is sanitizing in the below foreach. see #L337 - #L341
           $import_data  = json_decode( wp_unslash( trim( $response[ 'csf_import_data' ] ) ), true );
-          $options  = ( is_array( $import_data ) && ! empty( $import_data ) ) ? $import_data : array();
-
+          $options      = ( is_array( $import_data ) && ! empty( $import_data ) ) ? $import_data : array();
+          $importing    = true;
           $this->notice = esc_html__( 'Success. Imported backup options.', 'csf' );
 
         }
@@ -311,6 +310,8 @@ if ( ! class_exists( 'CSF_Options' ) ) {
             }
 
           }
+
+          $data = wp_parse_args( $data, $this->options );
 
           $this->notice = esc_html__( 'Default options restored for only this section.', 'csf' );
 
@@ -432,7 +433,7 @@ if ( ! class_exists( 'CSF_Options' ) ) {
 
     }
 
-    // wp api: admin menu
+    // admin menu
     public function add_admin_menu() {
 
       extract( $this->args );
@@ -444,6 +445,10 @@ if ( ! class_exists( 'CSF_Options' ) ) {
       } else {
 
         $menu_page = call_user_func( 'add_menu_page', esc_attr( $menu_title ), esc_attr( $menu_title ), $menu_capability, $menu_slug, array( &$this, 'add_options_html' ), $menu_icon, $menu_position );
+
+        if ( ! empty( $sub_menu_title ) ) {
+          call_user_func( 'add_submenu_page', $menu_slug, esc_attr( $sub_menu_title ), esc_attr( $sub_menu_title ), $menu_capability, $menu_slug, array( &$this, 'add_options_html' ) );
+        }
 
         if ( ! empty( $this->args['show_sub_menu'] ) && count( $this->pre_tabs ) > 1 ) {
 

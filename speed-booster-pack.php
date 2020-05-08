@@ -1,21 +1,25 @@
 <?php
 
 /**
- * @link              https://optimocha.com
- * @since             4.0.0
+ * @link              https://speedboosterpack.com
+ * @since             4.0
  * @package           Speed_Booster_Pack
  *
  * @wordpress-plugin
  * Plugin Name:       Speed Booster Pack
  * Plugin URI:        https://speedboosterpack.com
  * Description:       Speed optimization is vital for SEO. Optimize your PageSpeed scores today!
- * Version:           4.0.0
+ * Version:           4.0
  * Author:            Optimocha
  * Author URI:        https://optimocha.com
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License:           GPLv3 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
  * Text Domain:       speed-booster-pack
- * Domain Path:       /languages
+ *
+ * Copyright 2015-2017 Tiguan (office@tiguandesign.com)
+ * Copyright 05/05/2017 - 10/04/2017 ShortPixel (alex@shortpixel.com)
+ * Copyright 2017-2019 MachoThemes (office@machothemes.com)
+ * Copyright 2019-...  Optimocha (hey@optimocha.com)
  */
 
 // If this file is called directly, abort.
@@ -24,9 +28,29 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Currently plugin version.
+ * Plugin name.
  */
-define( 'SBP_VERSION', '4.0.0' );
+define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' );
+
+/**
+ * Plugin website URL.
+ */
+define( 'SBP_PLUGIN_HOME', 'https://speedboosterpack.com/' );
+
+/**
+ * Plugin owner's name.
+ */
+define( 'SBP_OWNER_NAME', 'Optimocha' );
+
+/**
+ * Plugin owner's website URL.
+ */
+define( 'SBP_OWNER_HOME', 'https://optimocha.com/' );
+
+/**
+ * Current plugin version.
+ */
+define( 'SBP_VERSION', '4.0' );
 
 /**
  * Plugin Path

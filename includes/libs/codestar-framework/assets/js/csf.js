@@ -2768,7 +2768,7 @@
   //
   if ( typeof Color === 'function' ) {
 
-    Color.fn.toString = function() {
+    Color.prototype.toString = function() {
 
       if ( this._alpha < 1 ) {
         return this.toCSS('rgba', this._alpha).replace(/\s+/g, '');
