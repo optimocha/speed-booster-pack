@@ -1,5 +1,16 @@
 <?php if ( ! defined( 'ABSPATH' ) ) { die; } // Cannot access directly. ?>
 
+<h3>v2.1.5</h3>
+<ul>
+  <li>Added: Sub menu item title argument for Option Framework.</li>
+  <li>Added: A parameter "sanitize => false" for allow to script/iframe or any html code.</li>
+  <li>Fixed: Reset section issue for Option Framework.</li>
+  <li>Fixed: A few bugs fixed caused by sanitize have been.</li>
+  <li>Fixed: Output CSS sanitize issue.</li>
+  <li>Updated: "Font Awesome 5 Free" package and added new icons.</li>
+  <li>Improved: Data sanitization and escaping.</li>
+</ul>
+
 <h3>v2.1.4</h3>
 <ul>
   <li>Added: "Font Awesome 5 Free" package for "Icon" field ( v4 is still can be used ).</li>

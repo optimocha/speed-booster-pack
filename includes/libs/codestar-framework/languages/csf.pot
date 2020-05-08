@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Codestar Framework package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Codestar Framework 2.1.4\n"
+"Project-Id-Version: Codestar Framework 2.1.5\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/codestar-framework\n"
 "MIME-Version: 1.0\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: classes/comment-metabox.class.php:198 classes/metabox.class.php:259
-#: classes/options.class.php:678
+#: classes/options.class.php:683
 msgid "No option provided by developer."
 msgstr ""
 
@@ -26,60 +26,60 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: classes/options.class.php:227
+#: classes/options.class.php:228
 msgid "Error while saving."
 msgstr ""
 
-#: classes/options.class.php:289
+#: classes/options.class.php:288
 msgid "Success. Imported backup options."
 msgstr ""
 
-#: classes/options.class.php:301
+#: classes/options.class.php:300
 msgid "Default options restored."
 msgstr ""
 
-#: classes/options.class.php:315
+#: classes/options.class.php:316
 msgid "Default options restored for only this section."
 msgstr ""
 
-#: classes/options.class.php:386
+#: classes/options.class.php:387
 msgid "Settings saved."
 msgstr ""
 
-#: classes/options.class.php:569
+#: classes/options.class.php:574
 msgid "Settings have changed, you should save them!"
 msgstr ""
 
-#: classes/options.class.php:571
+#: classes/options.class.php:576
 msgid "show all options"
 msgstr ""
 
-#: classes/options.class.php:573
+#: classes/options.class.php:578
 msgid "Search option(s)"
 msgstr ""
 
-#: classes/options.class.php:576 classes/options.class.php:703
+#: classes/options.class.php:581 classes/options.class.php:708
 msgid "Save"
 msgstr ""
 
-#: classes/options.class.php:576 classes/options.class.php:703
+#: classes/options.class.php:581 classes/options.class.php:708
 msgid "Saving..."
 msgstr ""
 
-#: classes/options.class.php:577 classes/options.class.php:704
+#: classes/options.class.php:582 classes/options.class.php:709
 msgid "Reset Section"
 msgstr ""
 
-#: classes/options.class.php:577 classes/options.class.php:704
+#: classes/options.class.php:582 classes/options.class.php:709
 msgid "Are you sure to reset this section options?"
 msgstr ""
 
-#: classes/options.class.php:578 classes/options.class.php:705
+#: classes/options.class.php:583 classes/options.class.php:710
 #: fields/backup/backup.php:34
 msgid "Reset All"
 msgstr ""
 
-#: classes/options.class.php:578 classes/options.class.php:705
+#: classes/options.class.php:583 classes/options.class.php:710
 msgid "Are you sure to reset all options?"
 msgstr ""
 
