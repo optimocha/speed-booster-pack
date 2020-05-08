@@ -69,6 +69,26 @@ class Speed_Booster_Pack_Admin {
 
 			global $wp_filesystem;
 
+			// Delete or recreate advanced-cache.php
+			$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
+			if (sbp_get_option('enable_cache')) {
+				$sbp_advanced_cache  = SBP_PATH . '/advanced-cache.php';
+
+				SBP_Cache::set_wp_cache_constant(true);
+
+				if ( ! file_exists( $advanced_cache_path ) ) {
+					file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
+				} else {
+					// Compare file contents
+					if (file_get_contents($advanced_cache_path) != file_get_contents($sbp_advanced_cache)) {
+						wp_die(__('advanced-cache.php file is already exists and created by other plugin. Delete wp-content/advanced-cache.php file to continue.', 'speed-booster'));
+					}
+				}
+			} else {
+				SBP_Cache::set_wp_cache_constant(false);
+				unlink($advanced_cache_path);
+			}
+
 			require_once( ABSPATH . '/wp-admin/includes/file.php' );
 			WP_Filesystem();
 
@@ -120,6 +140,28 @@ class Speed_Booster_Pack_Admin {
 				'show_reset_all'  => false,
 				'theme'           => 'light',
 			) );
+
+			CSF::createSection($prefix, [
+				'id' => 'general_tab',
+				'title' => 'General',
+				'fields' => [
+					[
+						'id' => 'remove_query_strings',
+						'title' => 'Remove Query Strings',
+						'type' => 'switcher',
+					],
+					[
+						'id' => 'remove_emojis',
+						'title' => 'Remove Emoji Script',
+						'type' => 'switcher',
+					],
+					[
+						'id' => 'remove_shortlink',
+						'title' => 'Remove WordPress Short Link',
+						'type' => 'switcher',
+					],
+				],
+			]);
 
 			//
 			// Create Analytics Tab
