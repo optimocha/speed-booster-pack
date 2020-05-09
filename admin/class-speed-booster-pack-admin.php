@@ -667,12 +667,12 @@ class Speed_Booster_Pack_Admin {
 				'icon'	=> 'fa fa-info-circle',
 				'fields'	=> array(
 
-					// A text field
-					array(
-						'id'	=> 'opt_text',
-						'type'	=> 'text',
-						'title'	=> 'Simple Text',
-					),
+					// // A text field
+					// array(
+					// 	'id'	=> 'opt_text',
+					// 	'type'	=> 'text',
+					// 	'title'	=> 'Simple Text',
+					// ),
 
 				)
 			) );
