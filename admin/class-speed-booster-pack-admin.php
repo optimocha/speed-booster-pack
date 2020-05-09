@@ -289,10 +289,14 @@ class Speed_Booster_Pack_Admin {
 						'id'    => 'optimize-fonts',
 						'title' => 'Optimize Google Fonts',
 						'type'  => 'switcher',
+					],
+					[
+						'id'    => 'js_move_exceptions',
+						'title' => 'JS Mover Exceptions',
+						'type'  => 'code_editor',
 					]
 				],
 			] );
 		}
 	}
-
 }

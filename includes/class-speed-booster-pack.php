@@ -119,6 +119,9 @@ class Speed_Booster_Pack {
 		require_once SBP_INC_PATH . 'classes/class-sbp-tweaks.php';
 
 		require_once SBP_INC_PATH . 'classes/class-sbp-cache.php';
+
+		require_once SBP_INC_PATH . 'classes/class-sbp-js-mover.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
