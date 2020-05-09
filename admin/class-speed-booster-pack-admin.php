@@ -86,7 +86,9 @@ class Speed_Booster_Pack_Admin {
 				}
 			} else {
 				SBP_Cache::set_wp_cache_constant(false);
-				unlink($advanced_cache_path);
+				if (file_exists($advanced_cache_path)) {
+                    unlink($advanced_cache_path);
+                }
 			}
 
 			require_once( ABSPATH . '/wp-admin/includes/file.php' );
