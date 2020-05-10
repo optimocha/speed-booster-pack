@@ -90,7 +90,7 @@ class SBP_Cache {
 		return false;
 	}
 
-	public function clear_cache_link() {
+	public function clear_cache_request() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' ) {
 			self::clear_total_cache();
 			wp_redirect( admin_url( 'admin.php?page=sbp-options#sbp-cache' ) );
