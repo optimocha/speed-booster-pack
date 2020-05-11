@@ -184,7 +184,7 @@ class Speed_Booster_Pack {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect' );
-		add_action('plugins_loaded', [SBP_Cache::class, 'instantiate']);
+		add_action( 'plugins_loaded', [ SBP_Cache::class, 'instantiate' ] );
 	}
 
 	/**

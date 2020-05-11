@@ -39,5 +39,4 @@ class Speed_Booster_Pack_i18n {
 	}
 
 
-
 }

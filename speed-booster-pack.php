@@ -55,7 +55,7 @@ define( 'SBP_VERSION', '4.0' );
 /**
  * Plugin Path
  */
-define( 'SBP_URL', plugin_dir_url( __FILE__ ) . '/' );
+define( 'SBP_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * Plugin Path
@@ -114,7 +114,7 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 	function sbp_get_option( $option = '', $default = null ) {
 
 		// Attention: Its your unique id of the framework
-		$options = get_option( 'speed_booster' );
+		$options = get_option( 'sbp_options' );
 
 		return ( isset( $options[ $option ] ) ) ? $options[ $option ] : $default;
 

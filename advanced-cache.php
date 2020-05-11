@@ -121,7 +121,7 @@ function get_cache_file_path() {
 	);
 
 	if ( is_file( $path ) > 0 ) {
-		wp_die( __('Error occured on SBP cache. Please contact you webmaster.', 'speed-booster') );
+		wp_die( __( 'Error occured on SBP cache. Please contact you webmaster.', 'speed-booster' ) );
 	}
 
 	return rtrim( $path, "/" ) . "/";

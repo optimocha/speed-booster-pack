@@ -2,41 +2,65 @@
 
 class SBP_General {
 	private $tweak_settings = [
-		'remove_query_strings'  => 'remove_query_strings',
-		'remove_emojis'         => 'remove_emojis',
-		'disable_self_pingback' => 'disable_pingback',
-		'remove_jquery_migrate' => 'remove_migrate',
-		'remove_dashicons'      => 'remove_wp_dashicons',
-		'remove_shortlink'      => 'remove_shortlink',
-		'remove_adjacent'       => 'remove_adjacent',
-		'wml_link'              => 'remove_wml_link',
-		'wp_generator'          => 'remove_wp_generator',
-		'post_revision_limit'   => 'limit_post_revisions',
-		'autosave_interval'     => 'autosave_interval',
-		'gutenberg_scripts'     => 'remove_gutenberg_scripts',
-		'disable_embeds'        => 'disable_embeds',
-		'heartbeat_frequency'    => 'set_heartbeat_frequency',
+		'trim_query_strings'     => 'trim_query_strings',
+		'dequeue_emoji_scripts'  => 'dequeue_emoji_scripts',
+		'disable_self_pingbacks' => 'disable_self_pingbacks',
+		'remove_jquery_migrate'  => 'remove_jquery_migrate', // TODO
+		'remove_dashicons'       => 'remove_wp_dashicons', // TODO
+		'post_revisions'         => 'post_revisions',
+		'autosave_interval'      => 'autosave_interval',
+		'gutenberg_scripts'      => 'gutenberg_scripts', // TODO
+		'disable_post_embeds'    => 'disable_post_embeds',
+		'instant_page'           => 'instant_page',
+		'heartbeat_settings'     => 'heartbeat_settings',
+		'declutter_head'         => [
+			'declutter_shortlinks'           => 'declutter_shortlinks',
+			'declutter_adjacent_posts_links' => 'declutter_adjacent_posts_links',
+			'declutter_wlw'                  => 'declutter_wlw',
+			'declutter_rsd'                  => 'declutter_rsd',
+			'declutter_rest_api_links'       => 'declutter_rest_api_links',
+			'declutter_feed_links'           => 'declutter_feed_links',
+			'declutter_wp_version'           => 'declutter_wp_version',
+		],
 	];
 
 	public function __construct() {
-		foreach ( $this->tweak_settings as $option_name => $function ) {
-			if ( sbp_get_option( $option_name ) ) {
-				$this->$function();
+		if ( ! sbp_get_option( 'module_tweaks' ) ) {
+			return;
+		}
+
+		$this->call_option_methods( $this->tweak_settings );
+	}
+
+	private function call_option_methods( $settings, $parent = null ) {
+		foreach ( $settings as $option_name => $function ) {
+			if ( is_array( $settings[ $option_name ] ) ) {
+				$this->call_option_methods( $settings[ $option_name ], $option_name );
+			} else {
+				if ( null !== $parent ) {
+					if ( sbp_get_option( $parent )[ $option_name ] ) {
+						$this->$function();
+					}
+				} else {
+					if ( sbp_get_option( $option_name ) ) {
+						$this->$function();
+					}
+				}
 			}
 		}
 	}
 
 	/**
-	 * Hook remove_query_string_process to proper actions
+	 * Hook trim_query_string_process to proper actions
 	 */
-	private function remove_query_strings() {
+	private function trim_query_strings() {
 		if ( ! is_admin() ) {
-			if ( sbp_get_option( 'remove_query_strings' ) ) {
-				add_action( 'script_loader_src', [ $this, 'remove_query_strings_process' ], 15 );
+			if ( sbp_get_option( 'trim_query_strings' ) ) {
+				add_action( 'script_loader_src', [ $this, 'trim_query_strings_handle' ], 15 );
 			}
 
-			if ( sbp_get_option( 'remove_query_strings' ) ) {
-				add_action( 'style_loader_src', [ $this, 'remove_query_strings_process' ], 15 );
+			if ( sbp_get_option( 'trim_query_strings' ) ) {
+				add_action( 'style_loader_src', [ $this, 'trim_query_strings_handle' ], 15 );
 			}
 		}
 	}
@@ -50,20 +74,20 @@ class SBP_General {
 	 *
 	 * @return mixed|string
 	 */
-	public function remove_query_strings_process( $src ) {
+	public function trim_query_strings_handle( $src ) {
 		return preg_split( "/(\?rev|&ver|\?ver)/", $src )[0];
 	}
 
 	// Remove Emoji Scripts
 
-	private function remove_emojis() {
-		add_action( 'init', [ $this, 'remove_emoji_script' ] );
+	private function dequeue_emoji_scripts() {
+		add_action( 'init', [ $this, 'dequeue_emoji_scripts_handle' ] );
 	}
 
 	/**
 	 * Removes WordPress emoji script
 	 */
-	public function remove_emoji_script() {
+	public function dequeue_emoji_scripts_handle() {
 		if ( ! is_admin() ) {
 			remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 			remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
@@ -94,7 +118,6 @@ class SBP_General {
 		}
 	}
 
-
 	/**
 	 * @param $urls
 	 * @param $relation_type
@@ -112,14 +135,14 @@ class SBP_General {
 
 	// Disable Self Pingback
 
-	private function disable_pingback() {
-		add_action( 'pre_ping', [ $this, 'disable_self_pingback' ] );
+	private function disable_self_pingbacks() {
+		add_action( 'pre_ping', [ $this, 'disable_self_pingbacks_handle' ] );
 	}
 
 	/**
 	 * @param $links
 	 */
-	public function disable_self_pingback( &$links ) {
+	public function disable_self_pingbacks_handle( &$links ) {
 		$home = get_option( 'home' );
 		foreach ( $links as $l => $link ) {
 			if ( 0 === strpos( $link, $home ) ) {
@@ -159,25 +182,29 @@ class SBP_General {
 		}
 	}
 
-	private function remove_shortlink() {
+	private function declutter_shortlinks() {
 		remove_action( 'wp_head', 'wp_shortlink_wp_head' );
 	}
 
-	private function remove_adjacent() {
+	private function declutter_adjacent_posts_links() {
 		remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head' );
 	}
 
-	private function remove_wml_link() {
+	private function declutter_wlw() {
 		remove_action( 'wp_head', 'wlwmanifest_link' );
 	}
 
-	private function remove_wp_generator() {
+	private function declutter_rsd() {
+		remove_action( 'wp_head', 'rsd_link' );
+	}
+
+	private function declutter_wp_version() {
 		remove_action( 'wp_head', 'wp_generator' );
 	}
 
-	private function limit_post_revisions() {
-		if ( ! empty( sbp_get_option( 'post_revision_limit' ) ) && ! defined( 'WP_POST_REVISIONS' ) ) {
-			define( 'WP_POST_REVISIONS', sbp_get_option( 'post_revision_limit' ) );
+	private function post_revisions() {
+		if ( ! empty( sbp_get_option( 'post_revisions' ) ) && ! defined( 'WP_POST_REVISIONS' ) ) {
+			define( 'WP_POST_REVISIONS', sbp_get_option( 'post_revisions' ) );
 		}
 	}
 
@@ -187,18 +214,18 @@ class SBP_General {
 		}
 	}
 
-	private function remove_gutenberg_scripts() {
-		add_action( 'wp_enqueue_scripts', 'dequeue_gutenberg_scripts' );
+	private function gutenberg_scripts() {
+		add_action( 'wp_enqueue_scripts', 'gutenberg_scripts_handle' );
 	}
 
-	private function dequeue_gutenberg_scripts() {
+	private function gutenberg_scripts_handle() {
 		wp_dequeue_style( 'wp-block-library' );
 		wp_dequeue_style( 'wp-block-library-theme' );
 	}
 
-	private function disable_embeds() {
-		add_action( 'init', [ $this, 'disable_embeds' ] );
-		add_action( 'wp_footer', [ $this, 'deregister_embed_script' ] );
+	private function disable_post_embeds() {
+		add_action( 'init', [ $this, 'remove_embeds_from_init' ] );
+		add_action( 'wp_footer', [ $this, 'disable_post_embeds_handle' ] );
 	}
 
 	private function remove_embeds_from_init() {
@@ -239,14 +266,14 @@ class SBP_General {
 		return $rules;
 	}
 
-	private function deregister_embed_script() {
+	private function disable_post_embeds_handle() {
 		wp_dequeue_script( 'wp-embed' );
 	}
 
-	private function set_heartbeat_frequency() {
-		switch(sbp_get_option('heartbeat_frequency')) {
+	private function heartbeat_settings() {
+		switch ( sbp_get_option( 'heartbeat_settings' ) ) {
 			case "optimized":
-				add_filter( 'heartbeat_settings', [ $this, 'heartbeat_frequency' ]);
+				add_filter( 'heartbeat_settings', [ $this, 'heartbeat_settings_handle' ] );
 				break;
 			case "disabled":
 				add_action( 'init', wp_deregister_script( 'heartbeat' ) );
@@ -254,10 +281,28 @@ class SBP_General {
 		}
 	}
 
-	public function heartbeat_frequency() {
-		$settings['interval'] = sbp_get_option('heartbeat_frequency');
+	public function heartbeat_settings_handle() {
+		$settings['interval'] = sbp_get_option( 'heartbeat_frequency' );
 
 		return $settings;
+	}
+
+	// Instant Page
+	private function instant_page() {
+		add_action( 'wp_enqueue_scripts', [ $this, 'instant_page_handle' ] );
+	}
+
+	public function instant_page_handle() {
+		wp_enqueue_script( 'sbp-ins-page', SBP_URL . 'public/js/inspage.js', false, '2.0.0', true );
+	}
+
+	private function declutter_feed_links() {
+		remove_action( 'wp_head', 'feed_links_extra', 3 );
+		remove_action( 'wp_head', 'feed_links', 2 );
+	}
+
+	private function declutter_rest_api_links() {
+		remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
 	}
 }
 
