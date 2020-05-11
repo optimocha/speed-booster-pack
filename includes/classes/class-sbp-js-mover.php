@@ -1,6 +1,8 @@
 <?php
 
-class SBP_JS_Mover {
+namespace SpeedBooster;
+
+class SBP_JS_Mover extends SBP_Abstract_Module {
 	const SCRIPT_TYPES = [
 		"application/ecmascript",
 		"application/javascript",

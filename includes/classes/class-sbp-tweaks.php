@@ -1,6 +1,8 @@
 <?php
 
-class SBP_General {
+namespace SpeedBooster;
+
+class SBP_Tweaks extends SBP_Abstract_Module {
 	private $tweak_settings = [
 		'trim_query_strings'     => 'trim_query_strings',
 		'dequeue_emoji_scripts'  => 'dequeue_emoji_scripts',
@@ -305,5 +307,3 @@ class SBP_General {
 		remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
 	}
 }
-
-new SBP_General();

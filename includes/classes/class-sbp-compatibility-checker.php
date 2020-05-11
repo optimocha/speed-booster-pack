@@ -1,6 +1,8 @@
 <?php
 
-class SBP_Compatibility_Checker {
+namespace SpeedBooster;
+
+class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 	const PLUGINS = [
 		'general'   => [
 			'w3-total-cache/w3-total-cache.php',

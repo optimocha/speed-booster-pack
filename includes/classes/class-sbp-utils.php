@@ -1,6 +1,8 @@
 <?php
 
-class SBP_Utils {
+namespace SpeedBooster;
+
+class SBP_Utils extends SBP_Abstract_Module {
 	public static function explode_lines( $text ) {
 		if ( $text === '' ) {
 			return [];

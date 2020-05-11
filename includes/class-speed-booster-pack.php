@@ -12,6 +12,14 @@
  * @subpackage Speed_Booster_Pack/includes
  */
 
+use SpeedBooster\SBP_Cache;
+use SpeedBooster\SBP_Compatibility_Checker;
+use SpeedBooster\SBP_Font_Optimizer;
+use SpeedBooster\SBP_JS_Mover;
+use SpeedBooster\SBP_Localize_Tracker;
+use SpeedBooster\SBP_Preboost;
+use SpeedBooster\SBP_Tweaks;
+
 /**
  * The core plugin class.
  *
@@ -75,9 +83,19 @@ class Speed_Booster_Pack {
 
 		$this->load_dependencies();
 		$this->set_locale();
+		$this->init_modules();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+	}
 
+	private function init_modules() {
+		new SBP_Cache();
+		new SBP_Tweaks();
+		new SBP_Font_Optimizer();
+		new SBP_Compatibility_Checker();
+		new SBP_JS_Mover();
+		new SBP_Localize_Tracker();
+		new SBP_Preboost();
 	}
 
 	/**
@@ -109,18 +127,6 @@ class Speed_Booster_Pack {
 		 * of the plugin.
 		 */
 		require_once SBP_INC_PATH . 'class-speed-booster-pack-i18n.php';
-
-		require_once SBP_INC_PATH . 'classes/class-sbp-utils.php';
-
-		require_once SBP_INC_PATH . 'classes/class-sbp-localize-tracker.php';
-
-		require_once SBP_INC_PATH . 'classes/class-sbp-font-optimizer.php';
-
-		require_once SBP_INC_PATH . 'classes/class-sbp-tweaks.php';
-
-		require_once SBP_INC_PATH . 'classes/class-sbp-cache.php';
-
-		require_once SBP_INC_PATH . 'classes/class-sbp-js-mover.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.

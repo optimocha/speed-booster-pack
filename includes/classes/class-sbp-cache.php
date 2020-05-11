@@ -1,6 +1,8 @@
 <?php
 
-class SBP_Cache {
+namespace SpeedBooster;
+
+class SBP_Cache extends SBP_Abstract_Module {
 	private $options = [
 		'cache_expire_time'     => 604800, // Expire time in seconds
 		'exclude_urls'          => '',

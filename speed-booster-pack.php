@@ -23,6 +23,8 @@
  */
 
 // If this file is called directly, abort.
+use SpeedBooster\SBP_Tweaks;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -118,6 +120,23 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 
 		return ( isset( $options[ $option ] ) ) ? $options[ $option ] : $default;
 
+	}
+}
+
+spl_autoload_register( 'sbp_autoloader' );
+
+function sbp_autoloader( $class_name ) {
+	if ( false === strpos( $class_name, 'SpeedBooster\\' ) ) {
+		return;
+	}
+
+	$class_name = str_replace( 'SpeedBooster\\', '', $class_name );
+
+	// Make filename lower case, it's not necessary but do it just in "case" :P (Did you get the joke?)
+	$filename = strtolower( str_replace( '_', '-', $class_name ) );
+	$path     = SBP_INC_PATH . 'classes/class-' . $filename . '.php';
+	if ( file_exists( $path ) ) {
+		require_once( $path );
 	}
 }
 

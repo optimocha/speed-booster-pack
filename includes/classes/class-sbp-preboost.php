@@ -1,11 +1,13 @@
 <?php
 
+namespace SpeedBooster;
+
 // Security control for vulnerability attempts
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-class SBP_Preboost {
+class SBP_Preboost extends SBP_Abstract_Module {
 	private $extension_type_matches = [
 		'css'   => 'style',
 		'js'    => 'script',

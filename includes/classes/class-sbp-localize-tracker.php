@@ -1,6 +1,8 @@
 <?php
 
-class SBP_Localize_Tracker {
+namespace SpeedBooster;
+
+class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $file_name = '';
 	private $dir_path = SBP_CACHE_DIR . '/analytics/';
 	private $dir_url = SBP_CACHE_URL . '/analytics/';

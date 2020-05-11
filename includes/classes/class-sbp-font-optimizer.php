@@ -1,11 +1,13 @@
 <?php
 
+namespace SpeedBooster;
+
 // Security control for vulnerability attempts
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-class SBP_Font_Optimizer {
+class SBP_Font_Optimizer extends SBP_Abstract_Module {
 	private $families;
 	private $subsets;
 
