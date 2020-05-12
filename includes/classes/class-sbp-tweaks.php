@@ -12,11 +12,11 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		'trim_query_strings'     => 'trim_query_strings',
 		'dequeue_emoji_scripts'  => 'dequeue_emoji_scripts',
 		'disable_self_pingbacks' => 'disable_self_pingbacks',
-		'dequeue_jquery_migrate'  => 'dequeue_jquery_migrate',
-		'dequeue_dashicons'       => 'dequeue_dashicons',
+		'dequeue_jquery_migrate' => 'dequeue_jquery_migrate',
+		'dequeue_dashicons'      => 'dequeue_dashicons',
 		'post_revisions'         => 'post_revisions',
 		'autosave_interval'      => 'autosave_interval',
-		'dequeue_block_library'      => 'dequeue_block_library',
+		'dequeue_block_library'  => 'dequeue_block_library',
 		'disable_post_embeds'    => 'disable_post_embeds',
 		'instant_page'           => 'instant_page',
 		'heartbeat_settings'     => 'heartbeat_settings',
@@ -222,10 +222,10 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	}
 
 	private function dequeue_block_library() {
-		add_action( 'wp_enqueue_scripts', 'dequeue_block_library_handle' );
+		add_action( 'wp_enqueue_scripts', [$this, 'dequeue_block_library_handle'] );
 	}
 
-	private function dequeue_block_library_handle() {
+	public function dequeue_block_library_handle() {
 		wp_dequeue_style( 'wp-block-library' );
 		wp_dequeue_style( 'wp-block-library-theme' );
 	}
@@ -235,7 +235,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		add_action( 'wp_footer', [ $this, 'disable_post_embeds_handle' ] );
 	}
 
-	private function remove_embeds_from_init() {
+	public function remove_embeds_from_init() {
 		// Remove the REST API endpoint.
 		remove_action( 'rest_api_init', 'wp_oembed_register_route' );
 
@@ -273,7 +273,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		return $rules;
 	}
 
-	private function disable_post_embeds_handle() {
+	public function disable_post_embeds_handle() {
 		wp_dequeue_script( 'wp-embed' );
 	}
 
