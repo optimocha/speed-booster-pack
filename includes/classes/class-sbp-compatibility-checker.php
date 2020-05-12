@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// Security control for vulnerability attempts
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 	const PLUGINS = [
 		'general'   => [
@@ -72,6 +77,10 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 	private $active_plugins = [];
 
 	public function __construct() {
+		if (!parent::should_plugin_run()) {
+			return;
+		}
+
 		add_action( 'admin_init', [ $this, 'check_plugins_active' ] );
 		add_action( 'admin_notices', [ $this, 'compatibility_notices' ] );
 	}

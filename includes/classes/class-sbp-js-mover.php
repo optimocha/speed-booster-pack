@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// Security control for vulnerability attempts
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 class SBP_JS_Mover extends SBP_Abstract_Module {
 	const SCRIPT_TYPES = [
 		"application/ecmascript",
@@ -97,6 +102,10 @@ class SBP_JS_Mover extends SBP_Abstract_Module {
 	private $scripts_to_move = [];
 
 	public function __construct() {
+		if (!parent::should_plugin_run()) {
+			return;
+		}
+
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'js_move' ) ) {
 			return;
 		}

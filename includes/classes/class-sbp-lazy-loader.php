@@ -2,11 +2,20 @@
 
 namespace SpeedBooster;
 
+// Security control for vulnerability attempts
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	private $noscript_placeholder = '<!--SBP_NOSCRIPT_PLACEHOLDER-->';
 	private $noscripts = [];
 
 	public function __construct() {
+		if (!parent::should_plugin_run()) {
+			return;
+		}
+
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) ) {
 			return;
 		}

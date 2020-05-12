@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// Security control for vulnerability attempts
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 class SBP_Tweaks extends SBP_Abstract_Module {
 	private $tweak_settings = [
 		'trim_query_strings'     => 'trim_query_strings',
@@ -27,6 +32,10 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	];
 
 	public function __construct() {
+		if (!parent::should_plugin_run()) {
+			return;
+		}
+
 		if ( ! sbp_get_option( 'module_tweaks' ) ) {
 			return;
 		}

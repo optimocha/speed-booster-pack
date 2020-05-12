@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// Security control for vulnerability attempts
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 class SBP_Utils extends SBP_Abstract_Module {
 	public static function explode_lines( $text, $unique = true ) {
 		if ( '' === $text ) {

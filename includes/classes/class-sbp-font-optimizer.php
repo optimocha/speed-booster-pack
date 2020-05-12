@@ -12,6 +12,10 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 	private $subsets;
 
 	public function __construct() {
+		if (!parent::should_plugin_run()) {
+			return;
+		}
+
 		if ( ! sbp_get_option( 'module_assets' ) ) {
 			return;
 		}

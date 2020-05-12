@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// Security control for vulnerability attempts
+if ( ! defined( 'ABSPATH' ) ) {
+	die;
+}
+
 class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $file_name = '';
 	private $dir_path = SBP_CACHE_DIR . '/analytics/';
@@ -12,6 +17,10 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $transient_name = '';
 
 	public function __construct() {
+		if (!parent::should_plugin_run()) {
+			return;
+		}
+
 		if ( ! sbp_get_option('localize-analytics') ) {
 			return;
 		}
