@@ -1,1 +1,1 @@
-WARNING: This is a BETA version and to be honest even the BETA version isn't ready to test! Keep watching this repo's commits to get notified when we're ready to test! :)
+WARNING: This is a BETA version - use caution when using! Keep watching this repo's commits to get notified when we're ready to test! :)
