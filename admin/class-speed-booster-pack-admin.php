@@ -248,21 +248,21 @@ class Speed_Booster_Pack_Admin {
 					],
 					[
 						'title'      => __( 'Dequeue jQuery Migrate', 'speed-booster-pack' ),
-						'id'         => 'TODO',
+						'id'         => 'dequeue_jquery_migrate',
 						'type'       => 'switcher',
 						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_tweaks', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
-						'id'         => 'TODO',
+						'id'         => 'dequeue_dashicons',
 						'type'       => 'switcher',
 						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_tweaks', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Dequeue Gutenberg CSS', 'speed-booster-pack' ),
-						'id'         => 'TODO',
+						'id'         => 'dequeue_block_library',
 						'type'       => 'switcher',
 						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_tweaks', '==', '1' ]
@@ -471,7 +471,7 @@ class Speed_Booster_Pack_Admin {
 					[
 						'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
 						'id'         => 'lazyload_exclude',
-						'class'      => 'TODO',
+						'class'      => 'lazyload_exclude',
 						'type'       => 'code_editor',
 						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
 						'dependency' => [ [ 'module_assets', '==', '1' ], [ 'lazyload', '==', '1' ] ]
@@ -493,7 +493,7 @@ class Speed_Booster_Pack_Admin {
 					[
 						'title'      => __( 'JavaScript exclusions', 'speed-booster-pack' ),
 						'id'         => 'js_exclude',
-						'class'      => 'TODO',
+						'class'      => 'js_exclude',
 						'type'       => 'code_editor',
 						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
