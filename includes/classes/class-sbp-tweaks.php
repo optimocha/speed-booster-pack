@@ -12,11 +12,11 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		'trim_query_strings'     => 'trim_query_strings',
 		'dequeue_emoji_scripts'  => 'dequeue_emoji_scripts',
 		'disable_self_pingbacks' => 'disable_self_pingbacks',
-		'remove_jquery_migrate'  => 'remove_jquery_migrate', // TODO
-		'remove_dashicons'       => 'remove_wp_dashicons', // TODO
+		'dequeue_jquery_migrate'  => 'dequeue_jquery_migrate',
+		'dequeue_dashicons'       => 'dequeue_dashicons',
 		'post_revisions'         => 'post_revisions',
 		'autosave_interval'      => 'autosave_interval',
-		'gutenberg_scripts'      => 'gutenberg_scripts', // TODO
+		'dequeue_block_library'      => 'dequeue_block_library',
 		'disable_post_embeds'    => 'disable_post_embeds',
 		'instant_page'           => 'instant_page',
 		'heartbeat_settings'     => 'heartbeat_settings',
@@ -160,14 +160,14 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 
 	// Remove jQuery Migrate
 
-	private function remove_migrate() {
-		add_action( 'wp_default_scripts', [ $this, 'remove_jquery_migrate' ] );
+	private function dequeue_jquery_migrate() {
+		add_action( 'wp_default_scripts', [ $this, 'dequeue_jquery_migrate_handle' ] );
 	}
 
 	/**
 	 * @param $scripts
 	 */
-	public function remove_jquery_migrate( $scripts ) {
+	public function dequeue_jquery_migrate_handle( $scripts ) {
 		if ( ! is_admin() && isset( $scripts->registered['jquery'] ) ) {
 			$jquery_script = $scripts->registered['jquery'];
 
@@ -178,11 +178,11 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	}
 
 	// Remove Dash Icons
-	private function remove_wp_dashicons() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'remove_dashicons' ] );
+	private function dequeue_dashicons() {
+		add_action( 'wp_enqueue_scripts', [ $this, 'dequeue_dashicons_handle' ] );
 	}
 
-	public function remove_dashicons() {
+	public function dequeue_dashicons_handle() {
 		if ( ! is_user_logged_in() ) {
 			wp_dequeue_style( 'dashicons' );
 			wp_deregister_style( 'dashicons' );
@@ -221,11 +221,11 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		}
 	}
 
-	private function gutenberg_scripts() {
-		add_action( 'wp_enqueue_scripts', 'gutenberg_scripts_handle' );
+	private function dequeue_block_library() {
+		add_action( 'wp_enqueue_scripts', 'dequeue_block_library_handle' );
 	}
 
-	private function gutenberg_scripts_handle() {
+	private function dequeue_block_library_handle() {
 		wp_dequeue_style( 'wp-block-library' );
 		wp_dequeue_style( 'wp-block-library-theme' );
 	}
