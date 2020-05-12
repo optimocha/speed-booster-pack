@@ -56,6 +56,7 @@ class Speed_Booster_Pack_Admin {
 		$this->version     = $version;
 
 		$this->load_dependencies();
+
 		add_action( 'csf_sbp_options_saved', function () {
 			$settings = [
 				'cache_expire_time'             => 604800, // Expire time in seconds
