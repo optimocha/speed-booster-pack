@@ -12,6 +12,10 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 	private $subsets;
 
 	public function __construct() {
+		if ( ! sbp_get_option( 'module_assets' ) ) {
+			return;
+		}
+
 		add_action( 'init', [ $this, 'run' ] );
 	}
 
@@ -20,7 +24,7 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 			return;
 		}
 
-		if ( ! sbp_get_option( 'optimize-fonts', false ) ) {
+		if ( ! sbp_get_option( 'optimize_gfonts', false ) ) {
 			return;
 		}
 

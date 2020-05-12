@@ -112,16 +112,16 @@ register_deactivation_hook( __FILE__, 'deactivate_speed_booster_pack' );
  */
 require SBP_INC_PATH . 'class-speed-booster-pack.php';
 
+$sbp_options = get_option( 'sbp_options' );
+
 if ( ! function_exists( 'sbp_get_option' ) ) {
 	function sbp_get_option( $option = '', $default = null ) {
+		global $sbp_options;
 
-		// Attention: Its your unique id of the framework
-		$options = get_option( 'sbp_options' );
-
-		return ( isset( $options[ $option ] ) ) ? $options[ $option ] : $default;
-
+		return ( isset( $sbp_options[ $option ] ) ) ? $sbp_options[ $option ] : $default;
 	}
 }
+
 
 spl_autoload_register( 'sbp_autoloader' );
 

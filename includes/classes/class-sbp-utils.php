@@ -8,6 +8,6 @@ class SBP_Utils extends SBP_Abstract_Module {
 			return [];
 		}
 
-		return array_map( 'trim', explode( PHP_EOL, $text ) );
+		return array_filter( array_map( 'trim', explode( PHP_EOL, $text ) ) );
 	}
 }
