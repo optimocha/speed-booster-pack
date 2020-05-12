@@ -10,6 +10,8 @@
  * @subpackage Speed_Booster_Pack/admin
  */
 
+use SpeedBooster\SBP_Cache;
+
 /**
  * The admin-specific functionality of the plugin.
  *
@@ -54,13 +56,13 @@ class Speed_Booster_Pack_Admin {
 		$this->version     = $version;
 
 		$this->load_dependencies();
-		add_action( 'csf_speed_booster_saved', function () {
+		add_action( 'csf_sbp_options_saved', function () {
 			$settings = [
-				'cache_expire_time'     => 604800, // Expire time in seconds
-				'exclude_urls'          => '',
-				'include_query_strings' => '',
-				'show_mobile_cache'     => false,
-				'separate_mobile_cache' => false,
+				'cache_expire_time'             => 604800, // Expire time in seconds
+				'caching_exclude_urls'          => '',
+				'caching_include_query_strings' => '',
+				'show_mobile_cache'             => true,
+				'caching_mobile'                => false,
 			];
 
 			foreach ( $settings as $option => $default_value ) {
@@ -71,7 +73,7 @@ class Speed_Booster_Pack_Admin {
 
 			// Delete or recreate advanced-cache.php
 			$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
-			if ( sbp_get_option( 'enable_cache' ) ) {
+			if ( sbp_get_option( 'module_caching' ) ) {
 				$sbp_advanced_cache = SBP_PATH . '/advanced-cache.php';
 
 				SBP_Cache::set_wp_cache_constant( true );

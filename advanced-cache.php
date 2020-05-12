@@ -29,9 +29,9 @@ if ( sbp_is_mobile() && isset( $settings['show_mobile_cache'] ) && ! $settings['
 }
 
 // Check for query strings
-if ( ! empty( $_GET ) && isset( $settings['include_query_strings'] ) ) {
+if ( ! empty( $_GET ) && isset( $settings['caching_include_query_strings'] ) ) {
 	// Get included rules
-	$include_query_strings = sbp_explode_lines( $settings['include_query_strings'] );
+	$include_query_strings = sbp_explode_lines( $settings['caching_include_query_strings'] );
 
 	$query_string_file_name = '';
 	// Put all query string parameters in order to generate same filename even if parameter order is different
@@ -62,8 +62,8 @@ if ( isset( $settings['cache_expire_time'] ) && ! empty( $settings['cache_expire
 	}
 }
 
-if ( isset( $settings['exclude_urls'] ) ) {
-	$exclude_urls = array_map( 'trim', explode( PHP_EOL, $settings['exclude_urls'] ) );
+if ( isset( $settings['caching_exclude_urls'] ) ) {
+	$exclude_urls = array_map( 'trim', explode( PHP_EOL, $settings['caching_exclude_urls'] ) );
 	if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
 		return false;
 	}
@@ -102,7 +102,7 @@ function get_cache_file_path() {
 	global $settings;
 	$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster';
 
-	if ( sbp_is_mobile() && isset( $settings['show_mobile_cache'] ) && $settings['show_mobile_cache'] && isset( $settings['separate_mobile_cache'] ) && $settings['separate_mobile_cache'] ) {
+	if ( sbp_is_mobile() && isset( $settings['caching_mobile'] ) && $settings['caching_mobile'] ) {
 		$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster/.mobile';
 	}
 

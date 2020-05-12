@@ -4,16 +4,20 @@ namespace SpeedBooster;
 
 class SBP_Cache extends SBP_Abstract_Module {
 	private $options = [
-		'cache_expire_time'     => 604800, // Expire time in seconds
-		'exclude_urls'          => '',
-		'include_query_strings' => '',
-		'show_mobile_cache'     => false,
-		'separate_mobile_cache' => false,
+		'cache_expire_time'             => 604800, // Expire time in seconds
+		'caching_exclude_urls'          => '',
+		'caching_include_query_strings' => '',
+		'show_mobile_cache'             => true,
+		'caching_mobile'                => false,
 	];
 
 	private $file_name = 'index.html';
 
 	public function __construct() {
+		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_caching' ) ) {
+			return;
+		}
+
 		// Set caching options
 		$this->set_options();
 
@@ -36,11 +40,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	private function should_bypass_cache() {
-		// Check if cache is enabled
-		if ( ! sbp_get_option( 'enable_cache' ) ) {
-			return true;
-		}
-
 		// Do not cache for logged in users
 		if ( is_user_logged_in() ) {
 			return true;
@@ -80,12 +79,12 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return true;
 		}
 
-		// Check for UTM parameters for affiliates
-		if ( isset( $_GET['utm_source'] ) || isset( $_GET['utm_medium'] ) || isset( $_GET['utm_campaign'] ) || isset( $_GET['utm_term'] ) || isset( $_GET['utm_content'] ) ) {
-			return true;
-		}
+		// Check for UTM parameters for affiliates // TODO: Check UTM parameters again
+//		if ( isset( $_GET['utm_source'] ) || isset( $_GET['utm_medium'] ) || isset( $_GET['utm_campaign'] ) || isset( $_GET['utm_term'] ) || isset( $_GET['utm_content'] ) ) {
+//			return true;
+//		}
 
-		if ( wp_is_mobile() && ! sbp_get_option( 'show_mobile_cache', false ) ) {
+		if ( wp_is_mobile() && ! sbp_get_option( 'caching_mobile' ) ) {
 			return true;
 		}
 
@@ -174,7 +173,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		// Check for query strings
 		if ( ! empty( $_GET ) ) {
 			// Get included rules
-			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'include_query_strings', '' ) );
+			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings', '' ) );
 
 			$query_string_file_name = '';
 			// Order get parameters alphabetically (to get same filename for every order of query parameters)
@@ -187,6 +186,14 @@ class SBP_Cache extends SBP_Abstract_Module {
 			if ( '' !== $query_string_file_name ) {
 				$query_string_file_name .= '.html';
 				$this->file_name        = $query_string_file_name;
+			}
+		}
+
+		// Check for exclude URL's
+		if ( $this->options['caching_exclude_urls'] ) {
+			$exclude_urls = array_map( 'trim', explode( PHP_EOL, $this->options['caching_exclude_urls'] ) );
+			if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
+				return false;
 			}
 		}
 
@@ -220,7 +227,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 	private function get_cache_file_path() {
 		$cache_dir = SBP_CACHE_DIR;
-		if ( wp_is_mobile() && sbp_get_option( 'show_mobile_cache', false ) && sbp_get_option( 'separate_mobile_cache', false ) ) {
+		if ( wp_is_mobile() && sbp_get_option( 'caching_mobile' ) ) {
 			$cache_dir = SBP_CACHE_DIR . '/.mobile';
 		}
 
@@ -239,7 +246,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		);
 
 		if ( is_file( $path ) > 0 ) {
-			wp_die( __('Error occured on SBP cache. Please contact you webmaster.', 'speed-booster') );
+			wp_die( __( 'Error occured on SBP cache. Please contact you webmaster.', 'speed-booster' ) );
 		}
 
 		return rtrim( $path, "/" ) . "/";
