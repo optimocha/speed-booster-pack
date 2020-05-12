@@ -22,12 +22,82 @@ class SBP_JS_Mover extends SBP_Abstract_Module {
 		"text/x-javascript",
 	];
 
+	private $default_excludes = [
+		'html5.js',
+		'show_ads.js',
+		'histats.com/js',
+		'ws.amazon.com/widgets',
+		'/ads/',
+		'intensedebate.com',
+		'scripts.chitika.net/',
+		'jotform.com/',
+		'gist.github.com',
+		'forms.aweber.com',
+		'video.unrulymedia.com',
+		'stats.wp.com',
+		'stats.wordpress.com',
+		'widget.rafflecopter.com',
+		'widget-prime.rafflecopter.com',
+		'releases.flowplayer.org',
+		'c.ad6media.fr',
+		'cdn.stickyadstv.com',
+		'www.smava.de',
+		'contextual.media.net',
+		'app.getresponse.com',
+		'adserver.reklamstore.com',
+		's0.wp.com',
+		'wprp.zemanta.com',
+		'files.bannersnack.com',
+		'smarticon.geotrust.com',
+		'js.gleam.io',
+		'ir-na.amazon-adsystem.com',
+		'web.ventunotech.com',
+		'verify.authorize.net',
+		'ads.themoneytizer.com',
+		'embed.finanzcheck.de',
+		'imagesrv.adition.com',
+		'js.juicyads.com',
+		'form.jotformeu.com',
+		'speakerdeck.com',
+		'content.jwplatform.com',
+		'ads.investingchannel.com',
+		'app.ecwid.com',
+		'www.industriejobs.de',
+		's.gravatar.com',
+		'googlesyndication.com',
+		'a.optmstr.com',
+		'a.optmnstr.com',
+		'a.opmnstr.com',
+		'adthrive.com',
+		'mediavine.com',
+		'js.hsforms.net',
+		'googleadservices.com',
+		'f.convertkit.com',
+		'recaptcha/api.js',
+		'mailmunch.co',
+		'apps.shareaholic.com',
+		'dsms0mj1bbhn4.cloudfront.net',
+		'nutrifox.com',
+		'code.tidio.co',
+		'www.uplaunch.com',
+		'widget.reviewability.com',
+		'embed-cdn.gettyimages.com/widgets.js',
+		'app.mailerlite.com',
+		'ck.page',
+		'window.adsbygoogle',
+		'google_ad_client',
+		'googletag.display',
+		'document.write',
+		'google_ad',
+		'adsbygoogle',
+	];
+
 	private $exclude_rules = [];
 
 	private $scripts_to_move = [];
 
 	public function __construct() {
-		if ( ! $this->should_run() ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'js_move' ) ) {
 			return;
 		}
 
@@ -35,12 +105,8 @@ class SBP_JS_Mover extends SBP_Abstract_Module {
 		add_filter( 'sbp_output_buffer', [ $this, 'move_scripts_to_footer' ] );
 	}
 
-	private function should_run() {
-		return true;
-	}
-
 	public function move_scripts_to_footer( $html ) {
-		$this->exclude_rules = SBP_Utils::explode_lines( sbp_get_option( 'js_move_exceptions' ) );
+		$this->exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
 
 		$this->get_scripts_to_move( $html );
 		$this->remove_scripts_to_move( $html );
@@ -98,7 +164,7 @@ class SBP_JS_Mover extends SBP_Abstract_Module {
 	 * 8. Check if script includes exclude rule
 	 * 9. If it includes, remove script from move list
 	 */
-	private function check_for_excludes( ) {
+	private function check_for_excludes() {
 		for ( $i = 0; $i < count( $this->scripts_to_move ); $i ++ ) {
 			// Check if in excluded scripts
 			$script = $this->scripts_to_move[ $i ];
