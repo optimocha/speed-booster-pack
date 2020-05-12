@@ -17,11 +17,7 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $transient_name = '';
 
 	public function __construct() {
-		if (!parent::should_plugin_run()) {
-			return;
-		}
-
-		if ( ! sbp_get_option('localize-analytics') ) {
+		if (!parent::should_plugin_run() || sbp_get_option('module_assets') || ! sbp_get_option('localize-analytics')) { // TODO: There is no analytics section
 			return;
 		}
 

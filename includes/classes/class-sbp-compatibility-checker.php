@@ -77,7 +77,7 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 	private $active_plugins = [];
 
 	public function __construct() {
-		if (!parent::should_plugin_run()) {
+		if ( ! parent::should_plugin_run() ) {
 			return;
 		}
 

@@ -16,14 +16,9 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	];
 
 	public function __construct() {
-		if (!parent::should_plugin_run()) {
+		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'css_inline' ) ) {
 			return;
 		}
-
-		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'css_inline' ) ) {
-			return;
-		}
-
 
 		$this->set_exceptions();
 
@@ -31,7 +26,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	}
 
 	public function print_styles() {
-		if ( sbp_get_option('css_minify') ) {
+		if ( sbp_get_option( 'css_minify' ) ) {
 			$minify = true;
 		} else {
 			$minify = false;
@@ -52,7 +47,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		if ( ! empty( $not_inlined ) ) {
 			foreach ( $not_inlined as $style ) {
 				?>
-				<link rel="stylesheet" href="<?php echo $style['src'] ?>" type="text/css" <?php echo $style['media'] ? "media=\"{$style['media']}\"" : '' ?> /><?php
+                <link rel="stylesheet" href="<?php echo $style['src'] ?>" type="text/css" <?php echo $style['media'] ? "media=\"{$style['media']}\"" : '' ?> /><?php
 			}
 		}
 
@@ -60,8 +55,8 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	}
 
 	private function set_exceptions() {
-		$sbp_exceptions = SBP_Utils::explode_lines(sbp_get_option('css_exclude'));
-		$this->exceptions = array_merge($sbp_exceptions, $this->exceptions);
+		$sbp_exceptions   = SBP_Utils::explode_lines( sbp_get_option( 'css_exclude' ) );
+		$this->exceptions = array_merge( $sbp_exceptions, $this->exceptions );
 
 		foreach ( $this->exceptions as $key => $exception ) {
 			if ( trim( $exception ) != '' ) {
@@ -119,7 +114,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 			$css = file_get_contents( $path );
 
 			if ( $minify ) {
-				$css = $this->minify_css($css);
+				$css = $this->minify_css( $css );
 			}
 
 			$css = $this->rebuilding_css_urls( $css, $url );
@@ -233,7 +228,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		global $wp_styles;
 
 		if ( is_string( $file ) && isset( $wp_styles->registered[ $file ] ) ) {
-			$file     = $wp_styles->registered[ $file ];
+			$file = $wp_styles->registered[ $file ];
 		}
 
 		foreach ( $this->exceptions as $exception ) {

@@ -32,11 +32,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	];
 
 	public function __construct() {
-		if (!parent::should_plugin_run()) {
-			return;
-		}
-
-		if ( ! sbp_get_option( 'module_tweaks' ) ) {
+		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_tweaks' ) ) {
 			return;
 		}
 
