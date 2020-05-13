@@ -10,30 +10,30 @@ abstract class SBP_Abstract_Module {
 	}
 
 	protected function should_plugin_run() {
-		$page_builders = [
-			"fb-edit"                       => "1", // fusion builder
-			"et_fb"                         => "1", // divi builder
-			"PageSpeed"                     => "off", // mod_pagespeed
+		$query_strings_to_exclude = [
+			"sbp_disable"                   => "1", // speed booster pack
+			"elementor-preview"             => "elementor", // elementor
+			"ai-debug-blocks"               => "1", // ad inserter
 			"ao_noptimize"                  => "1", // autoptimize
 			"ao_noptirocket"                => "1", // autoptimize & wp rocket
-			"sbp_disable"                   => "1", // speed booster pack
-			"fl_builder"                    => null, // beaver builder 1
+			"brizy"                         => "edit", // brizy builder
 			"bt-beaverbuildertheme"         => "show", // beaver builder 2
 			"ct_builder"                    => "true", // oxygen builder
-			"tve"                           => "true", // thrive architect
-			"preview"                       => "true", // wordpress core preview
 			"customize_changeset_uuid"      => null, // wordpress core customizer
-			"action"                        => "elementor", // elementor
-			"ai-debug-blocks"               => "1", // ad inserter
-			"tipi_builder"                  => "1", // tipi builder?
-			"vc_action"                     => "vc_inline", // wpbakery page builder
-			"brizy"                         => "edit", // brizy builder
+			"et_fb"                         => "1", // divi builder
+			"fb-edit"                       => "1", // fusion builder
+			"fl_builder"                    => null, // beaver builder 1
+			"PageSpeed"                     => "off", // mod_pagespeed
+			"preview"                       => "true", // wordpress core preview
 			"siteorigin_panels_live_editor" => null, // siteorigin page builder
-			"elementor-preview"             => null, // Elementor Preview
+			"tb_preview"                    => "1", // themify builder
+			"tipi_builder"                  => "1", // tipi builder
+			"tve"                           => "true", // thrive architect
+			"vc_action"                     => "vc_inline", // wpbakery page builder
 		];
 
-		foreach ( $page_builders as $page_builder => $value ) {
-			if ( isset( $_GET[ $page_builder ] ) && ( $value == $_GET[ $page_builder ] || null == $value ) ) {
+		foreach ( $query_strings_to_exclude as $query_string => $value ) {
+			if ( isset( $_GET[ $query_string ] ) && ( $value == $_GET[ $query_string ] || null == $value ) ) {
 				return false;
 			}
 		}
