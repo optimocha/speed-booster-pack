@@ -92,7 +92,7 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 			return;
 		}
 		if ( $sbp_settings_page !== get_current_screen()->id ) {
-			include_once( SPEED_BOOSTER_PACK_PATH . "inc/template/notices/compatibility.php" );
+//			include_once( SPEED_BOOSTER_PACK_PATH . "inc/template/notices/compatibility.php" );
 		}
 	}
 
