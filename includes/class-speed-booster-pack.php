@@ -92,7 +92,6 @@ class Speed_Booster_Pack {
 	}
 
 	private function init_modules() {
-		new SBP_Cache();
 		new SBP_Tweaks();
 		new SBP_Font_Optimizer();
 		new SBP_Compatibility_Checker();
@@ -102,6 +101,8 @@ class Speed_Booster_Pack {
 		new SBP_Lazy_Loader();
 		new SBP_CSS_Minifier();
 		new SBP_HTML_Minifier();
+		new SBP_Localize_Tracker();
+		new SBP_Cache();
 	}
 
 	/**

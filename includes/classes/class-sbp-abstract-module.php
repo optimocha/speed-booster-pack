@@ -4,9 +4,6 @@ namespace SpeedBooster;
 
 abstract class SBP_Abstract_Module {
 	public function __construct() {
-		if (!$this->should_plugin_run()) {
-			return;
-		}
 	}
 
 	protected function should_plugin_run() {

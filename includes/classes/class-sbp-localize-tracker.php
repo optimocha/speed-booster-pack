@@ -17,24 +17,11 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $transient_name = '';
 
 	public function __construct() {
-		if (!parent::should_plugin_run() || sbp_get_option('module_assets') || ! sbp_get_option('localize-analytics')) { // TODO: There is no analytics section
+		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'localize_tracking_scripts' ) ) {
 			return;
 		}
 
-		if ( sbp_get_option('use-minimal-analytics') ) {
-			if ( sbp_get_option('tracking-position', 'footer') === 'footer' ) {
-				$tracking_code_position = 'wp_footer';
-			} else {
-				$tracking_code_position = 'wp_head';
-			}
-			add_action( $tracking_code_position, [ $this, 'insert_minimal_analytics' ] );
-		} else {
-			add_filter('sbp_output_buffer', [$this, 'replace_url']);
-		}
-	}
-
-	public function test($html) {
-		return 'zahid';
+		add_filter( 'sbp_output_buffer', [ $this, 'replace_url' ] );
 	}
 
 	public function replace_url( $html ) {
@@ -43,12 +30,6 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 		$html = $this->replace_gtag( $html );
 
 		return $html;
-	}
-
-	public function insert_minimal_analytics() {
-		global $sbp_options;
-		$tracking_id = $sbp_options['sbp_ga_tracking_script'];
-		require SPEED_BOOSTER_PACK_PATH . '/inc/template/analytics/minimal-analytics.php';
 	}
 
 	private function replace_analytics( $html ) {
@@ -187,5 +168,3 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 		return true;
 	}
 }
-
-new SBP_Localize_Tracker();
