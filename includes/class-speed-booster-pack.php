@@ -21,6 +21,7 @@ use SpeedBooster\SBP_JS_Mover;
 use SpeedBooster\SBP_Lazy_Loader;
 use SpeedBooster\SBP_Localize_Tracker;
 use SpeedBooster\SBP_Preboost;
+use SpeedBooster\SBP_Special;
 use SpeedBooster\SBP_Tweaks;
 
 /**
@@ -102,6 +103,7 @@ class Speed_Booster_Pack {
 		new SBP_CSS_Minifier();
 		new SBP_HTML_Minifier();
 		new SBP_Localize_Tracker();
+		new SBP_Special();
 		new SBP_Cache();
 	}
 
