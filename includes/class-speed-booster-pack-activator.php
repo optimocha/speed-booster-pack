@@ -40,7 +40,7 @@ class Speed_Booster_Pack_Activator {
 		} else {
 			// Compare file contents
 			if ( file_get_contents( $advanced_cache_path ) != file_get_contents( $sbp_advanced_cache ) ) {
-				wp_die( __( 'advanced-cache.php file is already exists and created by other plugin. Delete wp-content/advanced-cache.php file to continue.', 'speed-booster' ) );
+				wp_die( 'advanced-cache.php file is already exists and created by other plugin. Delete wp-content/advanced-cache.php file to continue.' );
 			}
 		}
 	}

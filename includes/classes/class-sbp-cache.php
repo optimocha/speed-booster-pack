@@ -257,7 +257,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		);
 
 		if ( is_file( $path ) > 0 ) {
-			wp_die( __( 'Error occured on SBP cache. Please contact you webmaster.', 'speed-booster' ) );
+			wp_die( 'Error occured on SBP cache. Please contact you webmaster.' );
 		}
 
 		return rtrim( $path, "/" ) . "/";
