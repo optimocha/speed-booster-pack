@@ -4,7 +4,7 @@ namespace SpeedBooster;
 
 class SBP_CDN extends SBP_Abstract_Module {
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_special' ) ) {
+		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'cdn_enable' ) ) {
 			return;
 		}
 
@@ -20,7 +20,7 @@ class SBP_CDN extends SBP_Abstract_Module {
 		$directories = 'wp\-content|wp\-includes';
 
 		//Rewrite URLs + Return
-		$regEx   = '#(?<=[(\"\'])(?:' . $regExURL . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
+		$regEx    = '#(?<=[(\"\'])(?:' . $regExURL . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
 		$cdn_HTML = preg_replace_callback( $regEx, [ $this, 'rewrite_url' ], $html );
 
 		return $cdn_HTML;
@@ -28,7 +28,7 @@ class SBP_CDN extends SBP_Abstract_Module {
 
 	public function rewrite_url( $url ) {
 		global $sbp_options;
-		$sbp_cdn_url      = sbp_get_option('cdn_enable');
+		$sbp_cdn_url = sbp_get_option( 'cdn_enable' );
 
 		//Make Sure CDN URL is Set
 		if ( ! empty( $sbp_cdn_url ) ) {
