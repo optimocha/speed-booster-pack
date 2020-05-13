@@ -149,6 +149,7 @@ class Speed_Booster_Pack_Admin {
 					.sbp-settings .text-input-before, .sbp-settings .text-input-after {line-height:2;}
 					.sbp-settings .font-monospace {font-family:monospace;}
 					.sbp-settings .csf-field-group .csf-cloneable-header-icon {vertical-align:middle;}
+					.sbp-settings .csf-sticky .csf-header-inner {z-index:99;}
 					.sbp-settings {max-width:75rem;}
 					</style>',
 				// LAHMACUNTODO: Üst satıra eklediğim stili başka bir yöntemle ekleyelim. Bu dosyanın sonundaki sbp_settings_custom_css fonksiyonunu inceleyebilirsin.
@@ -190,7 +191,7 @@ class Speed_Booster_Pack_Admin {
 					//	 'id'	=> 'module_TODO',
 					//	 'class'	=> 'module-TODO',
 					//	 'type'	=> 'switcher',
-					//	 'label'	=> __( 'Disables the whole module, without resetting its settings.', 'speed-booster-pack' ),
+					//	 'label'	=> __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 					// ],
 
 				]
@@ -210,7 +211,7 @@ class Speed_Booster_Pack_Admin {
 						'id'    => 'module_tweaks',
 						'class' => 'module-tweaks',
 						'type'  => 'switcher',
-						'label' => __( 'Disables the whole module, without resetting its settings.', 'speed-booster-pack' ),
+						'label' => __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 					],
 					[
 						'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
@@ -230,7 +231,7 @@ class Speed_Booster_Pack_Admin {
 						'title'      => __( 'Disable self pingbacks', 'speed-booster-pack' ),
 						'id'         => 'disable_self_pingbacks',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Disabling this will prevent pinging this website to ping itself (its other posts etc.) during publishing, which will improve the speed of publishing posts or pages.', 'speed-booster-pack' ),
 						'default'    => true,
 						'dependency' => [ 'module_tweaks', '==', '1' ]
 					],
@@ -246,28 +247,28 @@ class Speed_Booster_Pack_Admin {
 						'title'      => __( 'Dequeue post embed script', 'speed-booster-pack' ),
 						'id'         => 'disable_post_embeds',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_tweaks', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Dequeue jQuery Migrate', 'speed-booster-pack' ),
 						'id'         => 'dequeue_jquery_migrate',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'If you\'re sure that the jQuery plugins used in your website work with jQuery 1.9 and above, this is totally safe to enable.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_tweaks', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
 						'id'         => 'dequeue_dashicons',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
 						'dependency' => [ 'module_tweaks', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Dequeue Gutenberg CSS', 'speed-booster-pack' ),
 						'id'         => 'dequeue_block_library',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'If you\'re not using the block editor (Gutenberg) in your posts/pages, this is a safe setting to enable.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_tweaks', '==', '1' ]
 					],
 					[
@@ -299,7 +300,7 @@ class Speed_Booster_Pack_Admin {
 						'min'        => '1',
 						'unit'       => __( 'minutes', 'speed-booster-pack' ),
 						'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />' . sprintf( __( 'If the %1$sAUTOSAVE_INTERVAL%2$s constant is set in your %1$swp-config.php%2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>', '</code>' ),
-						/* LAHMACUNTODO: sanitize parametresinde çalışacak bir ufak fonksiyon yazarak bu değerin ondalıklarını yuvarlamak ve 1'in altına düşmesini engellemek lazım
+						/* LAHMACUNTODO: hayır absint yeterli değil; onu yaparken aynı zamanda 0 olmasını da engellemek lazım!
 						http://codestarframework.com/documentation/#/faq?id=how-to-use-sanitize-
 						*/
 						'sanitize'   => 'absint',
@@ -375,7 +376,7 @@ class Speed_Booster_Pack_Admin {
 						'class' => 'module-caching',
 						'type'  => 'switcher',
 						'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
-						'label' => __( 'Disables the whole module, without resetting its settings.', 'speed-booster-pack' ),
+						'label' => __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 					],
 					[
 						'id'         => 'caching_mobile',
@@ -448,27 +449,27 @@ class Speed_Booster_Pack_Admin {
 						'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
 						'id'    => 'module_assets',
 						'type'  => 'switcher',
-						'label' => __( 'Disables the whole module, without resetting its settings.', 'speed-booster-pack' ),
+						'label' => __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 					],
 					[
 						'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
 						'id'         => 'minify_html',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Removes all whitespace characters from the HTML output, minimizing the HTML size.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Optimize Google Fonts', 'speed-booster-pack' ),
 						'id'         => 'optimize_gfonts',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Combines all Google Fonts URLs into a single URL.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Lazy load images, videos &amp; iframes', 'speed-booster-pack' ),
 						'id'         => 'lazyload',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
@@ -476,21 +477,21 @@ class Speed_Booster_Pack_Admin {
 						'id'         => 'lazyload_exclude',
 						'class'      => 'lazyload_exclude',
 						'type'       => 'code_editor',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
 						'dependency' => [ [ 'module_assets', '==', '1' ], [ 'lazyload', '==', '1' ] ]
 					],
 					[
 						'title'      => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
 						'id'         => 'js_move',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Moves all JavaScript files and inline JS to the end of the HTML, making the rest of the code load faster.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Defer all JavaScript', 'speed-booster-pack' ),
 						'id'         => 'js_defer',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Defers loading of all JavaScript to page onload.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
@@ -498,21 +499,21 @@ class Speed_Booster_Pack_Admin {
 						'id'         => 'js_exclude',
 						'class'      => 'js_exclude',
 						'type'       => 'code_editor',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Inline all CSS', 'speed-booster-pack' ),
 						'id'         => 'css_inline',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Inlines all of your CSS files into your HTML output. Useful for lightweight designs but might be harmful for heavy websites with over 500KB of CSS.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
 						'title'      => __( 'Minify all inlined CSS', 'speed-booster-pack' ),
 						'id'         => 'css_minify',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Minifies the already inlined CSS.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
@@ -520,7 +521,7 @@ class Speed_Booster_Pack_Admin {
 						'id'         => 'css_exclude',
 						'class'      => 'CSS exclusions',
 						'type'       => 'code_editor',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'If your design breaks after enabling the options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
@@ -555,6 +556,14 @@ class Speed_Booster_Pack_Admin {
 				'fields' => [
 
 					[
+						'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Special', 'speed-booster-pack' ),
+						'id'    => 'module_special',
+						'class' => 'module-special',
+						'type'  => 'switcher',
+						'label' => __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+					],
+
+					[
 						'title'      => __( 'Enable CDN', 'speed-booster-pack' ),
 						'id'         => 'cdn_enable',
 						'type'       => 'text',
@@ -564,46 +573,38 @@ class Speed_Booster_Pack_Admin {
 						'dependency' => [ 'module_special', '==', '1' ]
 					],
 					[
-						'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Special', 'speed-booster-pack' ),
-						'id'    => 'module_special',
-						'class' => 'module-special',
-						'type'  => 'switcher',
-						'label' => __( 'Disables the whole module, without resetting its settings.', 'speed-booster-pack' ),
+						'title'      => __( 'Localize Google Analytics & Google Tag Manager', 'speed-booster-pack' ),
+						'id'         => 'localize_tracking_scripts',
+						'type'       => 'switcher',
+						'desc'       => __( 'Searches for Google Analytics or Google Tag Manager scripts found in your pages, and replaces them with a locally saved script.', 'speed-booster-pack' ),
+						'dependency' => [ 'module_special', '==', '1' ]
 					],
-
 					[
 						'title'      => 'WooCommerce: ' . __( 'Disable cart fragments', 'speed-booster-pack' ),
 						'id'         => 'woocommerce_disable_cart_fragments',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => sprintf( __( 'Dequeues the %s file but only when the visitor\'s cart is empty.', 'speed-booster-pack' ), '<code>cart-fragments.js</code>' ),
 						'dependency' => [ 'module_special', '==', '1' ]
 					],
 					[
 						'title'      => 'WooCommerce: ' . __( 'Optimize non-WooCommerce pages', 'speed-booster-pack' ),
 						'id'         => 'woocommerce_optimize_nonwc_pages',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Prevents loading of WooCommerce-related scripts and styles on non-WooCommerce pages.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_special', '==', '1' ]
 					],
 					[
 						'title'      => 'WooCommerce: ' . __( 'Disable password strength meter', 'speed-booster-pack' ),
 						'id'         => 'woocommerce_disable_password_meter',
 						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
-						'dependency' => [ 'module_special', '==', '1' ]
-					],
-					[
-						'title'      => __( 'Disable password strength meter', 'speed-booster-pack' ),
-						'id'         => 'woocommerce_disable_password_meter',
-						'type'       => 'switcher',
-						'desc'       => __( 'TODO.', 'speed-booster-pack' ),
+						'desc'       => __( 'Disables the password strength meter for password inputs during a WooCommerce checkout.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_special', '==', '1' ]
 					],
 					[
 						'title'                  => __( 'Custom code manager', 'speed-booster-pack' ),
 						'id'                     => 'custom_codes',
 						'type'                   => 'group',
-						'before'                 => '<p>' . __( 'TODO.', 'speed-booster-pack' ) . '</p>',
+						'before'                 => '<p>' . __( 'Code blocks added with this tool can be loaded in the header, the footer and can even be delayed.', 'speed-booster-pack' ) . '</p>',
 						'accordion_title_number' => true,
 						'accordion_title_auto'   => false,
 						'fields'                 => [
@@ -612,12 +613,12 @@ class Speed_Booster_Pack_Admin {
 								'type'   => 'code_editor',
 								'before' => '&lt;script&gt;',
 								'after'  => '&lt;/script&gt;',
-								'desc'   => __( 'TODO.', 'speed-booster-pack' ),
+								'desc'   => sprintf( __( 'Paste the inline JavaScript here. DON\'T include the %s tags or else you might break it!', 'speed-booster-pack' ), '<code>&lt;script&gt;</code>' ),
 							],
 							[
 								'title'   => __( 'Placement', 'speed-booster-pack' ),
 								'id'      => 'custom_codes_place',
-								'desc'    => __( 'TODO.', 'speed-booster-pack' ),
+								'desc'    => __( 'Set this to "Footer" to place the code before &lt;/body&gt;, or "Header" to place it before &lt;/head&gt;.', 'speed-booster-pack' ),
 								'type'    => 'button_set',
 								'options' => [
 									'footer' => __( 'Footer', 'speed-booster-pack' ),
@@ -628,11 +629,11 @@ class Speed_Booster_Pack_Admin {
 							[
 								'title'   => __( 'Loading method', 'speed-booster-pack' ),
 								'id'      => 'custom_codes_method',
-								'desc'    => __( 'TODO.', 'speed-booster-pack' ),
+								'desc'    => __( 'Set this to "onload" to defer the code to page onload, or "4-second delay" to defer it to four seconds after onload. When in doubt, set it to "Normal".', 'speed-booster-pack' ),
 								'type'    => 'button_set',
 								'options' => [
 									'normal'  => __( 'Normal', 'speed-booster-pack' ),
-									'onload'  => __( 'onLoad', 'speed-booster-pack' ),
+									'onload'  => __( 'onload', 'speed-booster-pack' ),
 									'delayed' => __( '4-second delay', 'speed-booster-pack' ),
 								],
 								'default' => 'normal',
@@ -647,13 +648,13 @@ class Speed_Booster_Pack_Admin {
 
 			/* Section: Tools */
 			CSF::createSection( $prefix, array(
-				'title'  => 'Tools',
+				'title'  => __( 'Tools', 'speed-booster-pack' ),
 				'id'     => 'tools',
 				'icon'   => 'fa fa-tools',
 				'fields' => array(
 					array(
 						'type'    => 'subheading',
-						'content' => 'Backup Speed Booster Pack',
+						'content' => __( 'Backup Settings', 'speed-booster-pack' ),
 					),
 					// A text field
 					array(
@@ -668,7 +669,7 @@ class Speed_Booster_Pack_Admin {
 
 			/* Section: About */
 			CSF::createSection( $prefix, array(
-				'title'  => 'About',
+				'title'  => __( 'About', 'speed-booster-pack' ),
 				'id'     => 'about',
 				'icon'   => 'fa fa-info-circle',
 				'fields' => array(
