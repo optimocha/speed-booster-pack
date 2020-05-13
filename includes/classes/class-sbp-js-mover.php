@@ -106,7 +106,6 @@ class SBP_JS_Mover extends SBP_Abstract_Module {
 			return;
 		}
 
-		// TODO: This function should run before HTML minifier
 		add_filter( 'sbp_output_buffer', [ $this, 'move_scripts_to_footer' ] );
 	}
 

@@ -32,7 +32,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 
 		// Handle The Cache
-		add_filter( 'sbp_output_buffer', [ $this, 'handle_cache' ] );
+		add_filter( 'sbp_output_buffer', [ $this, 'handle_cache' ], 1000 );
 	}
 
 	public static function instantiate() {

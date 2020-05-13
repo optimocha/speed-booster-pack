@@ -20,7 +20,7 @@ class SBP_HTML_Minifier extends SBP_Abstract_Module {
 			return;
 		}
 
-		add_filter( 'sbp_output_buffer', [ $this, 'handle_html_minify' ] );
+		add_filter( 'sbp_output_buffer', [ $this, 'handle_html_minify' ], 11 );
 	}
 
 	public function handle_html_minify( $html ) {
