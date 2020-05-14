@@ -22,32 +22,34 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 
 	private function add_script_tags() {
 		$scripts = sbp_get_option( 'custom_codes' );
-		foreach ( $scripts as $script ) {
-			if ( 'footer' === $script['custom_codes_place'] ) {
-				$hook = 'wp_footer';
-			} else {
-				$hook = 'wp_head';
-			}
-			// TODO: Find another way to pass this argument
-			add_action( $hook, function () use ( $script ) {
-				switch ( $script['custom_codes_method'] ) {
-					case "onload":
-						$output                  = '<script type="sbp/javascript" data-method="onload">';
-						$this->add_onload_script = true;
-						break;
-					case "delayed":
-						$output                 = '<script type="sbp/javascript" data-method="delayed">';
-						$this->add_delay_script = true;
-						break;
-					default:
-						$output = '<script type="text/javascript">';
-						break;
+		if ( $scripts ) {
+			foreach ( $scripts as $script ) {
+				if ( 'footer' === $script['custom_codes_place'] ) {
+					$hook = 'wp_footer';
+				} else {
+					$hook = 'wp_head';
 				}
-				$output .= $script['custom_codes_item'];
-				$output .= '</script>';
+				// TODO: Find another way to pass this argument
+				add_action( $hook, function () use ( $script ) {
+					switch ( $script['custom_codes_method'] ) {
+						case "onload":
+							$output                  = '<script type="sbp/javascript" data-method="onload">';
+							$this->add_onload_script = true;
+							break;
+						case "delayed":
+							$output                 = '<script type="sbp/javascript" data-method="delayed">';
+							$this->add_delay_script = true;
+							break;
+						default:
+							$output = '<script type="text/javascript">';
+							break;
+					}
+					$output .= $script['custom_codes_item'];
+					$output .= '</script>';
 
-				echo $output;
-			} );
+					echo $output;
+				} );
+			}
 		}
 
 		add_action( 'wp_footer', [ $this, 'add_sbp_loader_script' ] );
