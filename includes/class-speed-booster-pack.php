@@ -16,6 +16,7 @@ use SpeedBooster\SBP_Cache;
 use SpeedBooster\SBP_CDN;
 use SpeedBooster\SBP_Compatibility_Checker;
 use SpeedBooster\SBP_CSS_Minifier;
+use SpeedBooster\SBP_Custom_Code_Manager;
 use SpeedBooster\SBP_Font_Optimizer;
 use SpeedBooster\SBP_HTML_Minifier;
 use SpeedBooster\SBP_JS_Mover;
@@ -106,6 +107,7 @@ class Speed_Booster_Pack {
 		new SBP_Localize_Tracker();
 		new SBP_Special();
 		new SBP_CDN();
+		new SBP_Custom_Code_Manager();
 		new SBP_Cache();
 	}
 
