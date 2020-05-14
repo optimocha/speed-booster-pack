@@ -58,10 +58,10 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 	public function add_sbp_loader_script() {
 		echo "<script>window.onload = function(e) {";
 		if ( $this->add_onload_script ) {
-			echo 'var scripts=document.querySelectorAll("script[type=\'sbp/javascript\'][data-method=onload]");scripts.forEach(function(t){var e=t.innerHTML,r=document.createElement("script");r.type="text/javascript",r.innerHTML=e,t.replaceWith(r)});';
+			echo 'var scripts=document.querySelectorAll("script[type=\'sbp/javascript\'][data-method=onload]");scripts.forEach(function(t){var e=t.innerHTML,r=document.createElement("script");r.type="text/javascript",r.innerHTML=e,t.after(r),t.remove()});';
 		}
 		if ( $this->add_delay_script ) {
-			echo 'setTimeout(function(){document.querySelectorAll("script[type=\'sbp/javascript\'][data-method=delayed]").forEach(function(e){var t=e.innerHTML,r=document.createElement("script");r.type="text/javascript",r.innerHTML=t,e.replaceWith(r)})},4e3);';
+			echo 'setTimeout(function(){document.querySelectorAll("script[type=\'sbp/javascript\'][data-method=delayed]").forEach(function(e){var t=e.innerHTML,r=document.createElement("script");r.type="text/javascript",r.innerHTML=t,e.after(r),e.remove()})},4e3);';
 		}
 		echo '};</script>';
 	}
@@ -74,7 +74,8 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 		var newScript = document.createElement('script');
 		newScript.type = 'text/javascript';
 		newScript.innerHTML = script;
-		tag.replaceWith(newScript);
+		tag.after(newScript);
+		tag.remove();
 	})
 
 	setTimeout(function() {
@@ -84,7 +85,8 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 			var newScript = document.createElement('script');
 			newScript.type = 'text/javascript';
 			newScript.innerHTML = script;
-			tag.replaceWith(newScript);
+			tag.after(newScript);
+			tag.remove();
 		})
 	}, 4000);
 	 */
