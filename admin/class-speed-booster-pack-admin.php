@@ -565,7 +565,7 @@ class Speed_Booster_Pack_Admin {
 
 					[
 						'title'      => __( 'Enable CDN', 'speed-booster-pack' ),
-						'id'         => 'cdn_enable',
+						'id'         => 'cdn_url',
 						'type'       => 'text',
 						'before'     => '<span class="text-input-before font-monospace">http(s)://</span> ',
 						'after'      => ' <span class="text-input-after font-monospace">/</span>',
