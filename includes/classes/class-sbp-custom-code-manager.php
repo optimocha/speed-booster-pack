@@ -24,6 +24,7 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 		$scripts = sbp_get_option( 'custom_codes' );
 		if ( $scripts ) {
 			foreach ( $scripts as $script ) {
+				if ( '' === $script['custom_codes_item'] ) return;
 				if ( 'footer' === $script['custom_codes_place'] ) {
 					$hook = 'wp_footer';
 				} else {
@@ -56,14 +57,14 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 	}
 
 	public function add_sbp_loader_script() {
-		echo "<script>window.onload = function(e) {";
+		echo "<script>window.addEventListener( 'DOMContentLoaded', function(e) {";
 		if ( $this->add_onload_script ) {
 			echo 'var scripts=document.querySelectorAll("script[type=\'sbp/javascript\'][data-method=onload]");scripts.forEach(function(t){var e=t.innerHTML,r=document.createElement("script");r.type="text/javascript",r.innerHTML=e,t.after(r),t.remove()});';
 		}
 		if ( $this->add_delay_script ) {
 			echo 'setTimeout(function(){document.querySelectorAll("script[type=\'sbp/javascript\'][data-method=delayed]").forEach(function(e){var t=e.innerHTML,r=document.createElement("script");r.type="text/javascript",r.innerHTML=t,e.after(r),e.remove()})},4e3);';
 		}
-		echo '};</script>';
+		echo '});</script>';
 	}
 
 	// Unminified versions of replacer scripts TODO: Clean this when you done.
