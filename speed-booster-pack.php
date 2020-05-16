@@ -23,8 +23,6 @@
  */
 
 // If this file is called directly, abort.
-use SpeedBooster\SBP_Tweaks;
-
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -33,6 +31,11 @@ if ( ! defined( 'WPINC' ) ) {
  * Plugin name.
  */
 define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' );
+
+/**
+ * Current plugin version.
+ */
+define( 'SBP_VERSION', '4.0' );
 
 /**
  * Plugin website URL.
@@ -48,11 +51,6 @@ define( 'SBP_OWNER_NAME', 'Optimocha' );
  * Plugin owner's website URL.
  */
 define( 'SBP_OWNER_HOME', 'https://optimocha.com/' );
-
-/**
- * Current plugin version.
- */
-define( 'SBP_VERSION', '4.0' );
 
 /**
  * Plugin Path

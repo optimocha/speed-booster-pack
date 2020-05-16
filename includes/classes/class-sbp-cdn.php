@@ -4,7 +4,7 @@ namespace SpeedBooster;
 
 class SBP_CDN extends SBP_Abstract_Module {
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'cdn_enable' ) ) {
+		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'cdn_url' ) ) {
 			return;
 		}
 
@@ -28,7 +28,7 @@ class SBP_CDN extends SBP_Abstract_Module {
 
 	public function rewrite_url( $url ) {
 		global $sbp_options;
-		$sbp_cdn_url = sbp_get_option( 'cdn_enable' );
+		$sbp_cdn_url = sbp_get_option( 'cdn_url' );
 
 		//Make Sure CDN URL is Set
 		if ( ! empty( $sbp_cdn_url ) ) {
