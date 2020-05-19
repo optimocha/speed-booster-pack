@@ -23,11 +23,6 @@ $settings      = sbp_parse_settings_file( $settings_file );
 // Set default file name
 $filename = 'index.html';
 
-// Check if mobile cache is active
-if ( sbp_is_mobile() && isset( $settings['show_mobile_cache'] ) && ! $settings['show_mobile_cache'] ) {
-	return false;
-}
-
 // Check for query strings
 if ( ! empty( $_GET ) && isset( $settings['caching_include_query_strings'] ) ) {
 	// Get included rules
@@ -56,8 +51,8 @@ if ( ! is_readable( $cache_file_path ) ) {
 }
 
 // Check if cache file is expired
-if ( isset( $settings['cache_expire_time'] ) && ! empty( $settings['cache_expire_time'] ) ) {
-	if ( ( filemtime( $cache_file_path ) + $settings['cache_expire_time'] ) < time() ) {
+if ( isset( $settings['caching_expiry'] ) && ! empty( $settings['caching_expiry'] ) ) {
+	if ( ( filemtime( $cache_file_path ) + $settings['caching_expiry'] ) < time() ) {
 		return false;
 	}
 }
@@ -102,8 +97,8 @@ function get_cache_file_path() {
 	global $settings;
 	$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster';
 
-	if ( sbp_is_mobile() && isset( $settings['caching_mobile'] ) && $settings['caching_mobile'] ) {
-		$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster/.mobile';
+	if ( sbp_is_mobile() && isset( $settings['caching_separate_mobile'] ) && $settings['caching_separate_mobile'] ) {
+		$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster/mobile';
 	}
 
 	$path = sprintf(

@@ -4,11 +4,10 @@ namespace SpeedBooster;
 
 class SBP_Cache extends SBP_Abstract_Module {
 	private $options = [
-		'cache_expire_time'             => 604800, // Expire time in seconds
+		'caching_expiry'                => 3 * DAY_IN_SECONDS, // Expire time in seconds
 		'caching_exclude_urls'          => '',
 		'caching_include_query_strings' => '',
-		'show_mobile_cache'             => true,
-		'caching_mobile'                => false,
+		'caching_separate_mobile'       => false,
 	];
 
 	private $file_name = 'index.html';
@@ -84,7 +83,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 //			return true;
 //		}
 
-		if ( wp_is_mobile() && ! sbp_get_option( 'caching_mobile' ) ) {
+		if ( wp_is_mobile() && ! sbp_get_option( 'caching_separate_mobile' ) ) {
 			return true;
 		}
 
@@ -213,7 +212,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		// Read cache file
 		$cache_file_path = $this->get_cache_file_path() . $this->file_name;
 
-		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $this->options['cache_expire_time'] < time();
+		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $this->options['caching_expiry'] < time();
 
 		if ( $wp_filesystem->exists( $cache_file_path ) && ! $has_file_expired ) {
 			return $wp_filesystem->get_contents( $cache_file_path );
@@ -238,8 +237,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 	private function get_cache_file_path() {
 		$cache_dir = SBP_CACHE_DIR;
-		if ( wp_is_mobile() && sbp_get_option( 'caching_mobile' ) ) {
-			$cache_dir = SBP_CACHE_DIR . '/.mobile';
+		if ( wp_is_mobile() && sbp_get_option( 'caching_separate_mobile' ) ) {
+			$cache_dir = SBP_CACHE_DIR . '/mobile';
 		}
 
 		$path = sprintf(
