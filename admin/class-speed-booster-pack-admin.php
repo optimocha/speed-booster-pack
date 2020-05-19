@@ -59,11 +59,10 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', function () {
 			$settings = [
-				'cache_expire_time'             => 604800, // Expire time in seconds
+				'caching_expiry'                => 3 * DAY_IN_SECONDS, // Expire time in seconds
 				'caching_exclude_urls'          => '',
 				'caching_include_query_strings' => '',
-				'show_mobile_cache'             => true,
-				'caching_mobile'                => false,
+				'caching_separate_mobile'       => false,
 			];
 
 			foreach ( $settings as $option => $default_value ) {
@@ -150,6 +149,7 @@ class Speed_Booster_Pack_Admin {
 					.sbp-settings .font-monospace {font-family:monospace;}
 					.sbp-settings .csf-field-group .csf-cloneable-header-icon {vertical-align:middle;}
 					.sbp-settings .csf-sticky .csf-header-inner {z-index:99;}
+					.sbp-settings input.disabled, .sbp-settings input:disabled {background:#fff;border:1px solid #7e8993;color:inherit;box-shadow:0 0 0 transparent;}
 					.sbp-settings {max-width:75rem;}
 					</style>',
 				// LAHMACUNTODO: Üst satıra eklediğim stili başka bir yöntemle ekleyelim. Bu dosyanın sonundaki sbp_settings_custom_css fonksiyonunu inceleyebilirsin.
@@ -290,8 +290,8 @@ class Speed_Booster_Pack_Admin {
 						'type'       => 'spinner',
 						'unit'       => __( 'revisions', 'speed-booster-pack' ),
 						'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external nofollow noopener">', '</a>' ) . '<br />' . __( 'Keeping 3 or 5 revisions for each post should be enough for most sites. Setting this to 0 disables post revisions.', 'speed-booster-pack' ),
-						'dependency' => [ 'module_tweaks', '==', '1' ],
 						'sanitize'   => 'absint',
+						'dependency' => [ 'module_tweaks', '==', '1' ],
 					],
 					[
 						'title'      => __( 'Autosave interval', 'speed-booster-pack' ),
@@ -379,10 +379,22 @@ class Speed_Booster_Pack_Admin {
 						'label' => __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 					],
 					[
-						'id'         => 'caching_mobile',
+						'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
+						'id'         => 'caching_expiry',
+						'type'       => 'spinner',
+						'min'        => '1',
+						'unit'       => __( 'days', 'speed-booster-pack' ),
+						'desc'       => __( 'How many days to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
+						'default'    => '3',
+						'sanitize'   => 'absint',
+						// LAHMACUNTODO: Bunun değerinin de 0 olmaması gerekiyor.
+						'dependency' => [ 'module_caching', '==', '1' ]
+					],
+					[
+						'id'         => 'caching_separate_mobile',
 						'type'       => 'switcher',
-						'title'      => __( 'Mobile Caching', 'speed-booster-pack' ),
-						'label'      => __( 'Enable or disable separate caches for mobile and desktop.', 'speed-booster-pack' ),
+						'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
+						'label'      => __( 'Creates separate cache files for mobile and desktop.', 'speed-booster-pack' ),
 						'desc'       => __( 'Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_caching', '==', '1' ]
 					],
@@ -391,7 +403,7 @@ class Speed_Booster_Pack_Admin {
 						'class'      => 'caching-exclude-urls',
 						'type'       => 'code_editor',
 						'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
-						'desc'       => __( 'Enter one URL per line to exclude them from caching.', 'speed-booster-pack' ),
+						'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_caching', '==', '1' ]
 					],
 					[
