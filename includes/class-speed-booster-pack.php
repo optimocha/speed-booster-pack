@@ -24,6 +24,7 @@ use SpeedBooster\SBP_Lazy_Loader;
 use SpeedBooster\SBP_Localize_Tracker;
 use SpeedBooster\SBP_Preboost;
 use SpeedBooster\SBP_Special;
+use SpeedBooster\SBP_Cloudflare;
 use SpeedBooster\SBP_Tweaks;
 
 /**
@@ -108,6 +109,7 @@ class Speed_Booster_Pack {
 		new SBP_Special();
 		new SBP_CDN();
 		new SBP_Custom_Code_Manager();
+		new SBP_Cloudflare();
 		new SBP_Cache();
 	}
 

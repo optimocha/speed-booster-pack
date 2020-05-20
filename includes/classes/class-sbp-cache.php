@@ -91,8 +91,9 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	public function clear_cache_request() {
-		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' ) {
+		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) ) {
 			self::clear_total_cache();
+			SBP_Cloudflare::clear_cache();
 			wp_redirect( admin_url( 'admin.php?page=sbp-settings#tab=3' ) );
 		}
 	}

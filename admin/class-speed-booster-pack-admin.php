@@ -57,6 +57,8 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
+		add_action('csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::check_credentials');
+
 		add_action( 'csf_sbp_options_saved', function () {
 			$settings = [
 				'caching_expiry'                => 3 * DAY_IN_SECONDS, // Expire time in seconds
@@ -83,7 +85,11 @@ class Speed_Booster_Pack_Admin {
 				} else {
 					// Compare file contents
 					if ( file_get_contents( $advanced_cache_path ) != file_get_contents( $sbp_advanced_cache ) ) {
-						wp_die( 'advanced-cache.php file is already exists and created by other plugin. Delete wp-content/advanced-cache.php file to continue.' );
+						if (!@unlink($advanced_cache_path)) {
+							wp_send_json_error( array( 'error' => esc_html__( 'advanced-cache.php file is already exists and created by other plugin. Delete wp-content/advanced-cache.php file to continue.', 'speed-booster-pack' ) ) );
+						} else {
+							file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
+						}
 					}
 				}
 			} else {

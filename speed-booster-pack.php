@@ -82,6 +82,8 @@ define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster' );
  */
 define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster' );
 
+// Require dependencies
+require SBP_PATH . '/vendor/autoload.php';
 
 /**
  * The code that runs during plugin activation.
