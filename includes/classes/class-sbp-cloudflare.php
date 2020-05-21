@@ -2,10 +2,12 @@
 
 namespace SpeedBooster;
 
-use Cloudflare\Api;
-use Cloudflare\Zone\Cache;
+use CF\API\Client;
+use CF\Integration\DefaultIntegration;
 
 class SBP_Cloudflare extends SBP_Abstract_Module {
+	private static $api_url = 'https://api.cloudflare.com/client/v4/zones/';
+
 	public function __construct() {
 		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_caching' ) || ! sbp_get_option( 'cloudflare' )['cloudflare_enable'] ) {
 			return;
@@ -18,12 +20,14 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$api_key = sbp_get_option( 'cloudflare' )['cloudflare_api'];
 			$zone    = sbp_get_option( 'cloudflare' )['cloudflare_zone'];
 
+			$headers = [
+				'x_auth_key' => 'X-Auth-Key: ' . $api_key,
+				'x_auth_email' => 'X-Auth-Email: ' . $email,
+			];
 
-			if ( false !== self::get_zone( $email, $api_key, $zone ) ) {
-				$cache = new Cache();
-//				$purge = $cache->purge( $zone, true ); // Just need to solve authorization problem and we're ready to go
-			} else {
-				return false;
+			$result = self::send_request('7f25cfbd49f3559ea31a78badb1220ea', '/purge_cache', ['purge_everything' => true], $headers, 'POST');
+			if (true === $result['success']) {
+				return true;
 			}
 		}
 
@@ -40,26 +44,57 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$email   = $saved_data['cloudflare']['cloudflare_email'];
 			$api_key = $saved_data['cloudflare']['cloudflare_api'];
 			$zone    = $saved_data['cloudflare']['cloudflare_zone'];
-			if ( empty( $email ) || empty( $api_key ) || empty( $zone ) ) {
-				wp_send_json_success( [ 'notice' => esc_html__( 'Options saved but Cloudflare API settings are empty.', 'speed-booster-pack' ), 'errors' => [] ] );
-			}
 
-			$zone = self::get_zone( $email, $api_key, $zone );
-			if ( false == $zone ) {
-				wp_send_json_success( [ 'notice' => esc_html__( 'Options saved but Cloudflare Zone ID is not valid.', 'speed-booster-pack' ), 'errors' => [] ] );
+			$headers = [
+				'x_auth_key' => 'X-Auth-Key: ' . $api_key,
+				'x_auth_email' => 'X-Auth-Email: ' . $email,
+			];
+
+			$result = self::send_request($zone, '', null, $headers);
+
+			if (true !== $result['success']) {
+				wp_send_json_success( [ 'notice' => esc_html__( 'Options saved but Cloudflare API credentials are not valid.', 'speed-booster-pack' ), 'errors' => [] ] );
 			}
 		}
 	}
 
-	public static function get_zone( $email, $api_key, $zone ) {
-		$cloudflare_client = new Api();
-		$cloudflare_client->setEmail( $email );
-		$cloudflare_client->setAuthKey( $api_key );
-		$zone = $cloudflare_client->get( 'zones/' . $zone );
-		if ( $zone->success == false ) {
+	/**
+	 * @param $url String . Api Url to target with zone_id and action
+	 * @param $postfields Array . Fields for POST
+	 * @param $headers Valid HTTP headers to add.
+	 */
+	private static function send_request( $zone, $path, $post_fields, $headers = array(), $method = 'GET' ) {
+		if ( ! function_exists( 'curl_init' ) ) {
 			return false;
 		}
 
-		return $zone;
+		$curl_connection = curl_init();
+
+		$default_headers = [
+			'content_type' => 'Content-Type: application/json',
+		];
+
+		$headers = array_filter( array_values( array_merge( $default_headers, $headers ) ) );
+
+		$fields = wp_json_encode( $post_fields );
+
+		curl_setopt( $curl_connection, CURLOPT_URL, self::$api_url . $zone . $path );
+		curl_setopt( $curl_connection, CURLOPT_CUSTOMREQUEST, $method );
+		curl_setopt( $curl_connection, CURLOPT_POSTFIELDS, $fields );
+		curl_setopt( $curl_connection, CURLOPT_RETURNTRANSFER, true );
+		curl_setopt( $curl_connection, CURLOPT_HTTPHEADER, $headers );
+		curl_setopt( $curl_connection, CURLOPT_CONNECTTIMEOUT, 5 );  // in seconds!
+		curl_setopt( $curl_connection, CURLOPT_TIMEOUT, 10 ); // in seconds!
+		curl_setopt( $curl_connection, CURLOPT_USERAGENT, '"User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36"' );
+
+		$request_response = curl_exec( $curl_connection );
+		$result           = json_decode( $request_response, true );
+		curl_close( $curl_connection );
+
+		if ( ! is_array( $result ) ) {
+			return ['success' => false, 'errors' => [__('Cloudflare didn\'t respond correctly.')]];
+		}
+
+		return $result;
 	}
 }

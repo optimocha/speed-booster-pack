@@ -317,7 +317,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		WP_Filesystem();
 
 		wp_mkdir_p(WP_CONTENT_DIR . '/cache/speed-booster');
-
 		$settings = [
 			'caching_include_query_strings' => sbp_get_option('caching_include_query_strings'),
 			'caching_expiry' => sbp_get_option('caching_expiry'),
