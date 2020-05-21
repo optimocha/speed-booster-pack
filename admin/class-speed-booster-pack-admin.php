@@ -59,17 +59,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action('csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::check_credentials');
 
-		add_action( 'csf_sbp_options_saved', function () {
-			$settings = [
-				'caching_expiry'                => 3 * DAY_IN_SECONDS, // Expire time in seconds
-				'caching_exclude_urls'          => '',
-				'caching_include_query_strings' => '',
-				'caching_separate_mobile'       => false,
-			];
-
-			foreach ( $settings as $option => $default_value ) {
-				$settings[ $option ] = sbp_get_option( $option, $default_value );
-			}
+		add_action( 'csf_sbp_options_saved', function() {
 
 			global $wp_filesystem;
 
@@ -80,18 +70,8 @@ class Speed_Booster_Pack_Admin {
 
 				SBP_Cache::set_wp_cache_constant( true );
 
-				if ( ! file_exists( $advanced_cache_path ) ) {
-					file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
-				} else {
-					// Compare file contents
-					if ( file_get_contents( $advanced_cache_path ) != file_get_contents( $sbp_advanced_cache ) ) {
-						if (!@unlink($advanced_cache_path)) {
-							wp_send_json_error( array( 'error' => esc_html__( 'advanced-cache.php file is already exists and created by other plugin. Delete wp-content/advanced-cache.php file to continue.', 'speed-booster-pack' ) ) );
-						} else {
-							file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
-						}
-					}
-				}
+				file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
+
 			} else {
 				SBP_Cache::set_wp_cache_constant( false );
 				if ( file_exists( $advanced_cache_path ) ) {

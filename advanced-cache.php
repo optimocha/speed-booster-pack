@@ -52,7 +52,8 @@ if ( ! is_readable( $cache_file_path ) ) {
 
 // Check if cache file is expired
 if ( isset( $settings['caching_expiry'] ) && ! empty( $settings['caching_expiry'] ) ) {
-	if ( ( filemtime( $cache_file_path ) + $settings['caching_expiry'] ) < time() ) {
+	$caching_expiry = $settings['caching_expiry'] * DAY_IN_SECONDS;
+	if ( ( filemtime( $cache_file_path ) + $caching_expiry ) < time() ) {
 		return false;
 	}
 }

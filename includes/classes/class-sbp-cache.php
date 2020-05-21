@@ -3,12 +3,6 @@
 namespace SpeedBooster;
 
 class SBP_Cache extends SBP_Abstract_Module {
-	private $options = [
-		'caching_expiry'                => 3 * DAY_IN_SECONDS, // Expire time in seconds
-		'caching_exclude_urls'          => '',
-		'caching_include_query_strings' => '',
-		'caching_separate_mobile'       => false,
-	];
 
 	private $file_name = 'index.html';
 
@@ -16,9 +10,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_caching' ) ) {
 			return;
 		}
-
-		// Set caching options
-		$this->set_options();
 
 		// Set admin bar links
 		add_action( 'admin_bar_menu', [ $this, 'admin_bar_links' ], 71 );
@@ -105,12 +96,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		WP_Filesystem();
 
 		return $wp_filesystem;
-	}
-
-	private function set_options() {
-		foreach ( $this->options as $option => $default_value ) {
-			$this->options[ $option ] = sbp_get_option( $option, $default_value );
-		}
 	}
 
 	public function admin_bar_links( $admin_bar ) {
@@ -201,8 +186,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 
 		// Check for exclude URL's
-		if ( $this->options['caching_exclude_urls'] ) {
-			$exclude_urls = array_map( 'trim', explode( PHP_EOL, $this->options['caching_exclude_urls'] ) );
+		if ( sbp_get_option('caching_exclude_urls') ) {
+			$exclude_urls = array_map( 'trim', explode( PHP_EOL, sbp_get_option('caching_exclude_urls') ) );
 			if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
 				return false;
 			}
@@ -213,7 +198,9 @@ class SBP_Cache extends SBP_Abstract_Module {
 		// Read cache file
 		$cache_file_path = $this->get_cache_file_path() . $this->file_name;
 
-		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $this->options['caching_expiry'] < time();
+		$caching_expiry = sbp_get_option('caching_expiry') * DAY_IN_SECONDS;
+
+		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $caching_expiry < time();
 
 		if ( $wp_filesystem->exists( $cache_file_path ) && ! $has_file_expired ) {
 			return $wp_filesystem->get_contents( $cache_file_path );
