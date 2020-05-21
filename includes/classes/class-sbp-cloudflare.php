@@ -21,12 +21,12 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$zone    = sbp_get_option( 'cloudflare' )['cloudflare_zone'];
 
 			$headers = [
-				'x_auth_key' => 'X-Auth-Key: ' . $api_key,
+				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
 				'x_auth_email' => 'X-Auth-Email: ' . $email,
 			];
 
-			$result = self::send_request('7f25cfbd49f3559ea31a78badb1220ea', '/purge_cache', ['purge_everything' => true], $headers, 'POST');
-			if (true === $result['success']) {
+			$result = self::send_request( '7f25cfbd49f3559ea31a78badb1220ea', '/purge_cache', [ 'purge_everything' => true ], $headers, 'POST' );
+			if ( true === $result['success'] ) {
 				return true;
 			}
 		}
@@ -46,13 +46,13 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$zone    = $saved_data['cloudflare']['cloudflare_zone'];
 
 			$headers = [
-				'x_auth_key' => 'X-Auth-Key: ' . $api_key,
+				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
 				'x_auth_email' => 'X-Auth-Email: ' . $email,
 			];
 
-			$result = self::send_request($zone, '', null, $headers);
+			$result = self::send_request( $zone, '' );
 
-			if (true !== $result['success']) {
+			if ( true !== $result['success'] ) {
 				wp_send_json_success( [ 'notice' => esc_html__( 'Options saved but Cloudflare API credentials are not valid.', 'speed-booster-pack' ), 'errors' => [] ] );
 			}
 		}
@@ -63,9 +63,9 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	 * @param $postfields Array . Fields for POST
 	 * @param $headers Valid HTTP headers to add.
 	 */
-	private static function send_request( $zone, $path, $post_fields, $headers = array(), $method = 'GET' ) {
+	private static function send_request( $zone, $path, $post_fields = [], $headers = [], $method = 'GET' ) {
 		if ( ! function_exists( 'curl_init' ) ) {
-			return false;
+			return [ 'success' => false ];
 		}
 
 		$curl_connection = curl_init();
@@ -83,8 +83,8 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		curl_setopt( $curl_connection, CURLOPT_POSTFIELDS, $fields );
 		curl_setopt( $curl_connection, CURLOPT_RETURNTRANSFER, true );
 		curl_setopt( $curl_connection, CURLOPT_HTTPHEADER, $headers );
-		curl_setopt( $curl_connection, CURLOPT_CONNECTTIMEOUT, 5 );  // in seconds!
-		curl_setopt( $curl_connection, CURLOPT_TIMEOUT, 10 ); // in seconds!
+		curl_setopt( $curl_connection, CURLOPT_CONNECTTIMEOUT, 5 );
+		curl_setopt( $curl_connection, CURLOPT_TIMEOUT, 10 );
 		curl_setopt( $curl_connection, CURLOPT_USERAGENT, '"User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36"' );
 
 		$request_response = curl_exec( $curl_connection );
@@ -92,7 +92,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		curl_close( $curl_connection );
 
 		if ( ! is_array( $result ) ) {
-			return ['success' => false, 'errors' => [__('Cloudflare didn\'t respond correctly.')]];
+			return [ 'success' => false, 'errors' => [ __( 'Cloudflare didn\'t respond correctly.' ) ] ];
 		}
 
 		return $result;

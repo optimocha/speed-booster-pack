@@ -186,8 +186,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 
 		// Check for exclude URL's
-		if ( sbp_get_option('caching_exclude_urls') ) {
-			$exclude_urls = array_map( 'trim', explode( PHP_EOL, sbp_get_option('caching_exclude_urls') ) );
+		if ( sbp_get_option( 'caching_exclude_urls' ) ) {
+			$exclude_urls = array_map( 'trim', explode( PHP_EOL, sbp_get_option( 'caching_exclude_urls' ) ) );
 			if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
 				return false;
 			}
@@ -198,7 +198,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		// Read cache file
 		$cache_file_path = $this->get_cache_file_path() . $this->file_name;
 
-		$caching_expiry = sbp_get_option('caching_expiry') * DAY_IN_SECONDS;
+		$caching_expiry = sbp_get_option( 'caching_expiry' ) * DAY_IN_SECONDS;
 
 		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $caching_expiry < time();
 
@@ -294,7 +294,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 	}
 
-	public static function options_saved_listener($saved_data) {
+	public static function options_saved_listener( $saved_data ) {
 		global $wp_filesystem;
 
 		// Delete or recreate advanced-cache.php
@@ -316,11 +316,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
 		WP_Filesystem();
 
-		wp_mkdir_p(WP_CONTENT_DIR . '/cache/speed-booster');
+		wp_mkdir_p( WP_CONTENT_DIR . '/cache/speed-booster' );
 		$settings = [
-			'caching_include_query_strings' => sbp_get_option('caching_include_query_strings'),
-			'caching_expiry' => sbp_get_option('caching_expiry'),
-			'caching_exclude_urls' => sbp_get_option('caching_exclude_urls'),
+			'caching_include_query_strings' => $saved_data['caching_include_query_strings'],
+			'caching_expiry'                => $saved_data['caching_expiry'],
+			'caching_exclude_urls'          => $saved_data['caching_exclude_urls'],
 		];
 
 		$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );
