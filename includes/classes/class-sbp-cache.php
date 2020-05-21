@@ -293,4 +293,37 @@ class SBP_Cache extends SBP_Abstract_Module {
 			@fclose( $fh );
 		}
 	}
+
+	public static function options_saved_listener($saved_data) {
+		global $wp_filesystem;
+
+		// Delete or recreate advanced-cache.php
+		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
+		if ( sbp_get_option( 'module_caching' ) ) {
+			$sbp_advanced_cache = SBP_PATH . '/advanced-cache.php';
+
+			SBP_Cache::set_wp_cache_constant( true );
+
+			file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
+
+		} else {
+			SBP_Cache::set_wp_cache_constant( false );
+			if ( file_exists( $advanced_cache_path ) ) {
+				unlink( $advanced_cache_path );
+			}
+		}
+
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+
+		wp_mkdir_p(WP_CONTENT_DIR . '/cache/speed-booster');
+
+		$settings = [
+			'caching_include_query_strings' => sbp_get_option('caching_include_query_strings'),
+			'caching_expiry' => sbp_get_option('caching_expiry'),
+			'caching_exclude_urls' => sbp_get_option('caching_exclude_urls'),
+		];
+
+		$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );
+	}
 }

@@ -59,31 +59,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action('csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::check_credentials');
 
-		add_action( 'csf_sbp_options_saved', function() {
-
-			global $wp_filesystem;
-
-			// Delete or recreate advanced-cache.php
-			$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
-			if ( sbp_get_option( 'module_caching' ) ) {
-				$sbp_advanced_cache = SBP_PATH . '/advanced-cache.php';
-
-				SBP_Cache::set_wp_cache_constant( true );
-
-				file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
-
-			} else {
-				SBP_Cache::set_wp_cache_constant( false );
-				if ( file_exists( $advanced_cache_path ) ) {
-					unlink( $advanced_cache_path );
-				}
-			}
-
-			require_once( ABSPATH . '/wp-admin/includes/file.php' );
-			WP_Filesystem();
-
-			$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );
-		} );
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_listener');
 
 		$this->create_settings_page();
 	}
