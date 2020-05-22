@@ -69,11 +69,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return true;
 		}
 
-		// Check for UTM parameters for affiliates // TODO: Check UTM parameters again
-//		if ( isset( $_GET['utm_source'] ) || isset( $_GET['utm_medium'] ) || isset( $_GET['utm_campaign'] ) || isset( $_GET['utm_term'] ) || isset( $_GET['utm_content'] ) ) {
-//			return true;
-//		}
-
 		if ( wp_is_mobile() && ! sbp_get_option( 'caching_separate_mobile' ) ) {
 			return true;
 		}
@@ -85,6 +80,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) ) {
 			self::clear_total_cache();
 			SBP_Cloudflare::clear_cache();
+			wp_redirect( admin_url( 'admin.php?page=sbp-settings#tab=3' ) );
+		}
+
+		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_home' && current_user_can( 'manage_options' ) ) {
+			self::clear_homepage_cache();
 			wp_redirect( admin_url( 'admin.php?page=sbp-settings#tab=3' ) );
 		}
 	}
@@ -122,6 +122,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 	public static function clear_total_cache() {
 		self::delete_dir( SBP_CACHE_DIR );
+		self::create_settings_json();
 	}
 
 	public static function delete_dir( $dir ) {
@@ -223,9 +224,9 @@ class SBP_Cache extends SBP_Abstract_Module {
 		fclose( $file );
 	}
 
-	private function get_cache_file_path() {
+	private function get_cache_file_path( $post_url = null, $is_mobile = false ) {
 		$cache_dir = SBP_CACHE_DIR;
-		if ( wp_is_mobile() && sbp_get_option( 'caching_separate_mobile' ) ) {
+		if ( ( wp_is_mobile() && sbp_get_option( 'caching_separate_mobile' ) ) || true === $is_mobile ) {
 			$cache_dir = SBP_CACHE_DIR . '/mobile';
 		}
 
@@ -234,11 +235,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$cache_dir,
 			DIRECTORY_SEPARATOR,
 			parse_url(
-				'http://' . strtolower( $_SERVER['HTTP_HOST'] ),
+				$post_url ? $post_url : 'http://' . strtolower( $_SERVER['HTTP_HOST'] ),
 				PHP_URL_HOST
 			),
 			parse_url(
-				$_SERVER['REQUEST_URI'],
+				$post_url ? $post_url : $_SERVER['REQUEST_URI'],
 				PHP_URL_PATH
 			)
 		);
@@ -295,8 +296,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	public static function options_saved_listener( $saved_data ) {
-		global $wp_filesystem;
-
 		// Delete or recreate advanced-cache.php
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 		if ( sbp_get_option( 'module_caching' ) ) {
@@ -306,23 +305,46 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 			file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
 
+			self::create_settings_json();
 		} else {
 			SBP_Cache::set_wp_cache_constant( false );
 			if ( file_exists( $advanced_cache_path ) ) {
 				unlink( $advanced_cache_path );
 			}
 		}
+	}
 
+	public static function create_settings_json() {
+		global $wp_filesystem;
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
 		WP_Filesystem();
 
 		wp_mkdir_p( WP_CONTENT_DIR . '/cache/speed-booster' );
 		$settings = [
-			'caching_include_query_strings' => $saved_data['caching_include_query_strings'],
-			'caching_expiry'                => $saved_data['caching_expiry'],
-			'caching_exclude_urls'          => $saved_data['caching_exclude_urls'],
+			'caching_include_query_strings' => sbp_get_option( 'caching_include_query_strings' ),
+			'caching_expiry'                => sbp_get_option( 'caching_expiry' ),
+			'caching_exclude_urls'          => sbp_get_option( 'caching_exclude_urls' ),
 		];
 
 		$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );
+	}
+
+	// Delete homepage cache
+	public function clear_homepage_cache() {
+		global $wp_filesystem;
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+
+		$home_cache        = $this->get_cache_file_path( get_home_url() ) . 'index.html';
+		$mobile_home_cache = $this->get_cache_file_path( get_home_url(), true ) . 'index.html';
+
+		// Find index.html files
+		if ( $wp_filesystem->exists( $home_cache ) ) {
+			@unlink( $home_cache );
+		}
+
+		if ( $wp_filesystem->exists( $mobile_home_cache ) ) {
+			@unlink( $mobile_home_cache );
+		}
 	}
 }

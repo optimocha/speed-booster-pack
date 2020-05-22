@@ -57,9 +57,9 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
-		add_action('csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::check_credentials');
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_listener');
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
 		$this->create_settings_page();
 	}

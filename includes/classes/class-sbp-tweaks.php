@@ -252,7 +252,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		remove_action( 'wp_head', 'wp_oembed_add_host_js' );
 
 		// Remove all embeds rewrite rules.
-		add_filter( 'rewrite_rules_array', 'disable_embeds_rewrites' );
+		add_filter( 'rewrite_rules_array', [$this, 'disable_embeds_rewrites'] );
 
 		// Remove filter of the oEmbed result before any HTTP requests are made.
 		remove_filter( 'pre_oembed_result', 'wp_filter_pre_oembed_result', 10 );
