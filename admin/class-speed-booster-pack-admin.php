@@ -62,6 +62,8 @@ class Speed_Booster_Pack_Admin {
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
 		$this->create_settings_page();
+
+		$this->create_sbp_bar_menu();
 	}
 
 	/**
@@ -101,20 +103,7 @@ class Speed_Booster_Pack_Admin {
 			CSF::createOptions( $prefix, array(
 
 				// framework title
-				'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external nofollow noopener">' . SBP_OWNER_NAME . '</a></small>' . '
-					<style>
-					.sbp-settings [data-controller^="module_"].hidden {display:block;opacity:.5;filter:grayscale(1);}
-					.sbp-settings .csf-field-code_editor .CodeMirror {height:190px;}
-					.sbp-settings .declutter-head .csf-fieldset-content > .csf-field {padding:10px;}
-					.sbp-settings .csf-field-spinner .csf--unit {padding:0 10px;}
-					.sbp-settings .text-input-before, .sbp-settings .text-input-after {line-height:2;}
-					.sbp-settings .font-monospace {font-family:monospace;}
-					.sbp-settings .csf-field-group .csf-cloneable-header-icon {vertical-align:middle;}
-					.sbp-settings .csf-sticky .csf-header-inner {z-index:99;}
-					.sbp-settings input.disabled, .sbp-settings input:disabled {background:#fff;border:1px solid #7e8993;color:inherit;box-shadow:0 0 0 transparent;}
-					.sbp-settings {max-width:75rem;}
-					</style>',
-				// LAHMACUNTODO: Üst satıra eklediğim stili başka bir yöntemle ekleyelim. Bu dosyanın sonundaki sbp_settings_custom_css fonksiyonunu inceleyebilirsin.
+				'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external nofollow noopener">' . SBP_OWNER_NAME . '</a></small>',
 				'framework_class' => 'sbp-settings',
 
 				// menu settings
@@ -134,7 +123,6 @@ class Speed_Booster_Pack_Admin {
 				'show_sub_menu'           => true,
 				'admin_bar_menu_icon'     => '',
 				'admin_bar_menu_priority' => 80,
-				// LAHMACUNTODO: bu dört ayar admin bar'a menü ekliyor ama o menüye "clear cache" gibi düğmeler eklememize izin vermiyor. şimdilik kendi admin bar menümüzü yazalım, birinci menü maddesi SBP Settings, ikincisi Clear Cache, üçüncüsü About SBP olsun.
 
 				// footer
 				'footer_text'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
@@ -262,10 +250,7 @@ class Speed_Booster_Pack_Admin {
 						'min'        => '1',
 						'unit'       => __( 'minutes', 'speed-booster-pack' ),
 						'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />' . sprintf( __( 'If the %1$sAUTOSAVE_INTERVAL%2$s constant is set in your %1$swp-config.php%2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>', '</code>' ),
-						/* LAHMACUNTODO: hayır absint yeterli değil; onu yaparken aynı zamanda 0 olmasını da engellemek lazım!
-						http://codestarframework.com/documentation/#/faq?id=how-to-use-sanitize-
-						*/
-						'sanitize'   => 'absint',
+						'sanitize'   => 'posabs',
 						'dependency' => [ 'module_tweaks', '==', '1' ]
 					],
 					[
@@ -348,8 +333,7 @@ class Speed_Booster_Pack_Admin {
 						'unit'       => __( 'days', 'speed-booster-pack' ),
 						'desc'       => __( 'How many days to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
 						'default'    => '3',
-						'sanitize'   => 'absint',
-						// LAHMACUNTODO: Bunun değerinin de 0 olmaması gerekiyor.
+						'sanitize'   => 'posabs',
 						'dependency' => [ 'module_caching', '==', '1' ]
 					],
 					[
@@ -659,27 +643,51 @@ class Speed_Booster_Pack_Admin {
 			) );
 			/* END Section: About */
 
-			if ( ! function_exists( 'sbp_settings_custom_css' ) ) {
-				function sbp_settings_custom_css() {
-
-					// Style
-					// wp_enqueue_style(	);
-
-					/*
-					<style>
-					.sbp-settings [data-controller^="module-"].hidden {display:block;opacity:.5;filter:grayscale(1);}
-					.sbp-settings .csf-field-code_editor .CodeMirror {height:190px;}
-					.sbp-settings {max-width:75rem;}
-					</style>
-					*/
-
-					// // Script
-					// wp_enqueue_script(	);
-
-				}
-
-				add_action( 'csf/enqueue', 'sbp_settings_custom_css' );
-			}
+			add_action( 'csf_enqueue', [$this, 'add_sbp_custom_csf_css'] );
 		}
+	}
+
+	public function add_sbp_custom_csf_css() {
+		wp_enqueue_style('sbp_csf_custom_styles', SBP_URL . '/admin/css/custom_csf.css');
+	}
+
+	private function create_sbp_bar_menu() {
+		add_action( 'admin_bar_menu', [ $this, 'add_bar_menu_links' ], 71 );
+	}
+
+	public function add_bar_menu_links( $admin_bar ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		$sbp_admin_menu = [
+			'id'    => 'speed_booster_pack',
+			'title' => SBP_PLUGIN_NAME,
+		];
+
+		$admin_bar->add_menu( $sbp_admin_menu );
+
+		$admin_bar->add_menu( [
+			'id'     => 'sbp_settings',
+			'parent' => 'speed_booster_pack',
+			'title'  => __( 'SBP Settings', 'speed-booster-pack' ),
+			'href'   => admin_url( 'admin.php?page=sbp-settings' )
+		] );
+
+		if ( sbp_get_option( 'module_caching' ) ) {
+			$admin_bar->add_menu( [
+				'id'     => 'sbp_clear_cache',
+				'parent' => 'speed_booster_pack',
+				'title'  => __( 'Clear Cache', 'speed-booster-pack' ),
+				'href'   => admin_url( 'admin.php?page=sbp-settings&sbp_action=sbp_clear_cache' )
+			] );
+		}
+
+		$admin_bar->add_menu( [
+			'id'     => 'about_sbp',
+			'parent' => 'speed_booster_pack',
+			'title'  => __( 'About SBP', 'speed-booster-pack' ),
+			'href'   => admin_url( 'admin.php?page=sbp-settings#tab=7' )
+		] );
 	}
 }

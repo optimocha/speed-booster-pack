@@ -11,9 +11,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return;
 		}
 
-		// Set admin bar links
-		add_action( 'admin_bar_menu', [ $this, 'admin_bar_links' ], 71 );
-
 		// Clear cache hook
 		add_action( 'admin_init', [ $this, 'clear_cache_request' ] );
 
@@ -96,28 +93,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		WP_Filesystem();
 
 		return $wp_filesystem;
-	}
-
-	public function admin_bar_links( $admin_bar ) {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
-		$sbp_admin_menu = [
-			'id'    => 'speed_booster_pack',
-			'title' => SBP_PLUGIN_NAME,
-		];
-
-		$admin_bar->add_menu( $sbp_admin_menu );
-
-		$cache_items = [
-			'id'     => 'sbp_clear_cache',
-			'parent' => 'speed_booster_pack',
-			'title'  => __( 'Clear Cache', 'speed-booster-pack' ),
-			'href'   => admin_url( 'admin.php?page=sbp-settings&sbp_action=sbp_clear_cache' )
-		];
-
-		$admin_bar->add_menu( $cache_items );
 	}
 
 	public static function clear_total_cache() {

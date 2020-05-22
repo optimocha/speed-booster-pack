@@ -119,6 +119,22 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 	}
 }
 
+if ( ! function_exists( 'posabs' ) ) {
+	/**
+	 * Returns absolute value of a number. Returns 1 if value is zero.
+	 *
+	 * @param $value
+	 *
+	 * @return float|int
+	 */
+	function posabs( $value ) {
+		if ( 0 == $value ) {
+			return 1;
+		}
+
+		return absint( $value );
+	}
+}
 
 spl_autoload_register( 'sbp_autoloader' );
 
