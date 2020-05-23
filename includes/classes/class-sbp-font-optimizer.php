@@ -116,7 +116,7 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 		}
 		$attributes[] = 'display=swap';
 
-		return '<link href="https://fonts.googleapis.com/css?' . implode( '&', $attributes ) . '" rel="stylesheet">';
+		return '<link rel="stylesheet" href="https://fonts.googleapis.com/css?' . implode( '&', $attributes ) . '" media="print" onload="this.media=\'all\'">';
 	}
 }
 
