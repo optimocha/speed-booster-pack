@@ -116,7 +116,9 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 		}
 		$attributes[] = 'display=swap';
 
-		return '<link rel="stylesheet" href="https://fonts.googleapis.com/css?' . implode( '&', $attributes ) . '" media="print" onload="this.media=\'all\'">';
+		$final_gfont_url = 'https://fonts.googleapis.com/css?' . implode( '&', $attributes );
+
+		return '<link rel="preload" as="style" href="' . $final_gfont_url . '" />' . PHP_EOL . '<link rel="stylesheet" href="' . $final_gfont_url . '" media="print" onload="this.media=\'all\'">';
 	}
 }
 
