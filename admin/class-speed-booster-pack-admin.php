@@ -61,6 +61,8 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
+		add_action( 'load-index.php', [ $this, 'dashboard_load' ] );
+
 		$this->create_settings_page();
 
 		$this->create_sbp_bar_menu();
@@ -643,12 +645,12 @@ class Speed_Booster_Pack_Admin {
 			) );
 			/* END Section: About */
 
-			add_action( 'csf_enqueue', [$this, 'add_sbp_custom_csf_css'] );
+			add_action( 'csf_enqueue', [ $this, 'add_sbp_custom_csf_css' ] );
 		}
 	}
 
 	public function add_sbp_custom_csf_css() {
-		wp_enqueue_style('sbp_csf_custom_styles', SBP_URL . '/admin/css/custom_csf.css');
+		wp_enqueue_style( 'sbp_csf_custom_styles', SBP_URL . '/admin/css/custom_csf.css' );
 	}
 
 	private function create_sbp_bar_menu() {
@@ -689,5 +691,20 @@ class Speed_Booster_Pack_Admin {
 			'title'  => __( 'About SBP', 'speed-booster-pack' ),
 			'href'   => admin_url( 'admin.php?page=sbp-settings#tab=7' )
 		] );
+	}
+
+	public function dashboard_load() {
+		add_action( 'admin_notices', [ $this, 'show_temporary_notices' ] );
+	}
+
+	public function show_temporary_notices() {
+		// Cache Notice
+		$notice = get_transient( 'sbp_notice_cache' );
+		if ( $notice ) {
+			echo '<div class="notice notice-success is-dismissible">
+			        <p>' . __( '<b>Speed Booster Pack</b> cache has cleared.', 'speed-booster-pack' ) . '</p>
+			</div>';
+			delete_transient('sbp_notice_cache');
+		}
 	}
 }
