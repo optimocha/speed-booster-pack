@@ -10,6 +10,8 @@
  * @subpackage Speed_Booster_Pack/includes
  */
 
+use SpeedBooster\SBP_Cache;
+
 /**
  * Fired during plugin activation.
  *
