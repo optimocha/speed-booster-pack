@@ -19,6 +19,7 @@ use SpeedBooster\SBP_CSS_Minifier;
 use SpeedBooster\SBP_Custom_Code_Manager;
 use SpeedBooster\SBP_Font_Optimizer;
 use SpeedBooster\SBP_HTML_Minifier;
+use SpeedBooster\SBP_Javascript_Deferrer;
 use SpeedBooster\SBP_JS_Mover;
 use SpeedBooster\SBP_Lazy_Loader;
 use SpeedBooster\SBP_Localize_Tracker;
@@ -96,6 +97,7 @@ class Speed_Booster_Pack {
 	}
 
 	private function init_modules() {
+		new SBP_Javascript_Deferrer();
 		new SBP_Tweaks();
 		new SBP_Font_Optimizer();
 		new SBP_Compatibility_Checker();
@@ -204,7 +206,7 @@ class Speed_Booster_Pack {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect' );
+		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 9999999 );
 		add_action( 'plugins_loaded', [ SBP_Cache::class, 'instantiate' ] );
 	}
 
