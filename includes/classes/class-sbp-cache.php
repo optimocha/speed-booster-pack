@@ -14,7 +14,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		self::generate_htaccess();
 
 		// Clear cache hook
-		add_action( 'admin_init', [ $this, 'clear_cache_request' ] );
+		add_action( 'init', [ $this, 'clear_cache_request' ] );
 
 		if ( sbp_get_option( 'enable-cache' ) ) {
 			$this->set_wp_cache_constant( true );
@@ -77,10 +77,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 	public function clear_cache_request() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) ) {
+			$redirect_url = remove_query_arg('sbp_action', ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
 			self::clear_total_cache();
 			SBP_Cloudflare::clear_cache();
-			set_transient( 'sbp_notice_cache', '1', 3600 );
-			wp_redirect( admin_url( 'admin.php?page=sbp-settings#tab=3' ) );
+			set_transient( 'sbp_notice_cache', '1', 1 );
+			wp_redirect( $redirect_url );
 		}
 	}
 

@@ -61,7 +61,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
-		add_action( 'load-index.php', [ $this, 'dashboard_load' ] );
+		add_action( 'admin_notices', [ $this, 'show_temporary_notices' ] );
 
 		$this->create_settings_page();
 
@@ -677,11 +677,12 @@ class Speed_Booster_Pack_Admin {
 		] );
 
 		if ( sbp_get_option( 'module_caching' ) ) {
+			$clear_cache_url = add_query_arg( 'sbp_action', 'sbp_clear_cache', ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" );
 			$admin_bar->add_menu( [
 				'id'     => 'sbp_clear_cache',
 				'parent' => 'speed_booster_pack',
 				'title'  => __( 'Clear Cache', 'speed-booster-pack' ),
-				'href'   => admin_url( 'admin.php?page=sbp-settings&sbp_action=sbp_clear_cache' )
+				'href'   => $clear_cache_url
 			] );
 		}
 
@@ -693,10 +694,6 @@ class Speed_Booster_Pack_Admin {
 		] );
 	}
 
-	public function dashboard_load() {
-		add_action( 'admin_notices', [ $this, 'show_temporary_notices' ] );
-	}
-
 	public function show_temporary_notices() {
 		// Cache Notice
 		$notice = get_transient( 'sbp_notice_cache' );
@@ -704,7 +701,6 @@ class Speed_Booster_Pack_Admin {
 			echo '<div class="notice notice-success is-dismissible">
 			        <p>' . __( '<b>Speed Booster Pack</b> cache has cleared.', 'speed-booster-pack' ) . '</p>
 			</div>';
-			delete_transient('sbp_notice_cache');
 		}
 	}
 }
