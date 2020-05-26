@@ -213,5 +213,3 @@ class SBP_JS_Mover extends SBP_Abstract_Module {
 		$html = str_ireplace( '</body>', implode( PHP_EOL, $this->scripts_to_move ) . PHP_EOL . '</body>', $html );
 	}
 }
-
-new SBP_JS_Mover();

@@ -121,5 +121,3 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 		return '<link rel="preload" as="style" href="' . $final_gfont_url . '" />' . PHP_EOL . '<link rel="stylesheet" href="' . $final_gfont_url . '" media="print" onload="this.media=\'all\'">';
 	}
 }
-
-new SBP_Font_Optimizer();
