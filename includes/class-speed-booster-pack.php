@@ -19,8 +19,7 @@ use SpeedBooster\SBP_CSS_Minifier;
 use SpeedBooster\SBP_Custom_Code_Manager;
 use SpeedBooster\SBP_Font_Optimizer;
 use SpeedBooster\SBP_HTML_Minifier;
-use SpeedBooster\SBP_JS_Deferrer;
-use SpeedBooster\SBP_JS_Mover;
+use SpeedBooster\SBP_JS_Optimizer;
 use SpeedBooster\SBP_Lazy_Loader;
 use SpeedBooster\SBP_Localize_Tracker;
 use SpeedBooster\SBP_Preboost;
@@ -97,11 +96,11 @@ class Speed_Booster_Pack {
 	}
 
 	private function init_modules() {
-		new SBP_JS_Deferrer();
+		new SBP_JS_Optimizer();
 		new SBP_Tweaks();
 		new SBP_Font_Optimizer();
 		new SBP_Compatibility_Checker();
-		new SBP_JS_Mover();
+		new SBP_JS_Optimizer();
 		new SBP_Localize_Tracker();
 		new SBP_Preboost();
 		new SBP_Lazy_Loader();

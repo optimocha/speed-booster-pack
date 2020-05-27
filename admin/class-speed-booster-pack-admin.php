@@ -441,17 +441,16 @@ class Speed_Booster_Pack_Admin {
 						'dependency' => [ [ 'module_assets', '==', '1' ], [ 'lazyload', '==', '1' ] ]
 					],
 					[
-						'title'      => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
-						'id'         => 'js_move',
-						'type'       => 'switcher',
-						'desc'       => __( 'Moves all JavaScript files and inline JS to the end of the HTML, making the rest of the code load faster.', 'speed-booster-pack' ),
-						'dependency' => [ 'module_assets', '==', '1' ]
-					],
-					[
-						'title'      => __( 'Defer all JavaScript', 'speed-booster-pack' ),
-						'id'         => 'js_defer',
-						'type'       => 'switcher',
-						'desc'       => __( 'Defers loading of all JavaScript to page onload.', 'speed-booster-pack' ),
+						'title'      => __( 'Optimize JavaScripts', 'speed-booster-pack' ),
+						'id'         => 'js_optimize',
+						'desc'       => __( 'Move or defer JavaScript files to avoid render blocking.', 'speed-booster-pack' ), // TODO: Change Description
+						'type'       => 'button_set',
+						'options'    => [
+							'off'   => __( 'Off', 'speed-booster-pack' ),
+							'defer' => __( 'Defer Script Tags', 'speed-booster-pack' ),
+							'move'  => __( 'Move JavaScript to Footer', 'speed-booster-pack' ),
+						],
+						'default'    => 'off',
 						'dependency' => [ 'module_assets', '==', '1' ]
 					],
 					[
