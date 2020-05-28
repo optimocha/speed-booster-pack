@@ -4,7 +4,7 @@
  * Fired during plugin deactivation
  *
  * @link       https://optimocha.com
- * @since      1.0.0
+ * @since      4.0.0
  *
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/includes
@@ -17,7 +17,7 @@ use SpeedBooster\SBP_Cache;
  *
  * This class defines all code necessary to run during the plugin's deactivation.
  *
- * @since      1.0.0
+ * @since      4.0.0
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/includes
  * @author     Optimocha <info@speedboosterpack.com>
@@ -34,6 +34,7 @@ class Speed_Booster_Pack_Deactivator {
 	public static function deactivate() {
 		SBP_Cache::clear_total_cache();
 		SBP_Cache::set_wp_cache_constant( false );
+		// Lahmacuntodo: Remove htaccess codes from .htaccess
 
 		unlink( WP_CONTENT_DIR . '/advanced-cache.php' );
 	}

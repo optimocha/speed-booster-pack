@@ -4,7 +4,7 @@
  * Register all actions and filters for the plugin
  *
  * @link       https://optimocha.com
- * @since      1.0.0
+ * @since      4.0.0
  *
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/includes
@@ -26,7 +26,7 @@ class Speed_Booster_Pack_Loader {
 	/**
 	 * The array of actions registered with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   protected
 	 * @var      array $actions The actions registered with WordPress to fire when the plugin loads.
 	 */
@@ -35,7 +35,7 @@ class Speed_Booster_Pack_Loader {
 	/**
 	 * The array of filters registered with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   protected
 	 * @var      array $filters The filters registered with WordPress to fire when the plugin loads.
 	 */
@@ -44,7 +44,7 @@ class Speed_Booster_Pack_Loader {
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 */
 	public function __construct() {
 
@@ -62,7 +62,7 @@ class Speed_Booster_Pack_Loader {
 	 * @param int $priority Optional. The priority at which the function should be fired. Default is 10.
 	 * @param int $accepted_args Optional. The number of arguments that should be passed to the $callback. Default is 1.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 */
 	public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
 		$this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
@@ -77,7 +77,7 @@ class Speed_Booster_Pack_Loader {
 	 * @param int $priority Optional. The priority at which the function should be fired. Default is 10.
 	 * @param int $accepted_args Optional. The number of arguments that should be passed to the $callback. Default is 1
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 */
 	public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
 		$this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
@@ -95,7 +95,7 @@ class Speed_Booster_Pack_Loader {
 	 * @param int $accepted_args The number of arguments that should be passed to the $callback.
 	 *
 	 * @return   array                                  The collection of actions and filters registered with WordPress.
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   private
 	 */
 	private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
@@ -115,7 +115,7 @@ class Speed_Booster_Pack_Loader {
 	/**
 	 * Register the filters and actions with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 */
 	public function run() {
 

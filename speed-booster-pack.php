@@ -87,7 +87,7 @@ define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster' );
  * This action is documented in includes/class-speed-booster-pack-activator.php
  */
 function activate_speed_booster_pack() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-speed-booster-pack-activator.php';
+	require_once SBP_INC_PATH . 'class-speed-booster-pack-activator.php';
 	Speed_Booster_Pack_Activator::activate();
 }
 
@@ -96,7 +96,7 @@ function activate_speed_booster_pack() {
  * This action is documented in includes/class-speed-booster-pack-deactivator.php
  */
 function deactivate_speed_booster_pack() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-speed-booster-pack-deactivator.php';
+	require_once SBP_INC_PATH . 'class-speed-booster-pack-deactivator.php';
 	Speed_Booster_Pack_Deactivator::deactivate();
 }
 
@@ -112,6 +112,14 @@ require SBP_INC_PATH . 'class-speed-booster-pack.php';
 $sbp_options = get_option( 'sbp_options' );
 
 if ( ! function_exists( 'sbp_get_option' ) ) {
+	/**
+	 * Returns the value of the option with given name, if option doesn't exists function returns the default value (from second variable)
+	 *
+	 * @param string $option
+	 * @param null $default
+	 *
+	 * @return mixed|null
+	 */
 	function sbp_get_option( $option = '', $default = null ) {
 		global $sbp_options;
 
@@ -122,6 +130,8 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 if ( ! function_exists( 'posabs' ) ) {
 	/**
 	 * Returns absolute value of a number. Returns 1 if value is zero.
+	 *
+	 * @since 4.0.0
 	 *
 	 * @param $value
 	 *
@@ -138,6 +148,13 @@ if ( ! function_exists( 'posabs' ) ) {
 
 spl_autoload_register( 'sbp_autoloader' );
 
+/**
+ * Autoload classes which has SpeedBooster namespace
+ *
+ * @since 4.0.0
+ *
+ * @param $class_name
+ */
 function sbp_autoloader( $class_name ) {
 	if ( false === strpos( $class_name, 'SpeedBooster\\' ) ) {
 		return;
@@ -156,11 +173,7 @@ function sbp_autoloader( $class_name ) {
 /**
  * Begins execution of the plugin.
  *
- * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
- * not affect the page life cycle.
- *
- * @since    1.0.0
+ * @since    4.0.0
  */
 function run_speed_booster_pack() {
 

@@ -6,7 +6,7 @@
  * public-facing side of the site and the admin area.
  *
  * @link       https://optimocha.com
- * @since      1.0.0
+ * @since      4.0.0
  *
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/includes
@@ -36,7 +36,7 @@ use SpeedBooster\SBP_Tweaks;
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
+ * @since      4.0.0
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/includes
  * @author     Optimocha <info@speedboosterpack.com>
@@ -47,7 +47,7 @@ class Speed_Booster_Pack {
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   protected
 	 * @var      Speed_Booster_Pack_Loader $loader Maintains and registers all hooks for the plugin.
 	 */
@@ -56,7 +56,7 @@ class Speed_Booster_Pack {
 	/**
 	 * The unique identifier of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   protected
 	 * @var      string $plugin_name The string used to uniquely identify this plugin.
 	 */
@@ -65,7 +65,7 @@ class Speed_Booster_Pack {
 	/**
 	 * The current version of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   protected
 	 * @var      string $version The current version of the plugin.
 	 */
@@ -78,7 +78,7 @@ class Speed_Booster_Pack {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 */
 	public function __construct() {
 		if ( defined( 'SBP_VERSION' ) ) {
@@ -95,6 +95,10 @@ class Speed_Booster_Pack {
 		$this->define_public_hooks();
 	}
 
+	/**
+	 * Instantiate all classes.
+	 * Every class has inner documentation.
+	 */
 	private function init_modules() {
 		new SBP_JS_Optimizer();
 		new SBP_Tweaks();
@@ -127,11 +131,10 @@ class Speed_Booster_Pack {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
@@ -156,7 +159,6 @@ class Speed_Booster_Pack {
 		require_once SBP_PATH . 'public/class-speed-booster-pack-public.php';
 
 		$this->loader = new Speed_Booster_Pack_Loader();
-
 	}
 
 	/**
@@ -165,7 +167,7 @@ class Speed_Booster_Pack {
 	 * Uses the Speed_Booster_Pack_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   private
 	 */
 	private function set_locale() {
@@ -180,7 +182,7 @@ class Speed_Booster_Pack {
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
@@ -196,23 +198,19 @@ class Speed_Booster_Pack {
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-
 		$plugin_public = new Speed_Booster_Pack_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 9999999 );
-		add_action( 'plugins_loaded', [ SBP_Cache::class, 'instantiate' ] );
 	}
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 */
 	public function run() {
 		$this->loader->run();
@@ -223,7 +221,7 @@ class Speed_Booster_Pack {
 	 * WordPress and to define internationalization functionality.
 	 *
 	 * @return    string    The name of the plugin.
-	 * @since     1.0.0
+	 * @since     4.0.0
 	 */
 	public function get_plugin_name() {
 		return $this->plugin_name;
@@ -233,7 +231,7 @@ class Speed_Booster_Pack {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @return    Speed_Booster_Pack_Loader    Orchestrates the hooks of the plugin.
-	 * @since     1.0.0
+	 * @since     4.0.0
 	 */
 	public function get_loader() {
 		return $this->loader;
@@ -243,7 +241,7 @@ class Speed_Booster_Pack {
 	 * Retrieve the version number of the plugin.
 	 *
 	 * @return    string    The version number of the plugin.
-	 * @since     1.0.0
+	 * @since     4.0.0
 	 */
 	public function get_version() {
 		return $this->version;

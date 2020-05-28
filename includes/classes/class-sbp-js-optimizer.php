@@ -7,7 +7,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+/**
+ * Optimize JavaScripts. Move JS files to footer or add defer attribute to all script tags.
+ *
+ * Class SBP_JS_Optimizer
+ * @package SpeedBooster
+ */
 class SBP_JS_Optimizer extends SBP_Abstract_Module {
+	/**
+	 * If script tag has any other type attribute except below types, it won't be optimized.
+	 */
 	const SCRIPT_TYPES = [
 		"application/ecmascript",
 		"application/javascript",
@@ -27,6 +36,11 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		"text/x-javascript",
 	];
 
+	/**
+	 * JS files in this list won't be optimized.
+	 *
+	 * @var string[] $default_excludes
+	 */
 	private $default_excludes = [
 		'html5.js',
 		'show_ads.js',
@@ -97,12 +111,49 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		'adsbygoogle',
 	];
 
+	/**
+	 * Comment lines
+	 *
+	 * @var array $comments
+	 */
 	private $comments = [];
+
+	/**
+	 * This array will keep the whole script tags in the html code except ones with defer attribute
+	 * @var array $all_scripts
+	 */
 	private $all_scripts = []; // scripts that doesn't have defer attribute
+
+	/**
+	 * This array will keep all the scripts that's not in the exclusion list
+	 * @var array $included_scripts
+	 */
 	private $included_scripts = [];
+
+	/**
+	 * This array will keep changed versions of $included_scripts
+	 * @var array $changed_scripts
+	 */
 	private $changed_scripts = [];
+
+	/**
+	 * Placeholder for comment lines
+	 * @var string $comment_placeholder
+	 */
 	private $comment_placeholder = '<!-- SBP/JS_Optimizer_Comment_Placeholder -->';
+
+	/**
+	 * JavaScript exclusion rules
+	 *
+	 * @var array $exclude_rules
+	 */
 	private $exclude_rules = [];
+
+	/**
+	 * Property to decide if scripts will be deferred ro moved to footer (default is off, which means no optimization)
+	 *
+	 * @var mixed|null $optimize_strategy
+	 */
 	private $optimize_strategy = 'off';
 
 	public function __construct() {
@@ -136,6 +187,11 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		return $html;
 	}
 
+	/**
+	 * Replaces all comment lines with placeholders. So comment scripts won't be affected from optimization
+	 *
+	 * @param $html
+	 */
 	private function replace_comments_with_placeholders( &$html ) {
 		preg_match_all( '/<!--[\s\S]*?-->/im', $html, $result );
 		if ( count( $result[0] ) > 0 ) {
@@ -148,6 +204,11 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		}
 	}
 
+	/**
+	 * Replaced comment lines will be reverted after JS optimization process
+	 *
+	 * @param $html
+	 */
 	private function replace_placeholders_with_comments( &$html ) {
 		foreach ( $this->comments as $comment ) {
 			$pos = strpos( $html, $this->comment_placeholder );
@@ -157,6 +218,11 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		}
 	}
 
+	/**
+	 * Finds all scripts without defer attribute
+	 *
+	 * @param $html
+	 */
 	private function find_scripts_without_defer( &$html ) {
 		preg_match_all( '/<script(((?!\bdefer\b).)*?)>(?:(.*?))<\/script>/mis', $html, $scripts );
 		if ( count( $scripts[0] ) ) {
@@ -164,6 +230,9 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		}
 	}
 
+	/**
+	 * Checks the script type. If it's in the SCRIPT_TYPES list or doesn't exists, script tag will be added to included scripts
+	 */
 	private function check_script_types() {
 		foreach ( $this->all_scripts as $script ) {
 			preg_match( '/<script[\s\S]*?type=[\'|"](.*?)[\'|"][\s\S]*?>/im', $script, $result );
@@ -179,6 +248,9 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		}
 	}
 
+	/**
+	 * Removes excluded script tags from included_scripts array
+	 */
 	private function remove_excluded_scripts() {
 		$script_count = count( $this->included_scripts );
 		for ( $i = 0; $i < $script_count; $i ++ ) {
@@ -190,6 +262,11 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		}
 	}
 
+	/**
+	 * Removes all script tags in included_scripts array and puts them right before the </body> tag.
+	 *
+	 * @param $html
+	 */
 	private function move_scripts( &$html ) {
 		foreach ( $this->included_scripts as $script ) {
 			$html = str_ireplace( $script, '', $html );
