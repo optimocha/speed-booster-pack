@@ -3,7 +3,11 @@
 namespace SpeedBooster;
 
 class SBP_Cache extends SBP_Abstract_Module {
-
+	/**
+	 * Name of the cached file
+	 *
+	 * @var string $file_name
+	 */
 	private $file_name = 'index.html';
 
 	public function __construct() {
@@ -24,10 +28,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 		add_filter( 'sbp_output_buffer', [ $this, 'handle_cache' ], 1000 );
 	}
 
-	public static function instantiate() {
-		new Self();
-	}
-
+	/**
+	 * Decides to run cache or not.
+	 *
+	 * @return bool
+	 */
 	private function should_bypass_cache() {
 		// Do not cache for logged in users
 		if ( is_user_logged_in() ) {
@@ -75,16 +80,24 @@ class SBP_Cache extends SBP_Abstract_Module {
 		return false;
 	}
 
+	/**
+	 * Handles the HTTP request to catch cache clear action
+	 */
 	public function clear_cache_request() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) ) {
-			$redirect_url = remove_query_arg('sbp_action', ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+			$redirect_url = remove_query_arg( 'sbp_action', ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" );
 			self::clear_total_cache();
 			SBP_Cloudflare::clear_cache();
-			set_transient( 'sbp_notice_cache', '1', 1 );
+			set_transient( 'sbp_notice_cache', '1', 60 );
 			wp_redirect( $redirect_url );
 		}
 	}
 
+	/**
+	 * Return WP_Filesystem instance
+	 *
+	 * @return mixed
+	 */
 	private function get_filesystem() {
 		global $wp_filesystem;
 
@@ -94,20 +107,29 @@ class SBP_Cache extends SBP_Abstract_Module {
 		return $wp_filesystem;
 	}
 
+	/**
+	 * Clears all cache files and regenerates settings.json file
+	 */
 	public static function clear_total_cache() {
 		self::delete_dir( SBP_CACHE_DIR );
 		self::create_settings_json();
 	}
 
+	/**
+	 * Deletes directories recursively
+	 *
+	 * @param $dir
+	 */
 	public static function delete_dir( $dir ) {
 		if ( ! is_dir( $dir ) ) {
 			return;
 		}
 
 		$dir_objects = @scandir( $dir );
-		$objects     = array_filter( $dir_objects, function ( $object ) {
-			return $object != '.' && $object != '..';
-		} );
+		$objects     = array_filter( $dir_objects,
+			function ( $object ) {
+				return $object != '.' && $object != '..';
+			} );
 
 		if ( empty( $objects ) ) {
 			return;
@@ -128,14 +150,28 @@ class SBP_Cache extends SBP_Abstract_Module {
 		clearstatcache();
 	}
 
+	/**
+	 * Checks if cache should run and hooks handle_cache method to sbp_output_buffer
+	 */
 	public function start_buffer() {
 		if ( $this->should_bypass_cache() ) {
 			return;
 		}
 
-		ob_start( [ $this, 'handle_cache' ] );
+		add_filter( 'sbp_output_buffer', [ $this, 'handle_cache' ] );
 	}
 
+	/**
+	 * Do all the dirty work about cache.
+	 * First, checks query strings if they're in included query string rules or not.
+	 * Second, checks if current url is excluded or not.
+	 * Third, reads cache files, checks the expire time of file
+	 * Fourth, if file doesn't exists, creates the cache file
+	 *
+	 * @param $html
+	 *
+	 * @return bool|mixed|void
+	 */
 	public function handle_cache( $html ) {
 		if ( $this->should_bypass_cache() ) {
 			return $html;
@@ -188,6 +224,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 		return $html;
 	}
 
+	/**
+	 * Generates a cache file for visited page
+	 *
+	 * @param $html
+	 */
 	private function create_cache_file( $html ) {
 		$dir_path  = $this->get_cache_file_path();
 		$file_path = $dir_path . $this->file_name;
@@ -198,6 +239,14 @@ class SBP_Cache extends SBP_Abstract_Module {
 		fclose( $file );
 	}
 
+	/**
+	 * Returns cache file path according to current URL
+	 *
+	 * @param null $post_url
+	 * @param bool $is_mobile
+	 *
+	 * @return string
+	 */
 	private function get_cache_file_path( $post_url = null, $is_mobile = false ) {
 		$cache_dir = SBP_CACHE_DIR;
 		if ( ( wp_is_mobile() && sbp_get_option( 'caching_separate_mobile' ) ) || true === $is_mobile ) {
@@ -269,6 +318,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 	}
 
+	/**
+	 * Generates advanced-cache.php and settings.json on CSF options save.
+	 *
+	 * @param $saved_data
+	 */
 	public static function options_saved_listener( $saved_data ) {
 		// Delete or recreate advanced-cache.php
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
@@ -279,7 +333,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 			file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
 
-			self::create_settings_json();
+			self::create_settings_json( $saved_data );
 		} else {
 			SBP_Cache::set_wp_cache_constant( false );
 			if ( file_exists( $advanced_cache_path ) ) {
@@ -290,16 +344,22 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 	}
 
-	public static function create_settings_json() {
+	/**
+	 * Generates settings.json file from current options
+	 *
+	 * @param null $saved_data
+	 */
+	public static function create_settings_json( $options = null ) {
 		global $wp_filesystem;
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
 		WP_Filesystem();
 
 		wp_mkdir_p( WP_CONTENT_DIR . '/cache/speed-booster' );
 		$settings = [
-			'caching_include_query_strings' => sbp_get_option( 'caching_include_query_strings' ),
-			'caching_expiry'                => sbp_get_option( 'caching_expiry' ),
-			'caching_exclude_urls'          => sbp_get_option( 'caching_exclude_urls' ),
+			'caching_include_query_strings' => $options !== null ? $options['caching_include_query_strings'] : sbp_get_option( 'caching_include_query_strings' ),
+			'caching_expiry'                => $options !== null ? $options['caching_expiry'] : sbp_get_option( 'caching_expiry' ),
+			'caching_exclude_urls'          => $options !== null ? $options['caching_exclude_urls'] : sbp_get_option( 'caching_exclude_urls' ),
+			'caching_separate_mobile'       => $options !== null ? $options['caching_separate_mobile'] : sbp_get_option( 'caching_separate_mobile' ),
 		];
 
 		$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );

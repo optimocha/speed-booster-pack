@@ -104,8 +104,6 @@ class Speed_Booster_Pack {
 		new SBP_Tweaks();
 		new SBP_Font_Optimizer();
 		new SBP_Compatibility_Checker();
-		new SBP_JS_Optimizer();
-		new SBP_Localize_Tracker();
 		new SBP_Preboost();
 		new SBP_Lazy_Loader();
 		new SBP_CSS_Minifier();
