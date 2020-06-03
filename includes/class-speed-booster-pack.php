@@ -22,6 +22,7 @@ use SpeedBooster\SBP_HTML_Minifier;
 use SpeedBooster\SBP_JS_Optimizer;
 use SpeedBooster\SBP_Lazy_Loader;
 use SpeedBooster\SBP_Localize_Tracker;
+use SpeedBooster\SBP_Migrator;
 use SpeedBooster\SBP_Preboost;
 use SpeedBooster\SBP_Special;
 use SpeedBooster\SBP_Cloudflare;
@@ -100,6 +101,9 @@ class Speed_Booster_Pack {
 	 * Every class has inner documentation.
 	 */
 	private function init_modules() {
+		if (get_option('sbp_settings')) {
+			new SBP_Migrator();
+		}
 		new SBP_JS_Optimizer();
 		new SBP_Tweaks();
 		new SBP_Font_Optimizer();
