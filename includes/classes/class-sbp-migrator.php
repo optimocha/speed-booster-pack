@@ -11,18 +11,22 @@ class SBP_Migrator {
 		if ( $this->sbp_settings ) {
 			$this->sbp_options = get_option( 'sbp_options' );
 
-			add_action( 'init', [ $this, 'handle_migrate_request' ] );
 			add_action( 'upgrader_process_complete', [ $this, 'upgrade_completed' ] );
+			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
 			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
 		}
 	}
 
 	public function handle_migrate_request() {
-//		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_migrate_database' && current_user_can( 'manage_options' ) ) {
-			$this->add_tracking_scripts();
+		if ( get_transient( 'sbp_upgraded' ) ) {
+			$this->migrate_options();
 			$this->delete_old_options();
-			set_transient( 'sbp_upgraded', 1 );
-//		}
+			delete_transient( 'sbp_upgraded' );
+		}
+	}
+
+	private function migrate_options() {
+		$this->add_tracking_scripts();
 	}
 
 	public function add_tracking_scripts() {
@@ -74,9 +78,7 @@ ga('send', 'pageview');
 
 	public function upgrade_completed( $upgrader_object, $options ) {
 		$our_plugin = plugin_basename( SBP_PATH );
-		// If an update has taken place and the updated type is plugins and the plugins element exists
 		if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
-			// Iterate through the plugins being updated and check if ours is there
 			foreach ( $options['plugins'] as $plugin ) {
 				if ( $plugin == $our_plugin ) {
 					set_transient( 'sbp_upgraded', 1 );
@@ -86,10 +88,7 @@ ga('send', 'pageview');
 	}
 
 	public function display_update_notice() {
-		if ( get_transient( 'sbp_upgraded' ) ) {
-			echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p></div>';
-			delete_transient( 'sbp_upgraded' );
-		}
+		echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p></div>';
 	}
 
 	public function delete_old_options() {
