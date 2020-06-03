@@ -5,27 +5,56 @@ namespace SpeedBooster;
 class SBP_Migrator {
 	private $sbp_settings; // Old options
 	private $sbp_options; // New options
+	private $options_name_matches = [
+		'query_strings'                   => 'trim_query_strings',
+		'remove_emojis'                   => 'dequeue_emoji_scripts',
+		'remove_wsl'                      => 'declutter_wlw',
+		'remove_adjacent'                 => 'declutter_adjacent_posts_links',
+		'wml_link'                        => 'declutter_shortlinks',
+		'wp_generator'                    => 'declutter_wp_version',
+		'disable_self_pingbacks'          => 'disable_self_pingbacks',
+		'remove_jquery_migrate'           => 'dequeue_jquery_migrate',
+		'disable_dashicons'               => 'dequeue_dashicons',
+		'limit_post_revisions'            => 'post_revisions',
+		'autosave_interval'               => 'autosave_interval',
+		'sbp_optimize_fonts'              => 'optimize_gfonts',
+		'enable_instant_page'             => 'instant_page',
+		'disable_cart_fragments'          => 'woocommerce_disable_cart_fragments',
+		'dequeue_wc_scripts'              => 'woocommerce_optimize_nonwc_pages',
+		'disable_password_strength_meter' => 'woocommerce_disable_password_meter',
+		'remove_rest_api_links'           => 'declutter_rest_api_links',
+		'remove_all_feeds'                => 'declutter_feed_links',
+		'minify_html_js'                  => 'minify_html',
+		'sbp_enable_lazy_load'            => 'lazyload',
+		'jquery_to_footer'                => 'js_move',
+		'sbp_css_async'                   => 'css_inline',
+		'sbp_css_minify'                  => 'css_minify',
+		'sbp_enable_preboost'             => 'preboost',
+	];
 
 	public function __construct() {
 		$this->sbp_settings = get_option( 'sbp_settings' );
 		if ( $this->sbp_settings ) {
 			$this->sbp_options = get_option( 'sbp_options' );
-
 			add_action( 'upgrader_process_complete', [ $this, 'upgrade_completed' ] );
 			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
-			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
 		}
 	}
 
 	public function handle_migrate_request() {
 		if ( get_transient( 'sbp_upgraded' ) ) {
+			if ($this->sbp_options) {
+				die('test');
+			}
 			$this->migrate_options();
 			$this->delete_old_options();
+			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
 			delete_transient( 'sbp_upgraded' );
 		}
 	}
 
 	private function migrate_options() {
+		$this->migrate_standard_options();
 		$this->add_tracking_scripts();
 	}
 
@@ -74,6 +103,17 @@ ga('send', 'pageview');
 				update_option( 'sbp_settings', $this->sbp_settings );
 			}
 		}
+	}
+
+	private function migrate_standard_options() {
+		foreach ( $this->options_name_matches as $old_option_name => $new_option_name ) {
+			if ( $old_option_name == 'limit_post_revisions' ) {
+				var_dump( (int) $this->sbp_settings[ $old_option_name ] );
+				die();
+			}
+			$this->sbp_options[ $new_option_name ] = (int) $this->sbp_settings[ $old_option_name ];
+		}
+		update_option( 'sbp_options', $this->sbp_options );
 	}
 
 	public function upgrade_completed( $upgrader_object, $options ) {
