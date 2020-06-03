@@ -40,7 +40,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			return;
 		}
 
-		if ( $saved_data['module_caching'] || $saved_data['cloudflare']['cloudflare_enable'] ) {
+		if ( isset( $saved_data['module_caching'] ) && $saved_data['module_caching'] && isset( $saved_data['cloudflare']['cloudflare_enable'] ) && $saved_data['cloudflare']['cloudflare_enable'] ) {
 			$email   = $saved_data['cloudflare']['cloudflare_email'];
 			$api_key = $saved_data['cloudflare']['cloudflare_api'];
 			$zone    = $saved_data['cloudflare']['cloudflare_zone'];
