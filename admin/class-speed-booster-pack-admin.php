@@ -120,6 +120,7 @@ class Speed_Booster_Pack_Admin {
 					'menu_capability' => 'manage_options',
 
 					'theme'                   => 'light',
+					'ajax_save'             => false,
 					'show_search'             => false,
 					'show_reset_section'      => false,
 					'show_all_options'        => false,
