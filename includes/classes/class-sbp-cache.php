@@ -151,17 +151,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	/**
-	 * Checks if cache should run and hooks handle_cache method to sbp_output_buffer
-	 */
-	public function start_buffer() {
-		if ( $this->should_bypass_cache() ) {
-			return;
-		}
-
-		add_filter( 'sbp_output_buffer', [ $this, 'handle_cache' ] );
-	}
-
-	/**
 	 * Do all the dirty work about cache.
 	 * First, checks query strings if they're in included query string rules or not.
 	 * Second, checks if current url is excluded or not.
@@ -232,10 +221,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private function create_cache_file( $html ) {
 		$dir_path  = $this->get_cache_file_path();
 		$file_path = $dir_path . $this->file_name;
+		$sbp_cache_signature = PHP_EOL . '<!-- Cached by Speed Booster Pack -->';
 
 		wp_mkdir_p( $dir_path );
 		$file = @fopen( $file_path, 'w+' );
-		fwrite( $file, $html );
+		fwrite( $file, $html . $sbp_cache_signature );
 		fclose( $file );
 	}
 
