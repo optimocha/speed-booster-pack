@@ -43,9 +43,6 @@ class SBP_Migrator {
 
 	public function handle_migrate_request() {
 		if ( get_transient( 'sbp_upgraded' ) ) {
-			if ($this->sbp_options) {
-				die('test');
-			}
 			$this->migrate_options();
 			$this->delete_old_options();
 			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
@@ -107,10 +104,6 @@ ga('send', 'pageview');
 
 	private function migrate_standard_options() {
 		foreach ( $this->options_name_matches as $old_option_name => $new_option_name ) {
-			if ( $old_option_name == 'limit_post_revisions' ) {
-				var_dump( (int) $this->sbp_settings[ $old_option_name ] );
-				die();
-			}
 			$this->sbp_options[ $new_option_name ] = (int) $this->sbp_settings[ $old_option_name ];
 		}
 		update_option( 'sbp_options', $this->sbp_options );

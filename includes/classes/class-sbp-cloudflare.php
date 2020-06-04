@@ -2,9 +2,6 @@
 
 namespace SpeedBooster;
 
-use CF\API\Client;
-use CF\Integration\DefaultIntegration;
-
 class SBP_Cloudflare extends SBP_Abstract_Module {
 	private static $api_url = 'https://api.cloudflare.com/client/v4/zones/';
 
@@ -15,7 +12,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public static function clear_cache() {
-		if ( sbp_get_option( 'module_caching' ) && sbp_get_option( 'cloudflare' )['cloudflare_enable'] ) {
+		if ( is_array( sbp_get_option( 'cloudflare' ) ) && sbp_get_option( 'cloudflare' )['cloudflare_enable'] ) {
 			$email   = sbp_get_option( 'cloudflare' )['cloudflare_email'];
 			$api_key = sbp_get_option( 'cloudflare' )['cloudflare_api'];
 			$zone    = sbp_get_option( 'cloudflare' )['cloudflare_zone'];
@@ -40,7 +37,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			return;
 		}
 
-		if ( isset( $saved_data['module_caching'] ) && $saved_data['module_caching'] && isset( $saved_data['cloudflare']['cloudflare_enable'] ) && $saved_data['cloudflare']['cloudflare_enable'] ) {
+		if ( isset( $saved_data['cloudflare']['cloudflare_enable'] ) && $saved_data['cloudflare']['cloudflare_enable'] ) {
 			$email   = $saved_data['cloudflare']['cloudflare_email'];
 			$api_key = $saved_data['cloudflare']['cloudflare_api'];
 			$zone    = $saved_data['cloudflare']['cloudflare_zone'];
@@ -59,9 +56,13 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	/**
-	 * @param $url String . Api Url to target with zone_id and action
-	 * @param $postfields Array . Fields for POST
-	 * @param $headers Valid HTTP headers to add.
+	 * @param $zone
+	 * @param $path
+	 * @param array $post_fields
+	 * @param array $headers Valid HTTP headers to add.
+	 * @param string $method
+	 *
+	 * @return array|bool[]|mixed
 	 */
 	private static function send_request( $zone, $path, $post_fields = [], $headers = [], $method = 'GET' ) {
 		if ( ! function_exists( 'curl_init' ) ) {
