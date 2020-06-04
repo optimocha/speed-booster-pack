@@ -27,5 +27,5 @@
 
 // If uninstall not called from WordPress, then exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	delete_option('sbp_options');
+	delete_option( 'sbp_options' );
 }

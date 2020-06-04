@@ -39,13 +39,15 @@ class SBP_Migrator {
 			add_action( 'upgrader_process_complete', [ $this, 'upgrade_completed' ] );
 			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
 		}
+
+		add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
 	}
 
 	public function handle_migrate_request() {
 		if ( get_transient( 'sbp_upgraded' ) ) {
 			$this->migrate_options();
 			$this->delete_old_options();
-			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
+			set_transient( 'sbp_upgraded_notice', 1 );
 			delete_transient( 'sbp_upgraded' );
 		}
 	}
@@ -104,7 +106,9 @@ ga('send', 'pageview');
 
 	private function migrate_standard_options() {
 		foreach ( $this->options_name_matches as $old_option_name => $new_option_name ) {
-			$this->sbp_options[ $new_option_name ] = (int) $this->sbp_settings[ $old_option_name ];
+			if ( isset( $this->sbp_settings[ $old_option_name ] ) && $this->sbp_settings[ $old_option_name ] ) {
+				$this->sbp_options[ $new_option_name ] = (int) $this->sbp_settings[ $old_option_name ];
+			}
 		}
 		update_option( 'sbp_options', $this->sbp_options );
 	}
@@ -121,7 +125,10 @@ ga('send', 'pageview');
 	}
 
 	public function display_update_notice() {
-		echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p></div>';
+		if ( get_transient( 'sbp_upgraded_notice' ) ) {
+			echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p></div>';
+			delete_transient( 'sbp_upgraded_notice', 1 );
+		}
 	}
 
 	public function delete_old_options() {
