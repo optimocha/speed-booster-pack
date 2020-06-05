@@ -34,6 +34,7 @@ class SBP_Migrator {
 
 	public function __construct() {
 		$this->sbp_settings = get_option( 'sbp_settings' );
+		die( 'testis' );
 		if ( $this->sbp_settings ) {
 			$this->sbp_options = get_option( 'sbp_options' );
 			add_action( 'upgrader_process_complete', [ $this, 'upgrade_completed' ] );
@@ -127,7 +128,7 @@ ga('send', 'pageview');
 	public function display_update_notice() {
 		if ( get_transient( 'sbp_upgraded_notice' ) ) {
 			echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p></div>';
-			delete_transient( 'sbp_upgraded_notice', 1 );
+			delete_transient( 'sbp_upgraded_notice' );
 		}
 	}
 
