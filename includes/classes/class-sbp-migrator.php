@@ -57,9 +57,9 @@ class SBP_Migrator {
 
 	private function migrate_options() {
 		$this->migrate_standard_options();
+		$this->add_tracking_scripts();
 		$this->migrate_cdn_settings();
 		$this->migrate_exclude_rules();
-		$this->add_tracking_scripts();
 		update_option( 'sbp_options', $this->sbp_options );
 		wp_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
 	}
@@ -105,7 +105,6 @@ ga('send', 'pageview');
 				$this->sbp_options['custom_codes'] = $custom_codes;
 				// Just in case. If migration works twice for any reason, custom code won't be added again.
 				$this->sbp_settings['sbp_ga_tracking_id'] = '';
-				update_option( 'sbp_settings', $this->sbp_settings );
 			}
 		}
 	}
@@ -114,7 +113,6 @@ ga('send', 'pageview');
 		foreach ( $this->options_name_matches as $old_option_name => $new_option_name ) {
 			$this->sbp_options[ $new_option_name ] = (int) ( isset( $this->sbp_settings[ $old_option_name ] ) ? $this->sbp_settings[ $old_option_name ] : 0 );
 		}
-		update_option( 'sbp_options', $this->sbp_options );
 	}
 
 	private function migrate_cdn_settings() {
@@ -134,13 +132,19 @@ ga('send', 'pageview');
 			'sbp_lazyload_exclusions'  => 'lazyload_exclude',
 			'sbp_js_footer_exceptions' => 'js_exclude',
 			'sbp_css_exceptions'       => 'css_exclude',
-			'sbp_preboost'             => 'preboost_include',
 		];
 
 		foreach ( $exclude_options as $old_option => $new_option ) {
 			if ( $old_option_value = get_option( $old_option ) ) {
 				$this->sbp_options[ $new_option ] = $old_option_value;
 			}
+		}
+
+		if ( get_option( 'sbp_preboost' ) ) {
+			$this->sbp_options['preboost'] = [
+				'preboost_include' => get_option( 'sbp_preboost' ),
+				'preboost_enable'  => "1",
+			];
 		}
 
 		// Check for js_exceptions$n
