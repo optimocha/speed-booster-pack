@@ -8,10 +8,6 @@ class SBP_Migrator {
 	private $options_name_matches = [
 		'query_strings'                   => 'trim_query_strings',
 		'remove_emojis'                   => 'dequeue_emoji_scripts',
-		'remove_wsl'                      => 'declutter_wlw',
-		'remove_adjacent'                 => 'declutter_adjacent_posts_links',
-		'wml_link'                        => 'declutter_shortlinks',
-		'wp_generator'                    => 'declutter_wp_version',
 		'disable_self_pingbacks'          => 'disable_self_pingbacks',
 		'remove_jquery_migrate'           => 'dequeue_jquery_migrate',
 		'disable_dashicons'               => 'dequeue_dashicons',
@@ -22,8 +18,6 @@ class SBP_Migrator {
 		'disable_cart_fragments'          => 'woocommerce_disable_cart_fragments',
 		'dequeue_wc_scripts'              => 'woocommerce_optimize_nonwc_pages',
 		'disable_password_strength_meter' => 'woocommerce_disable_password_meter',
-		'remove_rest_api_links'           => 'declutter_rest_api_links',
-		'remove_all_feeds'                => 'declutter_feed_links',
 		'minify_html_js'                  => 'minify_html',
 		'sbp_enable_lazy_load'            => 'lazyload',
 		'sbp_enable_local_analytics'      => 'localize_tracking_scripts',
@@ -58,6 +52,7 @@ class SBP_Migrator {
 	private function migrate_options() {
 		$this->migrate_standard_options();
 		$this->add_tracking_scripts();
+		$this->migrate_declutter_settings();
 		$this->migrate_cdn_settings();
 		$this->migrate_exclude_rules();
 		update_option( 'sbp_options', $this->sbp_options );
@@ -157,6 +152,23 @@ ga('send', 'pageview');
 				}
 			}
 			$this->sbp_options['js_exclude'] = $js_exceptions;
+		}
+	}
+
+	private function migrate_declutter_settings() {
+		$declutter_settings = [
+			'remove_wsl'            => 'declutter_wlw',
+			'remove_adjacent'       => 'declutter_adjacent_posts_links',
+			'wml_link'              => 'declutter_shortlinks',
+			'wp_generator'          => 'declutter_wp_version',
+			'remove_rest_api_links' => 'declutter_rest_api_links',
+			'remove_all_feeds'      => 'declutter_feed_links',
+		];
+
+		foreach ( $declutter_settings as $old_option => $new_option ) {
+			if ( isset( $this->sbp_settings[ $old_option ] ) && $this->sbp_settings[ $old_option ] ) {
+				$this->sbp_options['declutter_head'][ $new_option ] = $this->sbp_settings[ $old_option ];
+			}
 		}
 	}
 
