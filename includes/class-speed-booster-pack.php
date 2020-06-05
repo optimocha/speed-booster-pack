@@ -101,9 +101,7 @@ class Speed_Booster_Pack {
 	 * Every class has inner documentation.
 	 */
 	private function init_modules() {
-		if (get_option('sbp_settings')) {
-			new SBP_Migrator();
-		}
+		new SBP_Migrator();
 		new SBP_JS_Optimizer();
 		new SBP_Tweaks();
 		new SBP_Font_Optimizer();

@@ -59,6 +59,7 @@ class SBP_Migrator {
 		$this->migrate_exclude_rules();
 		$this->add_tracking_scripts();
 		update_option( 'sbp_options', $this->sbp_options );
+		wp_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
 	}
 
 	public function add_tracking_scripts() {
@@ -138,6 +139,18 @@ ga('send', 'pageview');
 			if ( $old_option_value = get_option( $old_option ) ) {
 				$this->sbp_options[ $new_option ] = $old_option_value;
 			}
+		}
+
+		// Check for js_exceptions$n
+		if ( ! get_option( 'sbp_js_footer_exceptions' ) ) {
+			$js_exceptions = '';
+			for ( $i = 1; $i < 4; $i ++ ) {
+				$option_name = 'sbp_js_footer_exceptions' . $i;
+				if ( $exception = get_option( $option_name ) ) {
+					$js_exceptions .= $exception . PHP_EOL;
+				}
+			}
+			$this->sbp_options['js_exclude'] = $js_exceptions;
 		}
 	}
 
