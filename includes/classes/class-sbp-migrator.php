@@ -151,7 +151,7 @@ ga('send', 'pageview');
 		if ( ! get_option( 'sbp_js_footer_exceptions' ) ) {
 			$js_exceptions = '';
 			for ( $i = 1; $i < 4; $i ++ ) {
-				$option_name = 'sbp_js_footer_exceptions' . $i;
+				$option_name = 'sbp_defer_exceptions' . $i;
 				if ( $exception = get_option( $option_name ) ) {
 					$js_exceptions .= $exception . PHP_EOL;
 				}
