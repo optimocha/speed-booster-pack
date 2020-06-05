@@ -26,6 +26,7 @@ class SBP_Migrator {
 		'remove_all_feeds'                => 'declutter_feed_links',
 		'minify_html_js'                  => 'minify_html',
 		'sbp_enable_lazy_load'            => 'lazyload',
+		'sbp_enable_local_analytics'      => 'localize_tracking_scripts',
 		'jquery_to_footer'                => 'js_move',
 		'sbp_css_async'                   => 'css_inline',
 		'sbp_css_minify'                  => 'css_minify',
@@ -34,7 +35,6 @@ class SBP_Migrator {
 
 	public function __construct() {
 		$this->sbp_settings = get_option( 'sbp_settings' );
-		die( 'testis' );
 		if ( $this->sbp_settings ) {
 			$this->sbp_options = get_option( 'sbp_options' );
 			add_action( 'upgrader_process_complete', [ $this, 'upgrade_completed' ] );
@@ -55,7 +55,10 @@ class SBP_Migrator {
 
 	private function migrate_options() {
 		$this->migrate_standard_options();
+		$this->migrate_cdn_settings();
+		$this->migrate_exclude_rules();
 		$this->add_tracking_scripts();
+		update_option( 'sbp_options', $this->sbp_options );
 	}
 
 	public function add_tracking_scripts() {
@@ -97,7 +100,6 @@ ga('send', 'pageview');
 					'custom_codes_method' => 'normal',
 				];
 				$this->sbp_options['custom_codes'] = $custom_codes;
-				update_option( 'sbp_options', $this->sbp_options );
 				// Just in case. If migration works twice for any reason, custom code won't be added again.
 				$this->sbp_settings['sbp_ga_tracking_id'] = '';
 				update_option( 'sbp_settings', $this->sbp_settings );
@@ -107,11 +109,32 @@ ga('send', 'pageview');
 
 	private function migrate_standard_options() {
 		foreach ( $this->options_name_matches as $old_option_name => $new_option_name ) {
-			if ( isset( $this->sbp_settings[ $old_option_name ] ) && $this->sbp_settings[ $old_option_name ] ) {
-				$this->sbp_options[ $new_option_name ] = (int) $this->sbp_settings[ $old_option_name ];
-			}
+			$this->sbp_options[ $new_option_name ] = (int) ( isset( $this->sbp_settings[ $old_option_name ] ) ? $this->sbp_settings[ $old_option_name ] : 0 );
 		}
 		update_option( 'sbp_options', $this->sbp_options );
+	}
+
+	private function migrate_cdn_settings() {
+		if ( isset( $this->sbp_settings['sbp_cdn_url'] ) && $this->sbp_settings['sbp_cdn_url'] ) {
+			$old_cdn_url = $this->sbp_settings['sbp_cdn_url'];
+			// Remove protocol and trailing slash
+			$new_cdn_url                  = ltrim( $old_cdn_url, 'https://' );
+			$new_cdn_url                  = ltrim( $new_cdn_url, 'http://' );
+			$new_cdn_url                  = ltrim( $new_cdn_url, '//' );
+			$new_cdn_url                  = rtrim( $new_cdn_url, '/' );
+			$this->sbp_options['cdn_url'] = $new_cdn_url;
+		}
+	}
+
+	private function migrate_exclude_rules() {
+		// Lazy load exclusions
+		if ( get_option( 'sbp_lazyload_exclusions') ) {
+			$this->sbp_options['lazyload_exclude'] = get_option( 'sbp_lazyload_exclusions' );
+		}
+
+		// JS footer exceptions
+		// CSS exceptions
+		// Preboost Exceptions
 	}
 
 	public function upgrade_completed( $upgrader_object, $options ) {
