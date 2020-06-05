@@ -34,14 +34,16 @@ class SBP_Migrator {
 	];
 
 	public function __construct() {
+		if ( ! get_transient( 'sbp_upgraded' ) ) {
+			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
+		}
+
 		$this->sbp_settings = get_option( 'sbp_settings' );
 		if ( $this->sbp_settings ) {
 			$this->sbp_options = get_option( 'sbp_options' );
 			add_action( 'upgrader_process_complete', [ $this, 'upgrade_completed' ] );
 			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
 		}
-
-		add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
 	}
 
 	public function handle_migrate_request() {
