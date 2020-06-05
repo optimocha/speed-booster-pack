@@ -61,7 +61,7 @@ class SBP_Migrator {
 
 	public function add_tracking_scripts() {
 		// Check for tracking scripts
-		if ( $tracking_id = $this->sbp_settings['sbp_ga_tracking_id'] ) {
+		if ( isset($this->sbp_settings['sbp_ga_tracking_id']) && $tracking_id = $this->sbp_settings['sbp_ga_tracking_id'] ) {
 			if ( strpos( $tracking_id, "GTM-" ) === 0 || strpos( $tracking_id, 'UA-' ) === 0 ) {
 				$analytics_script = '';
 				if ( strpos( $tracking_id, "GTM-" ) === 0 ) {
@@ -195,6 +195,10 @@ ga('send', 'pageview');
 		delete_option( 'sbp_css_exceptions' );
 		delete_option( 'sbp_js_footer_exceptions' );
 		delete_option( 'sbp_lazyload_exclusions' );
+		delete_option( 'sbp_defer_exceptions1' );
+		delete_option( 'sbp_defer_exceptions2' );
+		delete_option( 'sbp_defer_exceptions3' );
+		delete_option( 'sbp_defer_exceptions4' );
 		delete_option( 'sbp_preboost' );
 	}
 }
