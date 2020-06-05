@@ -127,14 +127,18 @@ ga('send', 'pageview');
 	}
 
 	private function migrate_exclude_rules() {
-		// Lazy load exclusions
-		if ( get_option( 'sbp_lazyload_exclusions') ) {
-			$this->sbp_options['lazyload_exclude'] = get_option( 'sbp_lazyload_exclusions' );
-		}
+		$exclude_options = [
+			'sbp_lazyload_exclusions'  => 'lazyload_exclude',
+			'sbp_js_footer_exceptions' => 'js_exclude',
+			'sbp_css_exceptions'       => 'css_exclude',
+			'sbp_preboost'             => 'preboost_include',
+		];
 
-		// JS footer exceptions
-		// CSS exceptions
-		// Preboost Exceptions
+		foreach ( $exclude_options as $old_option => $new_option ) {
+			if ( $old_option_value = get_option( $old_option ) ) {
+				$this->sbp_options[ $new_option ] = $old_option_value;
+			}
+		}
 	}
 
 	public function upgrade_completed( $upgrader_object, $options ) {
