@@ -20,7 +20,7 @@ class SBP_Special extends SBP_Abstract_Module {
 	}
 
 	private function woocommerce_disable_cart_fragments() {
-		if ( sbp_get_option( 'woocommerce_disable_cart_fragments' ) ) {
+		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) && sbp_get_option( 'woocommerce_disable_cart_fragments' ) ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'woocommerce_disable_cart_fragments_handle' ], 999 );
 		}
 	}
@@ -41,24 +41,26 @@ class SBP_Special extends SBP_Abstract_Module {
 	 * Removes WooCommerce scripts from non-woocommerce pages
 	 */
 	public function optimize_nonwc_pages_handle() {
-		if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() ) {
-			// dequeue WooCommerce styles
-			wp_dequeue_style( 'woocommerce_chosen_styles' );
-			wp_dequeue_style( 'woocommerce_fancybox_styles' );
-			wp_dequeue_style( 'woocommerce_frontend_styles' );
-			wp_dequeue_style( 'woocommerce_prettyPhoto_css' );
+		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
+			if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() ) {
+				// dequeue WooCommerce styles
+				wp_dequeue_style( 'woocommerce_chosen_styles' );
+				wp_dequeue_style( 'woocommerce_fancybox_styles' );
+				wp_dequeue_style( 'woocommerce_frontend_styles' );
+				wp_dequeue_style( 'woocommerce_prettyPhoto_css' );
 
-			// dequeue WooCommerce scripts
-			wp_dequeue_script( 'wc-add-to-cart' );
-			wp_dequeue_script( 'wc-add-to-cart-variation' );
-			wp_dequeue_script( 'wc-cart' );
-			wp_dequeue_script( 'wc-cart-fragments' );
-			wp_dequeue_script( 'wc-checkout' );
-			wp_dequeue_script( 'wc-chosen' );
-			wp_dequeue_script( 'wc-single-product' );
-			wp_dequeue_script( 'wc-single-product' );
-			wp_dequeue_script( 'wc_price_slider' );
-			wp_dequeue_script( 'woocommerce' );
+				// dequeue WooCommerce scripts
+				wp_dequeue_script( 'wc-add-to-cart' );
+				wp_dequeue_script( 'wc-add-to-cart-variation' );
+				wp_dequeue_script( 'wc-cart' );
+				wp_dequeue_script( 'wc-cart-fragments' );
+				wp_dequeue_script( 'wc-checkout' );
+				wp_dequeue_script( 'wc-chosen' );
+				wp_dequeue_script( 'wc-single-product' );
+				wp_dequeue_script( 'wc-single-product' );
+				wp_dequeue_script( 'wc_price_slider' );
+				wp_dequeue_script( 'woocommerce' );
+			}
 		}
 	}
 

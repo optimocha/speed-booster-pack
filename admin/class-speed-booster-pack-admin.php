@@ -563,7 +563,7 @@ class Speed_Booster_Pack_Admin {
 							'title'      => 'Jetpack: ' . __( 'Dequeue devicepx-jetpack.js', 'speed-booster-pack' ),
 							'id'         => 'jetpack_dequeue_devicepx',
 							'type'       => 'switcher',
-							'desc'       => sprintf( __( '%s is used to replace images served via Photon CDN with their higher-quality equivalents. If you don\'t need this feature, you can dequeue the file and save an extra HTTP request and an extra DNS connection.', 'speed-booster-pack' ), '<code>devicepx-jetpack.js</code>' ),
+							'desc'       => sprintf( __( 'The %s file replaces images served via Jetpack\'s Photon CDN with their higher-quality equivalents. If you don\'t need this feature, you can dequeue the file and save an extra HTTP request and an extra DNS connection.', 'speed-booster-pack' ), '<code>devicepx-jetpack.js</code>' ),
 							'dependency' => [ 'module_special', '==', '1' ],
 						],
 						[

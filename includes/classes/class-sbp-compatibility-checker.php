@@ -69,7 +69,7 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 	private $active_plugins = [];
 
 	public function __construct() {
-		$this->plugins_list = apply_filters( 'sbp_compatible_plugins', $this->plugins_list );
+		$this->plugins_list = apply_filters( 'sbp_incompatible_plugins', $this->plugins_list );
 
 		add_action( 'admin_init', [ $this, 'check_plugins_active' ] );
 		add_action( 'admin_notices', [ $this, 'compatibility_notices' ] );
