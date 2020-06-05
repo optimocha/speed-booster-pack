@@ -31,6 +31,12 @@ class SBP_Special extends SBP_Abstract_Module {
 		}
 	}
 
+	private function jetpack_dequeue_devicepx() {
+		if ( is_plugin_active( 'jetpack/jetpack.php' ) && sbp_get_option( 'jetpack_dequeue_devicepx' ) ) {
+			wp_dequeue_script( 'devicepx' );
+		}
+	}
+
 	/**
 	 * Removes WooCommerce scripts from non-woocommerce pages
 	 */
