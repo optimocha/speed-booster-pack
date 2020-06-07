@@ -679,12 +679,7 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: About */
 
-			add_action( 'csf_enqueue', [ $this, 'add_sbp_custom_csf_css' ] );
 		}
-	}
-
-	public function add_sbp_custom_csf_css() {
-		wp_enqueue_style( 'sbp_csf_custom_styles', SBP_URL . '/admin/css/custom_csf.css' );
 	}
 
 	private function create_sbp_bar_menu() {
@@ -696,42 +691,17 @@ class Speed_Booster_Pack_Admin {
 			return;
 		}
 
-		$sbp_admin_menu = [
-			'id'    => 'speed_booster_pack',
-			'title' => SBP_PLUGIN_NAME,
-		];
-
-		$admin_bar->add_menu( $sbp_admin_menu );
-
-		$admin_bar->add_menu(
-			[
-				'id'     => 'sbp_settings',
-				'parent' => 'speed_booster_pack',
-				'title'  => __( 'SBP Settings', 'speed-booster-pack' ),
-				'href'   => admin_url( 'admin.php?page=sbp-settings' ),
-			]
-		);
-
 		if ( sbp_get_option( 'module_caching' ) ) {
-			$clear_cache_url = add_query_arg( 'sbp_action', 'sbp_clear_cache', ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" );
-			$admin_bar->add_menu(
-				[
-					'id'     => 'sbp_clear_cache',
-					'parent' => 'speed_booster_pack',
-					'title'  => __( 'Clear Cache', 'speed-booster-pack' ),
-					'href'   => $clear_cache_url,
-				]
-			);
+			$clear_cache_url = add_query_arg( 'sbp_action', 'sbp_clear_cache' );
+			$sbp_admin_menu = [
+				'id'    => 'speed_booster_pack',
+				'title' => 'Clear Cache',
+				'href'   => $clear_cache_url,
+			];
+
+			$admin_bar->add_menu( $sbp_admin_menu );
 		}
 
-		$admin_bar->add_menu(
-			[
-				'id'     => 'about_sbp',
-				'parent' => 'speed_booster_pack',
-				'title'  => __( 'About SBP', 'speed-booster-pack' ),
-				'href'   => admin_url( 'admin.php?page=sbp-settings#tab=7' ),
-			]
-		);
 	}
 
 	public function set_flash_notices() {
