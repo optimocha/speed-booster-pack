@@ -561,6 +561,13 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
 						],
 						[
+							'title'      => 'Jetpack: ' . __( 'Dequeue devicepx-jetpack.js', 'speed-booster-pack' ),
+							'id'         => 'jetpack_dequeue_devicepx',
+							'type'       => 'switcher',
+							'desc'       => sprintf( __( 'The %s file replaces images served via Jetpack\'s Photon CDN with their higher-quality equivalents. If you don\'t need this feature, you can dequeue the file and save an extra HTTP request and an extra DNS connection.', 'speed-booster-pack' ), '<code>devicepx-jetpack.js</code>' ),
+							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
+						],
+						[
 							'title'      => 'WooCommerce: ' . __( 'Disable cart fragments', 'speed-booster-pack' ),
 							'id'         => 'woocommerce_disable_cart_fragments',
 							'type'       => 'switcher',
