@@ -120,7 +120,7 @@ class Speed_Booster_Pack_Admin {
 					'menu_capability' => 'manage_options',
 
 					'theme'                   => 'light',
-					'ajax_save'             => false,
+					'ajax_save'               => false,
 					'show_search'             => false,
 					'show_reset_section'      => false,
 					'show_all_options'        => false,
@@ -151,7 +151,7 @@ class Speed_Booster_Pack_Admin {
 						//	 'id'	=> 'module_TODO',
 						//	 'class'	=> 'module-TODO',
 						//	 'type'	=> 'switcher',
-						//	 'label'	=> __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+						//	 'label'	=> __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 						// ],
 
 					],
@@ -174,7 +174,7 @@ class Speed_Booster_Pack_Admin {
 							'id'    => 'module_tweaks',
 							'class' => 'module-tweaks',
 							'type'  => 'switcher',
-							'label' => __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 						],
 						[
 							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
@@ -339,7 +339,7 @@ class Speed_Booster_Pack_Admin {
 							'class' => 'module-caching',
 							'type'  => 'switcher',
 							'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
-							'label' => __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 						],
 						[
 							'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
@@ -426,7 +426,7 @@ class Speed_Booster_Pack_Admin {
 							'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
 							'id'    => 'module_assets',
 							'type'  => 'switcher',
-							'label' => __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'label' => __( 'Enables or Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 						],
 						[
 							'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
@@ -477,7 +477,7 @@ class Speed_Booster_Pack_Admin {
 							'type'       => 'code_editor',
 							'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 							'default'    => 'js/jquery/jquery.js',
-							'dependency' => [ 'module_assets', '==', '1' ],
+							'dependency' => [ [ 'module_assets', '==', '1' ], [ 'js_optimize', '!=', 'off' ] ],
 						],
 						[
 							'title'      => __( 'Inline all CSS', 'speed-booster-pack' ),
@@ -496,7 +496,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'title'      => __( 'CSS exclusions', 'speed-booster-pack' ),
 							'id'         => 'css_exclude',
-							'class'      => 'CSS exclusions',
+							'class'      => 'css_exclude',
 							'type'       => 'code_editor',
 							'desc'       => __( 'If your design breaks after enabling the options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_assets', '==', '1' ],
@@ -540,7 +540,7 @@ class Speed_Booster_Pack_Admin {
 							'id'    => 'module_special',
 							'class' => 'module-special',
 							'type'  => 'switcher',
-							'label' => __( 'Disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 						],
 
 						[
@@ -626,7 +626,7 @@ class Speed_Booster_Pack_Admin {
 									'default' => 'normal',
 								],
 							],
-							'dependency'             => [ 'module_special', '==', '1' ],
+							'dependency' => [ 'module_special', '==', '1' ],
 						],
 
 					],
@@ -644,7 +644,7 @@ class Speed_Booster_Pack_Admin {
 					'fields' => array(
 						array(
 							'type'    => 'subheading',
-							'content' => __( 'Backup Settings', 'speed-booster-pack' ),
+							'content' => sprintf( __( 'Backup %s Settings', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						),
 						// A text field
 						array(
@@ -687,15 +687,12 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	public function add_bar_menu_links( $admin_bar ) {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
 
-		if ( sbp_get_option( 'module_caching' ) ) {
+		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) ) {
 			$clear_cache_url = add_query_arg( 'sbp_action', 'sbp_clear_cache' );
 			$sbp_admin_menu = [
 				'id'    => 'speed_booster_pack',
-				'title' => 'Clear Cache',
+				'title' => __( 'Clear Cache', 'speed-booster-pack' ),
 				'href'   => $clear_cache_url,
 			];
 
@@ -714,7 +711,7 @@ class Speed_Booster_Pack_Admin {
 
 	public function show_cache_notice() {
 		echo '<div class="notice notice-success is-dismissible">
-                <p>' . __( '<b>Speed Booster Pack</b> cache has cleared.', 'speed-booster-pack' ) . '</p>
+                <p>' . __( '<strong>Speed Booster Pack</strong> cache has cleared.', 'speed-booster-pack' ) . '</p>
         </div>';
 	}
 }
