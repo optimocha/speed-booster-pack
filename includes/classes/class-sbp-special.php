@@ -13,25 +13,9 @@ class SBP_Special extends SBP_Abstract_Module {
 			return;
 		}
 
-		$this->jetpack_dequeue_devicepx();
 		$this->woocommerce_disable_cart_fragments();
 		$this->optimize_nonwc_pages();
 		$this->remove_wc_password_strength_meter();
-	}
-
-	/**
-	 * Dequeues Jetpack's devicepx-jetpack.js file
-	 */
-	private function jetpack_dequeue_devicepx() {
-		if ( sbp_get_option( 'jetpack_dequeue_devicepx' ) ) {
-			add_action( 'wp_enqueue_scripts', [ $this, 'jetpack_dequeue_devicepx_handle' ] );
-		}
-	}
-
-	public function jetpack_dequeue_devicepx_handle() {
-		if ( is_plugin_active( 'jetpack/jetpack.php' ) ) {
-			wp_dequeue_script( 'devicepx' );
-		}
 	}
 
 	/**
