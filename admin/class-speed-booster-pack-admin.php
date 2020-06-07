@@ -170,7 +170,7 @@ class Speed_Booster_Pack_Admin {
 
 
 						[
-							'title' => __( 'Enable/Disable Tweaks', 'speed-booster-pack' ),
+							'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
 							'id'    => 'module_tweaks',
 							'class' => 'module-tweaks',
 							'type'  => 'switcher',
