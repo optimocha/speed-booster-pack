@@ -1,4 +1,4 @@
-.sbp-settings [data-controller^="module_"].hidden {display:block;opacity:.5;filter:grayscale(1);}
+/*.sbp-settings [data-controller^="module_"].hidden {display:block;opacity:.5;filter:grayscale(1);}*/
 .sbp-settings .csf-field-code_editor .CodeMirror {height:190px;}
 .sbp-settings .declutter-head .csf-fieldset-content > .csf-field {padding:10px;}
 .sbp-settings .csf-field-spinner .csf--unit {padding:0 10px;}
