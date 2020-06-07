@@ -452,7 +452,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
 							'id'         => 'lazyload_exclude',
-							'class'      => 'lazyload_exclude',
+							'class'      => 'lazyload-exclude',
 							'type'       => 'code_editor',
 							'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
 							'dependency' => [ [ 'module_assets', '==', '1' ], [ 'lazyload', '==', '1' ] ],
@@ -473,7 +473,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'title'      => __( 'JavaScript exclusions', 'speed-booster-pack' ),
 							'id'         => 'js_exclude',
-							'class'      => 'js_exclude',
+							'class'      => 'js-exclude',
 							'type'       => 'code_editor',
 							'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 							'default'    => 'js/jquery/jquery.js',
@@ -496,7 +496,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'title'      => __( 'CSS exclusions', 'speed-booster-pack' ),
 							'id'         => 'css_exclude',
-							'class'      => 'css_exclude',
+							'class'      => 'css-exclude',
 							'type'       => 'code_editor',
 							'desc'       => __( 'If your design breaks after enabling the options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_assets', '==', '1' ],
