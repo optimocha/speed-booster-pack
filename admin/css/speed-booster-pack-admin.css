@@ -9,3 +9,6 @@
 .sbp-settings input.disabled, .sbp-settings input:disabled {background:#fff;border:1px solid #7e8993;color:inherit;box-shadow:0 0 0 transparent;}
 .sbp-settings .ui-spinner .ui-button {min-height:30px;box-shadow:none;}
 .sbp-settings {max-width:75rem;}
+.sbp-settings .cdn-url .csf-before-text, .sbp-settings .cdn-url .csf-after-text {display:inline-block;line-height:2;font-family:monospace;}
+.sbp-settings .cdn-url input {font-family:monospace;}
+.sbp-settings .csf-desc-text {color:#777;}

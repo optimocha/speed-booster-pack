@@ -13,27 +13,35 @@ class SBP_Special extends SBP_Abstract_Module {
 			return;
 		}
 
-		// TODO: Test this class with WooCommerce installed theme.
+		$this->jetpack_dequeue_devicepx();
 		$this->woocommerce_disable_cart_fragments();
 		$this->optimize_nonwc_pages();
 		$this->remove_wc_password_strength_meter();
 	}
 
+	/**
+	 * Dequeues Jetpack's devicepx-jetpack.js file
+	 */
 	private function jetpack_dequeue_devicepx() {
-		if ( is_plugin_active( 'jetpack/jetpack.php' ) && sbp_get_option( 'jetpack_dequeue_devicepx' ) ) {
-			wp_dequeue_script( 'devicepx' );
+		if ( sbp_get_option( 'jetpack_dequeue_devicepx' ) ) {
+			add_action( 'wp_enqueue_scripts', [ $this, 'jetpack_dequeue_devicepx_handle' ] );
 		}
 	}
 
-	private function optimize_nonwc_pages() {
-		if ( function_exists( 'is_woocommerce' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
-			add_action( 'wp_enqueue_scripts', [ $this, 'optimize_nonwc_pages_handle' ] );
+	public function jetpack_dequeue_devicepx_handle() {
+		if ( is_plugin_active( 'jetpack/jetpack.php' ) ) {
+			wp_dequeue_script( 'devicepx' );
 		}
 	}
 
 	/**
 	 * Removes WooCommerce scripts from non-woocommerce pages
 	 */
+	private function optimize_nonwc_pages() {
+		if ( function_exists( 'is_woocommerce' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
+			add_action( 'wp_enqueue_scripts', [ $this, 'optimize_nonwc_pages_handle' ] );
+		}
+	}
 	public function optimize_nonwc_pages_handle() {
 		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
 			if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() ) {
@@ -59,7 +67,7 @@ class SBP_Special extends SBP_Abstract_Module {
 	}
 
 	private function woocommerce_disable_cart_fragments() {
-		if ( is_plugin_active( 'woocommerce/woocommerce.php' ) && sbp_get_option( 'woocommerce_disable_cart_fragments' ) ) {
+		if ( sbp_get_option( 'woocommerce_disable_cart_fragments' ) ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'woocommerce_disable_cart_fragments_handle' ], 999 );
 		}
 	}
@@ -68,18 +76,23 @@ class SBP_Special extends SBP_Abstract_Module {
 	 * Removes cart-fragments.js
 	 */
 	public function woocommerce_disable_cart_fragments_handle() {
-		global $wp_scripts;
-		$handle = 'wc-cart-fragments';
-		if ( isset( $wp_scripts->registered[ $handle ] ) ) {
-			$load_cart_fragments_path               = $wp_scripts->registered[ $handle ]->src;
-			$wp_scripts->registered[ $handle ]->src = null;
-			wp_add_inline_script(
-				'jquery',
-				'function sbp_getCookie(c){var e=document.cookie.match("(^|;) ?"+c+"=([^;]*)(;|$)");return e?e[2]:null}function sbp_check_wc_cart_script(){var c="sbp_loaded_wc_cart_fragments";if(null!==document.getElementById(c))return!1;if(sbp_getCookie("woocommerce_cart_hash")){var e=document.createElement("script");e.id=c,e.src="' . $load_cart_fragments_path . '",e.async=!0,document.head.appendChild(e)}}sbp_check_wc_cart_script(),document.addEventListener("click",function(){setTimeout(sbp_check_wc_cart_script,1e3)});'
-			);
+		if( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+			global $wp_scripts;
+			$handle = 'wc-cart-fragments';
+			if ( isset( $wp_scripts->registered[ $handle ] ) ) {
+				$load_cart_fragments_path               = $wp_scripts->registered[ $handle ]->src;
+				$wp_scripts->registered[ $handle ]->src = null;
+				wp_add_inline_script(
+					'jquery',
+					'function sbp_getCookie(c){var e=document.cookie.match("(^|;) ?"+c+"=([^;]*)(;|$)");return e?e[2]:null}function sbp_check_wc_cart_script(){var c="sbp_loaded_wc_cart_fragments";if(null!==document.getElementById(c))return!1;if(sbp_getCookie("woocommerce_cart_hash")){var e=document.createElement("script");e.id=c,e.src="' . $load_cart_fragments_path . '",e.async=!0,document.head.appendChild(e)}}sbp_check_wc_cart_script(),document.addEventListener("click",function(){setTimeout(sbp_check_wc_cart_script,1e3)});'
+				);
+			}
 		}
 	}
 
+	/**
+	 * Removes password strength meter in WooCommerce checkout process
+	 */
 	private function remove_wc_password_strength_meter() {
 		if ( function_exists( 'is_account_page' ) && sbp_get_option( 'woocommerce_disable_password_meter' ) ) {
 			add_action( 'wp_print_scripts', [ $this, 'remove_wc_password_strength_meter_handle' ], 100 );
