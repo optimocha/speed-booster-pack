@@ -4,7 +4,7 @@
  * The admin-specific functionality of the plugin.
  *
  * @link       https://optimocha.com
- * @since      1.0.0
+ * @since      4.0.0
  *
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/admin
@@ -73,7 +73,7 @@ class Speed_Booster_Pack_Admin {
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 */
 	public function enqueue_styles() {
 
@@ -84,7 +84,7 @@ class Speed_Booster_Pack_Admin {
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 */
 	public function enqueue_scripts() {
 
