@@ -690,7 +690,7 @@ class Speed_Booster_Pack_Admin {
 	public function add_bar_menu_links( $admin_bar ) {
 
 		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) ) {
-			$clear_cache_url = add_query_arg( 'sbp_action', 'sbp_clear_cache' );
+			$clear_cache_url = wp_nonce_url(add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce');
 			$sbp_admin_menu = [
 				'id'    => 'speed_booster_pack',
 				'title' => __( 'Clear Cache', 'speed-booster-pack' ),

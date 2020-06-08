@@ -86,7 +86,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * Handles the HTTP request to catch cache clear action
 	 */
 	public function clear_cache_request() {
-		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) ) {
+		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_total_cache' ) ) {
 			$redirect_url = remove_query_arg( 'sbp_action', ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" );
 			self::clear_total_cache();
 			SBP_Cloudflare::clear_cache();
