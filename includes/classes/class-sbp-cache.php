@@ -17,6 +17,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 		self::generate_htaccess();
 
+		$this->clear_cache_hooks();
+
 		// Clear cache hook
 		add_action( 'init', [ $this, 'clear_cache_request' ] );
 
@@ -219,8 +221,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @param $html
 	 */
 	private function create_cache_file( $html ) {
-		$dir_path  = $this->get_cache_file_path();
-		$file_path = $dir_path . $this->file_name;
+		$dir_path            = $this->get_cache_file_path();
+		$file_path           = $dir_path . $this->file_name;
 		$sbp_cache_signature = PHP_EOL . '<!-- Cached by Speed Booster Pack -->';
 
 		wp_mkdir_p( $dir_path );
@@ -355,7 +357,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );
 	}
 
-	// Delete homepage cache
 	public function clear_homepage_cache() {
 		global $wp_filesystem;
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
@@ -363,6 +364,24 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 		$home_cache        = $this->get_cache_file_path( get_home_url() ) . 'index.html';
 		$mobile_home_cache = $this->get_cache_file_path( get_home_url(), true ) . 'index.html';
+
+		// Find index.html files
+		if ( $wp_filesystem->exists( $home_cache ) ) {
+			@unlink( $home_cache );
+		}
+
+		if ( $wp_filesystem->exists( $mobile_home_cache ) ) {
+			@unlink( $mobile_home_cache );
+		}
+	}
+
+	public function clear_post_by_id( $post_id ) {
+		global $wp_filesystem;
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+
+		$home_cache        = $this->get_cache_file_path( get_permalink( $post_id ) ) . 'index.html';
+		$mobile_home_cache = $this->get_cache_file_path( get_permalink( $post_id ), true ) . 'index.html';
 
 		// Find index.html files
 		if ( $wp_filesystem->exists( $home_cache ) ) {
@@ -519,5 +538,43 @@ AddEncoding gzip              svgz
 			$generated_htaccess = $htaccess_file_content . PHP_EOL . $current_htaccess;
 			$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $generated_htaccess );
 		}
+	}
+
+	private function clear_cache_hooks() {
+		add_action( '_core_updated_successfully', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'switch_theme', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action(
+			'wp_trash_post',
+			function ( $post_id ) {
+				if ( get_post_status( $post_id ) == 'publish' ) {
+					self::clear_total_cache();
+				}
+			}
+		);
+
+		add_action( 'save_post', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'autoptimize_action_cachepurged', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'upgrader_process_complete', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+
+		add_action( 'woocommerce_product_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'woocommerce_product_set_stock_status', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'woocommerce_variation_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'woocommerce_variation_set_stock_status', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+
+		if ( is_admin() ) {
+			add_action( 'wpmu_new_blog', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+			add_action( 'delete_blog', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+			add_action( 'transition_comment_status', [ $this, 'comment_transition' ], 10, 3 );
+			add_action( 'comment_post', [ $this, 'comment_action' ] );
+			add_action( 'edit_comment', [ $this, 'comment_action' ] );
+		}
+	}
+
+	public function comment_transition( $new_status, $old_status, $comment ) {
+		self::clear_post_by_id( $comment->comment_post_ID );
+	}
+
+	public function comment_action( $comment_id ) {
+		self::clear_post_by_id( get_comment( $comment_id )->comment_post_ID );
 	}
 }
