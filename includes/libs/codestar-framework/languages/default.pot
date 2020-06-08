@@ -2,128 +2,128 @@
 # This file is distributed under the same license as the Codestar Framework package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Codestar Framework 2.1.5\n"
+"Project-Id-Version: Codestar Framework 2.1.6\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/codestar-framework\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: classes/comment-metabox.class.php:198 classes/metabox.class.php:259
-#: classes/options.class.php:683
-msgid "No option provided by developer."
-msgstr ""
-
-#: classes/comment-metabox.class.php:217 classes/metabox.class.php:278
-msgid "Restore"
-msgstr ""
-
-#: classes/comment-metabox.class.php:218 classes/metabox.class.php:279
-msgid "update post for restore "
-msgstr ""
-
-#: classes/comment-metabox.class.php:218 classes/metabox.class.php:279
-msgid "Cancel"
-msgstr ""
-
-#: classes/options.class.php:228
+#: classes/admin-options.class.php:224
 msgid "Error while saving."
 msgstr ""
 
-#: classes/options.class.php:288
+#: classes/admin-options.class.php:284
 msgid "Success. Imported backup options."
 msgstr ""
 
-#: classes/options.class.php:300
+#: classes/admin-options.class.php:296
 msgid "Default options restored."
 msgstr ""
 
-#: classes/options.class.php:316
+#: classes/admin-options.class.php:312
 msgid "Default options restored for only this section."
 msgstr ""
 
-#: classes/options.class.php:387
+#: classes/admin-options.class.php:383
 msgid "Settings saved."
 msgstr ""
 
-#: classes/options.class.php:574
+#: classes/admin-options.class.php:561
 msgid "Settings have changed, you should save them!"
 msgstr ""
 
-#: classes/options.class.php:576
+#: classes/admin-options.class.php:563
 msgid "show all options"
 msgstr ""
 
-#: classes/options.class.php:578
+#: classes/admin-options.class.php:565
 msgid "Search option(s)"
 msgstr ""
 
-#: classes/options.class.php:581 classes/options.class.php:708
+#: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Save"
 msgstr ""
 
-#: classes/options.class.php:581 classes/options.class.php:708
+#: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Saving..."
 msgstr ""
 
-#: classes/options.class.php:582 classes/options.class.php:709
+#: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Reset Section"
 msgstr ""
 
-#: classes/options.class.php:582 classes/options.class.php:709
+#: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Are you sure to reset this section options?"
 msgstr ""
 
-#: classes/options.class.php:583 classes/options.class.php:710
+#: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 #: fields/backup/backup.php:34
 msgid "Reset All"
 msgstr ""
 
-#: classes/options.class.php:583 classes/options.class.php:710
+#: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 msgid "Are you sure to reset all options?"
 msgstr ""
 
-#: classes/setup.class.php:434
+#: classes/admin-options.class.php:668 classes/comment-options.class.php:195
+#: classes/metabox-options.class.php:264
+msgid "No option provided by developer."
+msgstr ""
+
+#: classes/comment-options.class.php:212 classes/metabox-options.class.php:281
+msgid "Restore"
+msgstr ""
+
+#: classes/comment-options.class.php:213 classes/metabox-options.class.php:282
+msgid "update post for restore "
+msgstr ""
+
+#: classes/comment-options.class.php:213 classes/metabox-options.class.php:282
+msgid "Cancel"
+msgstr ""
+
+#: classes/setup.class.php:524
 msgid "Are you sure?"
 msgstr ""
 
-#: classes/setup.class.php:435
+#: classes/setup.class.php:525
 msgid "Restoring options."
 msgstr ""
 
-#: classes/setup.class.php:436
+#: classes/setup.class.php:526
 msgid "Importing options."
 msgstr ""
 
-#: classes/setup.class.php:439
+#: classes/setup.class.php:529
 msgid "Please enter %s or more characters"
 msgstr ""
 
-#: classes/setup.class.php:440
+#: classes/setup.class.php:530
 msgid "Searching..."
 msgstr ""
 
-#: classes/setup.class.php:441
+#: classes/setup.class.php:531
 msgid "No results match"
 msgstr ""
 
-#: classes/setup.class.php:512
+#: classes/setup.class.php:603
 msgid "Ooops! This field type (%s) can not be used here, yet."
 msgstr ""
 
-#: classes/setup.class.php:582
+#: classes/setup.class.php:677
 msgid "This field class is not available!"
 msgstr ""
 
-#: classes/setup.class.php:586
+#: classes/setup.class.php:681
 msgid "This type is not found!"
 msgstr ""
 
-#: classes/shortcoder.class.php:246
+#: classes/shortcode-options.class.php:250
 msgid "Add one more"
 msgstr ""
 
-#: classes/shortcoder.class.php:283 functions/actions.php:16
+#: classes/shortcode-options.class.php:287 functions/actions.php:16
 #: functions/actions.php:68 functions/actions.php:106 functions/actions.php:141
 #: functions/actions.php:170
 msgid "Error: Nonce verification has failed. Please try again."
@@ -249,68 +249,72 @@ msgstr ""
 msgid "Contain"
 msgstr ""
 
-#: fields/background/background.php:228
+#: fields/background/background.php:215
+msgid "Auto"
+msgstr ""
+
+#: fields/background/background.php:229
 msgid "Background Origin"
 msgstr ""
 
-#: fields/background/background.php:229 fields/background/background.php:247
+#: fields/background/background.php:230 fields/background/background.php:248
 msgid "Padding Box"
 msgstr ""
 
-#: fields/background/background.php:230 fields/background/background.php:246
+#: fields/background/background.php:231 fields/background/background.php:247
 msgid "Border Box"
 msgstr ""
 
-#: fields/background/background.php:231 fields/background/background.php:248
+#: fields/background/background.php:232 fields/background/background.php:249
 msgid "Content Box"
 msgstr ""
 
-#: fields/background/background.php:245
+#: fields/background/background.php:246
 msgid "Background Clip"
 msgstr ""
 
-#: fields/background/background.php:262
+#: fields/background/background.php:263
 msgid "Background Blend Mode"
 msgstr ""
 
-#: fields/background/background.php:263 fields/link_color/link_color.php:36
+#: fields/background/background.php:264 fields/link_color/link_color.php:36
 #: fields/typography/typography.php:175
 msgid "Normal"
 msgstr ""
 
-#: fields/background/background.php:264
+#: fields/background/background.php:265
 msgid "Multiply"
 msgstr ""
 
-#: fields/background/background.php:265
+#: fields/background/background.php:266
 msgid "Screen"
 msgstr ""
 
-#: fields/background/background.php:266
+#: fields/background/background.php:267
 msgid "Overlay"
 msgstr ""
 
-#: fields/background/background.php:267
+#: fields/background/background.php:268
 msgid "Darken"
 msgstr ""
 
-#: fields/background/background.php:268
+#: fields/background/background.php:269
 msgid "Lighten"
 msgstr ""
 
-#: fields/background/background.php:269
+#: fields/background/background.php:270
 msgid "Color Dodge"
 msgstr ""
 
-#: fields/background/background.php:270
+#: fields/background/background.php:271
 msgid "Saturation"
 msgstr ""
 
-#: fields/background/background.php:271
+#: fields/background/background.php:272
 msgid "Color"
 msgstr ""
 
-#: fields/background/background.php:272
+#: fields/background/background.php:273
 msgid "Luminosity"
 msgstr ""
 
@@ -387,8 +391,8 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: fields/button_set/button_set.php:56 fields/checkbox/checkbox.php:63
-#: fields/radio/radio.php:62 fields/select/select.php:113
+#: fields/button_set/button_set.php:56 fields/checkbox/checkbox.php:76
+#: fields/radio/radio.php:75 fields/select/select.php:113
 msgid "No data provided for this option type."
 msgstr ""
 
@@ -433,12 +437,16 @@ msgstr ""
 msgid "You can not remove less than"
 msgstr ""
 
-#: fields/icon/icon.php:20 functions/actions.php:209
+#: fields/icon/icon.php:20 fields/icon/icon.php:53
 msgid "Add Icon"
 msgstr ""
 
 #: fields/icon/icon.php:21
 msgid "Remove Icon"
+msgstr ""
+
+#: fields/icon/icon.php:57
+msgid "Search a Icon..."
 msgstr ""
 
 #: fields/link_color/link_color.php:37
@@ -658,10 +666,6 @@ msgstr ""
 
 #: functions/actions.php:180
 msgid "You do not have required permissions to access."
-msgstr ""
-
-#: functions/actions.php:213
-msgid "Search a Icon..."
 msgstr ""
 
 #: functions/validate.php:14 functions/validate.php:86

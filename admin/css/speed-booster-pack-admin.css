@@ -1,4 +1,14 @@
-/**
- * All of the CSS for your admin-specific functionality should be
- * included in this file.
- */
+/*.sbp-settings [data-controller^="module_"].hidden {display:block;opacity:.5;filter:grayscale(1);}*/
+.sbp-settings .csf-field-code_editor .CodeMirror {height:190px;}
+.sbp-settings .declutter-head .csf-fieldset-content > .csf-field {padding:10px;}
+.sbp-settings .csf-field-spinner .csf--unit {padding:0 10px;}
+.sbp-settings .text-input-before, .sbp-settings .text-input-after {line-height:2;}
+.sbp-settings .font-monospace {font-family:monospace;}
+.sbp-settings .csf-field-group .csf-cloneable-header-icon {vertical-align:middle;}
+.sbp-settings .csf-sticky .csf-header-inner {z-index:99;}
+.sbp-settings input.disabled, .sbp-settings input:disabled {background:#fff;border:1px solid #7e8993;color:inherit;box-shadow:0 0 0 transparent;}
+.sbp-settings .ui-spinner .ui-button {min-height:30px;box-shadow:none;}
+.sbp-settings {max-width:75rem;}
+.sbp-settings .cdn-url .csf-before-text, .sbp-settings .cdn-url .csf-after-text {display:inline-block;line-height:2;font-family:monospace;}
+.sbp-settings .cdn-url input {font-family:monospace;}
+.sbp-settings .csf-desc-text {color:#777;}
