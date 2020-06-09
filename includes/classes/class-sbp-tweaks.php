@@ -32,7 +32,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	];
 
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_tweaks' ) ) {
+		if ( ! sbp_get_option( 'module_tweaks' ) ) {
 			return;
 		}
 
@@ -222,7 +222,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	}
 
 	private function dequeue_block_library() {
-		add_action( 'wp_enqueue_scripts', [$this, 'dequeue_block_library_handle'] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'dequeue_block_library_handle' ] );
 	}
 
 	public function dequeue_block_library_handle() {
@@ -252,7 +252,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		remove_action( 'wp_head', 'wp_oembed_add_host_js' );
 
 		// Remove all embeds rewrite rules.
-		add_filter( 'rewrite_rules_array', [$this, 'disable_embeds_rewrites'] );
+		add_filter( 'rewrite_rules_array', [ $this, 'disable_embeds_rewrites' ] );
 
 		// Remove filter of the oEmbed result before any HTTP requests are made.
 		remove_filter( 'pre_oembed_result', 'wp_filter_pre_oembed_result', 10 );

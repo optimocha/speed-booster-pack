@@ -12,7 +12,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	private $noscripts = [];
 
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) ) {
 			return;
 		}
 

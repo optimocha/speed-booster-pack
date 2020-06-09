@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class SBP_Special extends SBP_Abstract_Module {
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_special' ) ) {
+		if ( ! sbp_get_option( 'module_special' ) ) {
 			return;
 		}
 
@@ -44,6 +44,7 @@ class SBP_Special extends SBP_Abstract_Module {
 			add_action( 'wp_enqueue_scripts', [ $this, 'optimize_nonwc_pages_handle' ] );
 		}
 	}
+
 	public function optimize_nonwc_pages_handle() {
 		if ( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
 			if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() ) {
@@ -78,7 +79,7 @@ class SBP_Special extends SBP_Abstract_Module {
 	 * Removes cart-fragments.js
 	 */
 	public function woocommerce_disable_cart_fragments_handle() {
-		if( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+		if ( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			global $wp_scripts;
 			$handle = 'wc-cart-fragments';
 			if ( isset( $wp_scripts->registered[ $handle ] ) ) {

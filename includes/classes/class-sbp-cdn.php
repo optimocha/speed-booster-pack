@@ -4,7 +4,7 @@ namespace SpeedBooster;
 
 class SBP_CDN extends SBP_Abstract_Module {
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'cdn_url' ) ) {
+		if ( ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'cdn_url' ) ) {
 			return;
 		}
 

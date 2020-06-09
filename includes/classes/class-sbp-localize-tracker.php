@@ -17,7 +17,7 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $transient_name = '';
 
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'localize_tracking_scripts' ) ) {
+		if ( ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'localize_tracking_scripts' ) ) {
 			return;
 		}
 

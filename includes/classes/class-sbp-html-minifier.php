@@ -16,7 +16,7 @@ class SBP_HTML_Minifier extends SBP_Abstract_Module {
 	private $html;
 
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'minify_html' ) ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'minify_html' ) ) {
 			return;
 		}
 

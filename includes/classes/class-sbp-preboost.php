@@ -36,7 +36,7 @@ class SBP_Preboost extends SBP_Abstract_Module {
 	private $appending_script = "";
 
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'preboost' )['preboost_enable'] ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'preboost' )['preboost_enable'] ) {
 			return;
 		}
 

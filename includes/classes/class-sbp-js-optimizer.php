@@ -161,7 +161,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	public function __construct() {
 		$this->optimize_strategy = sbp_get_option( 'js_optimize' );
 
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_assets' ) || $this->optimize_strategy == 'off' ) {
+		if ( ! sbp_get_option( 'module_assets' ) || $this->optimize_strategy == 'off' ) {
 			return;
 		}
 
@@ -178,7 +178,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 
 		if ( $this->optimize_strategy == 'move' ) {
 			$this->move_scripts( $html );
-		} else if ( $this->optimize_strategy == 'defer' ) {
+		} elseif ( $this->optimize_strategy == 'defer' ) {
 			$this->add_defer_attribute();
 			$this->convert_inline_to_base64();
 			$html = str_replace( $this->included_scripts, $this->changed_scripts, $html );

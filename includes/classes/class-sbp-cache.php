@@ -11,7 +11,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private $file_name = 'index.html';
 
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_caching' ) ) {
+		if ( ! sbp_get_option( 'module_caching' ) ) {
 			return;
 		}
 

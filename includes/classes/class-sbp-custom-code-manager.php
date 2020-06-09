@@ -12,7 +12,7 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 	private $add_onload_script = false;
 
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_special' ) ) {
+		if ( ! sbp_get_option( 'module_special' ) ) {
 			return;
 		}
 

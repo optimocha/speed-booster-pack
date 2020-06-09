@@ -16,7 +16,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	];
 
 	public function __construct() {
-		if ( ! parent::should_plugin_run() || ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'css_inline' ) ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'css_inline' ) ) {
 			return;
 		}
 
