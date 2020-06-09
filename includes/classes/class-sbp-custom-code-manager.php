@@ -8,8 +8,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
-	private $add_delay_script = false;
-	private $add_onload_script = false;
 
 	public function __construct() {
 		if ( ! sbp_get_option( 'module_special' ) ) {
@@ -31,65 +29,33 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 				} else {
 					$hook = 'wp_head';
 				}
-				// TODO: Find another way to pass this argument
+
 				add_action( $hook, function () use ( $script ) {
+
+					$output = '<script type="text/javascript">';
+
 					switch ( $script['custom_codes_method'] ) {
 						case "onload":
-							$output                  = '<script type="sbp/javascript" data-method="onload">';
-							$this->add_onload_script = true;
+							$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) {';
+							$output .= $script['custom_codes_item'];
+							$output .= '});';
 							break;
 						case "delayed":
-							$output                 = '<script type="sbp/javascript" data-method="delayed">';
-							$this->add_delay_script = true;
+							$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) { setTimeout(function(){';
+							$output .= $script['custom_codes_item'];
+							$output .= '},4000);});';
 							break;
 						default:
-							$output = '<script type="text/javascript">';
+							$output .= $script['custom_codes_item'];
 							break;
 					}
-					$output .= $script['custom_codes_item'];
+
 					$output .= '</script>';
 
 					echo $output;
 				} );
 			}
 		}
-
-		add_action( 'wp_footer', [ $this, 'add_sbp_loader_script' ] );
 	}
 
-	public function add_sbp_loader_script() {
-		echo "<script defer>window.addEventListener( 'DOMContentLoaded', function(e) {";
-		if ( $this->add_onload_script ) {
-			echo 'var scripts=document.querySelectorAll("[type=\'sbp/javascript\'][data-method=onload]");scripts.forEach(function(t){var e=t.innerHTML,r=document.createElement("script");r.type="text/javascript",r.innerHTML=e,t.after(r),t.remove()});';
-		}
-		if ( $this->add_delay_script ) {
-			echo 'setTimeout(function(){document.querySelectorAll("[type=\'sbp/javascript\'][data-method=delayed]").forEach(function(e){var t=e.innerHTML,r=document.createElement("script");r.type="text/javascript",r.innerHTML=t,e.after(r),e.remove()})},4e3);';
-		}
-		echo '});</script>';
-	}
-
-	// Unminified versions of replacer scripts TODO: Clean this when you done.
-	/*
-	var scripts = document.querySelectorAll("[type='sbp/javascript'][data-method=onload]");
-	scripts.forEach(function(tag) {
-		var script = tag.innerHTML;
-		var newScript = document.createElement('script');
-		newScript.type = 'text/javascript';
-		newScript.innerHTML = script;
-		tag.after(newScript);
-		tag.remove();
-	})
-
-	setTimeout(function() {
-		var scripts = document.querySelectorAll("[type='sbp/javascript'][data-method=delayed]");
-			scripts.forEach(function(tag) {
-			var script = tag.innerHTML;
-			var newScript = document.createElement('script');
-			newScript.type = 'text/javascript';
-			newScript.innerHTML = script;
-			tag.after(newScript);
-			tag.remove();
-		})
-	}, 4000);
-	 */
 }

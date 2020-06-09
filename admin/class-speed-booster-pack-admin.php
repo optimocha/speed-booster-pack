@@ -95,7 +95,7 @@ class Speed_Booster_Pack_Admin {
 
 		$this->create_settings_page();
 
-		$this->create_sbp_bar_menu();
+		add_action( 'admin_bar_menu', [ $this, 'add_bar_menu_links' ], 71 );
 	}
 
 	/**
@@ -389,6 +389,7 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 						],
 						[
+							// LAHMACUNTODO: URL temizliğini unutma
 							'id'         => 'caching_exclude_urls',
 							'class'      => 'caching-exclude-urls',
 							'type'       => 'code_editor',
@@ -411,6 +412,9 @@ class Speed_Booster_Pack_Admin {
 							'class'      => 'cloudflare',
 							'type'       => 'fieldset',
 							'fields'     => [
+
+								// LAHMACUNTODO: credentials'ta problem varsa buraya warning koy:
+								// http://codestarframework.com/documentation/#/fields?id=others
 
 								[
 									'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
@@ -712,12 +716,9 @@ class Speed_Booster_Pack_Admin {
 		}
 	}
 
-	private function create_sbp_bar_menu() {
-		add_action( 'admin_bar_menu', [ $this, 'add_bar_menu_links' ], 71 );
-	}
-
 	public function add_bar_menu_links( $admin_bar ) {
 
+		// LAHMACUNTODO: cache açıldığında veya kapandığında gelen ilk sayfada düğme görünmüyor veya görünüyor.
 		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) ) {
 			$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
 			$sbp_admin_menu  = [

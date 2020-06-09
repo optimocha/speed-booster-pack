@@ -12,12 +12,16 @@ class SBP_CDN extends SBP_Abstract_Module {
 	}
 
 	public function cdn_rewriter( $html ) {
+		// LAHMACUNTODO: değişken isimlerini küçük harflerle değiştir
 		//Prep Site URL
 		$escapedSiteURL = quotemeta( get_option( 'home' ) );
 		$regExURL       = '(https?:|)' . substr( $escapedSiteURL, strpos( $escapedSiteURL, '//' ) );
 
 		//Prep Included Directories
+		// LAHMACUNTODO: apply_filters ile değiştir
 		$directories = 'wp\-content|wp\-includes';
+
+		// LAHMACUNTODO: PHP'ler hariç tutulmalı & bir filter daha yaratalım dosya uzantıları için
 
 		//Rewrite URLs + Return
 		$regEx    = '#(?<=[(\"\'])(?:' . $regExURL . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';

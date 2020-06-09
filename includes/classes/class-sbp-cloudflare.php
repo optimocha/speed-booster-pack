@@ -22,7 +22,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 				'x_auth_email' => 'X-Auth-Email: ' . $email,
 			];
 
-			$result = self::send_request( '7f25cfbd49f3559ea31a78badb1220ea', '/purge_cache', [ 'purge_everything' => true ], $headers, 'POST' );
+			$result = self::send_request( $zone, '/purge_cache', [ 'purge_everything' => true ], $headers, 'POST' );
 			if ( true === $result['success'] ) {
 				return true;
 			}
@@ -93,7 +93,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		curl_close( $curl_connection );
 
 		if ( ! is_array( $result ) ) {
-			return [ 'success' => false, 'errors' => [ __( 'Cloudflare didn\'t respond correctly.' ) ] ];
+			return [ 'success' => false, 'errors' => [ __( 'Cloudflare didn\'t respond correctly.', 'speed-booster-pack' ) ] ];
 		}
 
 		return $result;

@@ -69,7 +69,7 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 		$id = $matches[2][0];
 
 		// Set file path, file url and file name
-		$this->file_name      = $id . '.js';
+		$this->file_name      = 'gtm-' . $id . '.js';
 		$this->transient_name = 'sbp_analytics_gtm';
 
 		// Set file url
@@ -89,9 +89,6 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	}
 
 	private function replace_gtag( $html ) {
-		// Set file path, file url and file name
-		$this->file_name      = 'gtag.js';
-		$this->transient_name = 'sbp_analytics_gtag';
 
 		// Get Gtag id
 		preg_match_all( '/src=\"https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=([A-Za-z0-9-_]+)"/Umsi', $html, $matches );
@@ -101,6 +98,12 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 		}
 
 		$id = $matches[1][0];
+
+		// Set file path, file url and file name
+		$this->file_name      = 'gtag-' . $id . '.js';
+		$this->transient_name = 'sbp_analytics_gtag';
+
+		// LAHMACUNTODO: bu id'yle dosya ismini kaydediyor mu, test et.
 
 		// Set file url
 		$this->gtag_url .= $id;

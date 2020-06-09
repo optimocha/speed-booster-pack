@@ -69,7 +69,9 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 	private $active_plugins = [];
 
 	public function __construct() {
-		$this->plugins_list = apply_filters( 'sbp_incompatible_plugins', $this->plugins_list );
+		$extra_plugins_list = [];
+		$extra_plugins_list = apply_filters( 'sbp_incompatible_plugins', $extra_plugins_list );
+		$this->plugins_list = array_merge( $this->plugins_list, $extra_plugins_list );
 
 		add_action( 'admin_init', [ $this, 'check_plugins_active' ] );
 		add_action( 'admin_notices', [ $this, 'compatibility_notices' ] );
@@ -89,7 +91,7 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 			$plugin_name = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin )['Name'];
 			echo '<div class="notice notice-warning">
 				<p>
-				' . sprintf( __( 'The "<strong>%1$s</strong>" plugin has similar features to %2$s which might cause overlaps or even conflicts. Make sure you\'re not using the features at the same time, test thoroughly and deactivate %1$s if necessary.', 'speed-booster-pack' ), $plugin_name, 'Speed Booster Pack' ) . '
+				' . sprintf( __( 'The "<strong>%1$s</strong>" plugin has similar features to %2$s which might cause overlaps or even conflicts. Make sure you\'re not using the features at the same time, test thoroughly and deactivate %1$s if necessary.', 'speed-booster-pack' ), $plugin_name, SBP_PLUGIN_NAME ) . '
 				</p>
 			</div>';
 		}

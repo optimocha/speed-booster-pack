@@ -36,6 +36,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @return bool
 	 */
 	private function should_bypass_cache() {
+
 		// Do not cache for logged in users
 		if ( is_user_logged_in() ) {
 			return true;
@@ -71,14 +72,21 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 
 		if ( ! empty( $_GET ) ) {
-			// Get included rules
 			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
 
-			// Order get parameters alphabetically (to get same filename for every order of query parameters)
 			foreach ( $_GET as $key => $value ) {
 				if ( ! in_array( $key, $include_query_strings ) ) {
 					return true;
 				}
+			}
+		}
+
+		// Check for exclude URLs
+		if ( sbp_get_option( 'caching_exclude_urls' ) ) {
+			$exclude_urls = array_map( 'trim', explode( PHP_EOL, sbp_get_option( 'caching_exclude_urls' ) ) );
+			$exclude_urls[] = '/favicon.ico';
+			if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
+				return true;
 			}
 		}
 
@@ -91,7 +99,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 */
 	public function clear_cache_request() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_total_cache' ) ) {
-			$redirect_url = remove_query_arg( 'sbp_action', ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] === 'on' ? "https" : "http" ) . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]" );
+			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			self::clear_total_cache();
 			SBP_Cloudflare::clear_cache();
 			set_transient( 'sbp_notice_cache', '1', 60 );
@@ -168,7 +176,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @return bool|mixed|void
 	 */
 	public function handle_cache( $html ) {
-		if (  true === $this->should_bypass_cache() ) {
+		if ( true === $this->should_bypass_cache() ) {
 			return $html;
 		}
 
@@ -177,12 +185,12 @@ class SBP_Cache extends SBP_Abstract_Module {
 			// Get included rules
 			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
 
-			$query_string_file_name = '';
+			$query_string_file_name = 'index';
 			// Order get parameters alphabetically (to get same filename for every order of query parameters)
 			ksort( $_GET );
 			foreach ( $_GET as $key => $value ) {
 				if ( in_array( $key, $include_query_strings ) ) {
-					$query_string_file_name .= "$key-$value-";
+					$query_string_file_name .= "-$key-$value";
 				}
 			}
 			if ( '' !== $query_string_file_name ) {
@@ -191,13 +199,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			}
 		}
 
-		// Check for exclude URL's
-		if ( sbp_get_option( 'caching_exclude_urls' ) ) {
-			$exclude_urls = array_map( 'trim', explode( PHP_EOL, sbp_get_option( 'caching_exclude_urls' ) ) );
-			if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
-				return false;
-			}
-		}
+
 
 		$wp_filesystem = $this->get_filesystem();
 

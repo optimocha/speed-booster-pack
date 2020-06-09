@@ -36,6 +36,7 @@ if ( ! empty( $_GET ) && isset( $settings['caching_include_query_strings'] ) ) {
 	foreach ( $_GET as $key => $value ) {
 		if ( in_array( $key, $include_query_strings ) ) {
 			$query_string_file_name .= "$key-$value-";
+			// LAHMACUNTODO: dosya ismini hash'le (index-şdlfhkdşlfkhdfşlhd.html).
 		} else {
 			return false;
 		}
