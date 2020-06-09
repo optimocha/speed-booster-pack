@@ -6,7 +6,7 @@
  * This file is used to markup the public-facing aspects of the plugin.
  *
  * @link       https://optimocha.com
- * @since      1.0.0
+ * @since      4.0.0
  *
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/public/views

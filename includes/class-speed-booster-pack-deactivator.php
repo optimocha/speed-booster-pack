@@ -29,12 +29,12 @@ class Speed_Booster_Pack_Deactivator {
 	 *
 	 * Long Description.
 	 *
-	 * @since    1.0.0
+	 * @since    4.0.0
 	 */
 	public static function deactivate() {
 		SBP_Cache::clear_total_cache();
 		SBP_Cache::set_wp_cache_constant( false );
-		// Lahmacuntodo: Remove htaccess codes from .htaccess
+		// LAHMACUNTODO: Remove htaccess codes from .htaccess
 
 		unlink( WP_CONTENT_DIR . '/advanced-cache.php' );
 	}

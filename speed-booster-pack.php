@@ -27,6 +27,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+//LAHMACUNTODO: bu ABSPATH kontrollerini advanced-cache.php hariç bizim yazdığımız her dosyaya uygulamak gerekecek sanırım.
+
 /**
  * Plugin name.
  */
@@ -81,6 +83,8 @@ define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster' );
  * Cache directory url
  */
 define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster' );
+
+// LAHMACUNTODO: trailing slash'ları standarda oturtalım.
 
 /**
  * The code that runs during plugin activation.

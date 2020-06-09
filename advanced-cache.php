@@ -8,6 +8,7 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET
 // Check if user logged in
 if ( ! empty( $_COOKIE ) ) {
 	$cookies_regex = '/^(comment_author|wordpress_logged_in|wp-postpass)_/';
+	// LAHMACUNTODO: apply_filters ile bir cookie filtresi ekleyip, ileride canımız istediğinde de option'dan da çekmeyi becerelim.
 
 	foreach ( $_COOKIE as $key => $value ) {
 		if ( preg_match( $cookies_regex, $key ) ) {
@@ -55,6 +56,7 @@ if ( ! is_readable( $cache_file_path ) ) {
 // Check if cache file is expired
 if ( isset( $settings['caching_expiry'] ) && ! empty( $settings['caching_expiry'] ) ) {
 	$caching_expiry = $settings['caching_expiry'] * DAY_IN_SECONDS;
+	// LAHMACUNTODO: add_filter ile $caching_expiry değişkeninin değiştirilebilmesini sağla.
 	if ( ( filemtime( $cache_file_path ) + $caching_expiry ) < time() ) {
 		return false;
 	}
@@ -62,6 +64,7 @@ if ( isset( $settings['caching_expiry'] ) && ! empty( $settings['caching_expiry'
 
 if ( isset( $settings['caching_exclude_urls'] ) ) {
 	$exclude_urls = array_map( 'trim', explode( PHP_EOL, $settings['caching_exclude_urls'] ) );
+	// LAHMACUNTODO: üstteki satırda explode_lines fonksiyonunu kullan
 	if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
 		return false;
 	}

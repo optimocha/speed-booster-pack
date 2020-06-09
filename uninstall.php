@@ -20,7 +20,7 @@
  * https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate/pull/123#issuecomment-28541913
  *
  * @link       https://optimocha.com
- * @since      1.0.0
+ * @since      4.0.0
  *
  * @package    Speed_Booster_Pack
  */

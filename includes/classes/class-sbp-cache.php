@@ -22,7 +22,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		// Clear cache hook
 		add_action( 'init', [ $this, 'clear_cache_request' ] );
 
-		if ( sbp_get_option( 'enable-cache' ) ) {
+		if ( sbp_get_option( 'module_caching' ) ) {
 			$this->set_wp_cache_constant( true );
 		}
 
@@ -38,11 +38,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private function should_bypass_cache() {
 		// Do not cache for logged in users
 		if ( is_user_logged_in() ) {
-			return true;
-		}
-
-		// Do not cache administrator
-		if ( user_can( get_current_user_id(), 'administrator' ) ) {
 			return true;
 		}
 
@@ -75,11 +70,20 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return true;
 		}
 
-		if ( wp_is_mobile() && ! sbp_get_option( 'caching_separate_mobile' ) ) {
-			return true;
+		if ( ! empty( $_GET ) ) {
+			// Get included rules
+			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
+
+			// Order get parameters alphabetically (to get same filename for every order of query parameters)
+			foreach ( $_GET as $key => $value ) {
+				if ( ! in_array( $key, $include_query_strings ) ) {
+					return true;
+				}
+			}
 		}
 
 		return false;
+
 	}
 
 	/**
@@ -164,14 +168,14 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @return bool|mixed|void
 	 */
 	public function handle_cache( $html ) {
-		if ( $this->should_bypass_cache() ) {
+		if (  true === $this->should_bypass_cache() ) {
 			return $html;
 		}
 
 		// Check for query strings
 		if ( ! empty( $_GET ) ) {
 			// Get included rules
-			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings', '' ) );
+			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
 
 			$query_string_file_name = '';
 			// Order get parameters alphabetically (to get same filename for every order of query parameters)
