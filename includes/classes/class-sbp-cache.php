@@ -549,6 +549,28 @@ AddEncoding gzip              svgz
 	private function clear_cache_hooks() {
 		add_action( '_core_updated_successfully', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'switch_theme', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'save_post', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'autoptimize_action_cachepurged', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'upgrader_process_complete', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'woocommerce_product_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'woocommerce_product_set_stock_status', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'woocommerce_variation_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'woocommerce_variation_set_stock_status', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'user_register', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a user is added.
+		add_action( 'profile_update', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a user is updated.
+		add_action( 'deleted_user', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a user is deleted.
+		add_action( 'wp_update_nav_menu', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a custom menu is update.
+		add_action( 'update_option_sidebars_widgets', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When you change the order of widgets.
+		add_action( 'update_option_category_base', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When category permalink prefix is update.
+		add_action( 'update_option_tag_base', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When tag permalink prefix is update.
+		add_action( 'permalink_structure_changed', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When permalink structure is update.
+		add_action( 'create_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is created.
+		add_action( 'edited_terms', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is updated.
+		add_action( 'delete_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is deleted.
+		add_action( 'add_link', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a link is added.
+		add_action( 'edit_link', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a link is updated.
+		add_action( 'delete_link', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a link is deleted.
+		add_action( 'customize_save', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When customizer is saved.
 		add_action(
 			'wp_trash_post',
 			function ( $post_id ) {
@@ -557,16 +579,6 @@ AddEncoding gzip              svgz
 				}
 			}
 		);
-
-		add_action( 'save_post', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-		add_action( 'autoptimize_action_cachepurged', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-		add_action( 'upgrader_process_complete', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-
-		add_action( 'woocommerce_product_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-		add_action( 'woocommerce_product_set_stock_status', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-		add_action( 'woocommerce_variation_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-		add_action( 'woocommerce_variation_set_stock_status', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-
 		if ( is_admin() ) {
 			add_action( 'wpmu_new_blog', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 			add_action( 'delete_blog', 'SpeedBooster\SBP_Cache::clear_total_cache' );
