@@ -31,4 +31,12 @@ class SBP_Utils extends SBP_Abstract_Module {
 
 		return pathinfo( $url, PATHINFO_EXTENSION );
 	}
+
+	/**
+	 * Check if a plugin is active or not.
+	 * @since 3.8.3
+	 */
+	public static function is_plugin_active( $path ) {
+		return in_array( $path, get_option( 'active_plugins' ) );
+	}
 }
