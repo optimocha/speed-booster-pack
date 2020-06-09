@@ -13,7 +13,7 @@ class SBP_Special extends SBP_Abstract_Module {
 			return;
 		}
 
-		$this->jetpack_dequeue_devicepx();
+//		$this->jetpack_dequeue_devicepx();
 		$this->woocommerce_disable_cart_fragments();
 		$this->optimize_nonwc_pages();
 		$this->remove_wc_password_strength_meter();
@@ -22,17 +22,17 @@ class SBP_Special extends SBP_Abstract_Module {
 	/**
 	 * Dequeues Jetpack's devicepx-jetpack.js file
 	 */
-	private function jetpack_dequeue_devicepx() {
-		if ( sbp_get_option( 'jetpack_dequeue_devicepx' ) ) {
-			add_action( 'wp_enqueue_scripts', [ $this, 'jetpack_dequeue_devicepx_handle' ] );
-		}
-	}
-
-	public function jetpack_dequeue_devicepx_handle() {
-		if ( is_plugin_active( 'jetpack/jetpack.php' ) ) {
-			wp_dequeue_script( 'devicepx' );
-		}
-	}
+//	private function jetpack_dequeue_devicepx() {
+//		if ( sbp_get_option( 'jetpack_dequeue_devicepx' ) ) {
+//			add_action( 'wp_enqueue_scripts', [ $this, 'jetpack_dequeue_devicepx_handle' ] );
+//		}
+//	}
+//
+//	public function jetpack_dequeue_devicepx_handle() {
+//		if ( is_plugin_active( 'jetpack/jetpack.php' ) ) {
+//			wp_dequeue_script( 'devicepx' );
+//		}
+//	}
 
 	/**
 	 * Removes WooCommerce scripts from non-woocommerce pages
@@ -76,7 +76,7 @@ class SBP_Special extends SBP_Abstract_Module {
 	 * Removes cart-fragments.js
 	 */
 	public function woocommerce_disable_cart_fragments_handle() {
-		if( is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+		if( \is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			global $wp_scripts;
 			$handle = 'wc-cart-fragments';
 			if ( isset( $wp_scripts->registered[ $handle ] ) ) {
