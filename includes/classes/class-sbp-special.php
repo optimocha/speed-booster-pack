@@ -2,6 +2,8 @@
 
 namespace SpeedBooster;
 
+use SpeedBooster\SBP_Utils;
+
 // Security control for vulnerability attempts
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
@@ -76,7 +78,7 @@ class SBP_Special extends SBP_Abstract_Module {
 	 * Removes cart-fragments.js
 	 */
 	public function woocommerce_disable_cart_fragments_handle() {
-		if( \SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+		if( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			global $wp_scripts;
 			$handle = 'wc-cart-fragments';
 			if ( isset( $wp_scripts->registered[ $handle ] ) ) {

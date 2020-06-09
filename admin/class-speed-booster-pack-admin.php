@@ -10,7 +10,35 @@
  * @subpackage Speed_Booster_Pack/admin
  */
 
-use SpeedBooster\SBP_Cache;
+/**
+ * Returns absolute value of a number. Returns 1 if value is zero.
+ *
+ * @param $value
+ *
+ * @return float|int
+ * @since 4.0.0
+ *
+ */
+function posabs( $value ) {
+	if ( 0 == $value ) {
+		return 1;
+	}
+
+	return absint( $value );
+}
+
+/**
+ * Removes http(s?):// and trailing slash from the url
+ *
+ * @param $url
+ *
+ * @return string
+ * @since 4.0.0
+ *
+ */
+function sbp_clear_cdn_url( $url ) {
+	return preg_replace( "#^[^:/.]*[:/]+#i", "", rtrim($url, '/') );
+}
 
 /**
  * The admin-specific functionality of the plugin.
@@ -552,6 +580,7 @@ class Speed_Booster_Pack_Admin {
 							'after'      => '&nbsp;/',
 							'desc'       => __( 'Rewrites all asset URLs with the specified CDN URL.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_clear_cdn_url',
 						],
 						[
 							'title'      => __( 'Localize Google Analytics & Google Tag Manager', 'speed-booster-pack' ),
@@ -627,7 +656,7 @@ class Speed_Booster_Pack_Admin {
 									'default' => 'normal',
 								],
 							],
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
+							'dependency'             => [ 'module_special', '==', '1', '', 'visible' ],
 						],
 
 					],
@@ -690,11 +719,11 @@ class Speed_Booster_Pack_Admin {
 	public function add_bar_menu_links( $admin_bar ) {
 
 		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) ) {
-			$clear_cache_url = wp_nonce_url(add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce');
-			$sbp_admin_menu = [
+			$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
+			$sbp_admin_menu  = [
 				'id'    => 'speed_booster_pack',
 				'title' => __( 'Clear Cache', 'speed-booster-pack' ),
-				'href'   => $clear_cache_url,
+				'href'  => $clear_cache_url,
 			];
 
 			$admin_bar->add_menu( $sbp_admin_menu );
