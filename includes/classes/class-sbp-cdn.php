@@ -3,6 +3,10 @@
 namespace SpeedBooster;
 
 class SBP_CDN extends SBP_Abstract_Module {
+	private $excluded_file_extensions = [
+		'php',
+	];
+
 	public function __construct() {
 		if ( ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'cdn_url' ) ) {
 			return;
@@ -14,23 +18,28 @@ class SBP_CDN extends SBP_Abstract_Module {
 	public function cdn_rewriter( $html ) {
 		//Prep Site URL
 		$escaped_site_url = quotemeta( get_option( 'home' ) );
-		$regex_url         = '(https?:|)' . substr( $escaped_site_url, strpos( $escaped_site_url, '//' ) );
+		$regex_url        = '(https?:|)' . substr( $escaped_site_url, strpos( $escaped_site_url, '//' ) );
 
 		//Prep Included Directories
-		// LAHMACUNTODO: apply_filters ile değiştir
-		$directories = 'wp\-content|wp\-includes';
+		$cdn_include_regex = 'wp\-content|wp\-includes';
+		$directories       = apply_filters( 'sbp_cdn_include_regex', $cdn_include_regex );
 
-		// LAHMACUNTODO: PHP'ler hariç tutulmalı & bir filter daha yaratalım dosya uzantıları için
+		$this->excluded_file_extensions = array_merge( $this->excluded_file_extensions, apply_filters( 'sbp_cdn_excluded_extensions', $this->excluded_file_extensions ) );
 
 		//Rewrite URLs + Return
-		$regEx    = '#(?<=[(\"\'])(?:' . $regex_url . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
-		$cdn_html = preg_replace_callback( $regEx, [ $this, 'rewrite_url' ], $html );
+		$regex    = '#(?<=[(\"\'])(?:' . $regex_url . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
+		$cdn_html = preg_replace_callback( $regex, [ $this, 'rewrite_url' ], $html );
 
 		return $cdn_html;
 	}
 
 	public function rewrite_url( $url ) {
-		global $sbp_options;
+		// Simply check if it's php or not
+		$file_extension = SBP_Utils::get_file_extension_from_url( $url[0] );
+		if ( in_array( $file_extension, $this->excluded_file_extensions ) ) {
+			return $url[0];
+		}
+
 		$sbp_cdn_url = sbp_get_option( 'cdn_url' );
 
 		//Make Sure CDN URL is Set
