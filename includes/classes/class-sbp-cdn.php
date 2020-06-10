@@ -12,10 +12,9 @@ class SBP_CDN extends SBP_Abstract_Module {
 	}
 
 	public function cdn_rewriter( $html ) {
-		// LAHMACUNTODO: değişken isimlerini küçük harflerle değiştir
 		//Prep Site URL
-		$escapedSiteURL = quotemeta( get_option( 'home' ) );
-		$regExURL       = '(https?:|)' . substr( $escapedSiteURL, strpos( $escapedSiteURL, '//' ) );
+		$escaped_site_url = quotemeta( get_option( 'home' ) );
+		$regex_url         = '(https?:|)' . substr( $escaped_site_url, strpos( $escaped_site_url, '//' ) );
 
 		//Prep Included Directories
 		// LAHMACUNTODO: apply_filters ile değiştir
@@ -24,10 +23,10 @@ class SBP_CDN extends SBP_Abstract_Module {
 		// LAHMACUNTODO: PHP'ler hariç tutulmalı & bir filter daha yaratalım dosya uzantıları için
 
 		//Rewrite URLs + Return
-		$regEx    = '#(?<=[(\"\'])(?:' . $regExURL . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
-		$cdn_HTML = preg_replace_callback( $regEx, [ $this, 'rewrite_url' ], $html );
+		$regEx    = '#(?<=[(\"\'])(?:' . $regex_url . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
+		$cdn_html = preg_replace_callback( $regEx, [ $this, 'rewrite_url' ], $html );
 
-		return $cdn_HTML;
+		return $cdn_html;
 	}
 
 	public function rewrite_url( $url ) {
