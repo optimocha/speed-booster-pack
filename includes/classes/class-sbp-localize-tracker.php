@@ -9,8 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $file_name = '';
-	private $dir_path = SBP_CACHE_DIR . '/analytics/';
-	private $dir_url = SBP_CACHE_URL . '/analytics/';
+	private $dir_path = SBP_CACHE_DIR . 'analytics/';
+	private $dir_url = SBP_CACHE_URL . 'analytics/';
 	private $analytics_url = 'https://www.google-analytics.com/analytics.js';
 	private $gtm_url = 'https://www.googletagmanager.com/gtm.js?id=';
 	private $gtag_url = 'https://www.googletagmanager.com/gtag/js?id=';
@@ -102,8 +102,6 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 		// Set file path, file url and file name
 		$this->file_name      = 'gtag-' . $id . '.js';
 		$this->transient_name = 'sbp_analytics_gtag';
-
-		// LAHMACUNTODO: bu id'yle dosya ismini kaydediyor mu, test et.
 
 		// Set file url
 		$this->gtag_url .= $id;

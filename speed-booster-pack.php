@@ -77,14 +77,12 @@ define( 'SBP_LIB_PATH', SBP_INC_PATH . 'libs/' );
 /**
  * Cache directory path
  */
-define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster' );
+define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' );
 
 /**
  * Cache directory url
  */
-define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster' );
-
-// LAHMACUNTODO: trailing slash'ları standarda oturtalım.
+define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' );
 
 /**
  * The code that runs during plugin activation.

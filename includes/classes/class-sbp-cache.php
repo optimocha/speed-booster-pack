@@ -248,7 +248,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private function get_cache_file_path( $post_url = null, $is_mobile = false ) {
 		$cache_dir = SBP_CACHE_DIR;
 		if ( ( wp_is_mobile() && sbp_get_option( 'caching_separate_mobile' ) ) || true === $is_mobile ) {
-			$cache_dir = SBP_CACHE_DIR . '/mobile';
+			$cache_dir = SBP_CACHE_DIR . 'mobile';
 		}
 
 		$path = sprintf(
