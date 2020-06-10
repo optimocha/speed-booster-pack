@@ -36,7 +36,6 @@ if ( ! empty( $_GET ) && isset( $settings['caching_include_query_strings'] ) ) {
 	foreach ( $_GET as $key => $value ) {
 		if ( in_array( $key, $include_query_strings ) ) {
 			$query_string_file_name .= "$key-$value-";
-			// LAHMACUNTODO: dosya ismini hash'le (index-şdlfhkdşlfkhdfşlhd.html).
 		} else {
 			return false;
 		}
@@ -44,7 +43,7 @@ if ( ! empty( $_GET ) && isset( $settings['caching_include_query_strings'] ) ) {
 
 	if ( '' !== $query_string_file_name ) {
 		$query_string_file_name .= '.html';
-		$filename               = $query_string_file_name;
+		$filename               = md5($query_string_file_name);
 	}
 }
 
@@ -64,8 +63,7 @@ if ( isset( $settings['caching_expiry'] ) && ! empty( $settings['caching_expiry'
 }
 
 if ( isset( $settings['caching_exclude_urls'] ) ) {
-	$exclude_urls = array_map( 'trim', explode( PHP_EOL, $settings['caching_exclude_urls'] ) );
-	// LAHMACUNTODO: üstteki satırda explode_lines fonksiyonunu kullan
+	$exclude_urls = sbp_explode_lines( $settings['caching_exclude_urls'] );
 	if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
 		return false;
 	}

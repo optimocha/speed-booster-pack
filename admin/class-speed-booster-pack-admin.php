@@ -458,7 +458,7 @@ class Speed_Booster_Pack_Admin {
 							'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
 							'id'    => 'module_assets',
 							'type'  => 'switcher',
-							'label' => __( 'Enables or Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 						],
 						[
 							'title'      => __( 'Minify HTML', 'speed-booster-pack' ),

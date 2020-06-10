@@ -195,7 +195,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			}
 			if ( '' !== $query_string_file_name ) {
 				$query_string_file_name .= '.html';
-				$this->file_name        = $query_string_file_name;
+				$this->file_name        = md5($query_string_file_name);
 			}
 		}
 
