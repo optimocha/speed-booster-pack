@@ -37,7 +37,21 @@ function posabs( $value ) {
  *
  */
 function sbp_clear_cdn_url( $url ) {
-	return preg_replace( "#^[^:/.]*[:/]+#i", "", rtrim($url, '/') );
+	return preg_replace( "#^[^:/.]*[:/]+#i", "", rtrim( $url, '/' ) );
+}
+
+/**
+ * @param $urls
+ */
+function sanitize_caching_urls( $urls ) {
+	$urls = \SpeedBooster\SBP_Utils::explode_lines($urls);
+	foreach ($urls as &$url) {
+		$url                  = ltrim( $url, 'https://' );
+		$url                  = ltrim( $url, 'http://' );
+		$url                  = ltrim( $url, '//' );
+		$url                  = rtrim( $url, '/' );
+	}
+	return implode(PHP_EOL, $urls);
 }
 
 /**
@@ -389,13 +403,13 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 						],
 						[
-							// LAHMACUNTODO: URL temizliğini unutma
 							'id'         => 'caching_exclude_urls',
 							'class'      => 'caching-exclude-urls',
 							'type'       => 'code_editor',
 							'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
 							'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sanitize_caching_urls',
 						],
 						[
 							'id'         => 'caching_include_query_strings',

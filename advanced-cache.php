@@ -64,7 +64,8 @@ if ( isset( $settings['caching_expiry'] ) && ! empty( $settings['caching_expiry'
 
 if ( isset( $settings['caching_exclude_urls'] ) ) {
 	$exclude_urls = sbp_explode_lines( $settings['caching_exclude_urls'] );
-	if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
+	$current_url = rtrim($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/');
+	if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
 		return false;
 	}
 }

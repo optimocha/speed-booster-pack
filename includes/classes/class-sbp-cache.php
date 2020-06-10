@@ -83,9 +83,10 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 		// Check for exclude URLs
 		if ( sbp_get_option( 'caching_exclude_urls' ) ) {
-			$exclude_urls = array_map( 'trim', explode( PHP_EOL, sbp_get_option( 'caching_exclude_urls' ) ) );
+			$exclude_urls   = array_map( 'trim', explode( PHP_EOL, sbp_get_option( 'caching_exclude_urls' ) ) );
 			$exclude_urls[] = '/favicon.ico';
-			if ( count( $exclude_urls ) > 0 && in_array( $_SERVER['REQUEST_URI'], $exclude_urls ) ) {
+			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
+			if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
 				return true;
 			}
 		}
@@ -195,10 +196,9 @@ class SBP_Cache extends SBP_Abstract_Module {
 			}
 			if ( '' !== $query_string_file_name ) {
 				$query_string_file_name .= '.html';
-				$this->file_name        = md5($query_string_file_name);
+				$this->file_name        = md5( $query_string_file_name );
 			}
 		}
-
 
 
 		$wp_filesystem = $this->get_filesystem();
