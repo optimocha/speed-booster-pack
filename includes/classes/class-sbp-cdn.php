@@ -6,13 +6,24 @@ class SBP_CDN extends SBP_Abstract_Module {
 	private $excluded_file_extensions = [
 		'php',
 	];
+	private $included_directories = 'wp\-content|wp\-includes';
 
 	public function __construct() {
 		if ( ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'cdn_url' ) ) {
 			return;
 		}
 
+		add_action( 'get_footer', [ $this, 'apply_cdn_filters' ] );
 		add_filter( 'sbp_output_buffer', [ $this, 'cdn_rewriter' ] );
+	}
+
+	public function apply_cdn_filters() {
+		$new_filters                    = apply_filters( 'sbp_cdn_excluded_extensions', $this->excluded_file_extensions );
+		$this->excluded_file_extensions = array_merge( $this->excluded_file_extensions, $new_filters );
+		$this->excluded_file_extensions = array_unique( $this->excluded_file_extensions );
+
+		//Prep Included Directories
+		$this->included_directories = apply_filters( 'sbp_cdn_included_directories', $this->included_directories );
 	}
 
 	public function cdn_rewriter( $html ) {
@@ -20,14 +31,9 @@ class SBP_CDN extends SBP_Abstract_Module {
 		$escaped_site_url = quotemeta( get_option( 'home' ) );
 		$regex_url        = '(https?:|)' . substr( $escaped_site_url, strpos( $escaped_site_url, '//' ) );
 
-		//Prep Included Directories
-		$cdn_include_regex = 'wp\-content|wp\-includes';
-		$directories       = apply_filters( 'sbp_cdn_include_regex', $cdn_include_regex );
-
-		$this->excluded_file_extensions = array_merge( $this->excluded_file_extensions, apply_filters( 'sbp_cdn_excluded_extensions', $this->excluded_file_extensions ) );
 
 		//Rewrite URLs + Return
-		$regex    = '#(?<=[(\"\'])(?:' . $regex_url . ')?/(?:((?:' . $directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
+		$regex    = '#(?<=[(\"\'])(?:' . $regex_url . ')?/(?:((?:' . $this->included_directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
 		$cdn_html = preg_replace_callback( $regex, [ $this, 'rewrite_url' ], $html );
 
 		return $cdn_html;
