@@ -11,7 +11,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private $file_name = 'index.html';
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_caching' ) ) {
+		if ( ! sbp_get_option( 'module_caching' ) || isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			return;
 		}
 
@@ -322,22 +322,29 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @param $saved_data
 	 */
 	public static function options_saved_listener( $saved_data ) {
-		// Delete or recreate advanced-cache.php
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
-		if ( $saved_data['module_caching'] ) {
-			$sbp_advanced_cache = SBP_PATH . '/advanced-cache.php';
 
-			SBP_Cache::set_wp_cache_constant( true );
+		if (!isset($_SERVER['KINSTA_CACHE_ZONE'])) {
+			// Delete or recreate advanced-cache.php
+			if ( $saved_data['module_caching'] ) {
+				$sbp_advanced_cache = SBP_PATH . '/advanced-cache.php';
 
-			file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
+				SBP_Cache::set_wp_cache_constant( true );
 
-			self::create_settings_json( $saved_data );
-		} else {
-			SBP_Cache::set_wp_cache_constant( false );
-			if ( file_exists( $advanced_cache_path ) ) {
-				if ( ! unlink( $advanced_cache_path ) ) {
-					return wp_send_json_error( [ 'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ), 'errors' => [] ] );
+				file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
+
+				self::create_settings_json( $saved_data );
+			} else {
+				SBP_Cache::set_wp_cache_constant( false );
+				if ( file_exists( $advanced_cache_path ) ) {
+					if ( ! unlink( $advanced_cache_path ) ) {
+						return wp_send_json_error( [ 'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ), 'errors' => [] ] );
+					}
 				}
+			}
+		} else {
+			if ( file_exists( $advanced_cache_path ) ) {
+				@unlink( $advanced_cache_path );
 			}
 		}
 	}

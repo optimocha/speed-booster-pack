@@ -44,14 +44,15 @@ function sbp_clear_cdn_url( $url ) {
  * @param $urls
  */
 function sanitize_caching_urls( $urls ) {
-	$urls = \SpeedBooster\SBP_Utils::explode_lines($urls);
-	foreach ($urls as &$url) {
-		$url                  = ltrim( $url, 'https://' );
-		$url                  = ltrim( $url, 'http://' );
-		$url                  = ltrim( $url, '//' );
-		$url                  = rtrim( $url, '/' );
+	$urls = \SpeedBooster\SBP_Utils::explode_lines( $urls );
+	foreach ( $urls as &$url ) {
+		$url = ltrim( $url, 'https://' );
+		$url = ltrim( $url, 'http://' );
+		$url = ltrim( $url, '//' );
+		$url = rtrim( $url, '/' );
 	}
-	return implode(PHP_EOL, $urls);
+
+	return implode( PHP_EOL, $urls );
 }
 
 /**
@@ -367,6 +368,100 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Tweaks */
 
+			$cache_fields     = [
+				[
+					'id'    => 'module_caching',
+					'class' => 'module-caching',
+					'type'  => 'switcher',
+					'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
+					'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+				],
+				[
+					'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
+					'id'         => 'caching_expiry',
+					'type'       => 'spinner',
+					'min'        => '1',
+					'unit'       => __( 'days', 'speed-booster-pack' ),
+					'desc'       => __( 'How many days to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
+					'default'    => '3',
+					'sanitize'   => 'posabs',
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+				],
+				[
+					'id'         => 'caching_separate_mobile',
+					'type'       => 'switcher',
+					'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
+					'label'      => __( 'Creates separate cache files for mobile and desktop.', 'speed-booster-pack' ),
+					'desc'       => __( 'Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+				],
+				[
+					'id'         => 'caching_exclude_urls',
+					'class'      => 'caching-exclude-urls',
+					'type'       => 'code_editor',
+					'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
+					'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sanitize_caching_urls',
+				],
+				[
+					'id'         => 'caching_include_query_strings',
+					'class'      => 'caching-include-query-strings',
+					'type'       => 'code_editor',
+					'title'      => __( 'Include query strings', 'speed-booster-pack' ),
+					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' . sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
+					'default'    => 'utm_source',
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Cloudflare integration', 'speed-booster-pack' ),
+					'id'         => 'cloudflare',
+					'class'      => 'cloudflare',
+					'type'       => 'fieldset',
+					'fields'     => [
+
+						// LAHMACUNTODO: credentials'ta problem varsa buraya warning koy:
+						// http://codestarframework.com/documentation/#/fields?id=others
+
+						[
+							'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
+							'id'    => 'cloudflare_enable',
+							'type'  => 'switcher',
+						],
+						[
+							'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
+							'id'    => 'cloudflare_api',
+							'type'  => 'text',
+						],
+						[
+							'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
+							'id'    => 'cloudflare_email',
+							'type'  => 'text',
+						],
+						[
+							'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
+							'id'    => 'cloudflare_zone',
+							'type'  => 'text',
+						],
+					],
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+				],
+			];
+			$is_kinsta_active = false;
+
+			if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
+				$kinsta_notice    = [
+					[
+						'type'    => 'submessage',
+						'style'   => 'success',
+						'class'   => 'kinsta-warning',
+						'content' => __( 'Since you\'re using Kinsta, cache feature is completely disabled.', 'speed-booster-pack' ),
+					],
+				];
+				$is_kinsta_active = true;
+				$cache_fields     = array_merge( $kinsta_notice, $cache_fields );
+			}
+
 			/* Section: Caching */
 			CSF::createSection(
 				$prefix,
@@ -374,87 +469,8 @@ class Speed_Booster_Pack_Admin {
 					'title'  => __( 'Caching', 'speed-booster-pack' ),
 					'id'     => 'caching',
 					'icon'   => 'fa fa-server',
-					'fields' => [
-
-						[
-							'id'    => 'module_caching',
-							'class' => 'module-caching',
-							'type'  => 'switcher',
-							'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
-							'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-						],
-						[
-							'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
-							'id'         => 'caching_expiry',
-							'type'       => 'spinner',
-							'min'        => '1',
-							'unit'       => __( 'days', 'speed-booster-pack' ),
-							'desc'       => __( 'How many days to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
-							'default'    => '3',
-							'sanitize'   => 'posabs',
-							'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-						],
-						[
-							'id'         => 'caching_separate_mobile',
-							'type'       => 'switcher',
-							'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
-							'label'      => __( 'Creates separate cache files for mobile and desktop.', 'speed-booster-pack' ),
-							'desc'       => __( 'Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-						],
-						[
-							'id'         => 'caching_exclude_urls',
-							'class'      => 'caching-exclude-urls',
-							'type'       => 'code_editor',
-							'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
-							'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sanitize_caching_urls',
-						],
-						[
-							'id'         => 'caching_include_query_strings',
-							'class'      => 'caching-include-query-strings',
-							'type'       => 'code_editor',
-							'title'      => __( 'Include query strings', 'speed-booster-pack' ),
-							'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' . sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
-							'default'    => 'utm_source',
-							'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Cloudflare integration', 'speed-booster-pack' ),
-							'id'         => 'cloudflare',
-							'class'      => 'cloudflare',
-							'type'       => 'fieldset',
-							'fields'     => [
-
-								// LAHMACUNTODO: credentials'ta problem varsa buraya warning koy:
-								// http://codestarframework.com/documentation/#/fields?id=others
-
-								[
-									'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
-									'id'    => 'cloudflare_enable',
-									'type'  => 'switcher',
-								],
-								[
-									'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
-									'id'    => 'cloudflare_api',
-									'type'  => 'text',
-								],
-								[
-									'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
-									'id'    => 'cloudflare_email',
-									'type'  => 'text',
-								],
-								[
-									'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
-									'id'    => 'cloudflare_zone',
-									'type'  => 'text',
-								],
-							],
-							'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-						],
-
-					],
+					'class'  => $is_kinsta_active ? 'inactive-section' : '',
+					'fields' => $cache_fields,
 				]
 			);
 			/* END Section: Caching */

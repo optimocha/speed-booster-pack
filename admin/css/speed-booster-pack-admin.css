@@ -12,3 +12,5 @@
 .sbp-settings .cdn-url .csf-before-text, .sbp-settings .cdn-url .csf-after-text {display:inline-block;line-height:2;font-family:monospace;}
 .sbp-settings .cdn-url input {font-family:monospace;}
 .sbp-settings .csf-desc-text {color:#777;}
+.sbp-settings .inactive-section > div {opacity:.7;filter:grayscale(1) blur(0.05px); pointer-events: none;}
+.sbp-settings .inactive-section .kinsta-warning {opacity:1;filter:none;}
