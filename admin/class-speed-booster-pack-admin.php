@@ -106,6 +106,8 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::generate_htaccess' );
+
 		$this->set_flash_notices();
 
 		$this->create_settings_page();

@@ -15,8 +15,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return;
 		}
 
-		self::generate_htaccess();
-
 		$this->clear_cache_hooks();
 
 		// Clear cache hook
@@ -406,7 +404,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 	}
 
-	public function generate_htaccess() {
+	public static function generate_htaccess() {
 		$htaccess_file_content = '# BEGIN Speed Booster Pack
 # SBP v4.0
 
@@ -546,7 +544,11 @@ AddEncoding gzip              svgz
 # END Speed Booster Pack
 ';
 
-		$wp_filesystem    = $this->get_filesystem();
+		global $wp_filesystem;
+
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+
 		$current_htaccess = trim( $wp_filesystem->get_contents( get_home_path() . '/.htaccess' ) );
 		$sbp_code         = SBP_Utils::get_string_between_strings( "# BEGIN Speed Booster Pack", "# END Speed Booster Pack", $current_htaccess );
 		if ( strpos( $current_htaccess, '# BEGIN Speed Booster Pack' ) !== false && strpos( $current_htaccess, "# END Speed Booster Pack" ) ) {
@@ -557,12 +559,6 @@ AddEncoding gzip              svgz
 
 		$generated_htaccess = $htaccess_file_content . PHP_EOL . $current_htaccess;
 		$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $generated_htaccess );
-
-		/* LAHMACUNTODO: 
-			1. DON'T search for our code block in the htaccess file & stop if it's found; but search & remove our block if it's found. That way we can remove our code block from earlier versions.
-			2. Remove the whole block on a) cache module disable b) plugin deactivation
-			3. Add the code block before "# BEGIN WordPress", not to the beginning of the htaccess file.
-		*/
 	}
 
 	private function clear_cache_hooks() {
