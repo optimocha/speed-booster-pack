@@ -39,4 +39,17 @@ class SBP_Utils extends SBP_Abstract_Module {
 	public static function is_plugin_active( $path ) {
 		return in_array( $path, get_option( 'active_plugins' ) );
 	}
+
+	public static function get_string_between_strings($first_string, $second_string, $text) {
+		$start_position = strpos($text, $first_string);
+		$finish_position = strpos($text, $second_string);
+
+		if ($start_position !== false && $finish_position !== false) {
+			$finish_position += strlen($second_string);
+			$found_string_length = $finish_position - $start_position;
+			return substr($text, $start_position, $found_string_length);
+		}
+
+		return false;
+	}
 }
