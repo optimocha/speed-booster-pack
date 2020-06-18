@@ -393,8 +393,7 @@ class Speed_Booster_Pack_Admin {
 					'id'         => 'caching_separate_mobile',
 					'type'       => 'switcher',
 					'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
-					'label'      => __( 'Creates separate cache files for mobile and desktop.', 'speed-booster-pack' ),
-					'desc'       => __( 'Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
+					'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
 				[
@@ -446,7 +445,6 @@ class Speed_Booster_Pack_Admin {
 							'type'  => 'text',
 						],
 					],
-					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
 			];
 			$is_kinsta_active = false;

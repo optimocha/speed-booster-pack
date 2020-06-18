@@ -6,7 +6,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	private static $api_url = 'https://api.cloudflare.com/client/v4/zones/';
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_caching' ) || ! sbp_get_option( 'cloudflare' )['cloudflare_enable'] ) {
+		if ( ! sbp_get_option( 'cloudflare' )['cloudflare_enable'] ) {
 			return;
 		}
 	}
