@@ -318,9 +318,9 @@ class Speed_Booster_Pack_Admin {
 							'type'       => 'spinner',
 							'unit'       => __( 'revisions', 'speed-booster-pack' ),
 							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Setting this to 0 disables post revisions.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external nofollow noopener">', '</a>' ) . '<br />'
+							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external nofollow noopener">', '</a>' ) . '<br />'
 											/* translators: BEYNTODO  */
-											. sprintf( __( 'If the %s constant is set in your %1$swp-config.php%2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>' ),
+											. sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>', '</code>' ),
 							'sanitize'   => 'absint',
 							'default'    => '99',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
@@ -333,7 +333,7 @@ class Speed_Booster_Pack_Admin {
 							'unit'       => __( 'minutes', 'speed-booster-pack' ),
 							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
 											/* translators: BEYNTODO  */
-											. sprintf( __( 'If the %s constant is set in your %1$swp-config.php%2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>' ),
+											. sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>', '</code>' ),
 							'sanitize'   => 'posabs',
 							'default'    => '1',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
