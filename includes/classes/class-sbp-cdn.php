@@ -3,6 +3,7 @@
 namespace SpeedBooster;
 
 class SBP_CDN extends SBP_Abstract_Module {
+
 	private $excluded_file_extensions = [
 		'php',
 	];
@@ -13,6 +14,7 @@ class SBP_CDN extends SBP_Abstract_Module {
 			return;
 		}
 
+		// LAHMACUNTODO: ayrı bir fonksiyon yaratıp get_footer'a falan hook'lamaya gerek yok, private değişkenleri cdn_rewriter ve rewrite_url fonksiyonlarının içine atayıp orada apply_filters'layabiliriz.
 		add_action( 'get_footer', [ $this, 'apply_cdn_filters' ] );
 		add_filter( 'sbp_output_buffer', [ $this, 'cdn_rewriter' ] );
 	}

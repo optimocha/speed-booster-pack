@@ -112,7 +112,9 @@ class Speed_Booster_Pack_Admin {
 
 		$this->create_settings_page();
 
-		add_action( 'admin_bar_menu', [ $this, 'add_bar_menu_links' ], 71 );
+		if( ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ){
+			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 71 );
+		}
 	}
 
 	/**
@@ -149,62 +151,77 @@ class Speed_Booster_Pack_Admin {
 			$prefix = 'sbp_options';
 
 			// Create options
-			CSF::createOptions(
-				$prefix,
-				array(
+			CSF::createOptions( $prefix, [
+				// framework title
+				'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external nofollow noopener">' . SBP_OWNER_NAME . '</a></small>',
+				'framework_class' => 'sbp-settings',
 
-					// framework title
-					'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external nofollow noopener">' . SBP_OWNER_NAME . '</a></small>',
-					'framework_class' => 'sbp-settings',
+				// menu settings
+				'menu_title'      => 'Speed Booster',
+				'menu_icon'       => SBP_URL . 'admin/images/icon-16x16.png',
+				'menu_slug'       => 'sbp-settings',
+				'menu_type'       => 'menu',
+				'menu_capability' => 'manage_options',
 
-					// menu settings
-					'menu_title'      => 'Speed Booster',
-					'menu_icon'       => SBP_URL . 'admin/images/icon-16x16.png',
-					'menu_slug'       => 'sbp-settings',
-					'menu_type'       => 'menu',
-					'menu_capability' => 'manage_options',
+				'theme'                   => 'light',
+				'ajax_save'               => false,
+				'show_search'             => false,
+				'show_reset_section'      => false,
+				'show_all_options'        => false,
 
-					'theme'                   => 'light',
-					'ajax_save'               => false,
-					'show_search'             => false,
-					'show_reset_section'      => false,
-					'show_all_options'        => false,
+				// menu extras
+				'show_bar_menu'           => false,
+				'show_sub_menu'           => true,
+				'admin_bar_menu_icon'     => '',
+				'admin_bar_menu_priority' => 80,
 
-					// menu extras
-					'show_bar_menu'           => false,
-					'show_sub_menu'           => true,
-					'admin_bar_menu_icon'     => '',
-					'admin_bar_menu_priority' => 80,
+				/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
+				'footer_text'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
+			] );
 
-					// footer
-					'footer_text'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
-
-				)
-			);
-
-			/* Section: Dashboard */
+			/* BEGIN Section: Dashboard */
 			CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'Dashboard', 'speed-booster-pack' ),
 					'id'     => 'dashboard',
+					'class'     => 'dashboard',
 					'icon'   => 'fa fa-tachometer-alt',
 					'fields' => [
 
-						// [
-						//	 'title'	=> __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'TODO', 'speed-booster-pack' ),
-						//	 'id'	=> 'module_TODO',
-						//	 'class'	=> 'module-TODO',
-						//	 'type'	=> 'switcher',
-						//	 'label'	=> __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-						// ],
+						/* BEYNTODO: İçeriği yaz!  */
+
+						[
+						  'type'    => 'heading',
+						  /* translators: BEYNTODO  */
+						  'content' => sprintf( __( 'Welcome to %s!', 'speed-booster-pack' ), 'Speed Booster Pack' ),
+						],
+						[
+						  'type'    => 'content',
+						  'content' => 'This is a content field. You can write some html here.',
+						],
+						[
+						  'type'    => 'subheading',
+						  'content' => 'This is subheading field',
+						],
+						[
+						  'type'    => 'submessage',
+						  'style'   => 'success',
+						  'content' => 'This is a submessage field. And using style "success"',
+						],
+						[
+						  'type'    => 'notice',
+						  'style'   => 'success',
+						  'content' => 'This is a notice field. And using style "success"',
+						],
+
 
 					],
 				]
 			);
 			/* END Section: Dashboard */
 
-			/* Section: Tweaks */
+			/* BEGIN Section: Tweaks */
 			CSF::createSection(
 				$prefix,
 				[
@@ -225,6 +242,7 @@ class Speed_Booster_Pack_Admin {
 							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
 							'id'         => 'instant_page',
 							'type'       => 'switcher',
+							/* translators: BEYNTODO  */
 							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external nofollow noopener">instant.page</a>' ),
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
@@ -269,6 +287,7 @@ class Speed_Booster_Pack_Admin {
 							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
 							'id'         => 'dequeue_dashicons',
 							'type'       => 'switcher',
+							/* translators: BEYNTODO  */
 							'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
@@ -282,6 +301,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
 							'id'         => 'heartbeat_settings',
+							/* translators: BEYNTODO  */
 							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external nofollow noopener">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
 							'type'       => 'button_set',
 							'options'    => [
@@ -297,6 +317,7 @@ class Speed_Booster_Pack_Admin {
 							'id'         => 'post_revisions',
 							'type'       => 'spinner',
 							'unit'       => __( 'revisions', 'speed-booster-pack' ),
+							/* translators: BEYNTODO  */
 							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external nofollow noopener">', '</a>' ) . '<br />' . __( 'Keeping 3 or 5 revisions for each post should be enough for most sites. Setting this to 0 disables post revisions.', 'speed-booster-pack' ),
 							'sanitize'   => 'absint',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
@@ -312,6 +333,7 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
+							/* translators: BEYNTODO  */
 							'title'      => sprintf( __( 'Declutter %s', 'speed-booster-pack' ), '<code>&lt;head&gt;</code>' ),
 							'id'         => 'declutter_head',
 							'class'      => 'declutter-head',
@@ -370,6 +392,7 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Tweaks */
 
+			/* BEGIN Section: Caching */
 			$cache_fields     = [
 				[
 					'id'    => 'module_caching',
@@ -410,7 +433,9 @@ class Speed_Booster_Pack_Admin {
 					'class'      => 'caching-include-query-strings',
 					'type'       => 'code_editor',
 					'title'      => __( 'Include query strings', 'speed-booster-pack' ),
-					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' . sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
+					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />'
+									/* translators: BEYNTODO  */
+									. sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
 					'default'    => 'utm_source',
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
@@ -462,7 +487,6 @@ class Speed_Booster_Pack_Admin {
 				$cache_fields     = array_merge( $kinsta_notice, $cache_fields );
 			}
 
-			/* Section: Caching */
 			CSF::createSection(
 				$prefix,
 				[
@@ -475,7 +499,7 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Caching */
 
-			/* Section: Assets */
+			/* BEGIN Section: Assets */
 			CSF::createSection(
 				$prefix,
 				[
@@ -485,6 +509,7 @@ class Speed_Booster_Pack_Admin {
 					'fields' => [
 
 						[
+							/* translators: used like "Enable/Disable Caching" where "Caching" is the module name. */
 							'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
 							'id'    => 'module_assets',
 							'type'  => 'switcher',
@@ -520,14 +545,14 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ [ 'module_assets', '==', '1' ], [ 'lazyload', '==', '1' ] ],
 						],
 						[
-							'title'      => __( 'Optimize JavaScripts', 'speed-booster-pack' ),
+							'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
 							'id'         => 'js_optimize',
-							'desc'       => __( 'Move or defer JavaScript files to avoid render blocking.', 'speed-booster-pack' ), // TODO: Change Description
+							'desc'       => __( 'Handles JavaScript tags to avoid render blocking issues. Moving all tags to the footer (before the &lt;/body&gt; tag) causes less issues but if you know what you\'re doing, deferring JS tags makes your website work faster. Use the exclusions list to keep certain scripts from breaking your site!', 'speed-booster-pack' ),
 							'type'       => 'button_set',
 							'options'    => [
 								'off'   => __( 'Off', 'speed-booster-pack' ),
-								'defer' => __( 'Defer Script Tags', 'speed-booster-pack' ),
-								'move'  => __( 'Move JavaScript to Footer', 'speed-booster-pack' ),
+								'defer' => __( 'Defer', 'speed-booster-pack' ),
+								'move'  => __( 'Move to footer', 'speed-booster-pack' ),
 							],
 							'default'    => 'off',
 							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
@@ -545,7 +570,7 @@ class Speed_Booster_Pack_Admin {
 							'title'      => __( 'Inline all CSS', 'speed-booster-pack' ),
 							'id'         => 'css_inline',
 							'type'       => 'switcher',
-							'desc'       => __( 'Inlines all of your CSS files into your HTML output. Useful for lightweight designs but might be harmful for heavy websites with over 500KB of CSS.', 'speed-booster-pack' ),
+							'desc'       => __( 'Inlines all of your CSS files into the HTML output. Useful for lightweight designs but might be harmful for heavy websites with over 500KB of total CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 						],
 						[
@@ -588,7 +613,7 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Assets */
 
-			/* Section: Special */
+			/* BEGIN Section: Special */
 			CSF::createSection(
 				$prefix,
 				[
@@ -612,7 +637,7 @@ class Speed_Booster_Pack_Admin {
 							'type'       => 'text',
 							'before'     => 'http(s)://&nbsp;',
 							'after'      => '&nbsp;/',
-							'desc'       => __( 'Rewrites all asset URLs with the specified CDN URL.', 'speed-booster-pack' ),
+							'desc'       => __( 'Rewrites all asset URLs with the specified CDN domain. Enter the CDN domain without a protocol or a trailing slash; a relative protocol will be automatically added to all changed asset URLs.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_clear_cdn_url',
 						],
@@ -627,6 +652,7 @@ class Speed_Booster_Pack_Admin {
 							'title'      => 'Jetpack: ' . __( 'Dequeue devicepx-jetpack.js', 'speed-booster-pack' ),
 							'id'         => 'jetpack_dequeue_devicepx',
 							'type'       => 'switcher',
+							/* translators: BEYNTODO  */
 							'desc'       => sprintf( __( 'The %s file replaces images served via Jetpack\'s Photon CDN with their higher-quality equivalents. If you don\'t need this feature, you can dequeue the file and save an extra HTTP request and an extra DNS connection.', 'speed-booster-pack' ), '<code>devicepx-jetpack.js</code>' ),
 							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
 						],
@@ -634,6 +660,7 @@ class Speed_Booster_Pack_Admin {
 							'title'      => 'WooCommerce: ' . __( 'Disable cart fragments', 'speed-booster-pack' ),
 							'id'         => 'woocommerce_disable_cart_fragments',
 							'type'       => 'switcher',
+							/* translators: BEYNTODO  */
 							'desc'       => sprintf( __( 'Dequeues the %s file but only when the visitor\'s cart is empty.', 'speed-booster-pack' ), '<code>cart-fragments.js</code>' ),
 							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
 						],
@@ -664,6 +691,7 @@ class Speed_Booster_Pack_Admin {
 									'type'   => 'code_editor',
 									'before' => '&lt;script&gt;',
 									'after'  => '&lt;/script&gt;',
+									/* translators: BEYNTODO  */
 									'desc'   => sprintf( __( 'Paste the inline JavaScript here. DON\'T include the %s tags or else you might break it!', 'speed-booster-pack' ), '<code>&lt;script&gt;</code>' ),
 								],
 								[
@@ -698,7 +726,7 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Special */
 
-			/* Section: Tools */
+			/* BEGIN Section: Tools */
 			CSF::createSection(
 				$prefix,
 				array(
@@ -708,9 +736,9 @@ class Speed_Booster_Pack_Admin {
 					'fields' => array(
 						array(
 							'type'    => 'subheading',
+							/* translators: BEYNTODO  */
 							'content' => sprintf( __( 'Backup %s Settings', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						),
-						// A text field
 						array(
 							'id'    => 'backup',
 							'type'  => 'backup',
@@ -722,7 +750,7 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Tools */
 
-			/* Section: About */
+			/* BEGIN Section: About */
 			CSF::createSection(
 				$prefix,
 				array(
@@ -731,12 +759,7 @@ class Speed_Booster_Pack_Admin {
 					'icon'   => 'fa fa-info-circle',
 					'fields' => array(
 
-						// // A text field
-						// array(
-						// 	'id'	=> 'opt_text',
-						// 	'type'	=> 'text',
-						// 	'title'	=> 'Simple Text',
-						// ),
+						/* BEYNTODO: İçeriği yaz!  */
 
 					),
 				)
@@ -746,7 +769,7 @@ class Speed_Booster_Pack_Admin {
 		}
 	}
 
-	public function add_bar_menu_links( $admin_bar ) {
+	public function add_admin_bar_links( $admin_bar ) {
 
 		// LAHMACUNTODO: cache açıldığında veya kapandığında gelen ilk sayfada düğme görünmüyor veya görünüyor.
 		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) ) {
