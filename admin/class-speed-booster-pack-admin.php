@@ -320,6 +320,7 @@ class Speed_Booster_Pack_Admin {
 							/* translators: BEYNTODO  */
 							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external nofollow noopener">', '</a>' ) . '<br />' . __( 'Keeping 3 or 5 revisions for each post should be enough for most sites. Setting this to 0 disables post revisions.', 'speed-booster-pack' ),
 							'sanitize'   => 'absint',
+							'default'    => '99',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
@@ -330,6 +331,7 @@ class Speed_Booster_Pack_Admin {
 							'unit'       => __( 'minutes', 'speed-booster-pack' ),
 							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />' . sprintf( __( 'If the %1$sAUTOSAVE_INTERVAL%2$s constant is set in your %1$swp-config.php%2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>', '</code>' ),
 							'sanitize'   => 'posabs',
+							'default'    => '1',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
