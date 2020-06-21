@@ -117,7 +117,7 @@ class Speed_Booster_Pack_Admin {
 
 		$this->create_settings_page();
 
-		if( ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ){
+		if ( ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 71 );
 		}
 	}
@@ -156,33 +156,34 @@ class Speed_Booster_Pack_Admin {
 			$prefix = 'sbp_options';
 
 			// Create options
-			CSF::createOptions( $prefix, [
-				// framework title
-				'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external nofollow noopener">' . SBP_OWNER_NAME . '</a></small>',
-				'framework_class' => 'sbp-settings',
+			CSF::createOptions( $prefix,
+				[
+					// framework title
+					'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external nofollow noopener">' . SBP_OWNER_NAME . '</a></small>',
+					'framework_class' => 'sbp-settings',
 
-				// menu settings
-				'menu_title'      => 'Speed Booster',
-				'menu_icon'       => SBP_URL . 'admin/images/icon-16x16.png',
-				'menu_slug'       => 'sbp-settings',
-				'menu_type'       => 'menu',
-				'menu_capability' => 'manage_options',
+					// menu settings
+					'menu_title'      => 'Speed Booster',
+					'menu_icon'       => SBP_URL . 'admin/images/icon-16x16.png',
+					'menu_slug'       => 'sbp-settings',
+					'menu_type'       => 'menu',
+					'menu_capability' => 'manage_options',
 
-				'theme'                   => 'light',
-				'ajax_save'               => false,
-				'show_search'             => false,
-				'show_reset_section'      => false,
-				'show_all_options'        => false,
+					'theme'                   => 'light',
+					'ajax_save'               => false,
+					'show_search'             => false,
+					'show_reset_section'      => false,
+					'show_all_options'        => false,
 
-				// menu extras
-				'show_bar_menu'           => false,
-				'show_sub_menu'           => true,
-				'admin_bar_menu_icon'     => '',
-				'admin_bar_menu_priority' => 80,
+					// menu extras
+					'show_bar_menu'           => false,
+					'show_sub_menu'           => true,
+					'admin_bar_menu_icon'     => '',
+					'admin_bar_menu_priority' => 80,
 
-				/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
-				'footer_text'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
-			] );
+					/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
+					'footer_text'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
+				] );
 
 			/* BEGIN Section: Dashboard */
 			CSF::createSection(
@@ -190,34 +191,34 @@ class Speed_Booster_Pack_Admin {
 				[
 					'title'  => __( 'Dashboard', 'speed-booster-pack' ),
 					'id'     => 'dashboard',
-					'class'     => 'dashboard',
+					'class'  => 'dashboard',
 					'icon'   => 'fa fa-tachometer-alt',
 					'fields' => [
 
 						/* BEYNTODO: İçeriği yaz!  */
 
 						[
-						  'type'    => 'heading',
-						  /* translators: BEYNTODO  */
-						  'content' => sprintf( __( 'Welcome to %s!', 'speed-booster-pack' ), 'Speed Booster Pack' ),
+							'type'    => 'heading',
+							/* translators: BEYNTODO  */
+							'content' => sprintf( __( 'Welcome to %s!', 'speed-booster-pack' ), 'Speed Booster Pack' ),
 						],
 						[
-						  'type'    => 'content',
-						  'content' => 'This is a content field. You can write some html here.',
+							'type'    => 'content',
+							'content' => 'This is a content field. You can write some html here.',
 						],
 						[
-						  'type'    => 'subheading',
-						  'content' => 'This is subheading field',
+							'type'    => 'subheading',
+							'content' => 'This is subheading field',
 						],
 						[
-						  'type'    => 'submessage',
-						  'style'   => 'success',
-						  'content' => 'This is a submessage field. And using style "success"',
+							'type'    => 'submessage',
+							'style'   => 'success',
+							'content' => 'This is a submessage field. And using style "success"',
 						],
 						[
-						  'type'    => 'notice',
-						  'style'   => 'success',
-						  'content' => 'This is a notice field. And using style "success"',
+							'type'    => 'notice',
+							'style'   => 'success',
+							'content' => 'This is a notice field. And using style "success"',
 						],
 
 
@@ -324,8 +325,8 @@ class Speed_Booster_Pack_Admin {
 							'unit'       => __( 'revisions', 'speed-booster-pack' ),
 							/* translators: BEYNTODO  */
 							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external nofollow noopener">', '</a>' ) . '<br />'
-											/* translators: BEYNTODO  */
-											. sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>', '</code>' ),
+							                /* translators: BEYNTODO  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>', '</code>' ),
 							'sanitize'   => 'absint',
 							'default'    => '99',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
@@ -337,8 +338,8 @@ class Speed_Booster_Pack_Admin {
 							'min'        => '1',
 							'unit'       => __( 'minutes', 'speed-booster-pack' ),
 							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
-											/* translators: BEYNTODO  */
-											. sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>', '</code>' ),
+							                /* translators: BEYNTODO  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>', '</code>' ),
 							'sanitize'   => 'posabs',
 							'default'    => '1',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
@@ -403,6 +404,43 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Tweaks */
 
+			$cloudflare_fields = [];
+
+			// LAHMACUNTODO: Change order in actions (notification doesn't work for first reload, it works in second reload)
+			// Cloudflare fields
+			if ( $cloudflare_error = get_transient( 'sbp_cloudflare_error' ) ) {
+				$cloudflare_fields[] = [
+					'type'    => 'notice',
+					'style'   => 'danger',
+					'content' => __( $cloudflare_error, 'speed-booster-pack' ),
+				];
+				delete_transient( 'sbp_cloudflare_error' );
+			}
+
+			$cloudflare_fields = array_merge( $cloudflare_fields,
+				[
+					[
+						'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
+						'id'    => 'cloudflare_enable',
+						'type'  => 'switcher',
+					],
+					[
+						'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
+						'id'    => 'cloudflare_api',
+						'type'  => 'text',
+					],
+					[
+						'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
+						'id'    => 'cloudflare_email',
+						'type'  => 'text',
+					],
+					[
+						'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
+						'id'    => 'cloudflare_zone',
+						'type'  => 'text',
+					],
+				] );
+
 			/* BEGIN Section: Caching */
 			$cache_fields     = [
 				[
@@ -445,42 +483,17 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'code_editor',
 					'title'      => __( 'Include query strings', 'speed-booster-pack' ),
 					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />'
-									/* translators: BEYNTODO  */
-									. sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
+					                /* translators: BEYNTODO  */
+					                . sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
 					'default'    => 'utm_source',
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
 				[
-					'title'      => __( 'Cloudflare integration', 'speed-booster-pack' ),
-					'id'         => 'cloudflare',
-					'class'      => 'cloudflare',
-					'type'       => 'fieldset',
-					'fields'     => [
-
-						// LAHMACUNTODO: credentials'ta problem varsa buraya warning koy:
-						// http://codestarframework.com/documentation/#/fields?id=others
-
-						[
-							'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
-							'id'    => 'cloudflare_enable',
-							'type'  => 'switcher',
-						],
-						[
-							'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
-							'id'    => 'cloudflare_api',
-							'type'  => 'text',
-						],
-						[
-							'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
-							'id'    => 'cloudflare_email',
-							'type'  => 'text',
-						],
-						[
-							'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
-							'id'    => 'cloudflare_zone',
-							'type'  => 'text',
-						],
-					],
+					'title'  => __( 'Cloudflare integration', 'speed-booster-pack' ),
+					'id'     => 'cloudflare',
+					'class'  => 'cloudflare',
+					'type'   => 'fieldset',
+					'fields' => $cloudflare_fields,
 				],
 			];
 			$is_kinsta_active = false;
@@ -768,9 +781,7 @@ class Speed_Booster_Pack_Admin {
 					'title'  => __( 'About', 'speed-booster-pack' ),
 					'id'     => 'about',
 					'icon'   => 'fa fa-info-circle',
-					'fields' => array(
-
-						/* BEYNTODO: İçeriği yaz!  */
+					'fields' => array(/* BEYNTODO: İçeriği yaz!  */
 
 					),
 				)

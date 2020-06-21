@@ -554,16 +554,54 @@ AddEncoding gzip              svgz
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
 		WP_Filesystem();
 
-		$current_htaccess = trim( $wp_filesystem->get_contents( get_home_path() . '/.htaccess' ) );
-		$sbp_code         = SBP_Utils::get_string_between_strings( "# BEGIN Speed Booster Pack", "# END Speed Booster Pack", $current_htaccess );
-		if ( strpos( $current_htaccess, '# BEGIN Speed Booster Pack' ) !== false && strpos( $current_htaccess, "# END Speed Booster Pack" ) ) {
-			// If htaccess file has begin and end of speed booster pack, remove old code
-			$current_htaccess = str_replace( $sbp_code, '', $current_htaccess );
-			$current_htaccess = trim( $current_htaccess );
+		$htaccess_file_path = get_home_path() . '/.htaccess';
+
+		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
+			$current_htaccess   = self::get_default_htaccess();
+			$generated_htaccess = $htaccess_file_content . PHP_EOL . $current_htaccess;
+			$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $generated_htaccess );
+		}
+	}
+
+	public static function get_default_htaccess() {
+		global $wp_filesystem;
+
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+
+		$htaccess_file_path = get_home_path() . '/.htaccess';
+
+		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
+			$current_htaccess = trim( $wp_filesystem->get_contents( $htaccess_file_path ) );
+			$sbp_code         = SBP_Utils::get_string_between_strings( "# BEGIN Speed Booster Pack", "# END Speed Booster Pack", $current_htaccess );
+			if ( strpos( $current_htaccess, '# BEGIN Speed Booster Pack' ) !== false && strpos( $current_htaccess, "# END Speed Booster Pack" ) ) {
+				// If htaccess file has begin and end of speed booster pack, remove old code
+				$current_htaccess = str_replace( $sbp_code, '', $current_htaccess );
+				$current_htaccess = trim( $current_htaccess );
+			}
+
+			return $current_htaccess;
 		}
 
-		$generated_htaccess = $htaccess_file_content . PHP_EOL . $current_htaccess;
-		$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $generated_htaccess );
+		return false;
+	}
+
+	/**
+	 * Removes Speed Booster Pack's htaccess content and returns that modified htaccess code.
+	 * Returns false if htaccess file doesn't exists
+	 */
+	public static function clean_htaccess() {
+		global $wp_filesystem;
+
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+
+		$htaccess_file_path = get_home_path() . '/.htaccess';
+
+		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
+			$current_htaccess = self::get_default_htaccess();
+			$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $current_htaccess );
+		}
 	}
 
 	private function clear_cache_hooks() {

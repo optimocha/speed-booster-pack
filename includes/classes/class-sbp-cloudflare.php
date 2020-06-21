@@ -55,7 +55,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$result = self::send_request( $zone, '' );
 
 			if ( true !== $result['success'] ) {
-				wp_send_json_success( [ 'notice' => esc_html__( 'Options saved but Cloudflare API credentials are not valid.', 'speed-booster-pack' ), 'errors' => [] ] );
+				set_transient('sbp_cloudflare_error', 'Cloudflare API credentials are not valid.');
 			}
 		}
 	}
