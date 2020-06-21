@@ -10,6 +10,11 @@
  * @subpackage Speed_Booster_Pack/admin
  */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 /**
  * Returns absolute value of a number. Returns 1 if value is zero.
  *

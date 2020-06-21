@@ -2,8 +2,8 @@
 
 namespace SpeedBooster;
 
-// Security control for vulnerability attempts
-if ( ! defined( 'ABSPATH' ) ) {
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 

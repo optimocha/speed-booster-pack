@@ -27,8 +27,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-//LAHMACUNTODO: bu ABSPATH kontrollerini advanced-cache.php hariç bizim yazdığımız her dosyaya uygulamak gerekecek sanırım.
-
 /**
  * Plugin name.
  */

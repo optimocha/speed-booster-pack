@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class SBP_CDN extends SBP_Abstract_Module {
 
 	private $excluded_file_extensions = [

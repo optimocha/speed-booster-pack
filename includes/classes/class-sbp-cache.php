@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class SBP_Cache extends SBP_Abstract_Module {
 	/**
 	 * Name of the cached file

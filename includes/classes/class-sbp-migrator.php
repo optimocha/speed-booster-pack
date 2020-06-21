@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class SBP_Migrator {
 	private $sbp_settings; // Old options
 	private $sbp_options; // New options
