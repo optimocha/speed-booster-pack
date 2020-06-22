@@ -259,7 +259,7 @@ class Speed_Booster_Pack_Admin {
 							'class'   => 'module-tweaks',
 							'type'    => 'switcher',
 							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default' => 1,
+							'default' => true,
 						],
 						[
 							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
@@ -554,7 +554,7 @@ class Speed_Booster_Pack_Admin {
 							'id'      => 'module_assets',
 							'type'    => 'switcher',
 							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default' => 1,
+							'default' => true,
 						],
 						[
 							'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
@@ -669,7 +669,7 @@ class Speed_Booster_Pack_Admin {
 							'class'   => 'module-special',
 							'type'    => 'switcher',
 							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default' => 1,
+							'default' => true,
 						],
 
 						[
@@ -805,7 +805,7 @@ class Speed_Booster_Pack_Admin {
 							'id'      => 'sbp_notifications',
 							'type'    => 'switcher',
 							'label'   => __( 'Enables or disables notifications from plugin.', 'speed-booster-pack' ),
-							'default' => 1,
+							'default' => true,
 						],
 					),
 				)
