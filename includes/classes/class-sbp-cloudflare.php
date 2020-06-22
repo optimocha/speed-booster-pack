@@ -11,7 +11,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	private static $api_url = 'https://api.cloudflare.com/client/v4/zones/';
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'cloudflare' )['cloudflare_enable'] ) {
+		if ( is_array( sbp_get_option( 'cloudflare' ) ) && ! sbp_get_option( 'cloudflare' )['cloudflare_enable'] ) {
 			return;
 		}
 	}
@@ -38,6 +38,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 
 	public static function check_credentials( $saved_data ) {
 		// Check if old value is same as new value
+		// TODO: saved'in disina al
 		if ( sbp_get_option( 'cloudflare' ) == $saved_data['cloudflare'] ) {
 			return;
 		}

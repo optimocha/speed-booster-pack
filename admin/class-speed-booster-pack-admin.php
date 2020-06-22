@@ -103,8 +103,6 @@ class Speed_Booster_Pack_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
-		$this->load_dependencies();
-
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
@@ -113,13 +111,30 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::generate_htaccess' );
 
+		add_action( 'csf_sbp_options_saved',
+			function ( $saved_data ) {
+				add_action( 'admin_bar_menu',
+					function ( $admin_bar ) use ( $saved_data ) {
+						// LAHMACUNTODO: Yap
+						if ( current_user_can( 'manage_options' ) && $saved_data['module_caching'] && ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
+							$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
+							$sbp_admin_menu  = [
+								'id'    => 'speed_booster_pack',
+								'title' => __( 'Clear Cache', 'speed-booster-pack' ),
+								'href'  => $clear_cache_url,
+							];
+
+							$admin_bar->add_menu( $sbp_admin_menu );
+						}
+					},
+					71 );
+			} );
+
 		$this->set_flash_notices();
 
-		$this->create_settings_page();
+		$this->load_dependencies();
 
-		if ( ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
-			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 71 );
-		}
+		$this->create_settings_page();
 	}
 
 	/**
@@ -146,6 +161,7 @@ class Speed_Booster_Pack_Admin {
 
 	public function load_dependencies() {
 		require_once SBP_LIB_PATH . 'codestar-framework/codestar-framework.php';
+		require_once SBP_LIB_PATH . 'announce4wp/announce4wp-client.php';
 	}
 
 	public function create_settings_page() {
@@ -238,11 +254,12 @@ class Speed_Booster_Pack_Admin {
 
 
 						[
-							'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
-							'id'    => 'module_tweaks',
-							'class' => 'module-tweaks',
-							'type'  => 'switcher',
-							'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
+							'id'      => 'module_tweaks',
+							'class'   => 'module-tweaks',
+							'type'    => 'switcher',
+							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default' => 1,
 						],
 						[
 							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
@@ -440,7 +457,7 @@ class Speed_Booster_Pack_Admin {
 				] );
 
 			/* BEGIN Section: Caching */
-			$cache_fields     = [
+			$cache_fields = [
 				[
 					'id'    => 'module_caching',
 					'class' => 'module-caching',
@@ -494,6 +511,7 @@ class Speed_Booster_Pack_Admin {
 					'fields' => $cloudflare_fields,
 				],
 			];
+
 			$is_kinsta_active = false;
 
 			if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
@@ -532,10 +550,11 @@ class Speed_Booster_Pack_Admin {
 
 						[
 							/* translators: used like "Enable/Disable Caching" where "Caching" is the module name. */
-							'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
-							'id'    => 'module_assets',
-							'type'  => 'switcher',
-							'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
+							'id'      => 'module_assets',
+							'type'    => 'switcher',
+							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default' => 1,
 						],
 						[
 							'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
@@ -645,11 +664,12 @@ class Speed_Booster_Pack_Admin {
 					'fields' => [
 
 						[
-							'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Special', 'speed-booster-pack' ),
-							'id'    => 'module_special',
-							'class' => 'module-special',
-							'type'  => 'switcher',
-							'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Special', 'speed-booster-pack' ),
+							'id'      => 'module_special',
+							'class'   => 'module-special',
+							'type'    => 'switcher',
+							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default' => 1,
 						],
 
 						[
@@ -780,7 +800,13 @@ class Speed_Booster_Pack_Admin {
 					'id'     => 'about',
 					'icon'   => 'fa fa-info-circle',
 					'fields' => array(/* BEYNTODO: İçeriği yaz!  */
-
+						[
+							'title'   => sprintf( __( 'Notifications from %s', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'id'      => 'sbp_notifications',
+							'type'    => 'switcher',
+							'label'   => __( 'Enables or disables notifications from plugin.', 'speed-booster-pack' ),
+							'default' => 1,
+						],
 					),
 				)
 			);
@@ -792,7 +818,7 @@ class Speed_Booster_Pack_Admin {
 	public function add_admin_bar_links( $admin_bar ) {
 
 		// LAHMACUNTODO: cache açıldığında veya kapandığında gelen ilk sayfada düğme görünmüyor veya görünüyor.
-		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) ) {
+		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) && ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
 			$sbp_admin_menu  = [
 				'id'    => 'speed_booster_pack',
