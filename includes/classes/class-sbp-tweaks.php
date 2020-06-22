@@ -45,7 +45,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 				$this->call_option_methods( $settings[ $option_name ], $option_name );
 			} else {
 				if ( null !== $parent ) {
-					if ( is_array( sbp_get_option( $parent ) ) && sbp_get_option( $parent )[ $option_name ] ) {
+					if ( is_array( sbp_get_option( $parent ) ) && isset( sbp_get_option( $parent )[ $option_name ] ) ) {
 						$this->$function();
 					}
 				} else {
