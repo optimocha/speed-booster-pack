@@ -58,6 +58,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			if ( true !== $result['success'] ) {
 				set_transient( 'sbp_cloudflare_error', 'Cloudflare API credentials are not valid.' );
 			} else {
+				// LAHMACUNTODO: cloudflare_enabled açık değilse de transient'ı sil
 				delete_transient( 'sbp_cloudflare_error' );
 			}
 		}
