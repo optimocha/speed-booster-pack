@@ -9,47 +9,45 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_CDN extends SBP_Abstract_Module {
 
-	private $excluded_file_extensions = [
-		'php',
-	];
-	private $included_directories = 'wp\-content|wp\-includes';
-
 	public function __construct() {
 		if ( ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'cdn_url' ) ) {
 			return;
 		}
 
 		// LAHMACUNTODO: ayrı bir fonksiyon yaratıp get_footer'a falan hook'lamaya gerek yok, private değişkenleri cdn_rewriter ve rewrite_url fonksiyonlarının içine atayıp orada apply_filters'layabiliriz.
-		add_action( 'get_footer', [ $this, 'apply_cdn_filters' ] );
 		add_filter( 'sbp_output_buffer', [ $this, 'cdn_rewriter' ] );
 	}
 
-	public function apply_cdn_filters() {
-		$new_filters                    = apply_filters( 'sbp_cdn_excluded_extensions', $this->excluded_file_extensions );
-		$this->excluded_file_extensions = array_merge( $this->excluded_file_extensions, $new_filters );
-		$this->excluded_file_extensions = array_unique( $this->excluded_file_extensions );
+	public function cdn_rewriter( $html ) {
+		$included_directories = 'wp\-content|wp\-includes';
 
 		//Prep Included Directories
-		$this->included_directories = apply_filters( 'sbp_cdn_included_directories', $this->included_directories );
-	}
+		$included_directories = apply_filters( 'sbp_cdn_included_directories', $included_directories );
 
-	public function cdn_rewriter( $html ) {
 		//Prep Site URL
 		$escaped_site_url = quotemeta( get_option( 'home' ) );
 		$regex_url        = '(https?:|)' . substr( $escaped_site_url, strpos( $escaped_site_url, '//' ) );
 
 
 		//Rewrite URLs + Return
-		$regex    = '#(?<=[(\"\'])(?:' . $regex_url . ')?/(?:((?:' . $this->included_directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
+		$regex    = '#(?<=[(\"\'])(?:' . $regex_url . ')?/(?:((?:' . $included_directories . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
 		$cdn_html = preg_replace_callback( $regex, [ $this, 'rewrite_url' ], $html );
 
 		return $cdn_html;
 	}
 
 	public function rewrite_url( $url ) {
+		$excluded_file_extensions = [
+			'php',
+		];
+
+		$new_filters                    = apply_filters( 'sbp_cdn_excluded_extensions', $excluded_file_extensions );
+		$excluded_file_extensions = array_merge( $excluded_file_extensions, $new_filters );
+		$excluded_file_extensions = array_unique( $excluded_file_extensions );
+
 		// Simply check if it's php or not
 		$file_extension = SBP_Utils::get_file_extension_from_url( $url[0] );
-		if ( in_array( $file_extension, $this->excluded_file_extensions ) ) {
+		if ( in_array( $file_extension, $excluded_file_extensions ) ) {
 			return $url[0];
 		}
 

@@ -609,7 +609,8 @@ AddEncoding gzip              svgz
 		add_action( 'switch_theme', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'save_post', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'autoptimize_action_cachepurged', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-		add_action( 'upgrader_process_complete', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+//		add_action( 'upgrader_process_complete', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		// LAHMACUNTODO: Ürün satışından sonra sadece o ürünü temizle
 		add_action( 'woocommerce_product_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'woocommerce_product_set_stock_status', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'woocommerce_variation_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
@@ -622,12 +623,9 @@ AddEncoding gzip              svgz
 		add_action( 'update_option_category_base', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When category permalink prefix is update.
 		add_action( 'update_option_tag_base', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When tag permalink prefix is update.
 		add_action( 'permalink_structure_changed', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When permalink structure is update.
-		//add_action( 'create_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is created.
+//		add_action( 'create_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is created.
 		add_action( 'edited_terms', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is updated.
 		//add_action( 'delete_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is deleted.
-		//add_action( 'add_link', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a link is added.
-		//add_action( 'edit_link', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a link is updated.
-		//add_action( 'delete_link', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a link is deleted.
 		add_action( 'customize_save', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When customizer is saved.
 		add_action(
 			'wp_trash_post',
@@ -652,6 +650,7 @@ AddEncoding gzip              svgz
 	}
 
 	public function comment_action( $comment_id ) {
+		// LAHMACUNTODO: Check if comment approved
 		self::clear_post_by_id( get_comment( $comment_id )->comment_post_ID );
 	}
 }

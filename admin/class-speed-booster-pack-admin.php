@@ -406,15 +406,13 @@ class Speed_Booster_Pack_Admin {
 
 			$cloudflare_fields = [];
 
-			// LAHMACUNTODO: Change order in actions (notification doesn't work for first reload, it works in second reload)
 			// Cloudflare fields
 			if ( $cloudflare_error = get_transient( 'sbp_cloudflare_error' ) ) {
 				$cloudflare_fields[] = [
-					'type'    => 'notice',
+					'type'    => 'submessage',
 					'style'   => 'danger',
 					'content' => __( $cloudflare_error, 'speed-booster-pack' ),
 				];
-				delete_transient( 'sbp_cloudflare_error' );
 			}
 
 			$cloudflare_fields = array_merge( $cloudflare_fields,

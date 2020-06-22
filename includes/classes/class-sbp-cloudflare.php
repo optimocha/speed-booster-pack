@@ -52,10 +52,12 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 				'x_auth_email' => 'X-Auth-Email: ' . $email,
 			];
 
-			$result = self::send_request( $zone, '' );
+			$result = self::send_request( $zone, '', [], $headers );
 
 			if ( true !== $result['success'] ) {
-				set_transient('sbp_cloudflare_error', 'Cloudflare API credentials are not valid.');
+				set_transient( 'sbp_cloudflare_error', 'Cloudflare API credentials are not valid.' );
+			} else {
+				delete_transient( 'sbp_cloudflare_error' );
 			}
 		}
 	}
