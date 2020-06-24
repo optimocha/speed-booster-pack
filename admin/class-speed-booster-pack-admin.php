@@ -180,7 +180,7 @@ class Speed_Booster_Pack_Admin {
 
 					// menu settings
 					'menu_title'      => 'Speed Booster',
-					'menu_icon'       => SBP_URL . 'admin/images/icon-16x16.png',
+					'menu_icon'       => SBP_URL . 'admin/images/icon.svg',
 					'menu_slug'       => 'sbp-settings',
 					'menu_type'       => 'menu',
 					'menu_capability' => 'manage_options',
