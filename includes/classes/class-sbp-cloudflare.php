@@ -36,10 +36,14 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		return false;
 	}
 
-	public static function check_credentials( $saved_data ) {
+	public static function check_credentials( $saved_data = [] ) {
 		// Check if old value is same as new value
 		// TODO: saved'in disina al
-		if ( sbp_get_option( 'cloudflare' ) == $saved_data['cloudflare'] ) {
+		if ( $saved_data != [] && $saved_data['cloudflare'] != '' && ! $saved_data['cloudflare']['cloudflare_enable'] ) {
+			delete_transient( 'sbp_cloudflare_error' );
+		}
+
+		if ( $saved_data != [] && sbp_get_option( 'cloudflare' ) == $saved_data['cloudflare'] ) {
 			return;
 		}
 
@@ -58,7 +62,6 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			if ( true !== $result['success'] ) {
 				set_transient( 'sbp_cloudflare_error', 'Cloudflare API credentials are not valid.' );
 			} else {
-				// LAHMACUNTODO: cloudflare_enabled açık değilse de transient'ı sil
 				delete_transient( 'sbp_cloudflare_error' );
 			}
 		}

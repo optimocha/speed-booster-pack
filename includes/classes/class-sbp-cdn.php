@@ -14,7 +14,6 @@ class SBP_CDN extends SBP_Abstract_Module {
 			return;
 		}
 
-		// LAHMACUNTODO: ayrı bir fonksiyon yaratıp get_footer'a falan hook'lamaya gerek yok, private değişkenleri cdn_rewriter ve rewrite_url fonksiyonlarının içine atayıp orada apply_filters'layabiliriz.
 		add_filter( 'sbp_output_buffer', [ $this, 'cdn_rewriter' ] );
 	}
 

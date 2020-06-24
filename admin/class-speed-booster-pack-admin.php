@@ -114,8 +114,8 @@ class Speed_Booster_Pack_Admin {
 		add_action( 'csf_sbp_options_saved',
 			function ( $saved_data ) {
 				add_action( 'admin_bar_menu',
+					// This function must stay here as anonymous function. We need to use $saved_data
 					function ( $admin_bar ) use ( $saved_data ) {
-						// LAHMACUNTODO: Yap
 						if ( current_user_can( 'manage_options' ) && $saved_data['module_caching'] && ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 							$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
 							$sbp_admin_menu  = [
@@ -134,7 +134,9 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
-		$this->create_settings_page();
+		$this->initialize_announce4wp();
+
+		add_action('csf_loaded', [$this, 'create_settings_page']);
 	}
 
 	/**
@@ -801,23 +803,21 @@ class Speed_Booster_Pack_Admin {
 					'icon'   => 'fa fa-info-circle',
 					'fields' => array(/* BEYNTODO: İçeriği yaz!  */
 						[
-							'title'   => sprintf( __( 'Notifications from %s', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-							'id'      => 'sbp_notifications',
+							'title'   => sprintf( __( 'Notices from %s', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'id'      => 'enable_notices',
 							'type'    => 'switcher',
-							'label'   => __( 'Enables or disables notifications from plugin.', 'speed-booster-pack' ),
+							'label'   => __( 'Enables or disables notices from plugin.', 'speed-booster-pack' ),
 							'default' => true,
 						],
 					),
 				)
 			);
 			/* END Section: About */
-
 		}
 	}
 
 	public function add_admin_bar_links( $admin_bar ) {
 
-		// LAHMACUNTODO: cache açıldığında veya kapandığında gelen ilk sayfada düğme görünmüyor veya görünüyor.
 		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) && ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
 			$sbp_admin_menu  = [
@@ -843,5 +843,11 @@ class Speed_Booster_Pack_Admin {
 		echo '<div class="notice notice-success is-dismissible">
                 <p>' . __( '<strong>Speed Booster Pack</strong> cache has cleared.', 'speed-booster-pack' ) . '</p>
         </div>';
+	}
+
+	private function initialize_announce4wp() {
+		if ( sbp_get_option( 'enable_notices' ) ) {
+			new Announce4WP_Client( SBP_PLUGIN_NAME, "sbp", "https://speedboosterpack.com/wp-json/a4wp/v1/4.0.0/news.json", "toplevel_page_sbp-settings" );
+		}
 	}
 }

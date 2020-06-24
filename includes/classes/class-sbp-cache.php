@@ -409,7 +409,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 	}
 
-	public static function generate_htaccess() {
+	public static function generate_htaccess( $saved_data = [] ) {
 		$htaccess_file_content = '# BEGIN Speed Booster Pack
 # SBP v4.0
 
@@ -557,9 +557,13 @@ AddEncoding gzip              svgz
 		$htaccess_file_path = get_home_path() . '/.htaccess';
 
 		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
-			$current_htaccess   = self::get_default_htaccess();
-			$generated_htaccess = $htaccess_file_content . PHP_EOL . $current_htaccess;
-			$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $generated_htaccess );
+			$current_htaccess = trim( self::get_default_htaccess() );
+			if ( $saved_data != [] && ! $saved_data['module_caching'] ) {
+				$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $current_htaccess );
+			} else {
+				$generated_htaccess = $htaccess_file_content . PHP_EOL . $current_htaccess;
+				$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $generated_htaccess );
+			}
 		}
 	}
 
@@ -573,12 +577,7 @@ AddEncoding gzip              svgz
 
 		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
 			$current_htaccess = trim( $wp_filesystem->get_contents( $htaccess_file_path ) );
-			$sbp_code         = SBP_Utils::get_string_between_strings( "# BEGIN Speed Booster Pack", "# END Speed Booster Pack", $current_htaccess );
-			if ( strpos( $current_htaccess, '# BEGIN Speed Booster Pack' ) !== false && strpos( $current_htaccess, "# END Speed Booster Pack" ) ) {
-				// If htaccess file has begin and end of speed booster pack, remove old code
-				$current_htaccess = str_replace( $sbp_code, '', $current_htaccess );
-				$current_htaccess = trim( $current_htaccess );
-			}
+			$current_htaccess = preg_replace( '/(# BEGIN Speed Booster Pack.*?# END Speed Booster Pack)/msi', '', $current_htaccess );
 
 			return $current_htaccess;
 		}
@@ -627,6 +626,7 @@ AddEncoding gzip              svgz
 		add_action( 'edited_terms', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is updated.
 		//add_action( 'delete_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is deleted.
 		add_action( 'customize_save', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When customizer is saved.
+		add_action( 'comment_post', [ $this, 'comment_action' ] );
 		add_action(
 			'wp_trash_post',
 			function ( $post_id ) {
@@ -635,14 +635,14 @@ AddEncoding gzip              svgz
 				}
 			}
 		);
-		// LAHMACUNTODO: burada admin paneli şartını tekrar düşünelim - ziyaretçi yorum attıktan sonra cache temizlenmeli bence
+
 		if ( is_admin() ) {
 			add_action( 'wpmu_new_blog', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 			add_action( 'delete_blog', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 			add_action( 'transition_comment_status', [ $this, 'comment_transition' ], 10, 3 );
-			add_action( 'comment_post', [ $this, 'comment_action' ] );
 			add_action( 'edit_comment', [ $this, 'comment_action' ] );
 		}
+
 	}
 
 	public function comment_transition( $new_status, $old_status, $comment ) {
@@ -650,7 +650,10 @@ AddEncoding gzip              svgz
 	}
 
 	public function comment_action( $comment_id ) {
-		// LAHMACUNTODO: Check if comment approved
-		self::clear_post_by_id( get_comment( $comment_id )->comment_post_ID );
+		$comment = get_comment( $comment_id );
+
+		if ( $comment->comment_approved ) {
+			self::clear_post_by_id( $comment->comment_post_ID );
+		}
 	}
 }

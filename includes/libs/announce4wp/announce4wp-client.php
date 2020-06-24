@@ -14,7 +14,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			$this->api_endpoint_url = $api_endpoint_url;
 			$this->settings_screen  = $settings_screen;
 			$this->plugin_name      = $plugin_name;
-			$this->transient_name   = $this->service_id . '_notices';
+			$this->transient_name   = 'a4wp_' . $this->service_id . '_announcements';
 
 			// Check disabled plugins
 			$this->check_if_disabled();
@@ -33,9 +33,6 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 
 			// Dismiss Notice Action
 			add_action( 'wp_ajax_a4wp_dismiss_notice', [ $this, 'dismiss_notice' ] );
-
-			// Options Page
-			add_action( 'admin_menu', [ $this, 'settings_page' ] );
 		}
 
 		public function display_notices() {
