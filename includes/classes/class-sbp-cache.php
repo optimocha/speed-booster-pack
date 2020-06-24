@@ -410,6 +410,12 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	public static function generate_htaccess( $saved_data = [] ) {
+		global $is_apache;
+
+		if ( ! $is_apache ) {
+			return;
+		}
+
 		$htaccess_file_content = '# BEGIN Speed Booster Pack
 # SBP v4.0
 
