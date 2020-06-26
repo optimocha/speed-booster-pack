@@ -83,6 +83,26 @@ define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' );
 define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' );
 
 /**
+ * Load all plugin options
+ */
+if ( ! function_exists( 'sbp_get_option' ) ) {
+	/**
+	 * Returns the value of the option with given name, if option doesn't exists function returns the default value (from second variable)
+	 *
+	 * @param string $option
+	 * @param null $default
+	 *
+	 * @return mixed|null
+	 */
+	function sbp_get_option( $option = '', $default = null ) {
+		$sbp_options = get_option( 'sbp_options' );
+
+		return ( isset( $sbp_options[ $option ] ) ) ? $sbp_options[ $option ] : $default;
+	}
+}
+
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-speed-booster-pack-activator.php
  */
@@ -109,26 +129,6 @@ register_deactivation_hook( __FILE__, 'deactivate_speed_booster_pack' );
  */
 require SBP_INC_PATH . 'class-speed-booster-pack.php';
 
-$sbp_options = get_option( 'sbp_options' );
-
-if ( ! function_exists( 'sbp_get_option' ) ) {
-	/**
-	 * Returns the value of the option with given name, if option doesn't exists function returns the default value (from second variable)
-	 *
-	 * @param string $option
-	 * @param null $default
-	 *
-	 * @return mixed|null
-	 */
-	function sbp_get_option( $option = '', $default = null ) {
-		global $sbp_options;
-
-		return ( isset( $sbp_options[ $option ] ) ) ? $sbp_options[ $option ] : $default;
-	}
-}
-
-spl_autoload_register( 'sbp_autoloader' );
-
 /**
  * Autoload classes which has SpeedBooster namespace
  *
@@ -136,6 +136,7 @@ spl_autoload_register( 'sbp_autoloader' );
  *
  * @param $class_name
  */
+spl_autoload_register( 'sbp_autoloader' );
 function sbp_autoloader( $class_name ) {
 	if ( false === strpos( $class_name, 'SpeedBooster\\' ) ) {
 		return;
