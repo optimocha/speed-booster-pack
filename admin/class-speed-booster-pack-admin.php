@@ -113,7 +113,10 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
+		// LAHMACUNTODO: htaccess dosyası burada değil, eklenti etkinleştirildiğinde (register_activation_hook) ve güncellendiğinde (upgrader_process_complete) çalışmalı
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::generate_htaccess' );
+
+		// LAHMACUNTODO: ayrıca eklenti devre dışı bırakıldığında (register_deactivation_hook) ve silindiğinde (uninstall.php) bizim htaccess bloğunu silecek bir fonksiyona daha ihtiyacımız var
 
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 
