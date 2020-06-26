@@ -103,6 +103,10 @@ class Speed_Booster_Pack_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
+		$this->load_dependencies();
+
+		$this->create_settings_page();
+
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
@@ -111,32 +115,12 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::generate_htaccess' );
 
-		add_action( 'csf_sbp_options_saved',
-			function ( $saved_data ) {
-				add_action( 'admin_bar_menu',
-					// This function must stay here as anonymous function. We need to use $saved_data
-					function ( $admin_bar ) use ( $saved_data ) {
-						if ( current_user_can( 'manage_options' ) && $saved_data['module_caching'] && ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
-							$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
-							$sbp_admin_menu  = [
-								'id'    => 'speed_booster_pack',
-								'title' => __( 'Clear Cache', 'speed-booster-pack' ),
-								'href'  => $clear_cache_url,
-							];
-
-							$admin_bar->add_menu( $sbp_admin_menu );
-						}
-					},
-					71 );
-			} );
+		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 
 		$this->set_flash_notices();
 
-		$this->load_dependencies();
-
 		$this->initialize_announce4wp();
 
-		add_action('csf_loaded', [$this, 'create_settings_page']);
 	}
 
 	/**
@@ -816,7 +800,7 @@ class Speed_Booster_Pack_Admin {
 		}
 	}
 
-	public function add_admin_bar_links( $admin_bar ) {
+	public function add_admin_bar_links( WP_Admin_Bar $admin_bar ) {
 
 		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) && ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
@@ -841,13 +825,14 @@ class Speed_Booster_Pack_Admin {
 
 	public function show_cache_notice() {
 		echo '<div class="notice notice-success is-dismissible">
-                <p>' . __( '<strong>Speed Booster Pack</strong> cache has cleared.', 'speed-booster-pack' ) . '</p>
+                <p><strong>' . SBP_PLUGIN_NAME . ':</strong>' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>
         </div>';
 	}
 
 	private function initialize_announce4wp() {
 		if ( sbp_get_option( 'enable_notices' ) ) {
 			new Announce4WP_Client( SBP_PLUGIN_NAME, "sbp", "https://speedboosterpack.com/wp-json/a4wp/v1/4.0.0/news.json", "toplevel_page_sbp-settings" );
+			// LAHMACUNTODO: 4.0.0 hard-coded olamaz, sürüm numarasını oraya girmek lazım (4.0 ile 4.0.0 arasında da bi karar ver artık)
 		}
 	}
 }
