@@ -54,9 +54,11 @@ class SBP_Preboost extends SBP_Abstract_Module {
 	}
 
 	private function prepare_preload_tags() {
-		$urls = SBP_Utils::explode_lines( sbp_get_option( 'preboost' )['preboost_include'] );
+		if( isset( sbp_get_option( 'preboost' )['preboost_include'] ) ) {
+			$urls = SBP_Utils::explode_lines( sbp_get_option( 'preboost' )['preboost_include'] );
+		}
 
-		if ( count( $urls ) ) {
+		if ( isset( $urls ) && count( $urls ) ) {
 			foreach ( $urls as $url ) {
 				$type                   = $this->get_type( $url );
 				$mime_type              = $this->get_mime_type( SBP_Utils::get_file_extension_from_url( $url ) );
