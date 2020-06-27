@@ -31,4 +31,3 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 delete_option( 'sbp_options' );
-delete_option( 'sbp_dismissed_compat_notices' );

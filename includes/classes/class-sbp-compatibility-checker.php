@@ -94,7 +94,8 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 			$slash_position = strpos( $plugin, '/' );
 			$notice_id      = $slash_position ? substr( $plugin, 0, $slash_position ) : $plugin;
 
-			$dismissed_notices = get_option( 'sbp_dismissed_compat_notices' );
+			$dismissed_notices = get_user_meta( get_current_user_id(), 'sbp_dismissed_compat_notices', true );
+			$dismissed_notices = $dismissed_notices == '' ? [] : $dismissed_notices;
 			if ( $dismissed_notices && is_array( $dismissed_notices ) && in_array( $notice_id, $dismissed_notices ) ) {
 				continue;
 			}
@@ -138,11 +139,12 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 
 	public function dismiss_notice() {
 		if ( current_user_can( 'manage_options' ) && isset( $_POST['notice_id'] ) && isset( $_POST['action'] ) && $_POST['action'] == 'sbp_dismiss_compat_notice' ) {
-			$id                = $_POST['notice_id'];
-			$dismiss_options   = get_option( 'sbp_dismissed_compat_notices', [] );
+			$id              = $_POST['notice_id'];
+			$dismiss_options = get_user_meta( get_current_user_id(), 'sbp_dismissed_compat_notices', true );
+			$dismiss_options = $dismiss_options == '' ? [] : $dismiss_options;
 			$dismiss_options[] = $id;
 			$dismiss_options   = array_unique( $dismiss_options );
-			update_option( 'sbp_dismissed_compat_notices', $dismiss_options );
+			update_user_meta( get_current_user_id(), 'sbp_dismissed_compat_notices', $dismiss_options );
 		}
 	}
 }
