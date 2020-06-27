@@ -232,14 +232,14 @@ class Speed_Booster_Pack {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		add_action( 'upgrader_process_complete',
-			function ( $upgrader_object, $options ) {
+			function ( $upgrader_object, $hook_extra ) {
 				$our_plugin = plugin_basename( SBP_PATH );
-				if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
-					if ( in_array( $our_plugin, $options['plugins'] ) ) {
+				if ( $hook_extra['action'] == 'update' && $hook_extra['type'] == 'plugin' && isset( $hook_extra['plugins'] ) ) {
+					if ( in_array( $our_plugin, $hook_extra['plugins'] ) ) {
 						SBP_Cache::generate_htaccess();
 					}
 				}
-			} );
+			}, 10, 2 );
 
 	}
 

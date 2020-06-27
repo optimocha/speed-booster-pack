@@ -67,7 +67,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 
 		public function enqueue_scripts() {
 			wp_add_inline_script( 'jquery',
-				'jQuery(document).on(\'click\', \'.notice-dismiss\', function() {
+				'jQuery(document).on(\'click\', \'.a4wp-notice .notice-dismiss\', function() {
 		    var $notice = jQuery(this).parent();
 		    var notice_id = $notice.data(\'notice-id\');
 		    var service_id = $notice.data(\'service-id\');
@@ -77,7 +77,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 		}
 
 		public function dismiss_notice() {
-			if ( current_user_can( 'manage_options' ) ) {
+			if ( current_user_can( 'manage_options' ) && isset( $_GET['action'] ) && $_GET['action'] == 'a4wp_dismiss_notice' ) {
 				$id         = $_GET['notice_id'];
 				$service_id = $_GET['service_id'];
 				if ( ! $service_id || $service_id != $this->service_id ) {
@@ -114,7 +114,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 				$attributes = $this->parse_attributes( $notice['rules'] );
 				$type       = isset( $attributes['type'] ) ? $attributes['type'] : 'notice-info';
 				if ( $this->should_display( $attributes, $notice ) ) {
-					echo '<div class="notice ' . $type . ' is-dismissible" data-service-id="' . $this->service_id . '" data-notice-id="' . $notice['id'] . '">';
+					echo '<div class="notice a4wp-notice ' . $type . ' is-dismissible" data-service-id="' . $this->service_id . '" data-notice-id="' . $notice['id'] . '">';
 					echo ( $notice['title'] ) ? '<p><b>' . $notice['title'] . '</b></p>' : null;
 					echo ( $notice['content'] ) ? '<p>' . $notice['content'] . '</p>' : null;
 					echo '</div>';

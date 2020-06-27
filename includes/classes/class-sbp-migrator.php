@@ -34,24 +34,37 @@ class SBP_Migrator {
 
 	public function __construct() {
 		if ( ! get_transient( 'sbp_upgraded' ) ) {
+			add_action( 'admin_enqueue_scripts',
+				function () {
+					$dismiss_notice_script = 'jQuery(function() {
+						jQuery(".dismiss-migrator-notice").on("click", function() {
+							jQuery.ajax({
+								url: ajaxurl,
+					            type: "POST",
+					            data: {
+					              action: "sbp_dismiss_migrator_notice",
+					            }
+							});
+						});
+					})';
+					wp_add_inline_script( 'jquery', $dismiss_notice_script, 'footer' );
+				} );
 			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
 		}
+
+		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
 
 		$this->sbp_settings = get_option( 'sbp_settings' );
 		if ( $this->sbp_settings ) {
 			$this->sbp_options = get_option( 'sbp_options' );
-			add_action( 'upgrader_process_complete', [ $this, 'upgrade_completed' ] );
 			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
 		}
 	}
 
 	public function handle_migrate_request() {
-		if ( get_transient( 'sbp_upgraded' ) ) {
-			$this->migrate_options();
-			$this->delete_old_options();
-			set_transient( 'sbp_upgraded_notice', 1 );
-			delete_transient( 'sbp_upgraded' );
-		}
+		$this->migrate_options();
+		$this->delete_old_options();
+		set_transient( 'sbp_upgraded_notice', 1 );
 	}
 
 	private function migrate_options() {
@@ -65,6 +78,10 @@ class SBP_Migrator {
 	}
 
 	public function add_tracking_scripts() {
+		if ( ! isset( $this->sbp_settings['sbp_enable_local_analytics'] ) || ! $this->sbp_settings['sbp_enable_local_analytics'] ) {
+			return;
+		}
+
 		// Check for tracking scripts
 		if ( isset( $this->sbp_settings['sbp_ga_tracking_id'] ) && $tracking_id = $this->sbp_settings['sbp_ga_tracking_id'] ) {
 			if ( strpos( $tracking_id, "GTM-" ) === 0 || strpos( $tracking_id, 'UA-' ) === 0 ) {
@@ -167,19 +184,9 @@ ga('send', 'pageview');";
 		}
 	}
 
-	public function upgrade_completed( $upgrader_object, $options ) {
-		$our_plugin = plugin_basename( SBP_PATH );
-		if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
-			if ( in_array( $our_plugin, $options['plugins'] ) ) {
-				set_transient( 'sbp_upgraded', 1 );
-			}
-		}
-	}
-
 	public function display_update_notice() {
 		if ( get_transient( 'sbp_upgraded_notice' ) ) {
-			echo '<div class="notice notice-success is-dismissible"><p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p></div>';
-			delete_transient( 'sbp_upgraded_notice' );
+			echo '<div class="notice notice-success is-dismissible dismiss-migrator-notice"><p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p></div>';
 		}
 	}
 
@@ -193,5 +200,11 @@ ga('send', 'pageview');";
 		delete_option( 'sbp_defer_exceptions3' );
 		delete_option( 'sbp_defer_exceptions4' );
 		delete_option( 'sbp_preboost' );
+	}
+
+	public function dismiss_upgrade_notice() {
+		if ( current_user_can( 'manage_options' ) ) {
+			delete_transient( 'sbp_upgraded_notice' );
+		}
 	}
 }
