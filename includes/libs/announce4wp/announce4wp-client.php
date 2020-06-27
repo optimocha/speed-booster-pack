@@ -52,7 +52,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 
 			// Update transient
-			set_transient( $this->transient_name, $remote_notices, 60 * 60 * 8 ); // 8 Hours
+			set_transient( $this->transient_name, $remote_notices, 12 * HOURS_IN_SECONDS );
 		}
 
 		private function fetch_notices() {
@@ -108,6 +108,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			return $attributes;
 		}
 
+		// LAHMACUNTODO: az biraz refactor ile aşağıdaki iki fonksiyonu tek bir fonksiyonda birleştirebiliriz gibi
 		private function display_dismissible_notices() {
 			$announcements = get_transient( $this->transient_name );
 			if ( isset( $announcements['dismissible_notice'] ) && $notice = $announcements['dismissible_notice'] ) {
@@ -115,7 +116,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 				$type       = isset( $attributes['type'] ) ? $attributes['type'] : 'notice-info';
 				if ( $this->should_display( $attributes, $notice ) ) {
 					echo '<div class="notice a4wp-notice ' . $type . ' is-dismissible" data-service-id="' . $this->service_id . '" data-notice-id="' . $notice['id'] . '">';
-					echo ( $notice['title'] ) ? '<p><b>' . $notice['title'] . '</b></p>' : null;
+					echo ( $notice['title'] ) ? '<p style="font-size:120%;font-weight:700;">' . $notice['title'] . '</p>' : null;
 					echo ( $notice['content'] ) ? '<p>' . $notice['content'] . '</p>' : null;
 					echo '</div>';
 				}
@@ -129,7 +130,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 					$type       = isset( $attributes['type'] ) ? $attributes['type'] : 'notice-info';
 					if ( $this->should_display( $attributes ) ) {
 						echo '<div class="notice ' . $type . '" data-service-id="' . $this->service_id . '" data-notice-id="' . $notice['id'] . '">';
-						echo ( $notice['title'] ) ? '<p><b>' . $notice['title'] . '</b></p>' : null;
+						echo ( $notice['title'] ) ? '<p style="font-size:120%;font-weight:700;">' . $notice['title'] . '</p>' : null;
 						echo ( $notice['content'] ) ? '<p>' . $notice['content'] . '</p>' : null;
 						echo '</div>';
 					}
@@ -159,9 +160,10 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 				}
 			}
 
+			// LAHMACUNTODO: sürüm kontrolünü burada değil, ana sunucuda json çıktılarını oluştururken yapmak çok zor olur mu?
 			// Check Min Version
 			if ( isset( $attributes['min-version'] ) ) {
-				$plugin_version = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $this->plugin_name )['Version'];
+				$plugin_version = get_plugin_data( SBP_PATH . $this->plugin_name )['Version'];
 				if ( version_compare( $plugin_version, $attributes['min-version'], '<' ) ) {
 					return false;
 				}
@@ -169,7 +171,9 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 
 			// Check Max Version
 			if ( isset( $attributes['max-version'] ) ) {
-				$plugin_version = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $this->plugin_name )['Version'];
+				// LAHMACUNTODO: WP_CONTENT_DIR yerine SBP_PATH kullandım.
+				// LAHMACUNTODO: $this->plugin_name eklenti dosya ismini değil, eklenti ismini veriyor (ama bunu düzeltmek için hardcode ile speed-booster-pack.php yazmamalıyız)
+				$plugin_version = get_plugin_data( SBP_PATH . $this->plugin_name )['Version'];
 				if ( version_compare( $plugin_version, $attributes['max-version'], '>' ) ) {
 					return false;
 				}
@@ -178,6 +182,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			return true;
 		}
 
+		// LAHMACUNTODO: doktor bu ne? :D
 		public function settings_page() {
 			if ( empty ( $GLOBALS['admin_page_hooks']['a4wp_options_page'] ) ) {
 				add_menu_page(
@@ -190,6 +195,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 		}
 
+		// LAHMACUNTODO: doktor bu ne? :D
 		public function settings_page_template() {
 			echo '<h1>' . __( 'A4WP Settings', 'announce4wp' ) . '</h1>';
 			echo '<div class="wrap">';
@@ -205,7 +211,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 				echo '<div class="form-group">';
 				echo '<label>';
 				echo '<input type="checkbox" name="a4wp_allowed_plugins[]" value="' . $plugin . '" ' . ( $is_checked ? 'checked' : null ) . ' />';
-				echo get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin )['Name'];
+				echo get_plugin_data( SBP_PATH . $plugin )['Name'];
 				echo '</label>';
 				echo '</div>';
 			}
@@ -214,6 +220,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			echo '</div>';
 		}
 
+		// LAHMACUNTODO: doktor bu ne? :D
 		public function save_plugin_names() {
 			if ( $plugins = get_option( 'a4wp_plugins' ) ) {
 				$plugins_list = array_merge( $plugins, [ $this->plugin_name ] );
@@ -223,6 +230,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 		}
 
+		// LAHMACUNTODO: doktor bu ne? :D
 		public function check_if_disabled() {
 			$disabled_plugins = get_option( 'a4wp_disabled_plugins' );
 			if ( is_array( $disabled_plugins ) && in_array( $this->plugin_name, $disabled_plugins ) ) {
@@ -230,6 +238,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 		}
 
+		// LAHMACUNTODO: doktor bu ne? :D
 		public function handle_options_page_form() {
 			if ( isset( $_POST['a4wp_settings_page'] ) ) {
 				$plugins          = get_option( 'a4wp_plugins' );
@@ -245,6 +254,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 		}
 
+		// LAHMACUNTODO: doktor bu ne? :D
 		public function admin_init() {
 			$this->handle_options_page_form();
 			$this->save_plugin_names();
