@@ -231,6 +231,15 @@ class Speed_Booster_Pack {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		add_action( 'upgrader_process_complete',
+			function ( $upgrader_object, $options ) {
+				$our_plugin = plugin_basename( SBP_PATH );
+				if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+					if ( in_array( $our_plugin, $options['plugins'] ) ) {
+						SBP_Cache::generate_htaccess();
+					}
+				}
+			} );
 
 	}
 

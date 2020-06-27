@@ -11,11 +11,11 @@
  */
 
 // If this file is called directly, abort.
+use SpeedBooster\SBP_Cache;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-
-// TODO: add some cool stuff here
 
 /**
  * Fired during plugin activation.
@@ -37,6 +37,7 @@ class Speed_Booster_Pack_Activator {
 	 * @since    4.0.0
 	 */
 	public static function activate() {
+		SBP_Cache::generate_htaccess();
 	}
 
 }

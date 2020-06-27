@@ -416,7 +416,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return;
 		}
 
-		$htaccess_file_content = '# BEGIN Speed Booster Pack
+		$sbp_htaccess_block = '# BEGIN Speed Booster Pack
 # SBP v4.0
 
 ## SECTION: General stuff
@@ -552,8 +552,7 @@ AddEncoding gzip              svgz
   ExpiresByType text/cache-manifest                   "access plus 0 seconds"
 </IfModule>
 
-# END Speed Booster Pack
-';
+# END Speed Booster Pack';
 
 		global $wp_filesystem;
 
@@ -564,15 +563,12 @@ AddEncoding gzip              svgz
 
 		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
 			$current_htaccess = trim( self::get_default_htaccess() );
-			if ( $saved_data != [] && ! $saved_data['module_caching'] ) {
-				$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $current_htaccess );
-			} else {
-				$generated_htaccess = $htaccess_file_content . PHP_EOL . $current_htaccess;
-				$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $generated_htaccess );
+
+			if ( ( isset( $saved_data['module_caching'] ) && $saved_data['module_caching'] ) || ( $saved_data == [] && sbp_get_option( 'module_caching' ) ) ) {
+				$current_htaccess = str_replace( "# BEGIN WordPress", $sbp_htaccess_block . PHP_EOL . PHP_EOL . "# BEGIN WordPress", $current_htaccess );
 			}
 
-			// LAHMACUNTODO: HTACCESS KODUNU # BEGIN WORDPRESS SATIRINDAN ÖNCE KOY
-
+			$wp_filesystem->put_contents( $htaccess_file_path, $current_htaccess );
 		}
 	}
 
@@ -586,7 +582,7 @@ AddEncoding gzip              svgz
 
 		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
 			$current_htaccess = trim( $wp_filesystem->get_contents( $htaccess_file_path ) );
-			$current_htaccess = preg_replace( '/(# BEGIN Speed Booster Pack.*?# END Speed Booster Pack)/msi', '', $current_htaccess );
+			$current_htaccess = preg_replace( '/(# BEGIN Speed Booster Pack.*?# END Speed Booster Pack' . PHP_EOL . PHP_EOL . ')/msi', '', $current_htaccess );
 
 			return $current_htaccess;
 		}
@@ -617,23 +613,18 @@ AddEncoding gzip              svgz
 		add_action( 'switch_theme', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'save_post', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'autoptimize_action_cachepurged', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-//		add_action( 'upgrader_process_complete', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-		// LAHMACUNTODO: Ürün satışından sonra sadece o ürünü temizle
+		add_action( 'upgrader_process_complete', 'SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'woocommerce_thankyou', [ $this, 'woocommerce_cache_clean' ] );
 		add_action( 'woocommerce_product_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'woocommerce_product_set_stock_status', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'woocommerce_variation_set_stock', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'woocommerce_variation_set_stock_status', 'SpeedBooster\SBP_Cache::clear_total_cache' );
-		//add_action( 'user_register', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a user is added.
-		//add_action( 'profile_update', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a user is updated.
-		//add_action( 'deleted_user', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a user is deleted.
 		add_action( 'wp_update_nav_menu', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a custom menu is update.
 		add_action( 'update_option_sidebars_widgets', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When you change the order of widgets.
 		add_action( 'update_option_category_base', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When category permalink prefix is update.
 		add_action( 'update_option_tag_base', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When tag permalink prefix is update.
 		add_action( 'permalink_structure_changed', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When permalink structure is update.
-//		add_action( 'create_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is created.
 		add_action( 'edited_terms', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is updated.
-		//add_action( 'delete_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is deleted.
 		add_action( 'customize_save', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When customizer is saved.
 		add_action( 'comment_post', [ $this, 'comment_action' ] );
 		add_action(
@@ -644,6 +635,12 @@ AddEncoding gzip              svgz
 				}
 			}
 		);
+
+//		add_action( 'user_register', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a user is added.
+//		add_action( 'profile_update', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a user is updated.
+//		add_action( 'deleted_user', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a user is deleted.
+//		add_action( 'create_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is created.
+//		add_action( 'delete_term', 'SpeedBooster\SBP_Cache::clear_total_cache' );  // When a term is deleted.
 
 		if ( is_admin() ) {
 			add_action( 'wpmu_new_blog', 'SpeedBooster\SBP_Cache::clear_total_cache' );
@@ -663,6 +660,25 @@ AddEncoding gzip              svgz
 
 		if ( $comment->comment_approved ) {
 			self::clear_post_by_id( $comment->comment_post_ID );
+		}
+	}
+
+	public function woocommerce_cache_clean( $order_id ) {
+		if ( ! $order_id ) {
+			return;
+		}
+
+		$order = wc_get_order( $order_id );
+
+		$items = $order->get_items();
+		foreach ( $items as $item_id => $item ) {
+			$product_id = $item['product_id'];
+			self::clear_post_by_id( $product_id );
+
+			if ( $item['variation_id'] > 0 ) {
+				$variation_id = $item['variation_id'];
+				self::clear_post_by_id( $variation_id );
+			}
 		}
 	}
 }

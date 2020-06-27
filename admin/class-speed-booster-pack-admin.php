@@ -123,7 +123,6 @@ class Speed_Booster_Pack_Admin {
 		$this->set_flash_notices();
 
 		$this->initialize_announce4wp();
-
 	}
 
 	/**
@@ -790,10 +789,10 @@ class Speed_Booster_Pack_Admin {
 					'icon'   => 'fa fa-info-circle',
 					'fields' => array(/* BEYNTODO: İçeriği yaz!  */
 						[
-							'title'   => sprintf( __( 'Notices from %s', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'title'   => __( 'Allow external notices', 'speed-booster-pack' ),
 							'id'      => 'enable_notices',
 							'type'    => 'switcher',
-							'label'   => __( 'Enables or disables notices from plugin.', 'speed-booster-pack' ),
+							'label'   => __( 'Fetches daily notices from speedboosterpack.com daily (all of which are dismissible), and shows them in a non-obtrusive manner. We only intend to send essential notices and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ),
 							'default' => true,
 						],
 					),
@@ -834,8 +833,7 @@ class Speed_Booster_Pack_Admin {
 
 	private function initialize_announce4wp() {
 		if ( sbp_get_option( 'enable_notices' ) ) {
-			new Announce4WP_Client( SBP_PLUGIN_NAME, "sbp", "https://speedboosterpack.com/wp-json/a4wp/v1/4.0.0/news.json", "toplevel_page_sbp-settings" );
-			// LAHMACUNTODO: 4.0.0 hard-coded olamaz, sürüm numarasını oraya girmek lazım (4.0 ile 4.0.0 arasında da bi karar ver artık)
+			new Announce4WP_Client( SBP_PLUGIN_NAME, "sbp", "https://speedboosterpack.com/wp-json/a4wp/v1/" . SBP_VERSION . "/news.json", "toplevel_page_sbp-settings" );
 		}
 	}
 }

@@ -66,7 +66,7 @@ class SBP_Migrator {
 
 	public function add_tracking_scripts() {
 		// Check for tracking scripts
-		if ( isset($this->sbp_settings['sbp_ga_tracking_id']) && $tracking_id = $this->sbp_settings['sbp_ga_tracking_id'] ) {
+		if ( isset( $this->sbp_settings['sbp_ga_tracking_id'] ) && $tracking_id = $this->sbp_settings['sbp_ga_tracking_id'] ) {
 			if ( strpos( $tracking_id, "GTM-" ) === 0 || strpos( $tracking_id, 'UA-' ) === 0 ) {
 				$analytics_script = '';
 				if ( strpos( $tracking_id, "GTM-" ) === 0 ) {
@@ -170,10 +170,8 @@ ga('send', 'pageview');";
 	public function upgrade_completed( $upgrader_object, $options ) {
 		$our_plugin = plugin_basename( SBP_PATH );
 		if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
-			foreach ( $options['plugins'] as $plugin ) {
-				if ( $plugin == $our_plugin ) {
-					set_transient( 'sbp_upgraded', 1 );
-				}
+			if ( in_array( $our_plugin, $options['plugins'] ) ) {
+				set_transient( 'sbp_upgraded', 1 );
 			}
 		}
 	}
