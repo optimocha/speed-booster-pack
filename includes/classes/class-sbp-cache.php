@@ -417,7 +417,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 
 		$sbp_htaccess_block = '# BEGIN Speed Booster Pack
-# SBP v4.0
+# SBP ' . SBP_VERSION . '
 
 ## SECTION: General stuff
 

@@ -231,9 +231,11 @@ class Speed_Booster_Pack {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
+		// TODO: Move this function to the Utilities class.
 		add_action( 'upgrader_process_complete',
 			function ( $upgrader_object, $hook_extra ) {
-				$our_plugin = plugin_basename( SBP_PATH );
+				$our_plugin = 'speed-booster-pack/speed-booster-pack.php';
 				if ( $hook_extra['action'] == 'update' && $hook_extra['type'] == 'plugin' && isset( $hook_extra['plugins'] ) ) {
 					if ( in_array( $our_plugin, $hook_extra['plugins'] ) ) {
 						SBP_Cache::generate_htaccess();
