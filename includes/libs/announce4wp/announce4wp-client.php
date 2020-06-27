@@ -55,7 +55,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 
 			// Update transient
-			set_transient( $this->transient_name, $remote_notices, 12 * HOURS_IN_SECONDS );
+			set_transient( $this->transient_name, $remote_notices, 12 * HOUR_IN_SECONDS );
 		}
 
 		private function fetch_notices() {
