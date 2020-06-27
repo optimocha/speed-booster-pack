@@ -38,7 +38,6 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 
 	public static function check_credentials( $saved_data = [] ) {
 		// Check if old value is same as new value
-		// TODO: saved'in disina al
 		if ( $saved_data != [] && $saved_data['cloudflare'] != '' && ! $saved_data['cloudflare']['cloudflare_enable'] ) {
 			delete_transient( 'sbp_cloudflare_error' );
 		}
