@@ -511,7 +511,7 @@ class Speed_Booster_Pack_Admin {
 				$cache_fields     = array_merge( $kinsta_notice, $cache_fields );
 			}
 
-			if ( ! $is_kinsta_active && defined( 'MULTISITE' ) && true === MULTISITE ) {
+			if ( ! $is_kinsta_active && is_multisite() ) {
 				$multisite_warning = [
 					'type'    => 'submessage',
 					'style'   => 'warning',
