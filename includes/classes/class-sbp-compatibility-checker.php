@@ -73,6 +73,9 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 		$extra_plugins_list = apply_filters( 'sbp_incompatible_plugins', $extra_plugins_list );
 		$this->plugins_list = array_merge( $this->plugins_list, $extra_plugins_list );
 
+		add_action( 'admin_enqueue_scripts', [ $this, 'add_dismiss_notice_script' ] );
+		add_action( 'wp_ajax_sbp_dismiss_compat_notice', [ $this, 'dismiss_notice' ] );
+
 		add_action( 'admin_init', [ $this, 'check_plugins_active' ] );
 		add_action( 'admin_notices', [ $this, 'compatibility_notices' ] );
 	}
@@ -88,12 +91,20 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 		}
 
 		foreach ( $this->active_plugins as $plugin ) {
+			$slash_position = strpos( $plugin, '/' );
+			$notice_id      = $slash_position ? substr( $plugin, 0, $slash_position ) : $plugin;
+
+			$dismissed_notices = get_option( 'sbp_dismissed_compat_notices' );
+			if ( $dismissed_notices && is_array( $dismissed_notices ) && in_array( $notice_id, $dismissed_notices ) ) {
+				continue;
+			}
+
 			$plugin_name = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin )['Name'];
-			echo '<div class="notice notice-warning">
-				<p>
-				' . sprintf( __( 'The "<strong>%1$s</strong>" plugin has similar features to %2$s which might cause overlaps or even conflicts. Make sure you\'re not using the features at the same time, test thoroughly and deactivate %1$s if necessary.', 'speed-booster-pack' ), $plugin_name, SBP_PLUGIN_NAME ) . '
-				</p>
-			</div>';
+			echo '<div class="notice notice-warning is-dismissible sbp-compatibility-notice" data-notice-id="' . $notice_id . '">
+					<p>
+					' . sprintf( __( 'The "%1$s" plugin has similar features to %2$s which might cause overlaps or even conflicts. Make sure you\'re not using the features at the same time, test thoroughly and deactivate %1$s if necessary.', 'speed-booster-pack' ), "<strong>$plugin_name</strong>", SBP_PLUGIN_NAME ) . '
+					</p>
+				</div>';
 		}
 	}
 
@@ -104,6 +115,34 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 			}
 		}
 
-		$this->active_plugins = array_unique($this->active_plugins);
+		$this->active_plugins = array_unique( $this->active_plugins );
+	}
+
+	public function add_dismiss_notice_script() {
+		$script = '
+		jQuery(function() {
+			jQuery(document).on("click", ".sbp-compatibility-notice .notice-dismiss", function() {
+				jQuery.ajax({
+					url: ajaxurl,
+		            type: "POST",
+		            data: {
+		              action: "sbp_dismiss_compat_notice",
+		              notice_id: jQuery(this).parent().attr("data-notice-id")
+		            }
+				});
+			});
+		})
+		';
+		wp_add_inline_script( 'jquery', $script );
+	}
+
+	public function dismiss_notice() {
+		if ( current_user_can( 'manage_options' ) && isset( $_POST['notice_id'] ) && isset( $_POST['action'] ) && $_POST['action'] == 'sbp_dismiss_compat_notice' ) {
+			$id                = $_POST['notice_id'];
+			$dismiss_options   = get_option( 'sbp_dismissed_compat_notices', [] );
+			$dismiss_options[] = $id;
+			$dismiss_options   = array_unique( $dismiss_options );
+			update_option( 'sbp_dismissed_compat_notices', $dismiss_options );
+		}
 	}
 }
