@@ -30,5 +30,4 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	die;
 }
 
-Speed_Booster_Pack_Deactivator::deactivate();
 delete_option( 'sbp_options' );
