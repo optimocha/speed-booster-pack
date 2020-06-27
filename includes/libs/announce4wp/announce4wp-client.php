@@ -10,6 +10,9 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 		private $is_allowed = true;
 
 		public function __construct( $plugin_name, $service_id, $api_endpoint_url, $settings_screen ) {
+
+			// LAHMACUNTODO: current_user_can( 'manage_options' ) kontrolünü burada yapmak daha doğru olmaz mı? veya en azından aşağıdaki hook'ları ateşlerken mesela
+
 			$this->service_id       = $service_id;
 			$this->api_endpoint_url = $api_endpoint_url;
 			$this->settings_screen  = $settings_screen;
