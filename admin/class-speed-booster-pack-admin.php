@@ -498,7 +498,6 @@ class Speed_Booster_Pack_Admin {
 			];
 
 			$is_kinsta_active = false;
-
 			if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 				$kinsta_notice    = [
 					[
@@ -510,6 +509,16 @@ class Speed_Booster_Pack_Admin {
 				];
 				$is_kinsta_active = true;
 				$cache_fields     = array_merge( $kinsta_notice, $cache_fields );
+			}
+
+			if ( ! $is_kinsta_active && defined( 'MULTISITE' ) && true === MULTISITE ) {
+				$multisite_warning = [
+					'type'    => 'submessage',
+					'style'   => 'warning',
+					'content' => sprintf( __( 'Caching in Speed Booster Pack isn\'t tested with WordPress Multisite, proceed with caution! We\'d appreciate getting feedback from you if you find any bugs: %1$sReport a bug%2$s', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/contact/?sbp_version=' . SBP_VERSION . '" target="_blank" rel="external noopener">', '</a>' ),
+				];
+
+				array_unshift( $cache_fields, $multisite_warning );
 			}
 
 			CSF::createSection(
