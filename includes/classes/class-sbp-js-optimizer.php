@@ -279,14 +279,18 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 
 	private function add_defer_attribute() {
 		foreach ( $this->included_scripts as $script ) {
-			$this->changed_scripts[] = str_ireplace( '<script', '<script defer', $script );
+                        if ( str_replace( array( ' async', ' defer', 'data-noptimize="1"', 'data-cfasync="false"', 'data-pagespeed-no-defer' ), '', $script ) === $script ) {
+                                $this->changed_scripts[] = str_ireplace( '<script', '<script defer', $script );
+                        } else {
+                                $this->changed_scripts[] = $script;
+                        }
 		}
 	}
 
 	private function convert_inline_to_base64() {
 		foreach ( $this->changed_scripts as &$script ) {
 			preg_match( '/<script((?:(?!src=).)*?)>(.*?)<\/script>/mis', $script, $matches );
-			if ( isset( $matches[2] ) ) {
+			if ( isset( $matches[2] ) && str_replace( array( 'data-noptimize="1"', 'data-cfasync="false"', 'data-pagespeed-no-defer' ), '', $matches[0] ) === $matches[0] ) {
 				$script_content = $matches[2];
 				$base64_script  = base64_encode( $script_content );
 				$script         = str_replace( $script_content, '', $script );
