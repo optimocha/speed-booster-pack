@@ -817,7 +817,7 @@ class Speed_Booster_Pack_Admin {
 					'fields' => array(/* BEYNTODO: İçeriği yaz!  */
 						[
 							'title'   => __( 'Allow external notices', 'speed-booster-pack' ),
-							'id'      => 'enable_notices',
+							'id'      => 'enable_external_notices',
 							'type'    => 'switcher',
 							'label'   => __( '', 'speed-booster-pack' ),
 							'desc'    => sprintf( __( 'Fetches daily notices from %s daily (all of which are dismissible), and shows them in a non-obtrusive manner. We only intend to send essential notices and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener">speedboosterpack.com</a>' ),
@@ -860,8 +860,8 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	private function initialize_announce4wp() {
-		if ( sbp_get_option( 'enable_notices' ) ) {
-			new Announce4WP_Client( 'speed-booster-pack.php', "sbp", "https://speedboosterpack.com/wp-json/a4wp/v1/" . SBP_VERSION . "/news.json", "toplevel_page_sbp-settings" );
+		if ( sbp_get_option( 'enable_external_notices' ) ) {
+			new Announce4WP_Client( 'speed-booster-pack.php', SBP_PLUGIN_NAME, "sbp", "https://speedboosterpack.com/wp-json/a4wp/v1/" . SBP_VERSION . "/news.json", "toplevel_page_sbp-settings" );
 		}
 	}
 }

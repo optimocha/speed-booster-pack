@@ -1,18 +1,22 @@
 <?php
 
+// LAHMACUNTODO: versiyon seçmediğimizde tüm versiyonlarda göstermeli
+
 if ( ! class_exists( "Announce4WP_Client" ) ) {
 	class Announce4WP_Client {
 		private $api_endpoint_url = '';
 		private $service_id = '';
 		private $transient_name = '';
 		private $settings_screen = '';
+		private $plugin_name = '';
 		private $plugin_file_name = '';
 
-		public function __construct( $plugin_file_name, $service_id, $api_endpoint_url, $settings_screen ) {
+		public function __construct( $plugin_file_name, $plugin_name, $service_id, $api_endpoint_url, $settings_screen ) {
 			$this->service_id       = $service_id;
 			$this->api_endpoint_url = $api_endpoint_url;
 			$this->settings_screen  = $settings_screen;
 			$this->plugin_file_name = $plugin_file_name;
+			$this->plugin_name = $plugin_name;
 			$this->transient_name   = 'a4wp_' . $this->service_id . '_announcements';
 
 			add_action( 'admin_init', [ $this, 'save_notices' ] );
@@ -42,7 +46,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 
 			// Update transient
-			set_transient( $this->transient_name, $remote_notices, 12 * HOUR_IN_SECONDS );
+			set_transient( $this->transient_name, $remote_notices, 12 );
 		}
 
 		private function fetch_notices() {
@@ -73,11 +77,11 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 				if ( ! $service_id || $service_id != $this->service_id ) {
 					return;
 				}
-				$last_ids                        = get_user_meta( get_current_user_id(), 'a4wp_dismissed_ids', true );
+				$last_ids                        = get_user_meta( get_current_user_id(), $this->service_id . '_dismissed_notices', true );
 				$last_ids                        = $last_ids == '' ? [] : $last_ids;
 				$last_ids[ $this->service_id ][] = $id;
 				$last_ids[ $this->service_id ]   = array_unique( $last_ids[ $this->service_id ] );
-				update_user_meta( get_current_user_id(), 'a4wp_dismissed_ids', $last_ids );
+				update_user_meta( get_current_user_id(), $this->service_id . '_dismissed_notices', $last_ids );
 			}
 		}
 
@@ -123,7 +127,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 			if ( $should_display ) {
 				echo '<div class="notice a4wp-notice ' . $type . ' ' . ( ! $is_permanent ? 'is-dismissible' : null ) . '" data-service-id="' . $this->service_id . '" data-notice-id="' . $notice['id'] . '">';
-				echo ( $notice['title'] ) ? '<p style="font - size:120 %;font - weight:700;">' . $notice['title'] . '</p>' : null;
+				echo ( $notice['title'] ) ? '<p style="font-size:120%;font-weight:700;">' . $notice['title'] . '</p>' : null;
 				echo ( $notice['content'] ) ? '<p>' . $notice['content'] . '</p>' : null;
 				echo '</div>';
 			}
@@ -145,7 +149,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 
 			// Check Dismissible Notices
 			if ( null !== $notice ) {
-				$dismissed_ids = get_user_meta( get_current_user_id(), 'a4wp_dismissed_ids', true );
+				$dismissed_ids = get_user_meta( get_current_user_id(), $this->service_id . '_dismissed_notices', true );
 				if ( is_array( $dismissed_ids ) ) {
 					if ( isset( $dismissed_ids[ $this->service_id ] ) && in_array( $notice['id'], $dismissed_ids[ $this->service_id ] ) ) {
 						return false;
