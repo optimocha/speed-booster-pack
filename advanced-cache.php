@@ -129,7 +129,7 @@ function get_cache_file_path() {
 // read settings file
 function sbp_parse_settings_file( $settings_file ) {
 	if ( ! file_exists( $settings_file ) ) {
-		return [];
+		return false;
 	}
 
 	if ( ! $settings = json_decode( file_get_contents( $settings_file ), true ) ) {

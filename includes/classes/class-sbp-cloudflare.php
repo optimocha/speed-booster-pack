@@ -36,20 +36,31 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		return false;
 	}
 
-	public static function check_credentials( $saved_data = [] ) {
-		// Check if old value is same as new value
-		if ( $saved_data != [] && $saved_data['cloudflare'] != '' && ! $saved_data['cloudflare']['cloudflare_enable'] ) {
-			delete_transient( 'sbp_cloudflare_error' );
+	public static function reset_transient( $saved_data = [] ) {
+
+					// die(var_dump(sbp_get_option( 'cloudflare' ) , $saved_data[ 'cloudflare' ]));
+
+
+		if( sbp_get_option( 'cloudflare' ) != $saved_data[ 'cloudflare' ] ) {
+			delete_transient( 'sbp_cloudflare_status' );
 		}
 
-		if ( $saved_data != [] && sbp_get_option( 'cloudflare' ) == $saved_data['cloudflare'] ) {
+	}
+
+	public static function check_credentials() {
+
+		$cf_options = sbp_get_option( 'cloudflare' );
+
+		if( '' == $cf_options ) {
 			return;
 		}
 
-		if ( isset( $saved_data['cloudflare']['cloudflare_enable'] ) && $saved_data['cloudflare']['cloudflare_enable'] ) {
-			$email   = $saved_data['cloudflare']['cloudflare_email'];
-			$api_key = $saved_data['cloudflare']['cloudflare_api'];
-			$zone    = $saved_data['cloudflare']['cloudflare_zone'];
+		$enabled = $cf_options['cloudflare_enable'];
+		$email   = $cf_options['cloudflare_email'];
+		$api_key = $cf_options['cloudflare_api'];
+		$zone    = $cf_options['cloudflare_zone'];
+
+		if ( 1 != get_transient( 'sbp_cloudflare_status' ) && ! empty( $zone ) ) {
 
 			$headers = [
 				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
@@ -59,9 +70,9 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$result = self::send_request( $zone, '', [], $headers );
 
 			if ( true !== $result['success'] ) {
-				set_transient( 'sbp_cloudflare_error', 'Cloudflare API credentials are not valid.' );
+				set_transient( 'sbp_cloudflare_status', 0 );
 			} else {
-				delete_transient( 'sbp_cloudflare_error' );
+				set_transient( 'sbp_cloudflare_status', 1 );
 			}
 		}
 	}

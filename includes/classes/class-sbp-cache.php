@@ -184,6 +184,9 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return $html;
 		}
 
+		
+		// LAHMACUNTODO: settings.json dosyası yoksa yenisini oluşturmalı
+
 		// Check for query strings
 		if ( ! empty( $_GET ) ) {
 			// Get included rules

@@ -90,6 +90,8 @@ class Speed_Booster_Pack_Admin {
 	 */
 	private $version;
 
+	private $cloudflare_warning = false;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -100,14 +102,29 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function __construct( $plugin_name, $version ) {
 
+// 		$eben = [];
+// add_action( 'csf_sbp_options_save_before', function() use (&$eben) { $eben[] = 'csf_sbp_options_save_before'; } );
+// add_action( 'csf_sbp_options_save_after', function() use (&$eben) { $eben[] = 'csf_sbp_options_save_after'; } );
+// add_action( 'csf_sbp_options_saved', function() use (&$eben) { $eben[] = 'csf_sbp_options_saved'; } );
+// add_action( 'csf_options_before', function()  use (&$eben){ $eben[] = 'csf_options_before'; } );
+// add_action( 'csf_options_after', function() use (&$eben) { $eben[] = 'csf_options_after'; } );
+// add_action( 'csf_init', function() use (&$eben) { $eben[] = 'csf_init'; } );
+// add_action( 'csf_loaded', function() use (&$eben) { $eben[] = 'csf_loaded'; } );
+// add_action( 'csf_enqueue', function() use (&$eben) { $eben[] = 'csf_enqueue'; } );
+// add_action('shutdown', function( ) use (&$eben) {die(var_dump($eben));});
+
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
 		$this->load_dependencies();
+		
 
-		$this->create_settings_page();
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
+		// LAHMACUNTODO: bunu düzeltek
+		add_action( 'csf_loaded', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
+
+
+		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::reset_transient' );
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
 
@@ -120,6 +137,9 @@ class Speed_Booster_Pack_Admin {
 		$this->set_flash_notices();
 
 		$this->initialize_announce4wp();
+
+		$this->create_settings_page();
+		
 	}
 
 	/**
@@ -228,192 +248,16 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Dashboard */
 
-			/* BEGIN Section: Tweaks */
-			CSF::createSection(
-				$prefix,
-				[
-					'title'  => __( 'Tweaks', 'speed-booster-pack' ),
-					'id'     => 'tweaks',
-					'icon'   => 'fa fa-sliders-h',
-					'fields' => [
-
-
-						[
-							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
-							'id'      => 'module_tweaks',
-							'class'   => 'module-tweaks',
-							'type'    => 'switcher',
-							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default' => true,
-						],
-						[
-							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
-							'id'         => 'instant_page',
-							'type'       => 'switcher',
-							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external nofollow noopener">instant.page</a>' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Trim query strings', 'speed-booster-pack' ),
-							'id'         => 'trim_query_strings',
-							'type'       => 'switcher',
-							'desc'       => __( 'Removes the query strings (characters that come after the question mark) at the end of enqueued asset URLs.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Disable self pingbacks', 'speed-booster-pack' ),
-							'id'         => 'disable_self_pingbacks',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disabling this will prevent pinging this website to ping itself (its other posts etc.) during publishing, which will improve the speed of publishing posts or pages.', 'speed-booster-pack' ),
-							'default'    => true,
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Dequeue emoji scripts', 'speed-booster-pack' ),
-							'id'         => 'dequeue_emoji_scripts',
-							'type'       => 'switcher',
-							'desc'       => __( 'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, no worries there.', 'speed-booster-pack' ),
-							'default'    => true,
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Dequeue post embed script', 'speed-booster-pack' ),
-							'id'         => 'disable_post_embeds',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Dequeue jQuery Migrate', 'speed-booster-pack' ),
-							'id'         => 'dequeue_jquery_migrate',
-							'type'       => 'switcher',
-							'desc'       => __( 'If you\'re sure that the jQuery plugins used in your website work with jQuery 1.9 and above, this is totally safe to enable.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
-							'id'         => 'dequeue_dashicons',
-							'type'       => 'switcher',
-							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Dequeue Gutenberg CSS', 'speed-booster-pack' ),
-							'id'         => 'dequeue_block_library',
-							'type'       => 'switcher',
-							'desc'       => __( 'If you\'re not using the block editor (Gutenberg) in your posts/pages, this is a safe setting to enable.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
-							'id'         => 'heartbeat_settings',
-							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external nofollow noopener">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
-							'type'       => 'button_set',
-							'options'    => [
-								'enabled'   => __( 'Enabled', 'speed-booster-pack' ),
-								'optimized' => __( 'Optimized', 'speed-booster-pack' ),
-								'disabled'  => __( 'Disabled', 'speed-booster-pack' ),
-							],
-							'default'    => 'enabled',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Limit post revisions', 'speed-booster-pack' ),
-							'id'         => 'post_revisions',
-							'type'       => 'spinner',
-							'unit'       => __( 'revisions', 'speed-booster-pack' ),
-							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external nofollow noopener">', '</a>' ) . '<br />'
-							                /* translators: BEYNTODO  */
-							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>', '</code>' ),
-							'sanitize'   => 'absint',
-							'default'    => '99',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Autosave interval', 'speed-booster-pack' ),
-							'id'         => 'autosave_interval',
-							'type'       => 'spinner',
-							'min'        => '1',
-							'unit'       => __( 'minutes', 'speed-booster-pack' ),
-							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
-							                /* translators: BEYNTODO  */
-							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>', '</code>' ),
-							'sanitize'   => 'posabs',
-							'default'    => '1',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							/* translators: BEYNTODO  */
-							'title'      => sprintf( __( 'Declutter %s', 'speed-booster-pack' ), '<code>&lt;head&gt;</code>' ),
-							'id'         => 'declutter_head',
-							'class'      => 'declutter-head',
-							'type'       => 'fieldset',
-							'before'     => '<p>' . __( 'Enabling these options removes corresponding elements from your HTML source code. If you don\'t know what they are, it\'s probably safer for you to keep them disabled.', 'speed-booster-pack' ) . '</p>',
-							'fields'     => [
-
-								[
-									'title' => __( 'Shortlinks', 'speed-booster-pack' ),
-									'id'    => 'declutter_shortlinks',
-									'type'  => 'switcher',
-									'label' => '<link rel=\'shortlink\' href=\'...\' />',
-								],
-								[
-									'title' => __( 'Next/previous posts links', 'speed-booster-pack' ),
-									'id'    => 'declutter_adjacent_posts_links',
-									'type'  => 'switcher',
-									'label' => "<link rel='next (or prev)' title='...' href='...' />",
-								],
-								[
-									'title' => __( 'WLW Manifest link', 'speed-booster-pack' ),
-									'id'    => 'declutter_wlw',
-									'type'  => 'switcher',
-									'label' => '<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="..." />',
-								],
-								[
-									'title' => __( 'Really Simple Discovery (RSD) link', 'speed-booster-pack' ),
-									'id'    => 'declutter_rsd',
-									'type'  => 'switcher',
-									'label' => '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="..." />',
-								],
-								[
-									'title' => __( 'REST API links', 'speed-booster-pack' ),
-									'id'    => 'declutter_rest_api_links',
-									'type'  => 'switcher',
-									'label' => "<link rel='https://api.w.org/' href='...' />",
-								],
-								[
-									'title' => __( 'RSS feed links', 'speed-booster-pack' ),
-									'id'    => 'declutter_feed_links',
-									'type'  => 'switcher',
-									'label' => '<link rel="alternate" type="application/rss+xml" title="..." href="..." />',
-								],
-								[
-									'title' => __( 'WordPress version', 'speed-booster-pack' ),
-									'id'    => 'declutter_wp_version',
-									'type'  => 'switcher',
-									'label' => '<meta name="generator" content="WordPress X.X" />',
-								],
-							],
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-
-					],
-				]
-			);
-			/* END Section: Tweaks */
-
+			/* BEGIN Section: Caching */
 			$cloudflare_fields = [];
 
 			// Cloudflare fields
-			if ( $cloudflare_error = get_transient( 'sbp_cloudflare_error' ) ) {
+			// die(var_dump(get_transient( 'sbp_cloudflare_status' )));
+			if ( 0 == get_transient( 'sbp_cloudflare_status' ) ) {
 				$cloudflare_fields[] = [
 					'type'    => 'submessage',
 					'style'   => 'danger',
-					'content' => __( $cloudflare_error, 'speed-booster-pack' ),
+					'content' => __( 'asd', 'speed-booster-pack' ),
 				];
 			}
 
@@ -441,7 +285,6 @@ class Speed_Booster_Pack_Admin {
 					],
 				] );
 
-			/* BEGIN Section: Caching */
 			$cache_fields = [
 				[
 					'id'    => 'module_caching',
@@ -761,6 +604,184 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Special */
+
+			/* BEGIN Section: Tweaks */
+			CSF::createSection(
+				$prefix,
+				[
+					'title'  => __( 'Tweaks', 'speed-booster-pack' ),
+					'id'     => 'tweaks',
+					'icon'   => 'fa fa-sliders-h',
+					'fields' => [
+
+
+						[
+							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
+							'id'      => 'module_tweaks',
+							'class'   => 'module-tweaks',
+							'type'    => 'switcher',
+							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default' => true,
+						],
+						[
+							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
+							'id'         => 'instant_page',
+							'type'       => 'switcher',
+							/* translators: BEYNTODO  */
+							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external nofollow noopener">instant.page</a>' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Trim query strings', 'speed-booster-pack' ),
+							'id'         => 'trim_query_strings',
+							'type'       => 'switcher',
+							'desc'       => __( 'Removes the query strings (characters that come after the question mark) at the end of enqueued asset URLs.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Disable self pingbacks', 'speed-booster-pack' ),
+							'id'         => 'disable_self_pingbacks',
+							'type'       => 'switcher',
+							'desc'       => __( 'Disabling this will prevent pinging this website to ping itself (its other posts etc.) during publishing, which will improve the speed of publishing posts or pages.', 'speed-booster-pack' ),
+							'default'    => true,
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Dequeue emoji scripts', 'speed-booster-pack' ),
+							'id'         => 'dequeue_emoji_scripts',
+							'type'       => 'switcher',
+							'desc'       => __( 'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, no worries there.', 'speed-booster-pack' ),
+							'default'    => true,
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Dequeue post embed script', 'speed-booster-pack' ),
+							'id'         => 'disable_post_embeds',
+							'type'       => 'switcher',
+							'desc'       => __( 'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Dequeue jQuery Migrate', 'speed-booster-pack' ),
+							'id'         => 'dequeue_jquery_migrate',
+							'type'       => 'switcher',
+							'desc'       => __( 'If you\'re sure that the jQuery plugins used in your website work with jQuery 1.9 and above, this is totally safe to enable.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
+							'id'         => 'dequeue_dashicons',
+							'type'       => 'switcher',
+							/* translators: BEYNTODO  */
+							'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Dequeue Gutenberg CSS', 'speed-booster-pack' ),
+							'id'         => 'dequeue_block_library',
+							'type'       => 'switcher',
+							'desc'       => __( 'If you\'re not using the block editor (Gutenberg) in your posts/pages, this is a safe setting to enable.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
+							'id'         => 'heartbeat_settings',
+							/* translators: BEYNTODO  */
+							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external nofollow noopener">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
+							'type'       => 'button_set',
+							'options'    => [
+								'enabled'   => __( 'Enabled', 'speed-booster-pack' ),
+								'optimized' => __( 'Optimized', 'speed-booster-pack' ),
+								'disabled'  => __( 'Disabled', 'speed-booster-pack' ),
+							],
+							'default'    => 'enabled',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Limit post revisions', 'speed-booster-pack' ),
+							'id'         => 'post_revisions',
+							'type'       => 'spinner',
+							'unit'       => __( 'revisions', 'speed-booster-pack' ),
+							/* translators: BEYNTODO  */
+							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external nofollow noopener">', '</a>' ) . '<br />'
+							                /* translators: BEYNTODO  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>', '</code>' ),
+							'sanitize'   => 'absint',
+							'default'    => '99',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Autosave interval', 'speed-booster-pack' ),
+							'id'         => 'autosave_interval',
+							'type'       => 'spinner',
+							'min'        => '1',
+							'unit'       => __( 'minutes', 'speed-booster-pack' ),
+							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
+							                /* translators: BEYNTODO  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>', '</code>' ),
+							'sanitize'   => 'posabs',
+							'default'    => '1',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							/* translators: BEYNTODO  */
+							'title'      => sprintf( __( 'Declutter %s', 'speed-booster-pack' ), '<code>&lt;head&gt;</code>' ),
+							'id'         => 'declutter_head',
+							'class'      => 'declutter-head',
+							'type'       => 'fieldset',
+							'before'     => '<p>' . __( 'Enabling these options removes corresponding elements from your HTML source code. If you don\'t know what they are, it\'s probably safer for you to keep them disabled.', 'speed-booster-pack' ) . '</p>',
+							'fields'     => [
+
+								[
+									'title' => __( 'Shortlinks', 'speed-booster-pack' ),
+									'id'    => 'declutter_shortlinks',
+									'type'  => 'switcher',
+									'label' => '<link rel=\'shortlink\' href=\'...\' />',
+								],
+								[
+									'title' => __( 'Next/previous posts links', 'speed-booster-pack' ),
+									'id'    => 'declutter_adjacent_posts_links',
+									'type'  => 'switcher',
+									'label' => "<link rel='next (or prev)' title='...' href='...' />",
+								],
+								[
+									'title' => __( 'WLW Manifest link', 'speed-booster-pack' ),
+									'id'    => 'declutter_wlw',
+									'type'  => 'switcher',
+									'label' => '<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="..." />',
+								],
+								[
+									'title' => __( 'Really Simple Discovery (RSD) link', 'speed-booster-pack' ),
+									'id'    => 'declutter_rsd',
+									'type'  => 'switcher',
+									'label' => '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="..." />',
+								],
+								[
+									'title' => __( 'REST API links', 'speed-booster-pack' ),
+									'id'    => 'declutter_rest_api_links',
+									'type'  => 'switcher',
+									'label' => "<link rel='https://api.w.org/' href='...' />",
+								],
+								[
+									'title' => __( 'RSS feed links', 'speed-booster-pack' ),
+									'id'    => 'declutter_feed_links',
+									'type'  => 'switcher',
+									'label' => '<link rel="alternate" type="application/rss+xml" title="..." href="..." />',
+								],
+								[
+									'title' => __( 'WordPress version', 'speed-booster-pack' ),
+									'id'    => 'declutter_wp_version',
+									'type'  => 'switcher',
+									'label' => '<meta name="generator" content="WordPress X.X" />',
+								],
+							],
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+
+					],
+				]
+			);
+			/* END Section: Tweaks */
 
 			/* BEGIN Section: Tools */
 			CSF::createSection(
