@@ -209,7 +209,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		// Read cache file
 		$cache_file_path = $this->get_cache_file_path() . $this->file_name;
 
-		$caching_expiry = sbp_get_option( 'caching_expiry' ) * DAY_IN_SECONDS;
+		$caching_expiry = sbp_get_option( 'caching_expiry' ) * HOUR_IN_SECONDS;
 
 		$has_file_expired = $wp_filesystem->mtime( $cache_file_path ) + $caching_expiry < time();
 

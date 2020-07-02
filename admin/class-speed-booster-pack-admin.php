@@ -455,9 +455,9 @@ class Speed_Booster_Pack_Admin {
 					'id'         => 'caching_expiry',
 					'type'       => 'spinner',
 					'min'        => '1',
-					'unit'       => __( 'days', 'speed-booster-pack' ),
-					'desc'       => __( 'How many days to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
-					'default'    => '3',
+					'unit'       => __( 'hours', 'speed-booster-pack' ),
+					'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
+					'default'    => '10',
 					'sanitize'   => 'posabs',
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
@@ -840,7 +840,7 @@ class Speed_Booster_Pack_Admin {
 
 	private function initialize_announce4wp() {
 		if ( sbp_get_option( 'enable_notices' ) ) {
-			new Announce4WP_Client( SBP_PLUGIN_NAME, "sbp", "https://speedboosterpack.com/wp-json/a4wp/v1/" . SBP_VERSION . "/news.json", "toplevel_page_sbp-settings" );
+			new Announce4WP_Client( 'speed-booster-pack.php', "sbp", "https://speedboosterpack.com/wp-json/a4wp/v1/" . SBP_VERSION . "/news.json", "toplevel_page_sbp-settings" );
 		}
 	}
 }
