@@ -220,26 +220,70 @@ class Speed_Booster_Pack_Admin {
 
 						[
 							'type'    => 'heading',
-							/* translators: BEYNTODO  */
-							'content' => sprintf( __( 'Welcome to %s!', 'speed-booster-pack' ), 'Speed Booster Pack' ),
+							/* translators: %s = plugin's name  */
+							'content' => sprintf( __( 'Welcome to %s!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						],
 						[
 							'type'    => 'content',
-							'content' => 'This is a content field. You can write some html here.',
+							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
 						],
 						[
 							'type'    => 'subheading',
-							'content' => 'This is subheading field',
+							'content' => __( 'Heads up: This plugin is ALWAYS in beta!', 'speed-booster-pack' ),
 						],
 						[
-							'type'    => 'submessage',
-							'style'   => 'success',
-							'content' => 'This is a submessage field. And using style "success"',
+							'type'    => 'content',
+							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
 						],
 						[
-							'type'    => 'notice',
-							'style'   => 'success',
-							'content' => 'This is a notice field. And using style "success"',
+							'type'    => 'subheading',
+							/* translators: %s = plugin's name  */
+							'content' => sprintf( __( 'Benefits of %s', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+						],
+						[
+							'type'    => 'content',
+							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'subheading',
+							'content' => __( 'How the features in each tab work', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'content',
+							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'subheading',
+							'content' => __( 'Upcoming features', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'content',
+							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'callback',
+							'function' => 'sbp_newsletter_form',
+						],
+						[
+							'type'    => 'subheading',
+							'content' => __( 'That\'s it, enjoy!', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'content',
+							'content' => __( 'We really hope that you\'ll enjoy working with our plugin. Always remember that this is a powerful tool, and using powerful tools might hurt you if you\'re not careful. Have fun!', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'content',
+							'content' => __( 'Almost forgot: If you like %1$s, it would mean a lot to us if you gave a fair rating on %2$s, because higher rated plugins show up on more users, meaning that we\'ll have to take better care of %1$s!', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'subheading',
+							'content' => __( 'If you\'re looking for professional help...', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'content',
+							/* translators: 1: plugin owner's name (Optimocha) 2: plugin's name (Speed Booster Pack) 3: hyperlink to the owner's website */
+							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different WordPress websites. (Our tailored speed optimization service is actually the source of the know-how that helps %2$s get better and better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_OWNER_NAME, '<a href="' .  SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
 						],
 
 
