@@ -294,14 +294,15 @@ class Speed_Booster_Pack_Admin {
 
 			/* BEGIN Section: Caching */
 			$cloudflare_fields = [];
+			$cloudflare_transient = get_transient( 'sbp_cloudflare_status' );
 
 			// Cloudflare fields
 			// die(var_dump(get_transient( 'sbp_cloudflare_status' )));
-			if ( 0 == get_transient( 'sbp_cloudflare_status' ) ) {
+			if ( '0' === $cloudflare_transient ) {
 				$cloudflare_fields[] = [
 					'type'    => 'submessage',
 					'style'   => 'danger',
-					'content' => __( 'asd', 'speed-booster-pack' ),
+					'content' => __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ),
 				];
 			}
 

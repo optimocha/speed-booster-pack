@@ -15,5 +15,10 @@
 
 .sbp-settings .csf-field-code_editor .CodeMirror {height:190px;}
 .sbp-settings .csf-desc-text {color:#777;}
+.sbp-settings .csf-section.dashboard .csf-field+.csf-field {border:0;}
+
+/*.sbp-settings .csf-section.dashboard .csf-field-heading, .sbp-settings .csf-section.dashboard .csf-field-subheading {background:#F7F7F7;}
 .sbp-settings .csf-field-heading, .sbp-settings .csf-field-subheading {background:#FFF;}
+*/
+
 .sbp-settings {max-width:75rem;}
