@@ -95,13 +95,13 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Upgrade Notice ==
 
-TODO
+BEYNTODO
 
 == Changelog ==
 
 = 4.0.0 =
 
-*Release Date: TODO TODO 2020*
+*Release Date: BEYNTODO 2020*
 
 * **Speed Booster Pack v4.0 is written completely from scratch!**
 * **NEW**: 

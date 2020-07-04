@@ -232,7 +232,7 @@ class Speed_Booster_Pack {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
-		// TODO: Move this function to the Utilities class.
+		// LAHMACUNTODO: Move this function to the Utilities class.
 		add_action( 'upgrader_process_complete',
 			function ( $upgrader_object, $hook_extra ) {
 				$our_plugin = 'speed-booster-pack/speed-booster-pack.php';
