@@ -20,6 +20,10 @@ if ( ! empty( $_COOKIE ) ) {
 $settings_file = WP_CONTENT_DIR . '/cache/speed-booster/settings.json';
 $settings      = sbp_parse_settings_file( $settings_file );
 
+if ( ! $settings ) {
+	return false;
+}
+
 // Set default file name
 $filename = 'index.html';
 
@@ -42,7 +46,7 @@ if ( ! empty( $_GET ) && isset( $settings['caching_include_query_strings'] ) ) {
 
 	if ( '' !== $query_string_file_name ) {
 		$query_string_file_name .= '.html';
-		$filename               = md5($query_string_file_name);
+		$filename               = md5( $query_string_file_name );
 	}
 }
 
@@ -62,7 +66,7 @@ if ( isset( $settings['caching_expiry'] ) && ! empty( $settings['caching_expiry'
 
 if ( isset( $settings['caching_exclude_urls'] ) ) {
 	$exclude_urls = sbp_explode_lines( $settings['caching_exclude_urls'] );
-	$current_url = rtrim($_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/');
+	$current_url  = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
 	if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
 		return false;
 	}
@@ -133,7 +137,7 @@ function sbp_parse_settings_file( $settings_file ) {
 	}
 
 	if ( ! $settings = json_decode( file_get_contents( $settings_file ), true ) ) {
-		return [];
+		return false;
 	}
 
 	return $settings;

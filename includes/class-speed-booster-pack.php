@@ -241,7 +241,9 @@ class Speed_Booster_Pack {
 						SBP_Cache::generate_htaccess();
 					}
 				}
-			}, 10, 2 );
+			},
+			10,
+			2 );
 
 	}
 

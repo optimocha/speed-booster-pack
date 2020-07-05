@@ -184,8 +184,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return $html;
 		}
 
-		
-		// LAHMACUNTODO: settings.json dosyası yoksa yenisini oluşturmalı
+		$wp_filesystem = $this->get_filesystem();
+
+		if ( ! $wp_filesystem->exists( SBP_CACHE_DIR . 'settings.json' ) ) {
+			self::create_settings_json();
+		}
 
 		// Check for query strings
 		if ( ! empty( $_GET ) ) {
@@ -205,9 +208,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 				$this->file_name        = md5( $query_string_file_name );
 			}
 		}
-
-
-		$wp_filesystem = $this->get_filesystem();
 
 		// Read cache file
 		$cache_file_path = $this->get_cache_file_path() . $this->file_name;

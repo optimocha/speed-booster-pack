@@ -45,16 +45,26 @@ class SBP_Utils extends SBP_Abstract_Module {
 		return in_array( $path, get_option( 'active_plugins' ) );
 	}
 
-	public static function get_string_between_strings($first_string, $second_string, $text) {
-		$start_position = strpos($text, $first_string);
-		$finish_position = strpos($text, $second_string);
-
-		if ($start_position !== false && $finish_position !== false) {
-			$finish_position += strlen($second_string);
-			$found_string_length = $finish_position - $start_position;
-			return substr($text, $start_position, $found_string_length);
-		}
-
-		return false;
-	}
+//	public static function on_plugin_update( $callback ) {
+//		add_action( 'upgrader_process_complete',
+//			function ( $upgrader_object, $hook_extra ) use ( $callback ) {
+//				$our_plugin = 'speed-booster-pack/speed-booster-pack.php';
+//				if ( $hook_extra['action'] == 'update' && $hook_extra['type'] == 'plugin' && isset( $hook_extra['plugins'] ) ) {
+//					if ( in_array( $our_plugin, $hook_extra['plugins'] ) ) {
+//						file_get_contents(SBP_CACHE_DIR . 'test1.txt', 'here');
+//						if ( is_callable( $callback ) ) {
+//							file_get_contents(SBP_CACHE_DIR . 'test2.txt', 'here');
+//							$arguments = func_get_args();
+//							file_get_contents(SBP_CACHE_DIR . 'test3.txt', 'here');
+//							array_shift( $arguments );
+//							file_get_contents(SBP_CACHE_DIR . 'test4.txt', 'here');
+//							$cuf = call_user_func_array( $callback, $arguments );
+//							file_get_contents(SBP_CACHE_DIR . 'testtest.txt', $cuf);
+//						}
+//					}
+//				}
+//			},
+//			10,
+//			2 );
+//	}
 }
