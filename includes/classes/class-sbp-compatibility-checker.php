@@ -103,7 +103,7 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 			$plugin_name = get_plugin_data( WP_CONTENT_DIR . '/plugins/' . $plugin )['Name'];
 			echo '<div class="notice notice-warning is-dismissible sbp-compatibility-notice" data-notice-id="' . $notice_id . '">
 					<p>
-					' . sprintf( __( 'The "%1$s" plugin has similar features to %2$s which might cause overlaps or even conflicts. Make sure you\'re not using the features at the same time, test thoroughly and deactivate %1$s if necessary.', 'speed-booster-pack' ), "<strong>$plugin_name</strong>", SBP_PLUGIN_NAME ) . '
+					' . sprintf( __( 'The "%1$s" plugin has similar features to %2$s\'s, which might cause overlaps or even conflicts. Make sure you\'re not using the similar features of each plugin at the same time, test thoroughly and deactivate %1$s if necessary.', 'speed-booster-pack' ), "<strong>$plugin_name</strong>", SBP_PLUGIN_NAME ) . '
 					</p>
 				</div>';
 		}
