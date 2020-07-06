@@ -11,16 +11,16 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	private static $api_url = 'https://api.cloudflare.com/client/v4/zones/';
 
 	public function __construct() {
-		if ( is_array( sbp_get_option( 'cloudflare' ) ) && ! sbp_get_option( 'cloudflare' )['cloudflare_enable'] ) {
+		if ( ! sbp_get_option( 'cloudflare_enable' ) ) {
 			return;
 		}
 	}
 
 	public static function clear_cache() {
-		if ( is_array( sbp_get_option( 'cloudflare' ) ) && sbp_get_option( 'cloudflare' )['cloudflare_enable'] ) {
-			$email   = sbp_get_option( 'cloudflare' )['cloudflare_email'];
-			$api_key = sbp_get_option( 'cloudflare' )['cloudflare_api'];
-			$zone    = sbp_get_option( 'cloudflare' )['cloudflare_zone'];
+		if ( sbp_get_option( 'cloudflare_enable' ) ) {
+			$email   = sbp_get_option( 'cloudflare_email' );
+			$api_key = sbp_get_option( 'cloudflare_api' );
+			$zone    = sbp_get_option( 'cloudflare_zone' );
 
 			$headers = [
 				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
@@ -37,28 +37,21 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public static function reset_transient( $saved_data = [] ) {
-
-					// die(var_dump(sbp_get_option( 'cloudflare' ) , $saved_data[ 'cloudflare' ]));
-
-
-		if( sbp_get_option( 'cloudflare' ) != $saved_data[ 'cloudflare' ] ) {
+		if ( sbp_get_option( 'cloudflare_zone' ) != $saved_data['cloudflare_zone'] ||
+		     sbp_get_option( 'cloudflare_email' ) != $saved_data['cloudflare_email'] ||
+		     sbp_get_option( 'cloudflare_api' ) != $saved_data['cloudflare_api'] ) {
 			delete_transient( 'sbp_cloudflare_status' );
 		}
-
 	}
 
 	public static function check_credentials() {
+		$email   = sbp_get_option( 'cloudflare_email' );
+		$api_key = sbp_get_option( 'cloudflare_api' );
+		$zone    = sbp_get_option( 'cloudflare_zone' );
 
-		$cf_options = sbp_get_option( 'cloudflare' );
-
-		if( '' == $cf_options ) {
+		if ( ! $email || ! $api_key || ! $zone ) {
 			return;
 		}
-
-		$enabled = $cf_options['cloudflare_enable'];
-		$email   = $cf_options['cloudflare_email'];
-		$api_key = $cf_options['cloudflare_api'];
-		$zone    = $cf_options['cloudflare_zone'];
 
 		if ( 1 != get_transient( 'sbp_cloudflare_status' ) && ! empty( $zone ) ) {
 

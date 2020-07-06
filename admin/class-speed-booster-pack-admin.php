@@ -106,7 +106,6 @@ class Speed_Booster_Pack_Admin {
 		$this->version     = $version;
 
 		$this->load_dependencies();
-		
 
 		// TODO: the CloudFlare credentials warning doesn't show up after saving, but after saving + refreshing.
 		add_action( 'csf_loaded', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
@@ -126,7 +125,7 @@ class Speed_Booster_Pack_Admin {
 		$this->initialize_announce4wp();
 
 		$this->create_settings_page();
-		
+
 	}
 
 	/**
@@ -248,7 +247,7 @@ class Speed_Booster_Pack_Admin {
 							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
 						],
 						[
-							'type'    => 'callback',
+							'type'     => 'callback',
 							'function' => 'sbp_newsletter_form',
 						],
 						[
@@ -270,7 +269,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1: plugin owner's name (Optimocha) 2: plugin's name (Speed Booster Pack) 3: hyperlink to the owner's website */
-							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different WordPress websites. (Our tailored speed optimization service is actually the source of the know-how that helps %2$s get better and better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_OWNER_NAME, '<a href="' .  SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
+							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different WordPress websites. (Our tailored speed optimization service is actually the source of the know-how that helps %2$s get better and better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_OWNER_NAME, '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
 						],
 
 
@@ -280,7 +279,7 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: Dashboard */
 
 			/* BEGIN Section: Caching */
-			$cloudflare_fields = [];
+			$cloudflare_fields    = [];
 			$cloudflare_transient = get_transient( 'sbp_cloudflare_status' );
 
 			if ( '0' === $cloudflare_transient ) {
@@ -315,7 +314,7 @@ class Speed_Booster_Pack_Admin {
 					],
 				] );
 
-			$cache_fields = [
+			$cache_fields = array_merge( [
 				[
 					'id'    => 'module_caching',
 					'class' => 'module-caching',
@@ -361,14 +360,8 @@ class Speed_Booster_Pack_Admin {
 					'default'    => 'utm_source',
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
-				[
-					'title'  => __( 'Cloudflare integration', 'speed-booster-pack' ),
-					'id'     => 'cloudflare',
-					'class'  => 'cloudflare',
-					'type'   => 'fieldset',
-					'fields' => $cloudflare_fields,
-				],
-			];
+			],
+				$cloudflare_fields );
 
 			$is_kinsta_active = false;
 			if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
@@ -885,7 +878,7 @@ class Speed_Booster_Pack_Admin {
 
 	public function show_cache_notice() {
 		echo '<div class="notice notice-success is-dismissible">
-                <p><strong>' . SBP_PLUGIN_NAME . ':</strong>' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>
+                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>
         </div>';
 	}
 
