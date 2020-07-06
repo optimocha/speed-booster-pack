@@ -102,27 +102,14 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function __construct( $plugin_name, $version ) {
 
-// 		$eben = [];
-// add_action( 'csf_sbp_options_save_before', function() use (&$eben) { $eben[] = 'csf_sbp_options_save_before'; } );
-// add_action( 'csf_sbp_options_save_after', function() use (&$eben) { $eben[] = 'csf_sbp_options_save_after'; } );
-// add_action( 'csf_sbp_options_saved', function() use (&$eben) { $eben[] = 'csf_sbp_options_saved'; } );
-// add_action( 'csf_options_before', function()  use (&$eben){ $eben[] = 'csf_options_before'; } );
-// add_action( 'csf_options_after', function() use (&$eben) { $eben[] = 'csf_options_after'; } );
-// add_action( 'csf_init', function() use (&$eben) { $eben[] = 'csf_init'; } );
-// add_action( 'csf_loaded', function() use (&$eben) { $eben[] = 'csf_loaded'; } );
-// add_action( 'csf_enqueue', function() use (&$eben) { $eben[] = 'csf_enqueue'; } );
-// add_action('shutdown', function( ) use (&$eben) {die(var_dump($eben));});
-
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
 
 		$this->load_dependencies();
 		
 
-
-		// LAHMACUNTODO: bunu düzeltek
+		// TODO: the CloudFlare credentials warning doesn't show up after saving, but after saving + refreshing.
 		add_action( 'csf_loaded', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
-
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::reset_transient' );
 
@@ -296,8 +283,6 @@ class Speed_Booster_Pack_Admin {
 			$cloudflare_fields = [];
 			$cloudflare_transient = get_transient( 'sbp_cloudflare_status' );
 
-			// Cloudflare fields
-			// die(var_dump(get_transient( 'sbp_cloudflare_status' )));
 			if ( '0' === $cloudflare_transient ) {
 				$cloudflare_fields[] = [
 					'type'    => 'submessage',
@@ -431,7 +416,7 @@ class Speed_Booster_Pack_Admin {
 					'fields' => [
 
 						[
-							/* translators: used like "Enable/Disable Caching" where "Caching" is the module name. */
+							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
 							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
 							'id'      => 'module_assets',
 							'type'    => 'switcher',

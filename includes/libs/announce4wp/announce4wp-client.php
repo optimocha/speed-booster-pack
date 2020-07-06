@@ -1,7 +1,5 @@
 <?php
 
-// LAHMACUNTODO: versiyon seçmediğimizde tüm versiyonlarda göstermeli
-
 if ( ! class_exists( "Announce4WP_Client" ) ) {
 	class Announce4WP_Client {
 		private $api_endpoint_url = '';
