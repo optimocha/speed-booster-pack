@@ -103,30 +103,30 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 
 		public function display_notices() {
 			$announcements = get_transient( $this->transient_name );
-			if ( is_array( $announcements ) && isset( $announcements['dismissible_notices'] ) ) {
-				foreach ( $announcements['dismissible_notices'] as $notice ) {
+			if ( is_array( $announcements ) && isset( $announcements['normal_notices'] ) ) {
+				foreach ( $announcements['normal_notices'] as $notice ) {
 					$attributes = $this->parse_attributes( $notice['rules'] );
 					$this->print_notice( $attributes, $notice );
 				}
 			}
 
-			if ( is_array( $announcements ) && isset( $announcements["permanent_notices"] ) ) {
-				foreach ( $announcements["permanent_notices"] as $notice ) {
+			if ( is_array( $announcements ) && isset( $announcements["important_notices"] ) ) {
+				foreach ( $announcements["important_notices"] as $notice ) {
 					$attributes = $this->parse_attributes( $notice['rules'] );
 					$this->print_notice( $attributes, $notice, true );
 				}
 			}
 		}
 
-		private function print_notice( $attributes, $notice, $is_permanent = false ) {
+		private function print_notice( $attributes, $notice, $is_important = false ) {
 			$type = isset( $attributes['type'] ) ? $attributes['type'] : 'notice-info';
-			if ( true === $is_permanent ) {
+			if ( true === $is_important ) {
 				$should_display = $this->should_display( $attributes );
 			} else {
 				$should_display = $this->should_display( $attributes, $notice );
 			}
 			if ( $should_display ) {
-				echo '<div class="notice a4wp-notice ' . $type . ' ' . ( ! $is_permanent ? 'is-dismissible' : null ) . '" data-service-id="' . $this->service_id . '" data-notice-id="' . $notice['id'] . '">';
+				echo '<div class="notice a4wp-notice ' . $type . ' ' . ( ! $is_important ? 'is-dismissible' : null ) . '" data-service-id="' . $this->service_id . '" data-notice-id="' . $notice['id'] . '">';
 				echo ( $notice['title'] ) ? '<p style="font-size:120%;font-weight:700;">' . $notice['title'] . '</p>' : null;
 				echo ( $notice['content'] ) ? '<p>' . $notice['content'] . '</p>' : null;
 				echo '</div>';
@@ -135,7 +135,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 
 		/**
 		 * @param $attributes
-		 * @param null $notice required for dismissible notices
+		 * @param null $notice required for notices
 		 *
 		 * @return bool
 		 */
@@ -146,8 +146,6 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 				return false;
 			}
 
-
-			// Check Dismissible Notices
 			if ( null !== $notice ) {
 				$dismissed_ids = get_user_meta( get_current_user_id(), $this->service_id . '_dismissed_notices', true );
 				if ( is_array( $dismissed_ids ) ) {
