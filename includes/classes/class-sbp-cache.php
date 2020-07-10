@@ -299,7 +299,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$found_wp_cache = false;
 
 			foreach ( $wp_config as &$line ) {
-				if ( preg_match( '/^\s*define\s*\(\s*[\'\"]WP_CACHE[\'\"]\s*,\s*(.*)\s*\)/', $line ) ) {
+				if ( preg_match( '/^\s*define\s*\(\s*[\'\"]WP_CACHE[\'\"]\s*,.*\)\s*;/', $line ) ) {
 					$line           = $append_line;
 					$found_wp_cache = true;
 					break;
