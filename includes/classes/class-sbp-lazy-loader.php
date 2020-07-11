@@ -93,6 +93,9 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 				$newElement
 			);
 
+			// prevent mixed content errors
+			$newElement = str_replace( 'http://', '//', $newElement );
+
 			$html = str_replace( $element, $newElement, $html );
 		}
 

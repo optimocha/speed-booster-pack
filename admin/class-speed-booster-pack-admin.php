@@ -46,6 +46,19 @@ function sbp_clear_cdn_url( $url ) {
 }
 
 /**
+ * Removes http:// from the url
+ *
+ * @param $url
+ *
+ * @return string
+ * @since 4.0.0
+ *
+ */
+function sbp_clear_http( $url ) {
+	return str_replace( "http://", "//", $url );
+}
+
+/**
  * @param $urls
  */
 function sanitize_caching_urls( $urls ) {
@@ -444,6 +457,7 @@ class Speed_Booster_Pack_Admin {
 							'type'       => 'code_editor',
 							'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
 							'dependency' => [ [ 'module_assets', '==', '1' ], [ 'lazyload', '==', '1' ] ],
+							'sanitize'   => 'sbp_clear_http',
 						],
 						[
 							'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
