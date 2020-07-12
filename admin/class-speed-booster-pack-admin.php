@@ -46,6 +46,19 @@ function sbp_clear_cdn_url( $url ) {
 }
 
 /**
+ * Removes http:// from the url
+ *
+ * @param $url
+ *
+ * @return string
+ * @since 4.0.0
+ *
+ */
+function sbp_clear_http( $url ) {
+	return str_replace( "http://", "//", $url );
+}
+
+/**
  * @param $urls
  */
 function sanitize_caching_urls( $urls ) {
@@ -189,7 +202,7 @@ class Speed_Booster_Pack_Admin {
 					'admin_bar_menu_priority' => 80,
 
 					/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
-					'footer_credit'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
+					'footer_text'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
 				] );
 
 			/* BEGIN Section: Dashboard */
@@ -444,6 +457,7 @@ class Speed_Booster_Pack_Admin {
 							'type'       => 'code_editor',
 							'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
 							'dependency' => [ [ 'module_assets', '==', '1' ], [ 'lazyload', '==', '1' ] ],
+							'sanitize'   => 'sbp_clear_http',
 						],
 						[
 							'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
