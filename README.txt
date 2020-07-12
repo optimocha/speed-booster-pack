@@ -29,6 +29,8 @@ That's where Speed Booster Pack comes in: With its ever-evolving codebase, Speed
 
 ### How Speed Booster Pack helps you get better PageSpeed scores:
 
+* **optimization**: BEYNTODO
+
 * **CSS optimization**: You can inline and minify all CSS in your pages, and save on HTTP requests.
 * **JavaScript optimization**: Deferring JS and moving them into the footer makes them non-render-blocking, which Google PageSpeed likes *so much*.
 * **(NEW!) Lazy loading**: With the latest native browser feature for lazy loading *and* a state-of-the-art lazy loader script, your images will load as soon as they're in the viewport (instead of all at once). This alone can make your site faster than ever!
@@ -70,17 +72,17 @@ Even though the plugin works perfectly well on most WordPress websites, it's not
 
 For complete usage instructions, you can visit the [Plugin Documentation](https://optimocha.com/speed-booster-pack-documentation/) page.
 
-= This plugin broke my site! =
+= I like your plugin, how do I thank you? =
 
-It's possible that the theme or your plugins might be using some old code that isn't compatible with Speed Booster Pack's code. If that's the case, try disabling some features in the Advanced tab. If that doesn't work, try deactivating the plugin and clear your browser & server caches. If that does the trick, reach out to us so we can help you. If the site is *still* broken, though, there's obviously another reason for your site breaking because everything Speed Booster Pack does, it does it on-the-fly. Deactivating the plugin (and clearing your caches) will make everything go away.
+We don't accept any donations, if that's what you're asking! :) But we do like to have our users [review the plugin](https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post) with a fair star rating. And we always appreciate you recommending our plugin to other people!
 
 = I have a bug report! =
 
 We love you already! Please contact us (link above in the About section) so we can get to the bottom of the bug you found. **If it's a legitimate bug, you'll be awarded with discount coupons to our services!**
 
-= I like your plugin, how do I thank you? =
+= This plugin broke my site! =
 
-We don't accept any donations, if that's what you're asking! :) But we do like to have our users [review the plugin](https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post) with a fair star rating. And we always appreciate you recommending our plugin to other people!
+It's possible that the theme or your plugins might be using some old code that isn't compatible with Speed Booster Pack's code. If that's the case, try disabling some features in the Advanced tab. If that doesn't work, try deactivating the plugin and clear your browser & server caches. If that does the trick, reach out to us so we can help you. If the site is *still* broken, though, there's obviously another reason for your site breaking because everything Speed Booster Pack does, it does it on-the-fly. Deactivating the plugin (and clearing your caches) will make everything go away.
 
 = I need more than Speed Booster Pack! =
 
@@ -95,55 +97,26 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Upgrade Notice ==
 
-BEYNTODO
+Speed Booster Pack v4.0 is written from scratch! With the new options framework, your current options will be migrated to the new codebase but make sure you review your options after updating the plugin to the latest version.
 
 == Changelog ==
 
 = 4.0.0 =
 
-*Release Date: BEYNTODO 2020*
+*Release Date: BEYNTODO July 2020*
 
-* **Speed Booster Pack v4.0 is written completely from scratch!**
-* **NEW**: 
-* **Fixed**: 
-* **Updated**: 
-* **Removed**: 
+**Speed Booster Pack v4.0 is written from scratch!** Almost all of our codebase is rewritten, great new features are added, and we have an awesome new options panel to show them all!
 
-= 3.8.6 =
-
-*Release Date: 24 April 2020*
-
-* **Added**: A new feature called PreBoost will allow you to add static assets as `&lt;link rel="preload" /&gt;` elements into page sources.
-* **Added**: Two new (dismissible) notices will ask SBP users to participate in testing the new Speed Booster Pack v4.0 (beta), and to translate SBP into their own language.
-* **Updated**: Tested for WordPress 5.4.
-* **Updated**: Rewrote the Google Fonts optimization script.
-* **Updated**: Updated `lazyload.js` to 15.1.1.
-* **Fixed**: Hooking the cart fragments script.
-* **Fixed**: Various tiny fixes.
-
-= 3.8.5.1 =
-
-*Release Date: 29 February 2020*
-
-* **Added**: You can now exclude assets from lazy loading.
-* **Added**: More "default" exclude rules added for the JS optimization feature.
-* **Fixed**: An "empty needle" warning regarding replace functions.
-* **Updated**: Updated `lazyload.js` to 12.5.1.
-* **Removed**: Unnecessary jQuery UI slider script in the options screen.
-
-= 3.8.5 =
-
-*Release Date: 15 February 2020*
-
-* **Added**: New feature - Optimize Google Fonts!
-* **Updated**: Rewrote the whole JavaScript optimization feature! Hopefully it will work even better than our previous version. We also added a simple migration notice to not break current configurations, so be sure to migrate!
-* **Removed**: JavaSript deferring feature has been removed - coming back in a future release!
-* **Removed**: Deleted the non-working review nag.
-* **Updated**: Updated `lazyload.js` to 12.4.0.
-* **Updated**: Refactored the code a bit. Also cleaned up a lot of unnecessary stuff.
-* **Fixed**: Speed Booster Pack is disabled for all (almost) Page Builder instances, and even a few other plugins that have front-end editors! You can also temporarily disable SBP for a specific URL by adding `sbp_disable=1` at the end of a URL.
-* **Fixed**: Tabbed navigation in the settings page is working better now.
-* **Fixed**: A small issue in the emoji disabler feature is fixed.
-* **Fixed**: Some translatable strings are changed and a few _untranslatable_ strings are fixed.
+* **NEW - Caching**: With this new feature, you can now enable page and browser caching which will greatly reduce database queries and help browsers cache static assets more efficiently.
+* **NEW - Custom Code Manager**: You can now add custom JavaScript code and make them run deferred.
+* **NEW - Cloudflare Integration**: User your Cloudflare API key to connect your caching system to Cloudflare, so each time your cache is cleared, Cloudflare's cache will be purged as well.
+* **NEW - Analytics Localizer**: You can now serve Google Analytics or Google Tag Manager scripts (analytics.js, gtag.js, or gtm.js) from your own server, and still keep it working.
+* **NEW**: The brand new admin panel created with the Codestar Framework will help you review and understand Speed Booster Pack's options more easily.
+* **Improved - JavaScript optimization**: You can now choose to move JS to the footer **or** defer parsing of JavaScript.
+* **Improved - Google Fonts optimization**: Our refactored code helps Google Fonts load even faster now.
+* **Improved - Compatibility**: Active plugins with features similar to Speed Booster Pack will throw a dismissible notice to warn the user to be careful about the overlapping features.
+* **Fixed**: The Preboost feature outputted code without the `crossorigin` attribute, which is now fixed.
+* **Fixed**: The lazy load feature caused mixed content warnings in some edge cases, which is now fixed.
+* **Updated**: Updated external libraries (lazyload.js and instantpage.js) to their latest versions.
 
 *You can read the rest of the changelog on [GitHub](https://github.com/optimocha/speed-booster-pack).
