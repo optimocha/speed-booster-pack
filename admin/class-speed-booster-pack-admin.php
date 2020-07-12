@@ -202,7 +202,7 @@ class Speed_Booster_Pack_Admin {
 					'admin_bar_menu_priority' => 80,
 
 					/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
-					'footer_text'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
+					'footer_credit'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
 				] );
 
 			/* BEGIN Section: Dashboard */
