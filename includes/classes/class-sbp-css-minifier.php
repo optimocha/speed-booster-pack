@@ -9,7 +9,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	private $styles_list = [];
-	private $styles_are_async = false;
 	private $exceptions = [
 		'admin-bar',
 		'dashicons',
@@ -32,7 +31,6 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 			$minify = false;
 		}
 
-		$this->styles_are_async = true;
 		$this->generate_styles_list();
 
 		$not_inlined = [];

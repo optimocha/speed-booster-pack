@@ -46,6 +46,19 @@ function sbp_clear_cdn_url( $url ) {
 }
 
 /**
+ * Echoes the newsletter form
+ *
+ * @param $url
+ *
+ * @return string
+ * @since 4.0.0
+ *
+ */
+function sbp_newsletter_form() {
+	echo 'BEYNTODO: newsletter form';
+}
+
+/**
  * Removes http:// from the url
  *
  * @param $url
@@ -59,7 +72,13 @@ function sbp_clear_http( $url ) {
 }
 
 /**
+ * Sanitizes excluded URLs for caching
+ *
  * @param $urls
+ *
+ * @return string
+ * @since 4.0.0
+ *
  */
 function sanitize_caching_urls( $urls ) {
 	$urls = \SpeedBooster\SBP_Utils::explode_lines( $urls );
@@ -158,9 +177,7 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_scripts() {
-
 		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', array( 'jquery' ), $this->version, false );
-
 	}
 
 	public function load_dependencies() {
@@ -179,7 +196,7 @@ class Speed_Booster_Pack_Admin {
 			CSF::createOptions( $prefix,
 				[
 					// framework title
-					'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external nofollow noopener">' . SBP_OWNER_NAME . '</a></small>',
+					'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external noopener">' . SBP_OWNER_NAME . '</a></small>',
 					'framework_class' => 'sbp-settings',
 
 					// menu settings
@@ -202,7 +219,7 @@ class Speed_Booster_Pack_Admin {
 					'admin_bar_menu_priority' => 80,
 
 					/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
-					'footer_credit'             => sprintf( __( 'Thank you for using %1$s! Be sure to %2$sleave a fair review%3$s if you liked our plugin.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external nofollow noopener">', '</a>' ),
+					'footer_credit'             => sprintf( __( 'Thank you for using %1$s! If you like our plugin, be sure to %2$sleave a fair review%3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener">', '</a>' ),
 				] );
 
 			/* BEGIN Section: Dashboard */
@@ -215,16 +232,15 @@ class Speed_Booster_Pack_Admin {
 					'icon'   => 'fa fa-tachometer-alt',
 					'fields' => [
 
-						/* BEYNTODO: İçeriği yaz!  */
-
 						[
 							'type'    => 'heading',
-							/* translators: %s = plugin's name  */
+							/* translators: %s = Speed Booster Pack  */
 							'content' => sprintf( __( 'Welcome to %s!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						],
 						[
 							'type'    => 'content',
-							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
+							/* translators: %s = Speed Booster Pack  */
+							'content' => sprintf(  __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things. Let\'s begin!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						],
 						[
 							'type'    => 'subheading',
@@ -232,24 +248,23 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							'type'    => 'content',
-							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
+							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
+							'content' => sprintf(  __( 'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener">GitHub</a>' )
 						],
 						[
 							'type'    => 'subheading',
-							/* translators: %s = plugin's name  */
-							'content' => sprintf( __( 'Benefits of %s', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							/* translators: %s = Speed Booster Pack  */
+							'content' => sprintf( __( 'Features and benefits of %s', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						],
 						[
 							'type'    => 'content',
-							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'subheading',
-							'content' => __( 'How the features in each tab work', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'content',
-							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
+							/* translators: %s = Speed Booster Pack  */
+							'content' => '<p>' . __( 'Each module of %s has different sets of really cool features that can help speed up your website:', 'speed-booster-pack' ) . '</p>' . '<ul><li>' . 
+										 __( 'Caching', 'speed-booster-pack' ) . ': ' . __( 'This module caches your pages into static HTML files, greatly reducing database queries. It also helps browsers cache static assets more efficiently.', 'speed-booster-pack' ) . '</li><li>' . 
+										 __( 'Assets', 'speed-booster-pack' ) . ': ' . __( 'This module helps you optimize the static assets in your pages by minifying HTML and CSS, lazy loading images, deferring JavaScript, optimizing Google fonts and preloading any asset you want.', 'speed-booster-pack' ) . '</li><li>' . 
+										 __( 'Special', 'speed-booster-pack' ) . ': ' . __( 'This module has features for specific cases like CDN usage, localizing tracker scripts, adding custom JavaScript code and optimizations for some popular plugins.', 'speed-booster-pack' ) . '</li><li>' . 
+										 __( 'Tweaks', 'speed-booster-pack' ) . ': ' . __( 'This modules lets you tweak the WordPress core and your page sources by dequeueing core scripts/styles, decluttering &lt;head&gt;, optimizing revisions and the Heartbeat API and so on.', 'speed-booster-pack' ) . '</li></ul>' . 
+										 '<p>' . __( 'Feel free to experiment, and don\'t forget to create exclude rules when necessary!', 'speed-booster-pack' ) . '</p>',
 						],
 						[
 							'type'    => 'subheading',
@@ -257,7 +272,7 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							'type'    => 'content',
-							'content' => __( 'BEYNTODO', 'speed-booster-pack' ),
+							'content' => __( 'Like we mentioned above, we\'re constantly working on making %s better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, you can sign up for our weekly newsletter below:', 'speed-booster-pack' ),
 						],
 						[
 							'type'     => 'callback',
@@ -269,11 +284,11 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							'type'    => 'content',
-							'content' => __( 'We really hope that you\'ll enjoy working with our plugin. Always remember that this is a powerful tool, and using powerful tools might hurt you if you\'re not careful. Have fun!', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'content',
-							'content' => __( 'Almost forgot: If you like %1$s, it would mean a lot to us if you gave a fair rating on %2$s, because higher rated plugins show up on more users, meaning that we\'ll have to take better care of %1$s!', 'speed-booster-pack' ),
+							'content' => '<p>' . __( 'We really hope that you\'ll enjoy working with our plugin. Always remember that this is a powerful tool, and using powerful tools might hurt you if you\'re not careful. Have fun!', 'speed-booster-pack' ) . '</p>' .
+										 /* translators: %s = Optimocha */
+										 '<p>' . sprintf( __( 'Your friends at %s', 'speed-booster-pack' ), SBP_OWNER_NAME ) . '</p>' .
+										 /* translators: 1. Speed Booster Pack 2. link to the plugin's reviews page on wp.org */
+										 '<p>' . sprintf( __( 'Almost forgot: If you like %1$s, it would mean a lot to us if you gave a fair rating on %2$s, because highly rated plugins are shown to more users on the WordPress plugin directory, meaning that we\'ll have to take better care of %1$s!', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">wordpress.org</a>' ) . '</p>',
 						],
 						[
 							'type'    => 'subheading',
@@ -281,8 +296,8 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							'type'    => 'content',
-							/* translators: 1: plugin owner's name (Optimocha) 2: plugin's name (Speed Booster Pack) 3: hyperlink to the owner's website */
-							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different WordPress websites. (Our tailored speed optimization service is actually the source of the know-how that helps %2$s get better and better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_OWNER_NAME, '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
+							/* translators: 1: plugin owner's name (Optimocha) 2: Speed Booster Pack (Speed Booster Pack) 3: hyperlink to the owner's website */
+							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (Our tailored speed optimization service is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_OWNER_NAME, '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
 						],
 
 
@@ -332,6 +347,7 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'module_caching',
 					'class' => 'module-caching',
 					'type'  => 'switcher',
+					/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
 					'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
 					'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 				],
@@ -366,10 +382,10 @@ class Speed_Booster_Pack_Admin {
 					'id'         => 'caching_include_query_strings',
 					'class'      => 'caching-include-query-strings',
 					'type'       => 'code_editor',
-					'title'      => __( 'Include query strings', 'speed-booster-pack' ),
-					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />'
-					                /* translators: BEYNTODO  */
-					                . sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
+					'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
+					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' .
+									/* translators: 1. <code> 2. </code> */
+					                sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
 					'default'    => 'utm_source',
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
@@ -383,7 +399,7 @@ class Speed_Booster_Pack_Admin {
 						'type'    => 'submessage',
 						'style'   => 'success',
 						'class'   => 'kinsta-warning',
-						'content' => __( 'Since you\'re using Kinsta, cache feature is completely disabled.', 'speed-booster-pack' ),
+						'content' => __( 'Since you\'re using Kinsta, cache feature is completely disabled to ensure compatibility with Kinsta\'s internal caching system.', 'speed-booster-pack' ),
 					],
 				];
 				$is_kinsta_active = true;
@@ -394,7 +410,8 @@ class Speed_Booster_Pack_Admin {
 				$multisite_warning = [
 					'type'    => 'submessage',
 					'style'   => 'warning',
-					'content' => sprintf( __( 'Caching in Speed Booster Pack isn\'t tested with WordPress Multisite, proceed with caution! We\'d appreciate getting feedback from you if you find any bugs: %1$sReport a bug%2$s', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/contact/?sbp_version=' . SBP_VERSION . '" target="_blank" rel="external noopener">', '</a>' ),
+					/* translators: %s = hyperlink to the contact form */
+					'content' => sprintf( __( 'Caching in Speed Booster Pack isn\'t tested with WordPress Multisite, proceed with caution! We\'d appreciate getting feedback from you if you find any bugs over at %s.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/contact/?sbp_version=' . SBP_VERSION . '" target="_blank" rel="external noopener">speedboosterpack.com</a>' ),
 				];
 
 				array_unshift( $cache_fields, $multisite_warning );
@@ -440,11 +457,11 @@ class Speed_Booster_Pack_Admin {
 							'title'      => __( 'Optimize Google Fonts', 'speed-booster-pack' ),
 							'id'         => 'optimize_gfonts',
 							'type'       => 'switcher',
-							'desc'       => __( 'Combines all Google Fonts URLs into a single URL.', 'speed-booster-pack' ),
+							'desc'       => __( 'Combines all Google Fonts URLs into a single URL and optimizes loading of that URL.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 						],
 						[
-							'title'      => __( 'Lazy load images, videos &amp; iframes', 'speed-booster-pack' ),
+							'title'      => __( 'Lazy load media', 'speed-booster-pack' ),
 							'id'         => 'lazyload',
 							'type'       => 'switcher',
 							'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
@@ -456,13 +473,13 @@ class Speed_Booster_Pack_Admin {
 							'class'      => 'lazyload-exclude',
 							'type'       => 'code_editor',
 							'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
-							'dependency' => [ [ 'module_assets', '==', '1' ], [ 'lazyload', '==', '1' ] ],
+							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_clear_http',
 						],
 						[
 							'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
 							'id'         => 'js_optimize',
-							'desc'       => __( 'Handles JavaScript tags to avoid render blocking issues. Moving all tags to the footer (before the &lt;/body&gt; tag) causes less issues but if you know what you\'re doing, deferring JS tags makes your website work faster. Use the exclusions list to keep certain scripts from breaking your site!', 'speed-booster-pack' ),
+							'desc'       => __( 'Loads JavaScript better, avoiding render blocking issues. Moving all tags to the footer (before the &lt;/body&gt; tag) causes less issues but if you know what you\'re doing, deferring JS tags makes your website work faster. Use the exclusions list to keep certain scripts from breaking your site!', 'speed-booster-pack' ),
 							'type'       => 'button_set',
 							'options'    => [
 								'off'   => __( 'Off', 'speed-booster-pack' ),
@@ -479,13 +496,13 @@ class Speed_Booster_Pack_Admin {
 							'type'       => 'code_editor',
 							'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 							'default'    => 'js/jquery/jquery.js',
-							'dependency' => [ [ 'module_assets', '==', '1' ], [ 'js_optimize', '!=', 'off' ] ],
+							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 						],
 						[
 							'title'      => __( 'Inline all CSS', 'speed-booster-pack' ),
 							'id'         => 'css_inline',
 							'type'       => 'switcher',
-							'desc'       => __( 'Inlines all of your CSS files into the HTML output. Useful for lightweight designs but might be harmful for heavy websites with over 500KB of total CSS.', 'speed-booster-pack' ),
+							'desc'       => __( 'Inlines all CSS files into the HTML output. Useful for lightweight designs but might be harmful for websites with over 500KB of total CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 						],
 						[
@@ -500,7 +517,7 @@ class Speed_Booster_Pack_Admin {
 							'id'         => 'css_exclude',
 							'class'      => 'css-exclude',
 							'type'       => 'code_editor',
-							'desc'       => __( 'If your design breaks after enabling the options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
+							'desc'       => __( 'If your design breaks after enabling the CSS options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 						],
 						[
@@ -538,6 +555,7 @@ class Speed_Booster_Pack_Admin {
 					'fields' => [
 
 						[
+							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
 							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Special', 'speed-booster-pack' ),
 							'id'      => 'module_special',
 							'class'   => 'module-special',
@@ -561,37 +579,7 @@ class Speed_Booster_Pack_Admin {
 							'title'      => __( 'Localize Google Analytics & Google Tag Manager', 'speed-booster-pack' ),
 							'id'         => 'localize_tracking_scripts',
 							'type'       => 'switcher',
-							'desc'       => __( 'Searches for Google Analytics or Google Tag Manager scripts found in your pages, and replaces them with a locally saved script.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => 'Jetpack: ' . __( 'Dequeue devicepx-jetpack.js', 'speed-booster-pack' ),
-							'id'         => 'jetpack_dequeue_devicepx',
-							'type'       => 'switcher',
-							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'The %s file replaces images served via Jetpack\'s Photon CDN with their higher-quality equivalents. If you don\'t need this feature, you can dequeue the file and save an extra HTTP request and an extra DNS connection.', 'speed-booster-pack' ), '<code>devicepx-jetpack.js</code>' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => 'WooCommerce: ' . __( 'Disable cart fragments', 'speed-booster-pack' ),
-							'id'         => 'woocommerce_disable_cart_fragments',
-							'type'       => 'switcher',
-							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'Dequeues the %s file but only when the visitor\'s cart is empty.', 'speed-booster-pack' ), '<code>cart-fragments.js</code>' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => 'WooCommerce: ' . __( 'Optimize non-WooCommerce pages', 'speed-booster-pack' ),
-							'id'         => 'woocommerce_optimize_nonwc_pages',
-							'type'       => 'switcher',
-							'desc'       => __( 'Prevents loading of WooCommerce-related scripts and styles on non-WooCommerce pages.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => 'WooCommerce: ' . __( 'Disable password strength meter', 'speed-booster-pack' ),
-							'id'         => 'woocommerce_disable_password_meter',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disables the password strength meter for password inputs during a WooCommerce checkout.', 'speed-booster-pack' ),
+							'desc'       => __( 'Searches for Google Analytics or Google Tag Manager scripts (analytics.js, gtag.js or gtm.js) in your page sources, and replaces them with a locally saved script.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
 						],
 						[
@@ -607,7 +595,7 @@ class Speed_Booster_Pack_Admin {
 									'type'   => 'code_editor',
 									'before' => '&lt;script&gt;',
 									'after'  => '&lt;/script&gt;',
-									/* translators: BEYNTODO  */
+									/* translators: %s = script tag  */
 									'desc'   => sprintf( __( 'Paste the inline JavaScript here. DON\'T include the %s tags or else you might break it!', 'speed-booster-pack' ), '<code>&lt;script&gt;</code>' ),
 								],
 								[
@@ -636,6 +624,36 @@ class Speed_Booster_Pack_Admin {
 							],
 							'dependency'             => [ 'module_special', '==', '1', '', 'visible' ],
 						],
+						[
+							'title'      => 'Jetpack: ' . __( 'Dequeue the devicepx script', 'speed-booster-pack' ),
+							'id'         => 'jetpack_dequeue_devicepx',
+							'type'       => 'switcher',
+							/* translators: %s = devicepx-jetpack.js  */
+							'desc'       => sprintf( __( 'The %s file replaces images served via Jetpack\'s Photon CDN with their higher-quality equivalents. If you don\'t need this feature, you can dequeue the file and save an extra HTTP request and an extra DNS connection.', 'speed-booster-pack' ), '<code>devicepx-jetpack.js</code>' ),
+							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => 'WooCommerce: ' . __( 'Disable cart fragments', 'speed-booster-pack' ),
+							'id'         => 'woocommerce_disable_cart_fragments',
+							'type'       => 'switcher',
+							/* translators: %s = cart-fragments.js  */
+							'desc'       => sprintf( __( 'Dequeues the %s file if the visitor\'s cart is empty,  preventing an unnecessary and slow AJAX request.', 'speed-booster-pack' ), '<code>cart-fragments.js</code>' ),
+							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => 'WooCommerce: ' . __( 'Optimize non-WooCommerce pages', 'speed-booster-pack' ),
+							'id'         => 'woocommerce_optimize_nonwc_pages',
+							'type'       => 'switcher',
+							'desc'       => __( 'Prevents loading of WooCommerce-related scripts and styles on non-WooCommerce pages.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => 'WooCommerce: ' . __( 'Disable password strength meter', 'speed-booster-pack' ),
+							'id'         => 'woocommerce_disable_password_meter',
+							'type'       => 'switcher',
+							'desc'       => __( 'Disables the password strength meter for password inputs during a WooCommerce checkout.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
+						],
 
 					],
 				]
@@ -653,6 +671,7 @@ class Speed_Booster_Pack_Admin {
 
 
 						[
+							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
 							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
 							'id'      => 'module_tweaks',
 							'class'   => 'module-tweaks',
@@ -664,8 +683,8 @@ class Speed_Booster_Pack_Admin {
 							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
 							'id'         => 'instant_page',
 							'type'       => 'switcher',
-							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external nofollow noopener">instant.page</a>' ),
+							/* translators: %s = hyperlink to the instant.page website  */
+							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external noopener">instant.page</a>' ),
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
@@ -687,12 +706,12 @@ class Speed_Booster_Pack_Admin {
 							'title'      => __( 'Dequeue emoji scripts', 'speed-booster-pack' ),
 							'id'         => 'dequeue_emoji_scripts',
 							'type'       => 'switcher',
-							'desc'       => __( 'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, no worries there.', 'speed-booster-pack' ),
+							'desc'       => __( 'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, don\'t worry.', 'speed-booster-pack' ),
 							'default'    => true,
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
-							'title'      => __( 'Dequeue post embed script', 'speed-booster-pack' ),
+							'title'      => __( 'Dequeue the post embed script', 'speed-booster-pack' ),
 							'id'         => 'disable_post_embeds',
 							'type'       => 'switcher',
 							'desc'       => __( 'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.', 'speed-booster-pack' ),
@@ -709,7 +728,7 @@ class Speed_Booster_Pack_Admin {
 							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
 							'id'         => 'dequeue_dashicons',
 							'type'       => 'switcher',
-							/* translators: BEYNTODO  */
+							/* translators: 1. <strong> 2. </strong>  */
 							'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
@@ -723,8 +742,8 @@ class Speed_Booster_Pack_Admin {
 						[
 							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
 							'id'         => 'heartbeat_settings',
-							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external nofollow noopener">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
+							/* translators: 1. opening tag for the hyperlink to the Heartbeat API 2. closing tag for the hyperlink  */
+							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external noopener">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
 							'type'       => 'button_set',
 							'options'    => [
 								'enabled'   => __( 'Enabled', 'speed-booster-pack' ),
@@ -739,10 +758,10 @@ class Speed_Booster_Pack_Admin {
 							'id'         => 'post_revisions',
 							'type'       => 'spinner',
 							'unit'       => __( 'revisions', 'speed-booster-pack' ),
-							/* translators: BEYNTODO  */
-							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external nofollow noopener">', '</a>' ) . '<br />'
-							                /* translators: BEYNTODO  */
-							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>', '</code>' ),
+							/* translators: 1. opening tag for the hyperlink to the support article for revisions 2. closing tag for the hyperlink  */
+							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external noopener">', '</a>' ) . '<br />'
+							                /* translators: 1. WP_POST_REVISIONS 2. wp-config.php  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>wp-config.php</code>' ),
 							'sanitize'   => 'absint',
 							'default'    => '99',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
@@ -754,14 +773,14 @@ class Speed_Booster_Pack_Admin {
 							'min'        => '1',
 							'unit'       => __( 'minutes', 'speed-booster-pack' ),
 							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
-							                /* translators: BEYNTODO  */
-							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$swp-config.php%3$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>', '</code>' ),
+							                /* translators: 1. AUTOSAVE_INTERVAL 2. wp-config.php  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>wp-config.php</code>' ),
 							'sanitize'   => 'posabs',
 							'default'    => '1',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
-							/* translators: BEYNTODO  */
+							/* translators: %s = <head>  */
 							'title'      => sprintf( __( 'Declutter %s', 'speed-booster-pack' ), '<code>&lt;head&gt;</code>' ),
 							'id'         => 'declutter_head',
 							'class'      => 'declutter-head',
@@ -830,7 +849,7 @@ class Speed_Booster_Pack_Admin {
 					'fields' => array(
 						array(
 							'type'    => 'subheading',
-							/* translators: BEYNTODO  */
+							/* translators: %s = Speed Booster Pack  */
 							'content' => sprintf( __( 'Backup %s Settings', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						),
 						array(
@@ -845,19 +864,21 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: Tools */
 
 			/* BEGIN Section: About */
+			/* BEYNTODO: İçerik yaz! */
 			CSF::createSection(
 				$prefix,
 				array(
 					'title'  => __( 'About', 'speed-booster-pack' ),
 					'id'     => 'about',
 					'icon'   => 'fa fa-info-circle',
-					'fields' => array(/* BEYNTODO: İçeriği yaz!  */
+					'fields' => array(
 						[
 							'title'   => __( 'Allow external notices', 'speed-booster-pack' ),
 							'id'      => 'enable_external_notices',
 							'type'    => 'switcher',
 							'label'   => __( '', 'speed-booster-pack' ),
-							'desc'    => sprintf( __( 'Fetches daily notices from %s daily (all of which are dismissible), and shows them in a non-obtrusive manner. We only intend to send essential notices and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener">speedboosterpack.com</a>' ),
+							/* translators: %s = hyperlink to speedboosterpack.com  */
+							'desc'    => sprintf( __( 'Fetches notices from %s, and shows them in a non-obtrusive manner. We intend to send essential notices only, and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener">speedboosterpack.com</a>' ),
 							'default' => true,
 						],
 					),
