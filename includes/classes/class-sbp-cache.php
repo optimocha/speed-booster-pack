@@ -284,14 +284,18 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @param bool $wp_cache
 	 */
 	public static function set_wp_cache_constant( $wp_cache = true ) {
-		$wp_config_file = ABSPATH . 'wp-config.php';
+		if ( file_exists( ABSPATH . 'wp-config.php') ) {
+			$wp_config_file = ABSPATH . 'wp-config.php';
+		} else {
+			$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
+		}
 
 		if ( file_exists( $wp_config_file ) && is_writable( $wp_config_file ) ) {
 			// get wp config as array
 			$wp_config = file( $wp_config_file );
 
 			if ( $wp_cache ) {
-				$append_line = "define('WP_CACHE', true); // Added by Speed Booster Pack" . "\r\n";
+				$append_line = "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL . PHP_EOL;
 			} else {
 				$append_line = '';
 			}
@@ -309,7 +313,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			// add wp cache ce line if not found yet
 			if ( ! $found_wp_cache ) {
 				array_shift( $wp_config );
-				array_unshift( $wp_config, "<?php\r\n", $append_line );
+				array_unshift( $wp_config, "<?php" . PHP_EOL . PHP_EOL, $append_line );
 			}
 
 			// write wp-config.php file
