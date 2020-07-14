@@ -195,33 +195,6 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		return $code;
 	}
 
-	private function style_exceptions() {
-
-		/**
-		 * Never include these CSS handles/files
-		 *
-		 * @since 3.7
-		 */
-		$default = [
-			'admin-bar',
-			'dashicons',
-		];
-
-		$array          = explode( "\n", get_option( 'css_exceptions' ) );
-		$css_exceptions = [];
-		foreach ( $array as $key => $ex ) {
-			if ( trim( $ex ) != '' ) {
-				$css_exceptions[ $key ] = trim( $ex );
-
-			}
-		}
-
-		// merge defaults with our actual exceptions
-		$css_exceptions = array_merge( $css_exceptions, $default );
-
-		return (array) $css_exceptions;
-	}
-
 	private function is_css_excluded( $file ) {
 		global $wp_styles;
 
