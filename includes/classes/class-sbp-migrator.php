@@ -33,7 +33,19 @@ class SBP_Migrator {
 	];
 
 	public function __construct() {
-		if ( ! get_transient( 'sbp_upgraded' ) ) {
+		add_action( 'init', [ $this, 'check_migrate_notice' ] );
+
+		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
+
+		$this->sbp_settings = get_option( 'sbp_settings' );
+		if ( $this->sbp_settings ) {
+			$this->sbp_options = get_option( 'sbp_options' );
+			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
+		}
+	}
+
+	public function check_migrate_notice() {
+		if ( get_transient( 'sbp_upgraded_notice' ) && current_user_can( 'manage_options' ) ) {
 			add_action( 'admin_enqueue_scripts',
 				function () {
 					$dismiss_notice_script = 'jQuery(function() {
@@ -50,14 +62,6 @@ class SBP_Migrator {
 					wp_add_inline_script( 'jquery', $dismiss_notice_script, 'footer' );
 				} );
 			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
-		}
-
-		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
-
-		$this->sbp_settings = get_option( 'sbp_settings' );
-		if ( $this->sbp_settings ) {
-			$this->sbp_options = get_option( 'sbp_options' );
-			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
 		}
 	}
 

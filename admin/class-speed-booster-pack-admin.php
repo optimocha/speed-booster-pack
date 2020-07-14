@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
  * @since 4.0.0
  *
  */
-function posabs( $value ) {
+function sbp_posabs( $value ) {
 	if ( 0 == $value ) {
 		return 1;
 	}
@@ -80,7 +80,7 @@ function sbp_clear_http( $url ) {
  * @since 4.0.0
  *
  */
-function sanitize_caching_urls( $urls ) {
+function sbp_sanitize_caching_urls( $urls ) {
 	$urls = \SpeedBooster\SBP_Utils::explode_lines( $urls );
 	foreach ( $urls as &$url ) {
 		$url = ltrim( $url, 'https://' );
@@ -359,7 +359,7 @@ class Speed_Booster_Pack_Admin {
 					'unit'       => __( 'hours', 'speed-booster-pack' ),
 					'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
 					'default'    => '10',
-					'sanitize'   => 'posabs',
+					'sanitize'   => 'sbp_posabs',
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
 				[
@@ -376,7 +376,7 @@ class Speed_Booster_Pack_Admin {
 					'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
 					'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sanitize_caching_urls',
+					'sanitize'   => 'sbp_sanitize_caching_urls',
 				],
 				[
 					'id'         => 'caching_include_query_strings',
@@ -775,7 +775,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
 							                /* translators: 1. AUTOSAVE_INTERVAL 2. wp-config.php  */
 							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>wp-config.php</code>' ),
-							'sanitize'   => 'posabs',
+							'sanitize'   => 'sbp_posabs',
 							'default'    => '1',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
