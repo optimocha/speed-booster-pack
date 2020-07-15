@@ -1,48 +1,54 @@
-=== Speed Booster Pack ⚡ PageSpeed & Performance Optimization ===
-Plugin Name: Speed Booster Pack ⚡ PageSpeed & Performance Optimization
-Contributors: optimocha
+=== Speed Booster Pack ⚡ PageSpeed Optimization Suite ===
+Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
+Contributors: optimocha, speedboosterpack
 Tags: speed, pagespeed, optimization, performance, cache
 Requires at least: 4.6
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 5.6
 Stable tag: 4.0.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Speed optimization is vital for SEO. Optimize your PageSpeed scores today!
+PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize & cache your site with this smart plugin!
 
 == Description ==
-
-**Speed Booster Pack** is maintained & operated by **[Optimocha](https://optimocha.com/)**, a company that offers special speed optimization services filled with people who *obsess* about speed!
 
 WordPress is, hands down, the most popular content management system in the world. But like all giants, WordPress gets bigger and bigger every release; and it needs you to stay healthy and fast. Otherwise, your website can get slower and nobody likes slow websites. *NOBODY*. Not only your visitors hate your website, but also search engines (especially Google) penalizes you and drop your search engine rankings.
 
 Improving your site's speed will get you a better score on major speed testing services such as [Google PageSpeed](https://developers.google.com/speed/pagespeed/insights/), [GTmetrix](https://gtmetrix.com/), [Pingdom](https://tools.pingdom.com/), [WebPageTest](https://www.webpagetest.org/) and will also improve your overall site's usability. This will help Google and other search engines to rank your site higher in search results thus sending more traffic.
 
+**Speed Booster Pack** is maintained & operated by **[Optimocha](https://optimocha.com/)**, a company that offers special speed optimization services filled with people who *obsess* about speed!
+
 ### Benefits of Speed Booster Pack
 
 Each second of delay can cause up to 20% loss in conversion rates ([source: Google](https://web.dev/why-speed-matters/)). "Conversion" means *converting* visitors to something more than a "visitor": leads, customers, subscribers, followers... you name it.
 
-You might lose more than half of your visitors if your website loads **slower than three seconds**! ([source: Google again](https://www.blog.google/products/admanager/the-need-for-mobile-speed/)) This is a huge problem, and it's hugely overlooked among other SEO-related concerns. People don't realize how important speed is, in the eyes of search engines.
+You might lose more than half of your visitors if your website loads **slower than three seconds**! ([source: Google again](https://www.blog.google/products/admanager/the-need-for-mobile-speed/)) More than half of your potential customers might get back to the search results page and navigate to your competitor. This is a huge problem, and it's hugely overlooked among other SEO-related concerns. People don't realize how important speed is, in the eyes of search engines.
 
-That's where Speed Booster Pack comes in: With its ever-evolving codebase, Speed Booster Pack aims to increase your site performance, page load times and PageSpeed (Lighthouse) scores! Optimocha, the company behind Speed Booster Pack, has a team with a mutual obsession for speed; so you can be sure that your site will be in good hands.
+That's where Speed Booster Pack comes in: With its ever-evolving codebase, Speed Booster Pack aims to increase your site performance, page load times and PageSpeed (Lighthouse) scores! Optimocha, the company behind Speed Booster Pack, has a team with a pathological obsession for speed; so you can be sure that your site will be in good hands.
 
-### How Speed Booster Pack helps you get better PageSpeed scores:
+### How to optimize PageSpeed scores with Speed Booster Pack
 
-* **optimization**: BEYNTODO
+With our huge set of features, of course!
 
-* **CSS optimization**: You can inline and minify all CSS in your pages, and save on HTTP requests.
-* **JavaScript optimization**: Deferring JS and moving them into the footer makes them non-render-blocking, which Google PageSpeed likes *so much*.
-* **(NEW!) Lazy loading**: With the latest native browser feature for lazy loading *and* a state-of-the-art lazy loader script, your images will load as soon as they're in the viewport (instead of all at once). This alone can make your site faster than ever!
-* **Remove clutter**: Clutter is always bad, especially for page sources; and faster websites have less clutter inside their pages. Removing unnecessary junk is key to solid speed optimization work.
-* **(NEW!) Instant Page**: This brand new tool helps your visitors get to the *next* page in your website by prefetching any internal link the visitor's about to click. It's not AI or anything but it's a pretty smart way to optimize your site!
-* **Disable unnecessary stuff**: This one's a no-brainer - if there's less work for WordPress, it works faster.
-* **(NEW!) WooCommerce optimization**: WooCommerce is awesome and all, but it could use some help to speed up. And Speed Booster Pack does exactly that: With a few tweaks, it resolves some WooCommerce speed bottlenecks.
-* **CDN integration**: Content delivery networks are essential for every website, especially if its visitors come from all around the world. With Speed Booster Pack's CDN integration feature, you can easily start using the CDN of your choice in WordPress.
-* **Google Analytics localization**: Google itself can surely benefit from a speed optimization job, but they're not picking up our calls. Oh well, the least we can do is to help you load Google Analytics from your own server.
-* **...and much more**: We're constantly working on building a better performance optimization plugin for tens of thousands of people, and hundreds more downloading Speed Booster Pack every day. Rest assured, our roadmap is always full of new ideas!
+🌟 **Caching**: Cache your pages into static HTML files, reduce database queries, get a faster website almost immediately. What's not to love about caching?
+⭐ **Custom Code Manager**: Hey, you know that huge live chat widget, or the weird script that you really, *really* have to load? Well, you can probably delay them so the rest of the page can load first.
+⭐ **Optimize Google Fonts**: Did you know that there are better ways to load Google fonts? We like to brag about finding one of the best ways.
+⭐ **Localize Google Analytics & Tag Manager**: Tracker scripts aren't the worst things that'll slow your pages down, but they cause the most "recommendations". Localizing Google Analytics and/or Google Tag Manager is a good idea to speed up your website then, right? Right?
+🌟 **Lazy Load**: It's a disheartening issue that page speed tools encourage laziness... Just kidding, we love being lazy. And search engines will love your pages when you enable lazy loading for images, videos and iframes (except for the above-the-fold stuff, trust us).
+🌟 **Optimize JavaScript**: You know that totally-not-cryptic "Remove Render-Blocking JavaScript" recommendation? Speed Booster Pack can help defer them all until after the whole HTML is rendered, or at least move all scripts to footer. Works like a charm.
+⭐ **Optimize CSS**: Who needs all those different CSS files when you can inline them all into your page source? Especially when your CSS footprint is so small?
+🌟 **Preload Assets**: Have some fonts that load in all your pages, or a script, or some CSS files? Preloading them will help modern browsers serve your pages way faster!
+⭐ **Enable CDN**: Integrate your content delivery network to your website by rewriting all static asset URLs with your CDN domain.
+⭐ **Cloudflare Integration**: Connect to your Cloudflare account so you can clear your cache every time your page cache is cleared.
+🌟 **Plugin-specific Optimizations**: Disable WooCommerce cart fragments, dequeue Jetpack's devicepx script, and more to come!
+🌟 **Dequeue Core Scripts/Styles**: Dashicons, jQuery Migrate, emoji script, post embed script... If you don't need them, you can now choose to prevent them from loading in the first place... which can get you to the first place on your Google SERPs.
+⭐ **Declutter HEAD**: Do you think all that useless junk in your <head> should be gone? Us too! You know what they say: A clear <head> works faster.
+⭐ **Other Features**: Minify HTML, enable instant.page, trim query strings, disable self pingbacks, optimize the Heartbeat API, set a limit for post revisions, change autosave interval... Did we forget anything?
 
-For complete usage instructions, you can visit the [Plugin Documentation](https://optimocha.com/speed-booster-pack-documentation/) page.
+We're constantly working on new features so stay tuned for more and more on every major release!
+
+For complete usage instructions, you can visit the [Plugin Documentation](https://speedboosterpack.com/docs/) page.
 
 ### Translators are always welcome & always rewarded!
 
@@ -70,15 +76,15 @@ Even though the plugin works perfectly well on most WordPress websites, it's not
 
 == Frequently Asked Questions ==
 
-For complete usage instructions, you can visit the [Plugin Documentation](https://optimocha.com/speed-booster-pack-documentation/) page.
+For complete usage instructions, you can visit the [Plugin Documentation](https://speedboosterpack.com/docs/) page.
 
 = I like your plugin, how do I thank you? =
 
-We don't accept any donations, if that's what you're asking! :) But we do like to have our users [review the plugin](https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post) with a fair star rating. And we always appreciate you recommending our plugin to other people!
+We don't accept any donations, if that's what you're asking! 😊 But we do like to have our users [review the plugin](https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post) with a fair star rating. And we always appreciate you recommending our plugin to other people!
 
 = I have a bug report! =
 
-We love you already! Please contact us (link above in the About section) so we can get to the bottom of the bug you found. **If it's a legitimate bug, you'll be awarded with discount coupons to our services!**
+We love you already! ❤ Please issue your bug report [over GitHub](https://github.com/optimocha/speed-booster-pack/) so we can get started squashing it. **If it's a legitimate bug, you'll be awarded with discount coupons to our services!**
 
 = This plugin broke my site! =
 
@@ -90,7 +96,7 @@ Our main business is special speed optimization services, tailored for every web
 
 = How often do you update the plugin? =
 
-All the time! We're always looking for new ways to get this plugin to a better state: We code new features, we fix existing bugs, and we try our best to make Speed Booster Pack more and more popular. And we always appreciate a helping hand: If you've got a new feature to offer, [you can suggest it over here](https://optimocha.com/contact/). If we eventually make it happen and/or you help us make it happen, you'll be rewarded with handsome discount coupons or even free speed optimization services!
+All the time! We're always looking for new ways to get this plugin to a better state: We code new features, we fix existing bugs, and we try our best to make Speed Booster Pack more and more popular. And we always appreciate a helping hand: If you've got a new feature to offer, [you can suggest it over here](https://speedboosterpack.com/contact/). If we eventually make it happen and/or you help us make it happen, you'll be rewarded with handsome discount coupons or even free speed optimization services!
 
 == Screenshots ==
 1. Plugin options page
@@ -108,11 +114,11 @@ Speed Booster Pack v4.0 is written from scratch! With the new options framework,
 **Speed Booster Pack v4.0 is written from scratch!** Almost all of our codebase is rewritten, great new features are added, and we have an awesome new options panel to show them all!
 
 * **NEW - Caching**: With this new feature, you can now enable page and browser caching which will greatly reduce database queries and help browsers cache static assets more efficiently.
+* **NEW - JavaScript deferring**: You can now choose to move JS to the footer **or** defer parsing of JavaScript.
 * **NEW - Custom Code Manager**: You can now add custom JavaScript code and make them run deferred.
 * **NEW - Cloudflare Integration**: User your Cloudflare API key to connect your caching system to Cloudflare, so each time your cache is cleared, Cloudflare's cache will be purged as well.
 * **NEW - Analytics Localizer**: You can now serve Google Analytics or Google Tag Manager scripts (analytics.js, gtag.js, or gtm.js) from your own server, and still keep it working.
 * **NEW**: The brand new admin panel created with the Codestar Framework will help you review and understand Speed Booster Pack's options more easily.
-* **Improved - JavaScript optimization**: You can now choose to move JS to the footer **or** defer parsing of JavaScript.
 * **Improved - Google Fonts optimization**: Our refactored code helps Google Fonts load even faster now.
 * **Improved - Compatibility**: Active plugins with features similar to Speed Booster Pack will throw a dismissible notice to warn the user to be careful about the overlapping features.
 * **Fixed**: The Preboost feature outputted code without the `crossorigin` attribute, which is now fixed.

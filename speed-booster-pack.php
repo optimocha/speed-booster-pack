@@ -8,7 +8,7 @@
  * @wordpress-plugin
  * Plugin Name:       Speed Booster Pack
  * Plugin URI:        https://speedboosterpack.com
- * Description:       Speed optimization is vital for SEO. Optimize your PageSpeed scores today!
+ * Description:       PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize & cache your site with this smart plugin!
  * Version:           4.0.0
  * Author:            Optimocha
  * Author URI:        https://optimocha.com
@@ -81,6 +81,8 @@ define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' );
  * Cache directory url
  */
 define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' );
+
+
 
 /**
  * Load all plugin options
