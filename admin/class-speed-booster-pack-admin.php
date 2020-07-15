@@ -46,19 +46,6 @@ function sbp_clear_cdn_url( $url ) {
 }
 
 /**
- * Echoes the newsletter form
- *
- * @param $url
- *
- * @return string
- * @since 4.0.0
- *
- */
-function sbp_newsletter_form() {
-	echo 'BEYNTODO: newsletter form';
-}
-
-/**
  * Removes http:// from the url
  *
  * @param $url
@@ -158,6 +145,8 @@ class Speed_Booster_Pack_Admin {
 
 		$this->create_settings_page();
 
+		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
+
 	}
 
 	/**
@@ -196,7 +185,7 @@ class Speed_Booster_Pack_Admin {
 			CSF::createOptions( $prefix,
 				[
 					// framework title
-					'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external noopener">' . SBP_OWNER_NAME . '</a></small>',
+					'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . SBP_OWNER_NAME . '</a></small>',
 					'framework_class' => 'sbp-settings',
 
 					// menu settings
@@ -219,7 +208,7 @@ class Speed_Booster_Pack_Admin {
 					'admin_bar_menu_priority' => 80,
 
 					/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
-					'footer_credit'           => sprintf( __( 'Thank you for using %1$s! If you like our plugin, be sure to %2$sleave a fair review%3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener">', '</a>' ),
+					'footer_credit'             => sprintf( __( 'Thank you for using %1$s! If you like our plugin, be sure to %2$sleave a fair review%3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">', '</a>' ),
 				] );
 
 			/* BEGIN Section: Dashboard */
@@ -249,7 +238,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
-							'content' => sprintf( __( 'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener">GitHub</a>' ),
+							'content' => sprintf(  __( 'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener" target="_blank">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener" target="_blank">GitHub</a>' )
 						],
 						[
 							'type'    => 'subheading',
@@ -272,11 +261,8 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							'type'    => 'content',
-							'content' => __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, you can sign up for our weekly newsletter below:', 'speed-booster-pack' ),
-						],
-						[
-							'type'     => 'callback',
-							'function' => 'sbp_newsletter_form',
+							/* translators: 1. opening tag for the newsletter hyperlink 2. closing tag for the hyperlink  */
+							'content' => sprintf( __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://sendfox.com/lp/mn6oyp?KeepThis=true&TB_iframe=true&height=500&width=400" class="thickbox">', '</a>' )
 						],
 						[
 							'type'    => 'subheading',
@@ -410,7 +396,7 @@ class Speed_Booster_Pack_Admin {
 					'type'    => 'submessage',
 					'style'   => 'warning',
 					/* translators: %s = hyperlink to the contact form */
-					'content' => sprintf( __( 'Caching in Speed Booster Pack isn\'t tested with WordPress Multisite, proceed with caution! We\'d appreciate getting feedback from you if you find any bugs over at %s.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/contact/?sbp_version=' . SBP_VERSION . '" target="_blank" rel="external noopener">speedboosterpack.com</a>' ),
+					'content' => sprintf( __( 'Caching in Speed Booster Pack isn\'t tested with WordPress Multisite, proceed with caution! We\'d appreciate getting feedback from you if you find any bugs over at %s.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/contact/?sbp_version=' . SBP_VERSION . '" rel="external noopener" target="_blank">speedboosterpack.com</a>' ),
 				];
 
 				array_unshift( $cache_fields, $multisite_warning );
@@ -695,7 +681,7 @@ class Speed_Booster_Pack_Admin {
 							'id'         => 'instant_page',
 							'type'       => 'switcher',
 							/* translators: %s = hyperlink to the instant.page website  */
-							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external noopener">instant.page</a>' ),
+							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a>' ),
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
@@ -754,7 +740,7 @@ class Speed_Booster_Pack_Admin {
 							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
 							'id'         => 'heartbeat_settings',
 							/* translators: 1. opening tag for the hyperlink to the Heartbeat API 2. closing tag for the hyperlink  */
-							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external noopener">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
+							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external noopener" target="_blank">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
 							'type'       => 'button_set',
 							'options'    => [
 								'enabled'   => __( 'Enabled', 'speed-booster-pack' ),
@@ -770,7 +756,7 @@ class Speed_Booster_Pack_Admin {
 							'type'       => 'spinner',
 							'unit'       => __( 'revisions', 'speed-booster-pack' ),
 							/* translators: 1. opening tag for the hyperlink to the support article for revisions 2. closing tag for the hyperlink  */
-							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external noopener">', '</a>' ) . '<br />'
+							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external noopener" target="_blank">', '</a>' ) . '<br />'
 							                /* translators: 1. WP_POST_REVISIONS 2. wp-config.php  */
 							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>wp-config.php</code>' ),
 							'sanitize'   => 'absint',
@@ -889,7 +875,7 @@ class Speed_Booster_Pack_Admin {
 							'type'    => 'switcher',
 							'label'   => __( '', 'speed-booster-pack' ),
 							/* translators: %s = hyperlink to speedboosterpack.com  */
-							'desc'    => sprintf( __( 'Fetches notices from %s, and shows them in a non-obtrusive manner. We intend to send essential notices only, and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener">speedboosterpack.com</a>' ),
+							'desc'    => sprintf( __( 'Fetches notices from %s, and shows them in a non-obtrusive manner. We intend to send essential notices only, and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener" target="_blank">speedboosterpack.com</a>' ),
 							'default' => true,
 						],
 					),
