@@ -16,7 +16,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private $file_name = 'index.html';
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_caching' ) || isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
+		if ( ! sbp_get_option( 'module_caching' ) || isset( $_SERVER['KINSTA_CACHE_ZONE'] ) || ( defined( 'IS_PRESSABLE' ) && IS_PRESSABLE ) ) {
 			return;
 		}
 
@@ -284,7 +284,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @param bool $wp_cache
 	 */
 	public static function set_wp_cache_constant( $wp_cache = true ) {
-		if ( file_exists( ABSPATH . 'wp-config.php') ) {
+		if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
 			$wp_config_file = ABSPATH . 'wp-config.php';
 		} else {
 			$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
@@ -334,7 +334,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	public static function options_saved_listener( $saved_data ) {
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
-		if ( ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
+		if ( ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) && ( ! defined( 'IS_PRESSABLE' ) || ! IS_PRESSABLE ) ) {
 			// Delete or recreate advanced-cache.php
 			if ( $saved_data['module_caching'] ) {
 				$sbp_advanced_cache = SBP_PATH . '/advanced-cache.php';

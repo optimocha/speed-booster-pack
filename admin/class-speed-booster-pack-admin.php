@@ -219,7 +219,7 @@ class Speed_Booster_Pack_Admin {
 					'admin_bar_menu_priority' => 80,
 
 					/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
-					'footer_credit'             => sprintf( __( 'Thank you for using %1$s! If you like our plugin, be sure to %2$sleave a fair review%3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener">', '</a>' ),
+					'footer_credit'           => sprintf( __( 'Thank you for using %1$s! If you like our plugin, be sure to %2$sleave a fair review%3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener">', '</a>' ),
 				] );
 
 			/* BEGIN Section: Dashboard */
@@ -240,7 +240,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf(  __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things. Let\'s begin!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'content' => sprintf( __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things. Let\'s begin!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						],
 						[
 							'type'    => 'subheading',
@@ -249,7 +249,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
-							'content' => sprintf(  __( 'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener">GitHub</a>' )
+							'content' => sprintf( __( 'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener">GitHub</a>' ),
 						],
 						[
 							'type'    => 'subheading',
@@ -259,12 +259,12 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: %s = Speed Booster Pack  */
-							'content' => '<p>' . __( 'Each module of this plugin has different sets of really cool features that can help speed up your website:', 'speed-booster-pack' ) . '</p>' . '<ul><li>' . 
-										 '<strong>' . __( 'Caching', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module caches your pages into static HTML files, greatly reducing database queries. It also helps browsers cache static assets more efficiently.', 'speed-booster-pack' ) . '</li><li>' . 
-										 '<strong>' . __( 'Assets', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module helps you optimize the static assets in your pages by minifying HTML and CSS, lazy loading media (images, videos and iframes), deferring JavaScript, optimizing Google fonts and preloading any asset you want.', 'speed-booster-pack' ) . '</li><li>' . 
-										 '<strong>' . __( 'Special', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module has features for specific cases like CDN usage, localizing tracker scripts, adding custom JavaScript code and optimizations for some popular plugins.', 'speed-booster-pack' ) . '</li><li>' . 
-										 '<strong>' . __( 'Tweaks', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module lets you tweak the WordPress core and your page sources by dequeueing core scripts/styles, decluttering &lt;head&gt;, optimizing revisions and the Heartbeat API and so on.', 'speed-booster-pack' ) . '</li></ul>' . 
-										 '<p>' . __( 'Feel free to experiment, and don\'t forget to create exclude rules when necessary!', 'speed-booster-pack' ) . '</p>',
+							'content' => '<p>' . __( 'Each module of this plugin has different sets of really cool features that can help speed up your website:', 'speed-booster-pack' ) . '</p>' . '<ul><li>' .
+							             '<strong>' . __( 'Caching', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module caches your pages into static HTML files, greatly reducing database queries. It also helps browsers cache static assets more efficiently.', 'speed-booster-pack' ) . '</li><li>' .
+							             '<strong>' . __( 'Assets', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module helps you optimize the static assets in your pages by minifying HTML and CSS, lazy loading media (images, videos and iframes), deferring JavaScript, optimizing Google fonts and preloading any asset you want.', 'speed-booster-pack' ) . '</li><li>' .
+							             '<strong>' . __( 'Special', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module has features for specific cases like CDN usage, localizing tracker scripts, adding custom JavaScript code and optimizations for some popular plugins.', 'speed-booster-pack' ) . '</li><li>' .
+							             '<strong>' . __( 'Tweaks', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module lets you tweak the WordPress core and your page sources by dequeueing core scripts/styles, decluttering &lt;head&gt;, optimizing revisions and the Heartbeat API and so on.', 'speed-booster-pack' ) . '</li></ul>' .
+							             '<p>' . __( 'Feel free to experiment, and don\'t forget to create exclude rules when necessary!', 'speed-booster-pack' ) . '</p>',
 						],
 						[
 							'type'    => 'subheading',
@@ -285,10 +285,10 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							'content' => '<p>' . __( 'We really hope that you\'ll enjoy working with our plugin. Always remember that this is a powerful tool, and using powerful tools might hurt you if you\'re not careful. Have fun!', 'speed-booster-pack' ) . '</p>' .
-										 /* translators: %s = Optimocha */
-										 '<p style="font-style:italic;">' . sprintf( __( 'Your friends at %s', 'speed-booster-pack' ), SBP_OWNER_NAME ) . '</p>' .
-										 /* translators: 1. Speed Booster Pack 2. link to the plugin's reviews page on wp.org */
-										 '<p>' . sprintf( __( 'Almost forgot: If you like %1$s, it would mean a lot to us if you gave a fair rating on %2$s, because highly rated plugins are shown to more users on the WordPress plugin directory, meaning that we\'ll have no choice but to take better care of %1$s!', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">wordpress.org</a>' ) . '</p>',
+							             /* translators: %s = Optimocha */
+							             '<p style="font-style:italic;">' . sprintf( __( 'Your friends at %s', 'speed-booster-pack' ), SBP_OWNER_NAME ) . '</p>' .
+							             /* translators: 1. Speed Booster Pack 2. link to the plugin's reviews page on wp.org */
+							             '<p>' . sprintf( __( 'Almost forgot: If you like %1$s, it would mean a lot to us if you gave a fair rating on %2$s, because highly rated plugins are shown to more users on the WordPress plugin directory, meaning that we\'ll have no choice but to take better care of %1$s!', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">wordpress.org</a>' ) . '</p>',
 						],
 						[
 							'type'    => 'subheading',
@@ -384,7 +384,7 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'code_editor',
 					'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
 					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' .
-									/* translators: 1. <code> 2. </code> */
+					                /* translators: 1. <code> 2. </code> */
 					                sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
 					'default'    => 'utm_source',
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
@@ -392,21 +392,20 @@ class Speed_Booster_Pack_Admin {
 			],
 				$cloudflare_fields );
 
-			$is_kinsta_active = false;
+			$is_hosting_restricted    = false;
+			$restricted_hosting_error = '';
+
 			if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
-				$kinsta_notice    = [
-					[
-						'type'    => 'submessage',
-						'style'   => 'success',
-						'class'   => 'kinsta-warning',
-						'content' => __( 'Since you\'re using Kinsta, cache feature is completely disabled to ensure compatibility with Kinsta\'s internal caching system.', 'speed-booster-pack' ),
-					],
-				];
-				$is_kinsta_active = true;
-				$cache_fields     = array_merge( $kinsta_notice, $cache_fields );
+				$is_hosting_restricted    = true;
+				$restricted_hosting_error = __( 'Since you\'re using Kinsta, cache feature is completely disabled to ensure compatibility with Kinsta\'s internal caching system.', 'speed-booster-pack' );
 			}
 
-			if ( ! $is_kinsta_active && is_multisite() ) {
+			if ( defined( "IS_PRESSABLE" ) && IS_PRESSABLE ) {
+				$is_hosting_restricted    = true;
+				$restricted_hosting_error = __( 'Since you\'re using Pressable, cache feature is completely disabled to ensure compatibility with Pressable\'s internal caching system.', 'speed-booster-pack' );
+			}
+
+			if ( ! $is_hosting_restricted && is_multisite() ) {
 				$multisite_warning = [
 					'type'    => 'submessage',
 					'style'   => 'warning',
@@ -417,13 +416,25 @@ class Speed_Booster_Pack_Admin {
 				array_unshift( $cache_fields, $multisite_warning );
 			}
 
+			if ( $is_hosting_restricted ) {
+				$restricted_hosting_notice = [
+					[
+						'type'    => 'submessage',
+						'style'   => 'success',
+						'class'   => 'kinsta-warning',
+						'content' => $restricted_hosting_error,
+					],
+				];
+				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
+			}
+
 			CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'Caching', 'speed-booster-pack' ),
 					'id'     => 'caching',
 					'icon'   => 'fa fa-server',
-					'class'  => $is_kinsta_active ? 'inactive-section' : '',
+					'class'  => $is_hosting_restricted ? 'inactive-section' : '',
 					'fields' => $cache_fields,
 				]
 			);
