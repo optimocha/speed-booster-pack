@@ -48,7 +48,7 @@ With our huge set of features, of course!
 
 We're constantly working on new features so stay tuned for more and more on every major release!
 
-For complete usage instructions, you can visit the [Plugin Documentation](https://speedboosterpack.com/docs/) page.
+For complete usage instructions, you can visit the [Speed Booster Pack documentation](https://speedboosterpack.com/docs/) page.
 
 ### Translators are always welcome & always rewarded!
 
@@ -76,7 +76,7 @@ Even though the plugin works perfectly well on most WordPress websites, it's not
 
 == Frequently Asked Questions ==
 
-For complete usage instructions, you can visit the [Plugin Documentation](https://speedboosterpack.com/docs/) page.
+For complete usage instructions, you can visit the [Speed Booster Pack documentation](https://speedboosterpack.com/docs/) page.
 
 = I like your plugin, how do I thank you? =
 
@@ -125,4 +125,4 @@ Speed Booster Pack v4.0 is written from scratch! With the new options framework,
 * **Fixed**: The lazy load feature caused mixed content warnings in some edge cases, which is now fixed.
 * **Updated**: Updated external libraries (lazyload.js and instantpage.js) to their latest versions.
 
-*You can read the rest of the changelog on [GitHub](https://github.com/optimocha/speed-booster-pack).
+*You can read the rest of the changelog on the [Speed Booster Pack documentation](https://speedboosterpack.com/docs/) page.
