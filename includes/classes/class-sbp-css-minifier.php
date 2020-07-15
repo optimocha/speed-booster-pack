@@ -203,7 +203,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		}
 
 		foreach ( $this->exceptions as $exception ) {
-			if ( $file->handle == $exception || ( strpos( $exception, '.' ) !== false && strpos( $file->src, $exception ) !== false ) ) {
+			if ( $file->handle == $exception || strpos( $file->src, $exception ) !== false ) {
 				return true;
 			}
 		}
