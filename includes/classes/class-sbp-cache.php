@@ -25,10 +25,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		// Clear cache hook
 		add_action( 'init', [ $this, 'clear_cache_request' ] );
 
-		if ( sbp_get_option( 'module_caching' ) ) {
-			$this->set_wp_cache_constant( true );
-		}
-
 		// Handle The Cache
 		add_filter( 'sbp_output_buffer', [ $this, 'handle_cache' ], 1000 );
 	}
@@ -279,7 +275,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	/**
-	 * Parts of this class was inspired from Cache Enabler's codebase.
+	 * Parts of this function was inspired from Cache Enabler's codebase.
 	 *
 	 * @param bool $wp_cache
 	 */
@@ -295,7 +291,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$wp_config = file( $wp_config_file );
 
 			if ( $wp_cache ) {
-				$append_line = "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL . PHP_EOL;
+				$append_line = PHP_EOL . "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL;
 			} else {
 				$append_line = '';
 			}
@@ -313,7 +309,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			// append wp cache constant if not found yet
 			if ( ! $found_wp_cache ) {
 				array_shift( $wp_config );
-				array_unshift( $wp_config, "<?php" . PHP_EOL . PHP_EOL, $append_line );
+				array_unshift( $wp_config, "<?php", $append_line );
 			}
 
 			// write wp-config.php file
