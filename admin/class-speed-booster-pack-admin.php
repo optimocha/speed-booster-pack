@@ -45,6 +45,10 @@ function sbp_clear_cdn_url( $url ) {
 	return preg_replace( "#^[^:/.]*[:/]+#i", "", rtrim( $url, '/' ) );
 }
 
+function sbp_newsletter_form() {
+	echo 'BEYNTODO: newsletter form';
+}
+
 /**
  * Removes http:// from the url
  *
