@@ -126,7 +126,7 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
-		// TODO: the CloudFlare credentials warning doesn't show up after saving, but after saving + refreshing.
+		// TODO: the Cloudflare credentials warning doesn't show up after saving, but after saving + refreshing.
 		add_action( 'csf_loaded', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::reset_transient' );
@@ -315,16 +315,19 @@ class Speed_Booster_Pack_Admin {
 						'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
 						'id'    => 'cloudflare_api',
 						'type'  => 'text',
+						'desc'  => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
 					],
 					[
 						'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
 						'id'    => 'cloudflare_email',
 						'type'  => 'text',
+						'desc' => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
 					],
 					[
 						'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
 						'id'    => 'cloudflare_zone',
 						'type'  => 'text',
+						'desc' => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
 					],
 				] );
 
