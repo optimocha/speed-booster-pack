@@ -291,7 +291,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$wp_config = file( $wp_config_file );
 
 			if ( $wp_cache ) {
-				$append_line = PHP_EOL . "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL;
+				$append_line = PHP_EOL . PHP_EOL . "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL;
 			} else {
 				$append_line = '';
 			}
