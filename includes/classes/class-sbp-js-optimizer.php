@@ -201,7 +201,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 
 			foreach ( $comments as $comment ) {
 				$this->comments[] = $comment;
-				$html             = str_replace( $comment, $this->comment_placeholder, $html );
+				$html			 = str_replace( $comment, $this->comment_placeholder, $html );
 			}
 		}
 	}
@@ -279,11 +279,11 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 
 	private function add_defer_attribute() {
 		foreach ( $this->included_scripts as $script ) {
-                        if ( str_replace( array( ' async', ' defer', 'data-noptimize="1"', 'data-cfasync="false"', 'data-pagespeed-no-defer' ), '', $script ) === $script ) {
-                                $this->changed_scripts[] = str_ireplace( '<script', '<script defer', $script );
-                        } else {
-                                $this->changed_scripts[] = $script;
-                        }
+			if ( str_ireplace( array( ' async', ' defer', 'data-noptimize="1"', 'data-cfasync="false"', 'data-pagespeed-no-defer' ), '', $script ) === $script ) {
+					$this->changed_scripts[] = str_ireplace( '<script', '<script defer', $script );
+			} else {
+					$this->changed_scripts[] = $script;
+			}
 		}
 	}
 
@@ -293,8 +293,8 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 			if ( isset( $matches[2] ) && str_replace( array( 'data-noptimize="1"', 'data-cfasync="false"', 'data-pagespeed-no-defer' ), '', $matches[0] ) === $matches[0] ) {
 				$script_content = $matches[2];
 				$base64_script  = base64_encode( $script_content );
-				$script         = str_replace( $script_content, '', $script );
-				$script         = str_replace( '<script defer', '<script defer src="data:text/javascript;base64,' . $base64_script . '"', $script );
+				$script = str_replace( $script_content, '', $script );
+				$script = str_replace( '<script defer', '<script defer src="data:text/javascript;base64,' . $base64_script . '"', $script );
 			}
 		}
 	}
