@@ -40,7 +40,9 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		// Add default lazyload exclusions
 		$lazyload_exclusions[] = 'data-no-lazy';
 		$lazyload_exclusions[] = 'skip-lazy';
-		$lazyload_exclusions[] = 'loading=';
+		$lazyload_exclusions[] = 'loading=eager';
+		$lazyload_exclusions[] = 'loading="eager';
+		$lazyload_exclusions[] = "loading='eager";
 		$lazyload_exclusions   = apply_filters( 'sbp_lazyload_exclusions', $lazyload_exclusions );
 		$placeholder           = 'data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%203%202%27%3E%3C/svg%3E';
 
