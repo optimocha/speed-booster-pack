@@ -21,7 +21,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	}
 
 	function add_lazy_load_script() {
-		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '12.5.1', true );
+		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.1.0', true );
 		wp_add_inline_script( 'sbp-lazy-load',
 			'
                 (function() {
@@ -88,12 +88,14 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 				$newElement
 			);
 
-			// add loading attribute
+			// add loading attribute, but only if the tag doesn't have one
+			if( ! strpos( $newElement, 'loading=' ) ) {
 			$newElement = preg_replace(
-				"/<(img|source|iframe)(.*?) ?(\/?)>/is",
-				'<$1$2 loading="lazy" $3>',
-				$newElement
-			);
+					"/<(img|source|iframe)(.*?) ?(\/?)>/is",
+					'<$1$2 loading="lazy" $3>',
+					$newElement
+				);
+			}
 
 			// prevent mixed content errors
 			$newElement = str_replace( 'http://', '//', $newElement );
