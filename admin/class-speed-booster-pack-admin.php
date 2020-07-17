@@ -262,7 +262,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. opening tag for the newsletter hyperlink 2. closing tag for the hyperlink  */
-							'content' => sprintf( __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://sendfox.com/lp/mn6oyp?KeepThis=true&TB_iframe=true&height=500&width=400" class="thickbox">', '</a>' )
+							'content' => sprintf( __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/static/newsletter.php?KeepThis=true&TB_iframe=true&height=500&width=400" class="thickbox">', '</a>' )
 						],
 						[
 							'type'    => 'subheading',
@@ -285,7 +285,6 @@ class Speed_Booster_Pack_Admin {
 							/* translators: 1: plugin owner's name (Optimocha) 2: Speed Booster Pack (Speed Booster Pack) 3: hyperlink to the owner's website */
 							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (This experience is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_PLUGIN_NAME, '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
 						],
-
 
 					],
 				]
@@ -870,8 +869,37 @@ class Speed_Booster_Pack_Admin {
 				array(
 					'title'  => __( 'About', 'speed-booster-pack' ),
 					'id'     => 'about',
+					'class'     => 'about',
 					'icon'   => 'fa fa-info-circle',
 					'fields' => array(
+
+						[
+							'type'    => 'heading',
+							/* translators: %s = Optimocha  */
+							'content' => sprintf( __( 'About %s', 'speed-booster-pack' ), SBP_OWNER_NAME ),
+						],
+						[
+							'type'    => 'content',
+							/* translators: 1. Optimocha 2. Speed Booster Pack  */
+							'content' => '<p>' . sprintf( __( 'We are %1$s, a small team of speed optimization experts. Along with hundreds of websites we finished optimizing, we acquired %2$s in 2019 and we\'re working hard to make this plugin the best speed optimization plugin for WordPress ever since!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_PLUGIN_NAME ) . '</p><ul><li><a href="https://optimocha.com/speed-optimization-for-wordpress/" rel="external noopener" target="_blank">' . 
+										 __( 'Visit our website', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/" rel="external noopener" target="_blank">' . 
+										 __( 'Learn more about our tailored Complete Speed Optimization services', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/contact/" rel="external noopener" target="_blank">' . 
+										 __( 'Contact us', 'speed-booster-pack' ) . '</a></li></ul>',
+						],
+						[
+							'type'    => 'subheading',
+							'content' => __( 'Special thanks', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'content',
+							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
+							'content' => __( 'We made use of the following libraries and frameworks in Speed Booster Pack, so we\'d like to give them a shout out and thank them:', 'speed-booster-pack' ) . 
+										 '<ul>
+											<li><a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a></li>
+											<li><a href="https://github.com/verlok/vanilla-lazyload" rel="external noopener" target="_blank">LazyLoad by Andrea Verlicchi</a></li>
+											<li><a href="https://codestarframework.com/" rel="external noopener" target="_blank">CodeStar Framework</a></li>
+										 </ul>',
+						],
 						[
 							'title'   => __( 'Allow external notices', 'speed-booster-pack' ),
 							'id'      => 'enable_external_notices',
