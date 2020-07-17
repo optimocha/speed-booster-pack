@@ -307,7 +307,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			}
 
 			// append wp cache constant if not found yet
-			if ( ! $found_wp_cache ) {
+			if ( ! $found_wp_cache && $wp_cache ) {
 				array_shift( $wp_config );
 				array_unshift( $wp_config, "<?php", $append_line );
 			}
