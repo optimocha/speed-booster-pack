@@ -10,9 +10,9 @@
  * @subpackage Speed_Booster_Pack/includes
  */
 
-// If this file is called directly, abort.
 use SpeedBooster\SBP_Cache;
 
+// If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
