@@ -3,139 +3,145 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Codestar Framework 2.1.7.1\n"
-"Report-Msgid-Bugs-To: "
-"https://wordpress.org/support/plugin/codestar-framework\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/codestar-"
+"framework\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: classes/admin-options.class.php:224
 msgid "Error while saving the changes."
-msgstr ""
+msgstr "保存更改时发生错误。"
 
 #: classes/admin-options.class.php:284
 msgid "Settings successfully imported."
-msgstr ""
+msgstr "设置导入成功。"
 
 #: classes/admin-options.class.php:296 classes/admin-options.class.php:312
 msgid "Default settings restored."
-msgstr ""
+msgstr "已恢复默认设置。"
 
 #: classes/admin-options.class.php:383
 msgid "Settings saved."
-msgstr ""
+msgstr "设置已保存。"
 
 #: classes/admin-options.class.php:561
 msgid "You have unsaved changes, save your changes!"
-msgstr ""
+msgstr "您有未保存的修改，保存您的更改。"
 
 #: classes/admin-options.class.php:563
 msgid "show all settings"
-msgstr ""
+msgstr "显示所有设置"
 
 #: classes/admin-options.class.php:565 fields/icon/icon.php:57
 #: fields/map/map.php:23
 msgid "Search..."
-msgstr ""
+msgstr "搜索..."
 
 #: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Saving..."
-msgstr ""
+msgstr "正在保存..."
 
 #: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Reset Section"
-msgstr ""
+msgstr "重置选区"
 
 #: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Are you sure to reset this section options?"
-msgstr ""
+msgstr "是否确定?"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
+#: fields/backup/backup.php:31
 msgid "Reset All"
-msgstr ""
+msgstr "全部重置"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 #: classes/comment-options.class.php:213 classes/metabox-options.class.php:282
-#: fields/backup/backup.php:31
 msgid "Reset"
-msgstr ""
+msgstr "重置"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 msgid "Are you sure you want to reset all settings to default values?"
-msgstr ""
+msgstr "是否确定要将所有设置重置为默认值?"
 
 #: classes/admin-options.class.php:668 classes/comment-options.class.php:196
 #: classes/metabox-options.class.php:265 fields/button_set/button_set.php:56
 #: fields/checkbox/checkbox.php:76 fields/radio/radio.php:75
 #: fields/select/select.php:113 functions/actions.php:41
 msgid "No data available."
-msgstr ""
+msgstr "没有可用数据。"
 
 #: classes/comment-options.class.php:214 classes/metabox-options.class.php:283
 msgid "update post"
-msgstr ""
+msgstr "更新文章"
 
 #: classes/comment-options.class.php:214 classes/metabox-options.class.php:283
 msgid "Cancel"
-msgstr ""
+msgstr "取消"
 
 #: classes/setup.class.php:527
 msgid "Are you sure?"
-msgstr ""
+msgstr "是否确定?"
 
 #: classes/setup.class.php:528
 msgid "Please enter %s or more characters"
-msgstr ""
+msgstr "请输入至少 %s 字符"
 
 #: classes/setup.class.php:529
 msgid "Searching..."
-msgstr ""
+msgstr "搜索中..."
 
 #: classes/setup.class.php:530
 msgid "No results found."
-msgstr ""
+msgstr "未找到结果。"
 
 #: classes/setup.class.php:602
 msgid "Oops! Not allowed."
-msgstr ""
+msgstr "哎呀! 不允許。"
 
 #: classes/setup.class.php:676 classes/setup.class.php:680
 msgid "Field not found!"
-msgstr ""
+msgstr "未找到字段!"
 
 #: classes/shortcode-options.class.php:35
 msgid "Add Shortcode"
-msgstr ""
+msgstr "添加短代码"
 
 #: classes/shortcode-options.class.php:36
 msgid "Select a shortcode"
-msgstr ""
+msgstr "选择一个短代码"
 
 #: classes/shortcode-options.class.php:37
 msgid "Insert Shortcode"
-msgstr ""
+msgstr "插入快捷码"
 
 #: classes/shortcode-options.class.php:44
 msgid "Write shortcode here..."
-msgstr ""
+msgstr "在此编写短代码..."
 
 #: classes/shortcode-options.class.php:239 fields/group/group.php:23
 msgid "Add New"
-msgstr ""
+msgstr "添加新的"
 
 #: classes/shortcode-options.class.php:276 functions/actions.php:16
 #: functions/actions.php:68 functions/actions.php:106 functions/actions.php:141
 #: functions/actions.php:170
 msgid "Error: Invalid nonce verification."
-msgstr ""
+msgstr "错误: 无效的nonce验证。"
 
 #: fields/background/background.php:35 fields/media/media.php:57
 msgid "Not selected"
-msgstr ""
+msgstr "未选中的"
 
 #: fields/background/background.php:66 fields/date/date.php:31
 msgid "From"
@@ -171,7 +177,7 @@ msgstr ""
 
 #: fields/background/background.php:155
 msgid "Background Position"
-msgstr ""
+msgstr "背景位置"
 
 #: fields/background/background.php:156
 msgid "Left Top"
@@ -211,7 +217,7 @@ msgstr ""
 
 #: fields/background/background.php:178
 msgid "Background Repeat"
-msgstr ""
+msgstr "重复背景"
 
 #: fields/background/background.php:179
 msgid "Repeat"
@@ -231,7 +237,7 @@ msgstr ""
 
 #: fields/background/background.php:196
 msgid "Background Attachment"
-msgstr ""
+msgstr "背景附着方式"
 
 #: fields/background/background.php:197
 msgid "Scroll"
@@ -243,7 +249,7 @@ msgstr ""
 
 #: fields/background/background.php:212
 msgid "Background Size"
-msgstr ""
+msgstr "背景大小"
 
 #: fields/background/background.php:213
 msgid "Cover"
@@ -259,7 +265,7 @@ msgstr ""
 
 #: fields/background/background.php:229
 msgid "Background Origin"
-msgstr ""
+msgstr "背景定位"
 
 #: fields/background/background.php:230 fields/background/background.php:248
 msgid "Padding Box"
@@ -275,7 +281,7 @@ msgstr ""
 
 #: fields/background/background.php:246
 msgid "Background Clip"
-msgstr ""
+msgstr "背景片段"
 
 #: fields/background/background.php:263
 msgid "Background Blend Mode"
@@ -324,11 +330,11 @@ msgstr ""
 
 #: fields/backup/backup.php:26
 msgid "Import"
-msgstr ""
+msgstr "导入"
 
 #: fields/backup/backup.php:29
 msgid "Export & Download"
-msgstr ""
+msgstr "导出 & 下载"
 
 #: fields/border/border.php:25 fields/spacing/spacing.php:25
 msgid "top"
@@ -397,40 +403,40 @@ msgstr ""
 
 #: fields/gallery/gallery.php:20
 msgid "Add Gallery"
-msgstr ""
+msgstr "添加画廊"
 
 #: fields/gallery/gallery.php:21
 msgid "Edit Gallery"
-msgstr ""
+msgstr "编辑相册"
 
 #: fields/gallery/gallery.php:22
 msgid "Clear"
-msgstr ""
+msgstr "清空"
 
 #: fields/group/group.php:35 fields/repeater/repeater.php:27
 msgid "Error: Field ID conflict."
-msgstr ""
+msgstr "错误: 字段ID冲突。"
 
 #: fields/group/group.php:46 fields/group/group.php:87
 #: fields/repeater/repeater.php:48 fields/repeater/repeater.php:76
 msgid "Are you sure to delete this item?"
-msgstr ""
+msgstr "您确定想要删除吗?"
 
 #: fields/group/group.php:121 fields/repeater/repeater.php:89
 msgid "You cannot add more."
-msgstr ""
+msgstr "您不能添加更多。"
 
 #: fields/group/group.php:122 fields/repeater/repeater.php:90
 msgid "You cannot remove more."
-msgstr ""
+msgstr "您无法删除更多。"
 
 #: fields/icon/icon.php:20 fields/icon/icon.php:53
 msgid "Add Icon"
-msgstr ""
+msgstr "添加图标"
 
 #: fields/icon/icon.php:21
 msgid "Remove Icon"
-msgstr ""
+msgstr "移除图标"
 
 #: fields/link_color/link_color.php:37
 msgid "Hover"
@@ -450,27 +456,27 @@ msgstr ""
 
 #: fields/map/map.php:24
 msgid "Latitude"
-msgstr ""
+msgstr "纬度"
 
 #: fields/map/map.php:25
 msgid "Longitude"
-msgstr ""
+msgstr "经度"
 
 #: fields/media/media.php:23 fields/upload/upload.php:21
 msgid "Upload"
-msgstr ""
+msgstr "上传"
 
 #: fields/media/media.php:24 fields/upload/upload.php:22
 msgid "Remove"
-msgstr ""
+msgstr "移除"
 
 #: fields/sorter/sorter.php:21
 msgid "Enabled"
-msgstr ""
+msgstr "启用"
 
 #: fields/sorter/sorter.php:22
 msgid "Disabled"
-msgstr ""
+msgstr "已停用"
 
 #: fields/switcher/switcher.php:20
 msgid "On"
@@ -621,32 +627,32 @@ msgstr ""
 
 #: functions/actions.php:72 functions/actions.php:110
 msgid "Error: Invalid key."
-msgstr ""
+msgstr "错误: 无效密钥。"
 
 #: functions/actions.php:114
 msgid "Error: The response is not a valid JSON response."
-msgstr ""
+msgstr "错误: 此响应不是合法的JSON响应。"
 
 #: functions/actions.php:174
 msgid "Error: Invalid term ID."
-msgstr ""
+msgstr "错误: 无效的项目ID。"
 
 #: functions/actions.php:180
 msgid "Error: You do not have permission to do that."
-msgstr ""
+msgstr "错误: 您没有权限执行此操作。"
 
 #: functions/validate.php:14 functions/validate.php:86
 msgid "Please enter a valid email address."
-msgstr ""
+msgstr "请输入正确的电子邮件地址。"
 
 #: functions/validate.php:32 functions/validate.php:106
 msgid "Please enter a valid number."
-msgstr ""
+msgstr "请输入有效的编号。"
 
 #: functions/validate.php:50 functions/validate.php:126
 msgid "This field is required."
-msgstr ""
+msgstr "此字段为必填字段。"
 
 #: functions/validate.php:68 functions/validate.php:146
 msgid "Please enter a valid URL."
-msgstr ""
+msgstr "请输入有效网址。"

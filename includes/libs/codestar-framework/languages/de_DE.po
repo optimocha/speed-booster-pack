@@ -3,139 +3,146 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Codestar Framework 2.1.7.1\n"
-"Report-Msgid-Bugs-To: "
-"https://wordpress.org/support/plugin/codestar-framework\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/codestar-"
+"framework\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: classes/admin-options.class.php:224
 msgid "Error while saving the changes."
-msgstr ""
+msgstr "Fehler beim Speichern der Änderungen."
 
 #: classes/admin-options.class.php:284
 msgid "Settings successfully imported."
-msgstr ""
+msgstr "Einstellungen wurden erfolgreich importiert."
 
 #: classes/admin-options.class.php:296 classes/admin-options.class.php:312
 msgid "Default settings restored."
-msgstr ""
+msgstr "Standard-Einstellungen wiederhergestellt."
 
 #: classes/admin-options.class.php:383
 msgid "Settings saved."
-msgstr ""
+msgstr "Einstellungen gespeichert."
 
 #: classes/admin-options.class.php:561
 msgid "You have unsaved changes, save your changes!"
-msgstr ""
+msgstr "Du hast ungespeicherte Änderungen, deine Änderungen speichern!"
 
 #: classes/admin-options.class.php:563
 msgid "show all settings"
-msgstr ""
+msgstr "zeige alle einstellungen"
 
 #: classes/admin-options.class.php:565 fields/icon/icon.php:57
 #: fields/map/map.php:23
 msgid "Search..."
-msgstr ""
+msgstr "Suche..."
 
 #: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Saving..."
-msgstr ""
+msgstr "Speichere..."
 
 #: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Reset Section"
-msgstr ""
+msgstr "Abschnitt zurücksetzen"
 
 #: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Are you sure to reset this section options?"
-msgstr ""
+msgstr "Bist du dir sicher?"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
+#: fields/backup/backup.php:31
 msgid "Reset All"
-msgstr ""
+msgstr "Alles zurücksetzen"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 #: classes/comment-options.class.php:213 classes/metabox-options.class.php:282
-#: fields/backup/backup.php:31
 msgid "Reset"
-msgstr ""
+msgstr "Zurücksetzen"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 msgid "Are you sure you want to reset all settings to default values?"
 msgstr ""
+"Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?"
 
 #: classes/admin-options.class.php:668 classes/comment-options.class.php:196
 #: classes/metabox-options.class.php:265 fields/button_set/button_set.php:56
 #: fields/checkbox/checkbox.php:76 fields/radio/radio.php:75
 #: fields/select/select.php:113 functions/actions.php:41
 msgid "No data available."
-msgstr ""
+msgstr "Keine Daten verfügbar."
 
 #: classes/comment-options.class.php:214 classes/metabox-options.class.php:283
 msgid "update post"
-msgstr ""
+msgstr "aktualisierter beitrag"
 
 #: classes/comment-options.class.php:214 classes/metabox-options.class.php:283
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: classes/setup.class.php:527
 msgid "Are you sure?"
-msgstr ""
+msgstr "Bist du dir sicher?"
 
 #: classes/setup.class.php:528
 msgid "Please enter %s or more characters"
-msgstr ""
+msgstr "Bitte %s oder mehr Buchstaben eingeben"
 
 #: classes/setup.class.php:529
 msgid "Searching..."
-msgstr ""
+msgstr "Suche nach..."
 
 #: classes/setup.class.php:530
 msgid "No results found."
-msgstr ""
+msgstr "Keine Ergebnisse."
 
 #: classes/setup.class.php:602
 msgid "Oops! Not allowed."
-msgstr ""
+msgstr "Hoppla! Nicht zulässig."
 
 #: classes/setup.class.php:676 classes/setup.class.php:680
 msgid "Field not found!"
-msgstr ""
+msgstr "Feld nicht gefunden!"
 
 #: classes/shortcode-options.class.php:35
 msgid "Add Shortcode"
-msgstr ""
+msgstr "Shortcode Hinzufügen"
 
 #: classes/shortcode-options.class.php:36
 msgid "Select a shortcode"
-msgstr ""
+msgstr "Shortcode auswählen"
 
 #: classes/shortcode-options.class.php:37
 msgid "Insert Shortcode"
-msgstr ""
+msgstr "Füge Shortcode ein"
 
 #: classes/shortcode-options.class.php:44
 msgid "Write shortcode here..."
-msgstr ""
+msgstr "Schreibe hier den shortcode..."
 
 #: classes/shortcode-options.class.php:239 fields/group/group.php:23
 msgid "Add New"
-msgstr ""
+msgstr "Neue hinzufügen"
 
 #: classes/shortcode-options.class.php:276 functions/actions.php:16
 #: functions/actions.php:68 functions/actions.php:106 functions/actions.php:141
 #: functions/actions.php:170
 msgid "Error: Invalid nonce verification."
-msgstr ""
+msgstr "Fehler: Ungültige nonce-Prüfung."
 
 #: fields/background/background.php:35 fields/media/media.php:57
 msgid "Not selected"
-msgstr ""
+msgstr "Nicht ausgewählt"
 
 #: fields/background/background.php:66 fields/date/date.php:31
 msgid "From"
@@ -171,7 +178,7 @@ msgstr ""
 
 #: fields/background/background.php:155
 msgid "Background Position"
-msgstr ""
+msgstr "Hintergrund-Position"
 
 #: fields/background/background.php:156
 msgid "Left Top"
@@ -211,7 +218,7 @@ msgstr ""
 
 #: fields/background/background.php:178
 msgid "Background Repeat"
-msgstr ""
+msgstr "Hintergrund-Wiederholung"
 
 #: fields/background/background.php:179
 msgid "Repeat"
@@ -231,7 +238,7 @@ msgstr ""
 
 #: fields/background/background.php:196
 msgid "Background Attachment"
-msgstr ""
+msgstr "Hintergrund-Anhang"
 
 #: fields/background/background.php:197
 msgid "Scroll"
@@ -243,7 +250,7 @@ msgstr ""
 
 #: fields/background/background.php:212
 msgid "Background Size"
-msgstr ""
+msgstr "Hintergrund-Größe"
 
 #: fields/background/background.php:213
 msgid "Cover"
@@ -259,7 +266,7 @@ msgstr ""
 
 #: fields/background/background.php:229
 msgid "Background Origin"
-msgstr ""
+msgstr "Hintergrund-Quelle"
 
 #: fields/background/background.php:230 fields/background/background.php:248
 msgid "Padding Box"
@@ -275,7 +282,7 @@ msgstr ""
 
 #: fields/background/background.php:246
 msgid "Background Clip"
-msgstr ""
+msgstr "Hintergrund-Clip"
 
 #: fields/background/background.php:263
 msgid "Background Blend Mode"
@@ -324,11 +331,11 @@ msgstr ""
 
 #: fields/backup/backup.php:26
 msgid "Import"
-msgstr ""
+msgstr "Daten importieren"
 
 #: fields/backup/backup.php:29
 msgid "Export & Download"
-msgstr ""
+msgstr "Daten exportieren & Herunterladen"
 
 #: fields/border/border.php:25 fields/spacing/spacing.php:25
 msgid "top"
@@ -397,40 +404,40 @@ msgstr ""
 
 #: fields/gallery/gallery.php:20
 msgid "Add Gallery"
-msgstr ""
+msgstr "Galerie Hinzufügen"
 
 #: fields/gallery/gallery.php:21
 msgid "Edit Gallery"
-msgstr ""
+msgstr "Galerie Bearbeiten"
 
 #: fields/gallery/gallery.php:22
 msgid "Clear"
-msgstr ""
+msgstr "Leeren"
 
 #: fields/group/group.php:35 fields/repeater/repeater.php:27
 msgid "Error: Field ID conflict."
-msgstr ""
+msgstr "Fehler: Feld-ID-Konflikt."
 
 #: fields/group/group.php:46 fields/group/group.php:87
 #: fields/repeater/repeater.php:48 fields/repeater/repeater.php:76
 msgid "Are you sure to delete this item?"
-msgstr ""
+msgstr "Bist du dir sicher, dass du es löschen möchtest?"
 
 #: fields/group/group.php:121 fields/repeater/repeater.php:89
 msgid "You cannot add more."
-msgstr ""
+msgstr "Sie können nicht mehr hinzufügen."
 
 #: fields/group/group.php:122 fields/repeater/repeater.php:90
 msgid "You cannot remove more."
-msgstr ""
+msgstr "Sie können nicht mehr entfernen."
 
 #: fields/icon/icon.php:20 fields/icon/icon.php:53
 msgid "Add Icon"
-msgstr ""
+msgstr "Icon Hinzufügen"
 
 #: fields/icon/icon.php:21
 msgid "Remove Icon"
-msgstr ""
+msgstr "Icon Entfernen"
 
 #: fields/link_color/link_color.php:37
 msgid "Hover"
@@ -450,27 +457,27 @@ msgstr ""
 
 #: fields/map/map.php:24
 msgid "Latitude"
-msgstr ""
+msgstr "Breitengrad"
 
 #: fields/map/map.php:25
 msgid "Longitude"
-msgstr ""
+msgstr "Längengrad"
 
 #: fields/media/media.php:23 fields/upload/upload.php:21
 msgid "Upload"
-msgstr ""
+msgstr "Hochladen"
 
 #: fields/media/media.php:24 fields/upload/upload.php:22
 msgid "Remove"
-msgstr ""
+msgstr "Entfernen"
 
 #: fields/sorter/sorter.php:21
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiviert"
 
 #: fields/sorter/sorter.php:22
 msgid "Disabled"
-msgstr ""
+msgstr "Deaktiviert"
 
 #: fields/switcher/switcher.php:20
 msgid "On"
@@ -621,32 +628,32 @@ msgstr ""
 
 #: functions/actions.php:72 functions/actions.php:110
 msgid "Error: Invalid key."
-msgstr ""
+msgstr "Fehler: Ungültiger schlüssel."
 
 #: functions/actions.php:114
 msgid "Error: The response is not a valid JSON response."
-msgstr ""
+msgstr "Fehler: Die Antwort ist keine gültige JSON-Antwort."
 
 #: functions/actions.php:174
 msgid "Error: Invalid term ID."
-msgstr ""
+msgstr "Fehler: Ungültige Begriffs-ID."
 
 #: functions/actions.php:180
 msgid "Error: You do not have permission to do that."
-msgstr ""
+msgstr "Fehler: Du hast nicht die erforderlichen Rechte, um das zu tun."
 
 #: functions/validate.php:14 functions/validate.php:86
 msgid "Please enter a valid email address."
-msgstr ""
+msgstr "Bitte gib eine gültige E-Mail-Adresse ein."
 
 #: functions/validate.php:32 functions/validate.php:106
 msgid "Please enter a valid number."
-msgstr ""
+msgstr "Bitte gib eine gültige Zahl ein."
 
 #: functions/validate.php:50 functions/validate.php:126
 msgid "This field is required."
-msgstr ""
+msgstr "Dieses Feld ist erforderlich."
 
 #: functions/validate.php:68 functions/validate.php:146
 msgid "Please enter a valid URL."
-msgstr ""
+msgstr "Bitte gib eine gültige URL an."

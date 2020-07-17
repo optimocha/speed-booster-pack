@@ -3,139 +3,145 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Codestar Framework 2.1.7.1\n"
-"Report-Msgid-Bugs-To: "
-"https://wordpress.org/support/plugin/codestar-framework\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/codestar-"
+"framework\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: classes/admin-options.class.php:224
 msgid "Error while saving the changes."
-msgstr ""
+msgstr "ผิดพลาดขณะบันทึกการเปลี่ยนแปล"
 
 #: classes/admin-options.class.php:284
 msgid "Settings successfully imported."
-msgstr ""
+msgstr "นำเข้าการตั้งค่าสำเร็จแล้"
 
 #: classes/admin-options.class.php:296 classes/admin-options.class.php:312
 msgid "Default settings restored."
-msgstr ""
+msgstr "กู้คืนตัวเลือกเริ่มต้นแล้"
 
 #: classes/admin-options.class.php:383
 msgid "Settings saved."
-msgstr ""
+msgstr "บันทึกการตั้งค่าแล้"
 
 #: classes/admin-options.class.php:561
 msgid "You have unsaved changes, save your changes!"
-msgstr ""
+msgstr "คุณมีการเปลี่ยนแปลงที่ยังไม่ได้บันทึก บันทึกการเปลี่ยนแปลง"
 
 #: classes/admin-options.class.php:563
 msgid "show all settings"
-msgstr ""
+msgstr "แสดงการตั้งค่าทั้งหมด"
 
 #: classes/admin-options.class.php:565 fields/icon/icon.php:57
 #: fields/map/map.php:23
 msgid "Search..."
-msgstr ""
+msgstr "ค้นหา..."
 
 #: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Save"
-msgstr ""
+msgstr "บันทึก"
 
 #: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Saving..."
-msgstr ""
+msgstr "กำลังบันทึก..."
 
 #: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Reset Section"
-msgstr ""
+msgstr "รีเซ็ตส่วน"
 
 #: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Are you sure to reset this section options?"
-msgstr ""
+msgstr "คุณแน่ใจหรือไม่?"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
+#: fields/backup/backup.php:31
 msgid "Reset All"
-msgstr ""
+msgstr "เคลียร์ทั้งหมด"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 #: classes/comment-options.class.php:213 classes/metabox-options.class.php:282
-#: fields/backup/backup.php:31
 msgid "Reset"
-msgstr ""
+msgstr "ล้างค่า"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 msgid "Are you sure you want to reset all settings to default values?"
-msgstr ""
+msgstr "คุณแน่ใจหรือไม่?"
 
 #: classes/admin-options.class.php:668 classes/comment-options.class.php:196
 #: classes/metabox-options.class.php:265 fields/button_set/button_set.php:56
 #: fields/checkbox/checkbox.php:76 fields/radio/radio.php:75
 #: fields/select/select.php:113 functions/actions.php:41
 msgid "No data available."
-msgstr ""
+msgstr "ไม่มีข้อมูล"
 
 #: classes/comment-options.class.php:214 classes/metabox-options.class.php:283
 msgid "update post"
-msgstr ""
+msgstr "อัปเดตโพสต์"
 
 #: classes/comment-options.class.php:214 classes/metabox-options.class.php:283
 msgid "Cancel"
-msgstr ""
+msgstr "ยกเลิก"
 
 #: classes/setup.class.php:527
 msgid "Are you sure?"
-msgstr ""
+msgstr "คุณแน่ใจหรือไม่?"
 
 #: classes/setup.class.php:528
 msgid "Please enter %s or more characters"
-msgstr ""
+msgstr "กรุณาใส่มากกว่าหรือเท่ากับ %s ตัวอักษร"
 
 #: classes/setup.class.php:529
 msgid "Searching..."
-msgstr ""
+msgstr "กำลังค้นหา..."
 
 #: classes/setup.class.php:530
 msgid "No results found."
-msgstr ""
+msgstr "ไม่พบผลลัพท์ง"
 
 #: classes/setup.class.php:602
 msgid "Oops! Not allowed."
-msgstr ""
+msgstr "โอ๊ะ ไม่ได้รับอนุญาต"
 
 #: classes/setup.class.php:676 classes/setup.class.php:680
 msgid "Field not found!"
-msgstr ""
+msgstr "ไม่พบฟิลด์!"
 
 #: classes/shortcode-options.class.php:35
 msgid "Add Shortcode"
-msgstr ""
+msgstr "เพิ่มรหัสย่อ"
 
 #: classes/shortcode-options.class.php:36
 msgid "Select a shortcode"
-msgstr ""
+msgstr "เลือกรหัสย่อ"
 
 #: classes/shortcode-options.class.php:37
 msgid "Insert Shortcode"
-msgstr ""
+msgstr "เพิ่ม"
 
 #: classes/shortcode-options.class.php:44
 msgid "Write shortcode here..."
-msgstr ""
+msgstr "เขียนรหัสย่อที่นี่..."
 
 #: classes/shortcode-options.class.php:239 fields/group/group.php:23
 msgid "Add New"
-msgstr ""
+msgstr "เพิ่ม"
 
 #: classes/shortcode-options.class.php:276 functions/actions.php:16
 #: functions/actions.php:68 functions/actions.php:106 functions/actions.php:141
 #: functions/actions.php:170
 msgid "Error: Invalid nonce verification."
-msgstr ""
+msgstr "ข้อผิดพลาด: การตรวจสอบ nonce ไม่ถูกต้อ"
 
 #: fields/background/background.php:35 fields/media/media.php:57
 msgid "Not selected"
-msgstr ""
+msgstr "ไม่ได้เลือก"
 
 #: fields/background/background.php:66 fields/date/date.php:31
 msgid "From"
@@ -171,7 +177,7 @@ msgstr ""
 
 #: fields/background/background.php:155
 msgid "Background Position"
-msgstr ""
+msgstr "ตำแหน่งพื้นหลัง"
 
 #: fields/background/background.php:156
 msgid "Left Top"
@@ -211,7 +217,7 @@ msgstr ""
 
 #: fields/background/background.php:178
 msgid "Background Repeat"
-msgstr ""
+msgstr "ทำซ้ำพื้นหลัง"
 
 #: fields/background/background.php:179
 msgid "Repeat"
@@ -231,7 +237,7 @@ msgstr ""
 
 #: fields/background/background.php:196
 msgid "Background Attachment"
-msgstr ""
+msgstr "ไฟล์แนบพื้นหลัง"
 
 #: fields/background/background.php:197
 msgid "Scroll"
@@ -243,7 +249,7 @@ msgstr ""
 
 #: fields/background/background.php:212
 msgid "Background Size"
-msgstr ""
+msgstr "ขนาดพื้นหลัง"
 
 #: fields/background/background.php:213
 msgid "Cover"
@@ -259,7 +265,7 @@ msgstr ""
 
 #: fields/background/background.php:229
 msgid "Background Origin"
-msgstr ""
+msgstr "พื้นหลังเริ่มต้น"
 
 #: fields/background/background.php:230 fields/background/background.php:248
 msgid "Padding Box"
@@ -275,7 +281,7 @@ msgstr ""
 
 #: fields/background/background.php:246
 msgid "Background Clip"
-msgstr ""
+msgstr "คลิปพื้นหลัง"
 
 #: fields/background/background.php:263
 msgid "Background Blend Mode"
@@ -324,11 +330,11 @@ msgstr ""
 
 #: fields/backup/backup.php:26
 msgid "Import"
-msgstr ""
+msgstr "นำเข้า"
 
 #: fields/backup/backup.php:29
 msgid "Export & Download"
-msgstr ""
+msgstr "นำออก & ดาวน์โหลด"
 
 #: fields/border/border.php:25 fields/spacing/spacing.php:25
 msgid "top"
@@ -397,40 +403,40 @@ msgstr ""
 
 #: fields/gallery/gallery.php:20
 msgid "Add Gallery"
-msgstr ""
+msgstr "เพิ่มคลังภาพ"
 
 #: fields/gallery/gallery.php:21
 msgid "Edit Gallery"
-msgstr ""
+msgstr "แก้ไขคลังภาพ"
 
 #: fields/gallery/gallery.php:22
 msgid "Clear"
-msgstr ""
+msgstr "ล้างค่า"
 
 #: fields/group/group.php:35 fields/repeater/repeater.php:27
 msgid "Error: Field ID conflict."
-msgstr ""
+msgstr "ข้อผิดพลาด: ข้อขัดแย้ง ID ฟิลด์"
 
 #: fields/group/group.php:46 fields/group/group.php:87
 #: fields/repeater/repeater.php:48 fields/repeater/repeater.php:76
 msgid "Are you sure to delete this item?"
-msgstr ""
+msgstr "คุณแน่ใจหรือไม่?"
 
 #: fields/group/group.php:121 fields/repeater/repeater.php:89
 msgid "You cannot add more."
-msgstr ""
+msgstr "คุณไม่สามารถเพิ่มได้อีก"
 
 #: fields/group/group.php:122 fields/repeater/repeater.php:90
 msgid "You cannot remove more."
-msgstr ""
+msgstr "คุณไม่สามารถลบเพิ่มเติมได้"
 
 #: fields/icon/icon.php:20 fields/icon/icon.php:53
 msgid "Add Icon"
-msgstr ""
+msgstr "เพิ่ม ไอคอน"
 
 #: fields/icon/icon.php:21
 msgid "Remove Icon"
-msgstr ""
+msgstr "ลบ ไอคอน"
 
 #: fields/link_color/link_color.php:37
 msgid "Hover"
@@ -450,27 +456,27 @@ msgstr ""
 
 #: fields/map/map.php:24
 msgid "Latitude"
-msgstr ""
+msgstr "ละติจูด"
 
 #: fields/map/map.php:25
 msgid "Longitude"
-msgstr ""
+msgstr "ลองจิจูด"
 
 #: fields/media/media.php:23 fields/upload/upload.php:21
 msgid "Upload"
-msgstr ""
+msgstr "อัปโหลด"
 
 #: fields/media/media.php:24 fields/upload/upload.php:22
 msgid "Remove"
-msgstr ""
+msgstr "ลบออก"
 
 #: fields/sorter/sorter.php:21
 msgid "Enabled"
-msgstr ""
+msgstr "เปิดใช้งาน"
 
 #: fields/sorter/sorter.php:22
 msgid "Disabled"
-msgstr ""
+msgstr "ปิดการใช้งาน"
 
 #: fields/switcher/switcher.php:20
 msgid "On"
@@ -621,32 +627,32 @@ msgstr ""
 
 #: functions/actions.php:72 functions/actions.php:110
 msgid "Error: Invalid key."
-msgstr ""
+msgstr "ข้อผิดพลาด: รหัสไม่ถูกต้อ"
 
 #: functions/actions.php:114
 msgid "Error: The response is not a valid JSON response."
-msgstr ""
+msgstr "ข้อผิดพลาด: ผลลัพธ์ไม่ใช่รูปแบบ JSON ที่ถูกต้อ"
 
 #: functions/actions.php:174
 msgid "Error: Invalid term ID."
-msgstr ""
+msgstr "ข้อผิดพลาด: เลขที่เฉพาะคำศัพท์ไม่ถูกต้อ"
 
 #: functions/actions.php:180
 msgid "Error: You do not have permission to do that."
-msgstr ""
+msgstr "ข้อผิดพลาด: คุณไม่ได้รับอนุญาตให้ทำเช่นนั้น"
 
 #: functions/validate.php:14 functions/validate.php:86
 msgid "Please enter a valid email address."
-msgstr ""
+msgstr "โปรดใส่ที่อยู่อีเมลที่ใช้งานได้"
 
 #: functions/validate.php:32 functions/validate.php:106
 msgid "Please enter a valid number."
-msgstr ""
+msgstr "กรุณาใส่หมายเลขที่ถูกต้อ"
 
 #: functions/validate.php:50 functions/validate.php:126
 msgid "This field is required."
-msgstr ""
+msgstr "ช่องนี้จำเป็นต้องกรอกข้อมูล"
 
 #: functions/validate.php:68 functions/validate.php:146
 msgid "Please enter a valid URL."
-msgstr ""
+msgstr "โปรดใส่ URL ที่ใช้งานได้"

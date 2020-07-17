@@ -3,139 +3,145 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Codestar Framework 2.1.7.1\n"
-"Report-Msgid-Bugs-To: "
-"https://wordpress.org/support/plugin/codestar-framework\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/codestar-"
+"framework\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ko_KR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: classes/admin-options.class.php:224
 msgid "Error while saving the changes."
-msgstr ""
+msgstr "변경사항을 저장하는데 오류가 발생했습니다."
 
 #: classes/admin-options.class.php:284
 msgid "Settings successfully imported."
-msgstr ""
+msgstr "설정을 가져 왔습니다."
 
 #: classes/admin-options.class.php:296 classes/admin-options.class.php:312
 msgid "Default settings restored."
-msgstr ""
+msgstr "기본 옵션은 복원."
 
 #: classes/admin-options.class.php:383
 msgid "Settings saved."
-msgstr ""
+msgstr "설정을 저장했습니다."
 
 #: classes/admin-options.class.php:561
 msgid "You have unsaved changes, save your changes!"
-msgstr ""
+msgstr "저장되지 않은 변경사항이 있습니다, 변경사항을 저장합니다!"
 
 #: classes/admin-options.class.php:563
 msgid "show all settings"
-msgstr ""
+msgstr "모든 설정표시"
 
 #: classes/admin-options.class.php:565 fields/icon/icon.php:57
 #: fields/map/map.php:23
 msgid "Search..."
-msgstr ""
+msgstr "검색..."
 
 #: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Save"
-msgstr ""
+msgstr "저장하기"
 
 #: classes/admin-options.class.php:568 classes/admin-options.class.php:691
 msgid "Saving..."
-msgstr ""
+msgstr "저장중..."
 
 #: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Reset Section"
-msgstr ""
+msgstr "섹션 재설정"
 
 #: classes/admin-options.class.php:569 classes/admin-options.class.php:692
 msgid "Are you sure to reset this section options?"
-msgstr ""
+msgstr "계속할까요?"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
+#: fields/backup/backup.php:31
 msgid "Reset All"
-msgstr ""
+msgstr "초기화"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 #: classes/comment-options.class.php:213 classes/metabox-options.class.php:282
-#: fields/backup/backup.php:31
 msgid "Reset"
-msgstr ""
+msgstr "초기화"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 msgid "Are you sure you want to reset all settings to default values?"
-msgstr ""
+msgstr "すべての設定を初期値にリセットしても良いですか?"
 
 #: classes/admin-options.class.php:668 classes/comment-options.class.php:196
 #: classes/metabox-options.class.php:265 fields/button_set/button_set.php:56
 #: fields/checkbox/checkbox.php:76 fields/radio/radio.php:75
 #: fields/select/select.php:113 functions/actions.php:41
 msgid "No data available."
-msgstr ""
+msgstr "데이터가 없습니다."
 
 #: classes/comment-options.class.php:214 classes/metabox-options.class.php:283
 msgid "update post"
-msgstr ""
+msgstr "글 업데이트"
 
 #: classes/comment-options.class.php:214 classes/metabox-options.class.php:283
 msgid "Cancel"
-msgstr ""
+msgstr "취소"
 
 #: classes/setup.class.php:527
 msgid "Are you sure?"
-msgstr ""
+msgstr "계속할까요?"
 
 #: classes/setup.class.php:528
 msgid "Please enter %s or more characters"
-msgstr ""
+msgstr "%s 이상의 글자를 입력하세요"
 
 #: classes/setup.class.php:529
 msgid "Searching..."
-msgstr ""
+msgstr "검색중..."
 
 #: classes/setup.class.php:530
 msgid "No results found."
-msgstr ""
+msgstr "결과가 없습니다."
 
 #: classes/setup.class.php:602
 msgid "Oops! Not allowed."
-msgstr ""
+msgstr "이런! 허용되지 않습니다."
 
 #: classes/setup.class.php:676 classes/setup.class.php:680
 msgid "Field not found!"
-msgstr ""
+msgstr "영역을 찾을 수 없음!"
 
 #: classes/shortcode-options.class.php:35
 msgid "Add Shortcode"
-msgstr ""
+msgstr "단축 번호 추가"
 
 #: classes/shortcode-options.class.php:36
 msgid "Select a shortcode"
-msgstr ""
+msgstr "단축 코드 선택"
 
 #: classes/shortcode-options.class.php:37
 msgid "Insert Shortcode"
-msgstr ""
+msgstr "단축코드 삽입"
 
 #: classes/shortcode-options.class.php:44
 msgid "Write shortcode here..."
-msgstr ""
+msgstr "숏코드를 여기서 쓰기..."
 
 #: classes/shortcode-options.class.php:239 fields/group/group.php:23
 msgid "Add New"
-msgstr ""
+msgstr "추가하기"
 
 #: classes/shortcode-options.class.php:276 functions/actions.php:16
 #: functions/actions.php:68 functions/actions.php:106 functions/actions.php:141
 #: functions/actions.php:170
 msgid "Error: Invalid nonce verification."
-msgstr ""
+msgstr "오류: 잘못된 nonce 확인."
 
 #: fields/background/background.php:35 fields/media/media.php:57
 msgid "Not selected"
-msgstr ""
+msgstr "선택되지 않은"
 
 #: fields/background/background.php:66 fields/date/date.php:31
 msgid "From"
@@ -171,7 +177,7 @@ msgstr ""
 
 #: fields/background/background.php:155
 msgid "Background Position"
-msgstr ""
+msgstr "배경 포지션"
 
 #: fields/background/background.php:156
 msgid "Left Top"
@@ -211,7 +217,7 @@ msgstr ""
 
 #: fields/background/background.php:178
 msgid "Background Repeat"
-msgstr ""
+msgstr "배경 반복"
 
 #: fields/background/background.php:179
 msgid "Repeat"
@@ -231,7 +237,7 @@ msgstr ""
 
 #: fields/background/background.php:196
 msgid "Background Attachment"
-msgstr ""
+msgstr "배경 첨부"
 
 #: fields/background/background.php:197
 msgid "Scroll"
@@ -243,7 +249,7 @@ msgstr ""
 
 #: fields/background/background.php:212
 msgid "Background Size"
-msgstr ""
+msgstr "배경 사이즈"
 
 #: fields/background/background.php:213
 msgid "Cover"
@@ -259,7 +265,7 @@ msgstr ""
 
 #: fields/background/background.php:229
 msgid "Background Origin"
-msgstr ""
+msgstr "배경 기원"
 
 #: fields/background/background.php:230 fields/background/background.php:248
 msgid "Padding Box"
@@ -275,7 +281,7 @@ msgstr ""
 
 #: fields/background/background.php:246
 msgid "Background Clip"
-msgstr ""
+msgstr "배경 클립"
 
 #: fields/background/background.php:263
 msgid "Background Blend Mode"
@@ -324,11 +330,11 @@ msgstr ""
 
 #: fields/backup/backup.php:26
 msgid "Import"
-msgstr ""
+msgstr "가져오기"
 
 #: fields/backup/backup.php:29
 msgid "Export & Download"
-msgstr ""
+msgstr "내보내기 & 다운로드"
 
 #: fields/border/border.php:25 fields/spacing/spacing.php:25
 msgid "top"
@@ -397,40 +403,40 @@ msgstr ""
 
 #: fields/gallery/gallery.php:20
 msgid "Add Gallery"
-msgstr ""
+msgstr "갤러리 추가"
 
 #: fields/gallery/gallery.php:21
 msgid "Edit Gallery"
-msgstr ""
+msgstr "갤러리 편집"
 
 #: fields/gallery/gallery.php:22
 msgid "Clear"
-msgstr ""
+msgstr "지우기"
 
 #: fields/group/group.php:35 fields/repeater/repeater.php:27
 msgid "Error: Field ID conflict."
-msgstr ""
+msgstr "오류: 필드 ID 충돌"
 
 #: fields/group/group.php:46 fields/group/group.php:87
 #: fields/repeater/repeater.php:48 fields/repeater/repeater.php:76
 msgid "Are you sure to delete this item?"
-msgstr ""
+msgstr "정말로 삭제하시겠습니까?"
 
 #: fields/group/group.php:121 fields/repeater/repeater.php:89
 msgid "You cannot add more."
-msgstr ""
+msgstr "더 추가 할 수 없습니다."
 
 #: fields/group/group.php:122 fields/repeater/repeater.php:90
 msgid "You cannot remove more."
-msgstr ""
+msgstr "더 이상 제거 할 수 없습니다."
 
 #: fields/icon/icon.php:20 fields/icon/icon.php:53
 msgid "Add Icon"
-msgstr ""
+msgstr "아이콘 추가"
 
 #: fields/icon/icon.php:21
 msgid "Remove Icon"
-msgstr ""
+msgstr "아이콘 제거"
 
 #: fields/link_color/link_color.php:37
 msgid "Hover"
@@ -450,27 +456,27 @@ msgstr ""
 
 #: fields/map/map.php:24
 msgid "Latitude"
-msgstr ""
+msgstr "위도"
 
 #: fields/map/map.php:25
 msgid "Longitude"
-msgstr ""
+msgstr "경도"
 
 #: fields/media/media.php:23 fields/upload/upload.php:21
 msgid "Upload"
-msgstr ""
+msgstr "アップロード"
 
 #: fields/media/media.php:24 fields/upload/upload.php:22
 msgid "Remove"
-msgstr ""
+msgstr "삭제"
 
 #: fields/sorter/sorter.php:21
 msgid "Enabled"
-msgstr ""
+msgstr "활성화"
 
 #: fields/sorter/sorter.php:22
 msgid "Disabled"
-msgstr ""
+msgstr "비활성"
 
 #: fields/switcher/switcher.php:20
 msgid "On"
@@ -621,32 +627,32 @@ msgstr ""
 
 #: functions/actions.php:72 functions/actions.php:110
 msgid "Error: Invalid key."
-msgstr ""
+msgstr "오류: 잘못된 키"
 
 #: functions/actions.php:114
 msgid "Error: The response is not a valid JSON response."
-msgstr ""
+msgstr "오류: 응답이 유효한 JSON 응답이 아닙니다."
 
 #: functions/actions.php:174
 msgid "Error: Invalid term ID."
-msgstr ""
+msgstr "오류: 유효하지 않은 텀(term) ID."
 
 #: functions/actions.php:180
 msgid "Error: You do not have permission to do that."
-msgstr ""
+msgstr "오류: 그렇게 할 수 있는 권한이 없습니다."
 
 #: functions/validate.php:14 functions/validate.php:86
 msgid "Please enter a valid email address."
-msgstr ""
+msgstr "유효한 이메일 주소를 입력하세요."
 
 #: functions/validate.php:32 functions/validate.php:106
 msgid "Please enter a valid number."
-msgstr ""
+msgstr "올바른 번호를 입력해 주세요."
 
 #: functions/validate.php:50 functions/validate.php:126
 msgid "This field is required."
-msgstr ""
+msgstr "필수 필드."
 
 #: functions/validate.php:68 functions/validate.php:146
 msgid "Please enter a valid URL."
-msgstr ""
+msgstr "유효한 URL을 입력하세요."
