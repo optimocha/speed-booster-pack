@@ -295,7 +295,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	}
 
 	public function instant_page_handle() {
-		wp_enqueue_script( 'sbp-ins-page', SBP_URL . 'public/js/inspage.js', false, '2.0.0', true );
+		wp_enqueue_script( 'sbp-ins-page', SBP_URL . 'public/js/inspage.js', false, '5.1.0', true );
 	}
 
 	private function declutter_feed_links() {
