@@ -109,7 +109,7 @@ Speed Booster Pack v4.0 is written from scratch! With the new options framework,
 
 = 4.0.0 =
 
-*Release Date: 17 July 2020*
+*Release Date: 18 July 2020*
 
 **Speed Booster Pack v4.0 is written from scratch!** Almost all of our codebase is rewritten, great new features are added, and we have an awesome new options panel to show them all!
 
