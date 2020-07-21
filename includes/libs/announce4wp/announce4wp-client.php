@@ -5,17 +5,19 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 		private $api_endpoint_url = '';
 		private $service_id = '';
 		private $transient_name = '';
+		private $error_transient_name = '';
 		private $settings_screen = '';
 		private $plugin_name = '';
 		private $plugin_file_name = '';
 
 		public function __construct( $plugin_file_name, $plugin_name, $service_id, $api_endpoint_url, $settings_screen ) {
-			$this->service_id       = $service_id;
-			$this->api_endpoint_url = $api_endpoint_url;
-			$this->settings_screen  = $settings_screen;
-			$this->plugin_file_name = $plugin_file_name;
-			$this->plugin_name = $plugin_name;
-			$this->transient_name   = 'a4wp_' . $this->service_id . '_announcements';
+			$this->service_id           = $service_id;
+			$this->api_endpoint_url     = $api_endpoint_url;
+			$this->settings_screen      = $settings_screen;
+			$this->plugin_file_name     = $plugin_file_name;
+			$this->plugin_name          = $plugin_name;
+			$this->transient_name       = 'a4wp_' . $this->service_id . '_announcements';
+			$this->error_transient_name = $this->transient_name . '_disabled';
 
 			add_action( 'admin_init', [ $this, 'save_notices' ] );
 
@@ -34,17 +36,34 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 				return;
 			}
 
-			if ( get_transient( $this->transient_name ) ) {
+			if ( get_transient( $this->transient_name ) || get_transient( $this->error_transient_name ) ) {
 				return;
 			}
 
 			$remote_notices = $this->fetch_notices();
 			if ( ! $remote_notices ) {
+				$error_timestamps = [ time() ];
+				if ( get_option( 'sbp_notice_error' ) ) {
+					$error_timestamps   = get_option( 'sbp_notice_error' );
+					$error_timestamps[] = time();
+				}
+
+				update_option( 'sbp_notice_error', $error_timestamps );
+				set_transient( $this->error_transient_name, 1, HOUR_IN_SECONDS );
+
+				if ( count( $error_timestamps ) >= 10 ) {
+					$sbp_options                            = get_option( 'sbp_options' );
+					$sbp_options['enable_external_notices'] = false;
+					update_option( 'sbp_options', $sbp_options );
+					delete_transient( $this->error_transient_name );
+				}
+
+
 				return;
 			}
 
 			// Update transient
-			set_transient( $this->transient_name, $remote_notices, 12 * HOUR_IN_SECONDS );
+			set_transient( $this->transient_name, $remote_notices, 48 * HOUR_IN_SECONDS );
 		}
 
 		private function fetch_notices() {
@@ -52,9 +71,14 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			if ( $notices instanceof WP_Error ) {
 				return false;
 			}
-			$notices = json_decode( $notices['body'], true );
 
-			return $notices;
+			if ( $notices = json_decode( $notices['body'], true ) ) {
+				delete_transient( $this->error_transient_name );
+
+				return $notices;
+			}
+
+			return false;
 		}
 
 		public function enqueue_scripts() {
