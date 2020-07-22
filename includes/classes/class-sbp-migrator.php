@@ -77,6 +77,7 @@ class SBP_Migrator {
 		$this->migrate_declutter_settings();
 		$this->migrate_cdn_settings();
 		$this->migrate_exclude_rules();
+		$this->enable_external_notices();
 		update_option( 'sbp_options', $this->sbp_options );
 		wp_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
 	}
@@ -136,6 +137,10 @@ ga('send', 'pageview');";
 			$new_cdn_url                  = rtrim( $new_cdn_url, '/' );
 			$this->sbp_options['cdn_url'] = $new_cdn_url;
 		}
+	}
+
+	private function enable_external_notices() {
+		$this->sbp_options['enable_external_notices'] = '1';
 	}
 
 	private function migrate_exclude_rules() {
