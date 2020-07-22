@@ -31,3 +31,5 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 delete_option( 'sbp_options' );
+delete_option( 'sbp_notice_error' );
+delete_option( 'sbp_transient_error' );
