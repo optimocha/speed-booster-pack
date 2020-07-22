@@ -32,7 +32,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 		}
 
 		public function save_notices() {
-			if ( ! current_user_can( 'manage_options' ) ) {
+			if ( ! current_user_can( 'manage_options' ) || wp_doing_ajax() ) {
 				return;
 			}
 
@@ -49,7 +49,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 				}
 
 				update_option( 'sbp_notice_error', $error_timestamps );
-				set_transient( $this->error_transient_name, 1, HOUR_IN_SECONDS );
+				set_transient( $this->error_transient_name, 1, 3600 );
 
 				if ( count( $error_timestamps ) >= 10 ) {
 					$sbp_options                            = get_option( 'sbp_options' );
@@ -58,12 +58,11 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 					delete_transient( $this->error_transient_name );
 				}
 
-
 				return;
 			}
 
 			// Update transient
-			set_transient( $this->transient_name, $remote_notices, 48 * HOUR_IN_SECONDS );
+			set_transient( $this->transient_name, $remote_notices, 24 * 3600 );
 		}
 
 		private function fetch_notices() {
@@ -74,7 +73,6 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 
 			if ( $notices = json_decode( $notices['body'], true ) ) {
 				delete_transient( $this->error_transient_name );
-
 				return $notices;
 			}
 
