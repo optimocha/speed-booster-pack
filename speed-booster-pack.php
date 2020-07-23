@@ -24,6 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+
 /**
  * Plugin name.
  */
