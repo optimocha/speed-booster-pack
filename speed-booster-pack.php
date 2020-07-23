@@ -19,11 +19,11 @@
  * Copyright 2019-...  Optimocha (hey@optimocha.com)
  */
 
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
 
 /**
  * Plugin name.
