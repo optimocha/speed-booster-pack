@@ -36,7 +36,7 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 
 			$notices = get_option( $this->option_name );
-			$notices_expiry = 10; // TODO: change it to 24 * 3600 and delete this comment
+			$notices_expiry = 24 * 3600;
 			$error_expiry = 3600;
 
 			if( time() > $notices['expiry'] ) {
