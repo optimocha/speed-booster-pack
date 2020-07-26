@@ -59,7 +59,7 @@ class SBP_Migrator {
 							});
 						});
 					})';
-					wp_add_inline_script( 'jquery-core', $dismiss_notice_script, 'footer' );
+					wp_add_inline_script( 'jquery', $dismiss_notice_script, 'footer' );
 				} );
 			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
 		}
