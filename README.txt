@@ -105,7 +105,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.0.1 =
 
-*Release Date: 28 July 2020*
+*Release Date: 31 July 2020*
 
 * **Fixed**: Small issues with the external notices are resolved.
 
