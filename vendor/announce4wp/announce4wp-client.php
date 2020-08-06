@@ -36,49 +36,33 @@ if ( ! class_exists( "Announce4WP_Client" ) ) {
 			}
 
 			$notices = get_option( $this->option_name );
+
+			if( $notices && time() < $notices['expiry'] ) {
+				return;
+			}
+
 			$notices_expiry = 24 * 3600;
-			$error_expiry = 3600;
+			$error_expiry = 3600;			
 
-			if( time() > $notices['expiry'] ) {
+			$data = wp_remote_get( $this->api_endpoint_url );
 
-				$data = wp_remote_get( $this->api_endpoint_url );
+			if ( is_array( $data ) && ! is_wp_error( $data ) ) {
 
-				if ( $data instanceof WP_Error ) {
-					update_option( $this->option_name, [
-						'data' => 'error',
-						'expiry' => time() + $error_expiry
-					] );
-
-					return;
-				}
-				
-				// TODO: delete this part
-				// update_option( $this->option_name, [
-				// 	'data' => [
-				// 		'normal_notices' => [
-				// 			['id' => '253352523235234',
-				// 										'title' => 'normal',
-				// 										'rules' => ['rules'],
-				// 										'content' => 'normal content',]
-				// 		],
-				// 		'important_notices' => [
-				// 			['id' => '2533525f23235234',
-				// 										'title' => 'important',
-				// 										'rules' => ['rules'],
-				// 										'content' => $notices['expiry'],]
-				// 		],
-				// 	],
-				// 	'expiry' => time() + $notices_expiry
-				// ] );
-				
 				update_option( $this->option_name, [
 					'data' => json_decode( $data['body'], true ),
 					'expiry' => time() + $notices_expiry
 				] );
 
-				return;
+			} else {
+
+				update_option( $this->option_name, [
+					'data' => 'error',
+					'expiry' => time() + $error_expiry
+				] );
 
 			}
+
+			return;
 
 		}
 

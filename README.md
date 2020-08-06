@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, performance, cache
 Requires at least: 4.6
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 4.0.0
+Stable tag: 4.0.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -101,11 +101,13 @@ All the time! We're always looking for new ways to get this plugin to a better s
 == Screenshots ==
 1. Plugin options page
 
-== Upgrade Notice ==
-
-Speed Booster Pack v4.0 is written from scratch! With the new options framework, your current options will be migrated to the new codebase but make sure you review your options after updating the plugin to the latest version.
-
 == Changelog ==
+
+= 4.0.1 =
+
+*Release Date: 31 July 2020*
+
+* **Fixed**: Small issues with the external notices are resolved.
 
 = 4.0.0 =
 
