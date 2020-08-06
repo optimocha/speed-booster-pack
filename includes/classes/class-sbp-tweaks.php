@@ -189,26 +189,6 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		}
 	}
 
-	private function declutter_shortlinks() {
-		remove_action( 'wp_head', 'wp_shortlink_wp_head' );
-	}
-
-	private function declutter_adjacent_posts_links() {
-		remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head' );
-	}
-
-	private function declutter_wlw() {
-		remove_action( 'wp_head', 'wlwmanifest_link' );
-	}
-
-	private function declutter_rsd() {
-		remove_action( 'wp_head', 'rsd_link' );
-	}
-
-	private function declutter_wp_version() {
-		remove_action( 'wp_head', 'wp_generator' );
-	}
-
 	private function post_revisions() {
 		if ( ! empty( sbp_get_option( 'post_revisions' ) ) && ! defined( 'WP_POST_REVISIONS' ) ) {
 			define( 'WP_POST_REVISIONS', sbp_get_option( 'post_revisions' ) );
@@ -298,12 +278,32 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		wp_enqueue_script( 'sbp-ins-page', SBP_URL . 'public/js/inspage.js', false, '5.1.0', true );
 	}
 
+	private function declutter_shortlinks() {
+		remove_action( 'wp_head', 'wp_shortlink_wp_head' );
+	}
+
+	private function declutter_adjacent_posts_links() {
+		remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head' );
+	}
+
+	private function declutter_wlw() {
+		remove_action( 'wp_head', 'wlwmanifest_link' );
+	}
+
+	private function declutter_rsd() {
+		remove_action( 'wp_head', 'rsd_link' );
+	}
+
+	private function declutter_rest_api_links() {
+		remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
+	}
+
 	private function declutter_feed_links() {
 		remove_action( 'wp_head', 'feed_links_extra', 3 );
 		remove_action( 'wp_head', 'feed_links', 2 );
 	}
 
-	private function declutter_rest_api_links() {
-		remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
+	private function declutter_wp_version() {
+		remove_action( 'wp_head', 'wp_generator' );
 	}
 }

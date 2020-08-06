@@ -69,12 +69,12 @@ class SBP_CDN extends SBP_Abstract_Module {
 			}
 
 			//Found Site URL, Replace Non Relative URL w/ HTTP/S Prefix
-			if ( strstr( $url[0], $site_url ) ) {
-				return str_replace( [ 'http:' . $site_url, 'https:' . $site_url ], $sbp_cdn_url, $url[0] );
+			if ( strpos( $url[0], $site_url ) !== false ) {
+				return '//' . str_replace( [ 'http:' . $site_url, 'https:' . $site_url ], $sbp_cdn_url, $url[0] );
 			}
 
 			//Replace Relative URL
-			return $sbp_cdn_url . $url[0];
+			return '//' . $sbp_cdn_url . $url[0];
 		}
 
 		//Return Original URL

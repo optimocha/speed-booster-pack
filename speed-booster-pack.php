@@ -67,7 +67,7 @@ define( 'SBP_INC_PATH', SBP_PATH . 'includes/' );
 /**
  * Plugin libraries path
  */
-define( 'SBP_LIB_PATH', SBP_INC_PATH . 'libs/' );
+define( 'SBP_LIB_PATH', SBP_PATH . 'vendor/' );
 
 /**
  * Cache directory path
