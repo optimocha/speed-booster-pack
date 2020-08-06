@@ -179,6 +179,12 @@ class Speed_Booster_Pack {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
+		require_once SBP_LIB_PATH . 'simplehtmldom/simple_html_dom.php';
+
+		/**
+		 * The class responsible for orchestrating the actions and filters of the
+		 * core plugin.
+		 */
 		require_once SBP_INC_PATH . 'class-speed-booster-pack-loader.php';
 
 		/**
