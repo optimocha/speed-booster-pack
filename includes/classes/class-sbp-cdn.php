@@ -50,10 +50,10 @@ class SBP_CDN extends SBP_Abstract_Module {
 			return $url[0];
 		}
 
-		$sbp_cdn_url = sbp_get_option( 'cdn_url' );
+		$sbp_cdn_url = '//' . sbp_get_option( 'cdn_url' );
 
 		//Make Sure CDN URL is Set
-		if ( ! empty( $sbp_cdn_url ) ) {
+		if ( $sbp_cdn_url != '//' ) {
 			//Don't Rewrite if Previewing
 			if ( is_admin_bar_showing() && isset( $_GET['preview'] ) && $_GET['preview'] == 'true' ) {
 				return $url[0];
@@ -70,11 +70,11 @@ class SBP_CDN extends SBP_Abstract_Module {
 
 			//Found Site URL, Replace Non Relative URL w/ HTTP/S Prefix
 			if ( strpos( $url[0], $site_url ) !== false ) {
-				return '//' . str_replace( [ 'http:' . $site_url, 'https:' . $site_url ], $sbp_cdn_url, $url[0] );
+				return str_replace( [ 'http:' . $site_url, 'https:' . $site_url ], $sbp_cdn_url, $url[0] );
 			}
 
 			//Replace Relative URL
-			return '//' . $sbp_cdn_url . $url[0];
+			return $sbp_cdn_url . $url[0];
 		}
 
 		//Return Original URL
