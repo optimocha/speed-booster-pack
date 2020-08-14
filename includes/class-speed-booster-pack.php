@@ -20,6 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 use SpeedBooster\SBP_Cache;
 use SpeedBooster\SBP_CDN;
 use SpeedBooster\SBP_Compatibility_Checker;
+use SpeedBooster\SBP_Critical_CSS;
 use SpeedBooster\SBP_CSS_Minifier;
 use SpeedBooster\SBP_Custom_Code_Manager;
 use SpeedBooster\SBP_Font_Optimizer;
@@ -149,6 +150,7 @@ class Speed_Booster_Pack {
 		new SBP_Preboost();
 		new SBP_Lazy_Loader();
 		new SBP_CSS_Minifier();
+		new SBP_Critical_CSS();
 		new SBP_HTML_Minifier();
 		new SBP_Localize_Tracker();
 		new SBP_Special();
@@ -175,6 +177,11 @@ class Speed_Booster_Pack {
 	 * @access   private
 	 */
 	private function load_dependencies() {
+		/**
+		 * Composer autoload file.
+		 */
+		require_once SBP_PATH . 'vendor/autoload.php';
+
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.

@@ -1,0 +1,32 @@
+[
+    {
+        "name": "simple-html-dom/simple-html-dom",
+        "version": "1.5.0",
+        "version_normalized": "1.5.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/miclf/simple-html-dom.git",
+            "reference": "961610576c460546677a635062e9d3d7b6dab745"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/miclf/simple-html-dom/zipball/961610576c460546677a635062e9d3d7b6dab745",
+            "reference": "961610576c460546677a635062e9d3d7b6dab745",
+            "shasum": ""
+        },
+        "time": "2013-05-14T22:27:35+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "S.C. Chen",
+                "email": "me578022@gmail.com"
+            }
+        ],
+        "description": "A copy of the PHP Simple HTML DOM Parser project."
+    }
+]

@@ -659,6 +659,38 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Special */
 
+			// BEYNTODO: Need to check the new section.
+			/* BEGIN Section: CSS Optimizations */
+			CSF::createSection(
+				$prefix,
+				[
+					'title'  => __( 'CSS Optimizations', 'speed-booster-pack' ),
+					'id'     => 'css',
+					'icon'   => 'fa fa-bolt',
+					'fields' => [
+
+						[
+							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
+							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'CSS Optimizations', 'speed-booster-pack' ),
+							'id'      => 'module_css',
+							'class'   => 'module-css',
+							'type'    => 'switcher',
+							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default' => true,
+						],
+						[
+							'title'      => 'Critical CSS', // BEYNTODO: Field title needed.
+							'id'         => 'critical_css',
+							'type'       => 'textarea',
+							'desc'       => sprintf( __( 'Manual critical CSS code.', 'speed-booster-pack' ) ), // BEYNTODO: Description text needed.
+							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
+						],
+
+					],
+				]
+			);
+			/* END Section: CSS Optimizations */
+
 			/* BEGIN Section: Tweaks */
 			CSF::createSection(
 				$prefix,

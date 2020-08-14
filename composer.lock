@@ -1,0 +1,47 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "2f4d1db65675f8522978acd86ca4693a",
+    "packages": [
+        {
+            "name": "simple-html-dom/simple-html-dom",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/miclf/simple-html-dom.git",
+                "reference": "961610576c460546677a635062e9d3d7b6dab745"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/miclf/simple-html-dom/zipball/961610576c460546677a635062e9d3d7b6dab745",
+                "reference": "961610576c460546677a635062e9d3d7b6dab745",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "S.C. Chen",
+                    "email": "me578022@gmail.com"
+                }
+            ],
+            "description": "A copy of the PHP Simple HTML DOM Parser project.",
+            "time": "2013-05-14T22:27:35+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": true,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
+}
