@@ -1,7 +1,8 @@
 {
   "require": {
-    "simple-html-dom/simple-html-dom": "*"
+    "simplehtmldom/simplehtmldom": "dev-master"
   },
   "minimum-stability": "dev",
   "prefer-stable": true
 }
+

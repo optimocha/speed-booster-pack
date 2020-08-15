@@ -1,22 +1,46 @@
 [
     {
-        "name": "simple-html-dom/simple-html-dom",
-        "version": "1.5.0",
-        "version_normalized": "1.5.0.0",
+        "name": "simplehtmldom/simplehtmldom",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
-            "url": "https://github.com/miclf/simple-html-dom.git",
-            "reference": "961610576c460546677a635062e9d3d7b6dab745"
+            "url": "https://github.com/simplehtmldom/simplehtmldom.git",
+            "reference": "31ce157e7ba0c6ca35f94faedf031a945c3f6427"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/miclf/simple-html-dom/zipball/961610576c460546677a635062e9d3d7b6dab745",
-            "reference": "961610576c460546677a635062e9d3d7b6dab745",
+            "url": "https://api.github.com/repos/simplehtmldom/simplehtmldom/zipball/31ce157e7ba0c6ca35f94faedf031a945c3f6427",
+            "reference": "31ce157e7ba0c6ca35f94faedf031a945c3f6427",
             "shasum": ""
         },
-        "time": "2013-05-14T22:27:35+00:00",
+        "require": {
+            "ext-iconv": "*",
+            "php": ">=5.6"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^6 || ^7"
+        },
+        "suggest": {
+            "ext-curl": "Needed to support cURL downloads in class HtmlWeb",
+            "ext-mbstring": "Allows better decoding for multi-byte documents",
+            "ext-openssl": "Allows loading HTTPS pages when using cURL"
+        },
+        "time": "2019-12-06T18:20:19+00:00",
         "type": "library",
-        "installation-source": "dist",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "./"
+            ],
+            "exclude-from-classmap": [
+                "/example/",
+                "/manual/",
+                "/testcase/",
+                "/tests/",
+                "simple_html_dom.php"
+            ]
+        },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
@@ -24,9 +48,26 @@
         "authors": [
             {
                 "name": "S.C. Chen",
-                "email": "me578022@gmail.com"
+                "role": "Developer"
+            },
+            {
+                "name": "John Schlick",
+                "role": "Developer"
+            },
+            {
+                "name": "logmanoriginal",
+                "role": "Developer"
             }
         ],
-        "description": "A copy of the PHP Simple HTML DOM Parser project."
+        "description": "A fast, simple and reliable HTML document parser for PHP.",
+        "homepage": "https://simplehtmldom.sourceforge.io/",
+        "keywords": [
+            "Simple",
+            "dom",
+            "html",
+            "parser",
+            "php",
+            "simplehtmldom"
+        ]
     }
 ]

@@ -4,11 +4,19 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit4f0ff194d2aa59039f25b83c0ba670ce
+class ComposerStaticInit46e469114bb11cb8db93a59002abb470
 {
+    public static $classMap = array (
+        'simplehtmldom\\Debug' => __DIR__ . '/..' . '/simplehtmldom/simplehtmldom/Debug.php',
+        'simplehtmldom\\HtmlDocument' => __DIR__ . '/..' . '/simplehtmldom/simplehtmldom/HtmlDocument.php',
+        'simplehtmldom\\HtmlNode' => __DIR__ . '/..' . '/simplehtmldom/simplehtmldom/HtmlNode.php',
+        'simplehtmldom\\HtmlWeb' => __DIR__ . '/..' . '/simplehtmldom/simplehtmldom/HtmlWeb.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->classMap = ComposerStaticInit46e469114bb11cb8db93a59002abb470::$classMap;
 
         }, null, ClassLoader::class);
     }
