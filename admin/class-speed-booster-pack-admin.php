@@ -208,7 +208,7 @@ class Speed_Booster_Pack_Admin {
 					'admin_bar_menu_priority' => 80,
 
 					/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
-					'footer_credit'             => sprintf( __( 'Thank you for using %1$s! If you like our plugin, be sure to %2$sleave a fair review%3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">', '</a>' ),
+					'footer_credit'           => sprintf( __( 'Thank you for using %1$s! If you like our plugin, be sure to %2$sleave a fair review%3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">', '</a>' ),
 				] );
 
 			/* BEGIN Section: Dashboard */
@@ -238,7 +238,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
-							'content' => sprintf(  __( 'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener" target="_blank">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener" target="_blank">GitHub</a>' )
+							'content' => sprintf( __( 'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener" target="_blank">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener" target="_blank">GitHub</a>' ),
 						],
 						[
 							'type'    => 'subheading',
@@ -262,7 +262,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. opening tag for the newsletter hyperlink 2. closing tag for the hyperlink  */
-							'content' => sprintf( __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/static/newsletter.php?KeepThis=true&TB_iframe=true&height=500&width=400" class="thickbox">', '</a>' )
+							'content' => sprintf( __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/static/newsletter.php?KeepThis=true&TB_iframe=true&height=500&width=400" class="thickbox">', '</a>' ),
 						],
 						[
 							'type'    => 'subheading',
@@ -320,13 +320,13 @@ class Speed_Booster_Pack_Admin {
 						'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
 						'id'    => 'cloudflare_email',
 						'type'  => 'text',
-						'desc' => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
+						'desc'  => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
 					],
 					[
 						'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
 						'id'    => 'cloudflare_zone',
 						'type'  => 'text',
-						'desc' => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
+						'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
 					],
 				] );
 
@@ -679,13 +679,104 @@ class Speed_Booster_Pack_Admin {
 							'default' => true,
 						],
 						[
-							'title'      => 'Critical CSS', // BEYNTODO: Field title needed.
-							'id'         => 'critical_css',
-							'type'       => 'textarea',
-							'desc'       => sprintf( __( 'Manual critical CSS code.', 'speed-booster-pack' ) ), // BEYNTODO: Description text needed.
-							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
+							'type'  => 'subheading',
+							'title' => 'Critical CSS',
 						],
-
+						[
+							'id'      => 'enable_critical_css',
+							'title'   => __( 'Enable Critical CSS', 'speed-booster-pack' ),
+							'type'    => 'switcher',
+							'default' => false,
+						],
+						[
+							'id'     => 'critical_css_default',
+							'type'   => 'code_editor',
+							'before' => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
+						],
+						[
+							'id'         => 'critical_css_codes',
+							'type'       => 'accordion',
+							'title'      => '',
+							'accordions' => [
+								[
+									'title'  => 'is_front_page',
+									'fields' => [
+										[
+											'id'   => 'is_front_page',
+											'type' => 'code_editor',
+//											'title' => 'CSS Code',
+										],
+									],
+								],
+								[
+									'title'  => 'is_home',
+									'fields' => [
+										[
+											'id'   => 'is_home',
+											'type' => 'code_editor',
+//											'title' => 'CSS Code',
+										],
+									],
+								],
+								[
+									'title'  => 'is_single',
+									'fields' => [
+										[
+											'id'   => 'is_single',
+											'type' => 'code_editor',
+//											'title' => 'CSS Code',
+										],
+									],
+								],
+								[
+									'title'  => 'is_page',
+									'fields' => [
+										[
+											'id'   => 'is_page',
+											'type' => 'code_editor',
+//											'title' => 'CSS Code',
+										],
+									],
+								],
+								[
+									'title'  => 'is_category',
+									'fields' => [
+										[
+											'id'   => 'is_category',
+											'type' => 'code_editor',
+//											'title' => 'CSS Code',
+										],
+									],
+								],
+								[
+									'title'  => 'is_tag',
+									'fields' => [
+										[
+											'id'   => 'is_tag',
+											'type' => 'code_editor',
+//											'title' => 'CSS Code',
+										],
+									],
+								],
+								[
+									'title'  => 'is_archive',
+									'fields' => [
+										[
+											'id'   => 'is_archive',
+											'type' => 'code_editor',
+//											'title' => 'CSS Code',
+										],
+									],
+								],
+							],
+						],
+						[
+							'title'   => __( 'Remove Critical CSS After Load', 'speed-booster-pack' ), // BEYNTODO: Change Text
+							'id'      => 'remove_critical_css',
+							'desc'    => __( 'Remove critical CSS after all css files loaded.', 'speed-booster-pack' ), // BEYNTODO: Change Text
+							'type'    => 'switcher',
+							'default' => true,
+						],
 					],
 				]
 			);
@@ -901,7 +992,7 @@ class Speed_Booster_Pack_Admin {
 				array(
 					'title'  => __( 'About', 'speed-booster-pack' ),
 					'id'     => 'about',
-					'class'     => 'about',
+					'class'  => 'about',
 					'icon'   => 'fa fa-info-circle',
 					'fields' => array(
 
@@ -913,10 +1004,10 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. Optimocha 2. Speed Booster Pack  */
-							'content' => '<p>' . sprintf( __( 'We are %1$s, a small team of speed optimization experts. Along with hundreds of websites we finished optimizing, we acquired %2$s in 2019 and we\'re working hard to make this plugin the best speed optimization plugin for WordPress ever since!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_PLUGIN_NAME ) . '</p><ul><li><a href="https://optimocha.com/speed-optimization-for-wordpress/" rel="external noopener" target="_blank">' . 
-										 __( 'Visit our website', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/" rel="external noopener" target="_blank">' . 
-										 __( 'Learn more about our tailored Complete Speed Optimization services', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/contact/" rel="external noopener" target="_blank">' . 
-										 __( 'Contact us', 'speed-booster-pack' ) . '</a></li></ul>',
+							'content' => '<p>' . sprintf( __( 'We are %1$s, a small team of speed optimization experts. Along with hundreds of websites we finished optimizing, we acquired %2$s in 2019 and we\'re working hard to make this plugin the best speed optimization plugin for WordPress ever since!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_PLUGIN_NAME ) . '</p><ul><li><a href="https://optimocha.com/speed-optimization-for-wordpress/" rel="external noopener" target="_blank">' .
+							             __( 'Visit our website', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/" rel="external noopener" target="_blank">' .
+							             __( 'Learn more about our tailored Complete Speed Optimization services', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/contact/" rel="external noopener" target="_blank">' .
+							             __( 'Contact us', 'speed-booster-pack' ) . '</a></li></ul>',
 						],
 						[
 							'type'    => 'subheading',
@@ -925,8 +1016,8 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
-							'content' => __( 'We made use of the following libraries and frameworks in Speed Booster Pack, so we\'d like to give them a shout out and thank them:', 'speed-booster-pack' ) . 
-										 '<ul>
+							'content' => __( 'We made use of the following libraries and frameworks in Speed Booster Pack, so we\'d like to give them a shout out and thank them:', 'speed-booster-pack' ) .
+							             '<ul>
 											<li><a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a></li>
 											<li><a href="https://github.com/verlok/vanilla-lazyload" rel="external noopener" target="_blank">LazyLoad by Andrea Verlicchi</a></li>
 											<li><a href="https://codestarframework.com/" rel="external noopener" target="_blank">CodeStar Framework</a></li>
