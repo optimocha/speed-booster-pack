@@ -30,6 +30,54 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	die;
 }
 
+if ( ! defined( 'SBP_CACHE_DIR' ) ) {
+	define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' );
+}
+
+if ( ! defined( 'SBP_LOCALIZED_SCRIPT_DIR' ) ) {
+	define( 'SBP_LOCALIZED_SCRIPT_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
+}
+
 delete_option( 'sbp_options' );
 delete_option( 'sbp_notice_error' );
 delete_option( 'sbp_transient_error' );
+@rmdir( SBP_CACHE_DIR );
+@rmdir( SBP_LOCALIZED_SCRIPT_DIR );
+
+// Clear htaccess
+global $wp_filesystem;
+
+require_once( ABSPATH . '/wp-admin/includes/file.php' );
+WP_Filesystem();
+
+$htaccess_file_path = get_home_path() . '/.htaccess';
+
+if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
+	global $wp_filesystem;
+
+	require_once( ABSPATH . '/wp-admin/includes/file.php' );
+
+	$current_htaccess = $wp_filesystem->get_contents( $htaccess_file_path );
+
+	if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
+		$current_htaccess = trim( $wp_filesystem->get_contents( $htaccess_file_path ) );
+		$current_htaccess = preg_replace( '/(# BEGIN Speed Booster Pack.*?# END Speed Booster Pack' . PHP_EOL . PHP_EOL . ')/msi', '', $current_htaccess );
+	}
+
+	$wp_filesystem->put_contents( get_home_path() . '/.htaccess', $current_htaccess );
+}
+
+// Remove SBP Announcements
+delete_option( 'sbp_announcements' );
+delete_transient('sbp_notice_cache');
+delete_transient('sbp_cloudflare_status');
+delete_transient('sbp_upgraded_notice');
+
+// Delete user metas
+$users = get_users('role=administrator');
+foreach($users as $user) {
+	delete_user_meta($user->ID, 'sbp_dismissed_notices');
+	delete_user_meta($user->ID, 'sbp_dismissed_compat_notices');
+}
+
+// TODO: uninstall.php: Also delete the sbp_announcements option and all the other transients & usermeta we put.
