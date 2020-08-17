@@ -59,6 +59,25 @@ function sbp_clear_http( $url ) {
 }
 
 /**
+ * Trims and strips the tags from given value. Takes one dimensional array or string as argument. Returns the modified value.
+ *
+ * @param $value array|string
+ *
+ * @return array|string
+ */
+function sbp_sanitize_strip_tags( $value ) {
+	if ( is_array( $value ) ) {
+		foreach ( $value as &$item ) {
+			$item = trim( strip_tags( $item ) );
+		}
+	} else {
+		$value = trim( strip_tags( $value ) );
+	}
+
+	return $value;
+}
+
+/**
  * Sanitizes excluded URLs for caching
  *
  * @param $urls
@@ -689,14 +708,16 @@ class Speed_Booster_Pack_Admin {
 							'default' => false,
 						],
 						[
-							'id'     => 'critical_css_default',
-							'type'   => 'code_editor',
-							'before' => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
+							'id'       => 'critical_css_default',
+							'type'     => 'code_editor',
+							'before'   => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
+							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
 						[
 							'id'         => 'critical_css_codes',
 							'type'       => 'accordion',
 							'title'      => '',
+							'sanitize'   => 'sbp_sanitize_strip_tags',
 							'accordions' => [
 								[
 									'title'  => 'is_front_page',
