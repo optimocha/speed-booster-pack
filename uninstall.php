@@ -38,11 +38,42 @@ if ( ! defined( 'SBP_LOCALIZED_SCRIPT_DIR' ) ) {
 	define( 'SBP_LOCALIZED_SCRIPT_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
 }
 
+// Delete Directory Function
+function delete_dir( $dir ) {
+	if ( ! is_dir( $dir ) ) {
+		return;
+	}
+
+	$dir_objects = @scandir( $dir );
+	$objects     = array_filter( $dir_objects,
+		function ( $object ) {
+			return $object != '.' && $object != '..';
+		} );
+
+	if ( empty( $objects ) ) {
+		return;
+	}
+
+	foreach ( $objects as $object ) {
+		$object = $dir . DIRECTORY_SEPARATOR . $object;
+
+		if ( is_dir( $object ) ) {
+			delete_dir( $object );
+		} else {
+			@unlink( $object );
+		}
+	}
+
+	@rmdir( $dir );
+
+	clearstatcache();
+}
+
 delete_option( 'sbp_options' );
 delete_option( 'sbp_notice_error' );
 delete_option( 'sbp_transient_error' );
-@rmdir( SBP_CACHE_DIR );
-@rmdir( SBP_LOCALIZED_SCRIPT_DIR );
+delete_dir( SBP_CACHE_DIR );
+delete_dir( SBP_LOCALIZED_SCRIPT_DIR );
 
 // Clear htaccess
 global $wp_filesystem;
@@ -69,15 +100,15 @@ if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
 
 // Remove SBP Announcements
 delete_option( 'sbp_announcements' );
-delete_transient('sbp_notice_cache');
-delete_transient('sbp_cloudflare_status');
-delete_transient('sbp_upgraded_notice');
+delete_transient( 'sbp_notice_cache' );
+delete_transient( 'sbp_cloudflare_status' );
+delete_transient( 'sbp_upgraded_notice' );
 
 // Delete user metas
-$users = get_users('role=administrator');
-foreach($users as $user) {
-	delete_user_meta($user->ID, 'sbp_dismissed_notices');
-	delete_user_meta($user->ID, 'sbp_dismissed_compat_notices');
+$users = get_users( 'role=administrator' );
+foreach ( $users as $user ) {
+	delete_user_meta( $user->ID, 'sbp_dismissed_notices' );
+	delete_user_meta( $user->ID, 'sbp_dismissed_compat_notices' );
 }
 
 // TODO: uninstall.php: Also delete the sbp_announcements option and all the other transients & usermeta we put.
