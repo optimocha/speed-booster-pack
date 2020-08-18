@@ -9,8 +9,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $file_name = '';
-	private $dir_path = SBP_CACHE_DIR . 'analytics/';
-	private $dir_url = SBP_CACHE_URL . 'analytics/';
+	private $dir_path = SBP_LOCALIZED_SCRIPT_DIR;
+	private $dir_url = SBP_LOCALIZED_SCRIPT_URL;
 	private $analytics_url = 'https://www.google-analytics.com/analytics.js';
 	private $gtm_url = 'https://www.googletagmanager.com/gtm.js?id=';
 	private $gtag_url = 'https://www.googletagmanager.com/gtag/js?id=';
