@@ -67,9 +67,12 @@ function sbp_clear_http( $url ) {
  */
 function sbp_sanitize_strip_tags( $value ) {
 	if ( is_array( $value ) ) {
-		foreach ( $value as &$item ) {
-			$item = trim( strip_tags( $item ) );
-		}
+		$value = array_map(
+			function ( $item ) {
+				return trim( strip_tags( $item ) );
+			},
+			$value
+		);
 	} else {
 		$value = trim( strip_tags( $value ) );
 	}
