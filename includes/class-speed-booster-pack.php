@@ -183,6 +183,11 @@ class Speed_Booster_Pack {
 		require_once SBP_PATH . 'vendor/autoload.php';
 
 		/**
+		 * Load helper files
+		 */
+		require_once SBP_INC_PATH . 'sbp-helpers.php';
+
+		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */

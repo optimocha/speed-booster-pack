@@ -153,11 +153,17 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::reset_transient' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
-
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
+
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::generate_htaccess' );
+
+		add_action( 'csf_sbp_options_saved', function() {
+			require SBP_INC_PATH . 'classes/class-sbp-pagespeed-tricker.php';
+			$pst = new SpeedBooster\SBP_PageSpeed_Tricker();
+			$pst->toggle_lines();
+		} );
 
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 
@@ -312,6 +318,54 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Dashboard */
+
+			/* BEGIN Section: PageSpeed Tricker */
+			CSF::createSection(
+				$prefix,
+				[
+					'title'  => __( 'PageSpeed Tricker', 'speed-booster-pack' ),
+					'id'     => 'pagespeed_tricker_module',
+					'icon'   => 'fa fa-tachometer-alt',
+					'fields' => [
+						[
+							'type'    => 'content',
+							/* translators: %s = Speed Booster Pack  */
+							'content' => sprintf( __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things. Let\'s begin!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+						],
+						[
+							'type'    => 'notice',
+							'style'   => 'success',
+							'content' => 'This is a notice field. And using style "success"',
+						],
+						[
+							'type'    => 'notice',
+							'style'   => 'warning',
+							'content' => 'This is a notice field. And using style "success"',
+						],
+						[
+							'type'    => 'notice',
+							'style'   => 'error',
+							'content' => 'This is a notice field. And using style "success"',
+						],
+						[
+							'type'    => 'content',
+							'content' => 'This is a content field. You can write some html here.',
+						],
+						[
+							'type'    => 'submessage',
+							'style'   => 'success',
+							'content' => 'This is a submessage field. And using style "success"',
+						],
+						[
+							/* translators: %s = PageSpeed Tricker  */
+							'title' => sprintf( __( 'Enable %s', 'speed-booster-pack' ), 'PageSpeed Tricker' ),
+							'id' => 'pagespeed_tricker',
+							'type'    => 'switcher',
+						],
+					],
+				]
+			);
+			/* END Section: PageSpeed Tricker */
 
 			/* BEGIN Section: Caching */
 			$cloudflare_fields    = [];
