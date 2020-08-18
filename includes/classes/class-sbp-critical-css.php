@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 use simplehtmldom\HtmlDocument;
 
 class SBP_Critical_CSS extends SBP_Abstract_Module {

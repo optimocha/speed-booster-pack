@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class SBP_PageSpeed_Tricker extends SBP_Abstract_Module {
 	private $wp_config_path;
 	private $wp_filesystem;
