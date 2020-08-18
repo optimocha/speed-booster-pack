@@ -125,43 +125,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * Clears all cache files and regenerates settings.json file
 	 */
 	public static function clear_total_cache() {
-		self::delete_dir( SBP_CACHE_DIR );
+		sbp_delete_dir_recursively( SBP_CACHE_DIR );
 		self::create_settings_json();
-	}
-
-	/**
-	 * Deletes directories recursively
-	 *
-	 * @param $dir
-	 */
-	public static function delete_dir( $dir ) {
-		if ( ! is_dir( $dir ) ) {
-			return;
-		}
-
-		$dir_objects = @scandir( $dir );
-		$objects     = array_filter( $dir_objects,
-			function ( $object ) {
-				return $object != '.' && $object != '..';
-			} );
-
-		if ( empty( $objects ) ) {
-			return;
-		}
-
-		foreach ( $objects as $object ) {
-			$object = $dir . DIRECTORY_SEPARATOR . $object;
-
-			if ( is_dir( $object ) ) {
-				self::delete_dir( $object );
-			} else {
-				@unlink( $object );
-			}
-		}
-
-		@rmdir( $dir );
-
-		clearstatcache();
 	}
 
 	/**

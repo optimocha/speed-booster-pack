@@ -24,3 +24,8 @@
 */
 
 .sbp-settings {max-width:75rem;}
+
+/* Admin Bar Icon */
+#wpadminbar .quicklinks > ul > .sbp-admin-bar-item-with-icon > .ab-item {padding-left: 30px;position: relative;}
+
+#wpadminbar .quicklinks > ul > .sbp-admin-bar-item-with-icon img {position: absolute;top: 6px;left: 5px;}

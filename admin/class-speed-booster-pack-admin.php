@@ -159,11 +159,12 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::generate_htaccess' );
 
-		add_action( 'csf_sbp_options_saved', function() {
-			require SBP_INC_PATH . 'classes/class-sbp-pagespeed-tricker.php';
-			$pst = new SpeedBooster\SBP_PageSpeed_Tricker();
-			$pst->toggle_lines();
-		} );
+		add_action( 'csf_sbp_options_saved',
+			function () {
+				require SBP_INC_PATH . 'classes/class-sbp-pagespeed-tricker.php';
+				$pst = new SpeedBooster\SBP_PageSpeed_Tricker();
+				$pst->toggle_lines();
+			} );
 
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 
@@ -359,8 +360,8 @@ class Speed_Booster_Pack_Admin {
 						[
 							/* translators: %s = PageSpeed Tricker  */
 							'title' => sprintf( __( 'Enable %s', 'speed-booster-pack' ), 'PageSpeed Tricker' ),
-							'id' => 'pagespeed_tricker',
-							'type'    => 'switcher',
+							'id'    => 'pagespeed_tricker',
+							'type'  => 'switcher',
 						],
 					],
 				]
@@ -1119,30 +1120,98 @@ class Speed_Booster_Pack_Admin {
 
 	public function add_admin_bar_links( WP_Admin_Bar $admin_bar ) {
 
-		if ( current_user_can( 'manage_options' ) && sbp_get_option( 'module_caching' ) && ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
-			$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
-			$sbp_admin_menu  = [
-				'id'    => 'speed_booster_pack',
-				'title' => __( 'Clear Cache', 'speed-booster-pack' ),
-				'href'  => $clear_cache_url,
-			];
+		$admin_bar->add_menu( [
+			'id'    => 'speed_booster_pack',
+			'title' => 'Speed Booster',
+			'href'  => admin_url( '?page=sbp-settings' ),
+			'meta'  => [
+				'target'   => '_self',
+				'title'    => __( 'Hello', 'some-textdomain' ),
+				'html'     => '<img src="' . SBP_URL . 'admin/images/icon.svg" style="width: 20px; height: 20px;" />',
+				'class'    => 'wpse--item sbp-admin-bar-item-with-icon',
+				'tabindex' => PHP_INT_MAX,
+			],
+		] );
 
-			$admin_bar->add_menu( $sbp_admin_menu );
+		if ( current_user_can( 'manage_options' ) ) {
+			if ( sbp_get_option( 'module_caching' ) && ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
+				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
+				$sbp_admin_menu  = [
+					'id'     => 'sbp_clear_cache',
+					'parent' => 'speed_booster_pack',
+					'title'  => __( 'Clear Cache', 'speed-booster-pack' ),
+					'href'   => $clear_cache_url,
+				];
+
+				$admin_bar->add_node( $sbp_admin_menu );
+			}
+
+			if ( sbp_get_option( 'localize_tracking_scripts' ) ) {
+				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_localized_analytics' ), 'sbp_clear_localized_analytics', 'sbp_nonce' );
+				$sbp_admin_menu  = [
+					'id'     => 'sbp_clear_localized_scripts',
+					'parent' => 'speed_booster_pack',
+					'title'  => __( 'Clear Localized Scripts', 'speed-booster-pack' ),
+					'href'   => $clear_cache_url,
+				];
+
+				$admin_bar->add_node( $sbp_admin_menu );
+			}
+
+			if ( sbp_get_option( 'cloudflare_enable' ) ) {
+				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cloudflare_cache' ), 'sbp_clear_cloudflare_cache', 'sbp_nonce' );
+				$sbp_admin_menu  = [
+					'id'     => 'sbp_clear_cloudflare_cache',
+					'parent' => 'speed_booster_pack',
+					'title'  => __( 'Clear Cloudflare Cache', 'speed-booster-pack' ),
+					'href'   => $clear_cache_url,
+				];
+
+				$admin_bar->add_node( $sbp_admin_menu );
+			}
 		}
-
 	}
 
 	public function set_flash_notices() {
-		$notice = get_transient( 'sbp_notice_cache' );
-		if ( $notice ) {
-			add_action( 'admin_notices', [ $this, 'show_cache_notice' ] );
-			delete_transient( 'sbp_notice_cache' );
+		$transients = [
+			'sbp_notice_cache' => 'show_cache_notice',
+			'sbp_notice_tracker_localizer' => 'show_localizer_notice',
+			'sbp_notice_cloudflare' => 'show_cloudflare_notice',
+		];
+
+//		if (get_transient('sbp_notice_cache')) {
+//			add_action( 'admin_notices', [ $this, 'show_cache_notice' ] );
+//			delete_transient( 'sbp_notice_cache' );
+//		}
+
+		foreach ( $transients as $transient => $method ) {
+			if ( get_transient( $transient ) && method_exists( $this, $method ) ) {
+				add_action( 'admin_notices', [ $this, $method ] );
+				delete_transient( $transient );
+			}
 		}
 	}
 
+	// LAHMACUNTODO: Unite all show_xxx_notice methods
 	public function show_cache_notice() {
 		echo '<div class="notice notice-success is-dismissible">
                 <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>
+        </div>';
+	}
+
+	public function show_localizer_notice() {
+		echo '<div class="notice notice-success is-dismissible">
+                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>
+        </div>';
+	}
+
+	// LAHMACUNTODO: Modify this method(s)
+	public function show_cloudflare_notice() {
+		$transient_value = get_transient('sbp_notice_cloudflare');
+		$error_message = $transient_value == '1' ? 'Cloudflare cache cleared.' : 'Error occured while clearing cache.';
+		$notice_type = $transient_value == '1' ? 'success' : 'error';
+		echo '<div class="notice notice-' . $notice_type . ' is-dismissible">
+                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $error_message, 'speed-booster-pack' ) . '</p>
         </div>';
 	}
 
