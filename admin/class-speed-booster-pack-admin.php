@@ -1169,14 +1169,25 @@ class Speed_Booster_Pack_Admin {
 
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
+
+			$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
+			$sbp_admin_menu  = [
+				'id'     => 'sbp_warmup_cache',
+				'parent' => 'speed_booster_pack',
+				'title'  => __( 'Warmup Cache', 'speed-booster-pack' ),
+				'href'   => $clear_cache_url,
+			];
+
+			$admin_bar->add_node( $sbp_admin_menu );
 		}
 	}
 
 	public function set_flash_notices() {
 		$transients = [
-			'sbp_notice_cache' => 'show_cache_notice',
+			'sbp_notice_cache'             => 'show_cache_notice',
 			'sbp_notice_tracker_localizer' => 'show_localizer_notice',
-			'sbp_notice_cloudflare' => 'show_cloudflare_notice',
+			'sbp_notice_cloudflare'        => 'show_cloudflare_notice',
+			'sbp_warmup_complete'          => 'show_warmup_complete',
 		];
 
 //		if (get_transient('sbp_notice_cache')) {
@@ -1205,11 +1216,17 @@ class Speed_Booster_Pack_Admin {
         </div>';
 	}
 
+	public function show_warmup_complete() {
+		echo '<div class="notice notice-success is-dismissible">
+                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'Cache warmed up.', 'speed-booster-pack' ) ) . '</p>
+        </div>';
+	}
+
 	// LAHMACUNTODO: Modify this method(s)
 	public function show_cloudflare_notice() {
-		$transient_value = get_transient('sbp_notice_cloudflare');
-		$error_message = $transient_value == '1' ? 'Cloudflare cache cleared.' : 'Error occured while clearing cache.';
-		$notice_type = $transient_value == '1' ? 'success' : 'error';
+		$transient_value = get_transient( 'sbp_notice_cloudflare' );
+		$error_message   = $transient_value == '1' ? 'Cloudflare cache cleared.' : 'Error occured while clearing cache.';
+		$notice_type     = $transient_value == '1' ? 'success' : 'error';
 		echo '<div class="notice notice-' . $notice_type . ' is-dismissible">
                 <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $error_message, 'speed-booster-pack' ) . '</p>
         </div>';

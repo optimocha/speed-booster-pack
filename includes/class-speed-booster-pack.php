@@ -18,6 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 use SpeedBooster\SBP_Cache;
+use SpeedBooster\SBP_Cache_Warmup;
 use SpeedBooster\SBP_CDN;
 use SpeedBooster\SBP_Compatibility_Checker;
 use SpeedBooster\SBP_Critical_CSS;
@@ -157,6 +158,7 @@ class Speed_Booster_Pack {
 		new SBP_CDN();
 		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
+		new SBP_Cache_Warmup();
 		new SBP_Cache();
 	}
 
