@@ -6,7 +6,12 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 	protected $action = 'warmup';
 
 	protected function task( $item ) {
-		$response = wp_remote_get( $item );
+		$response = wp_remote_get( $item, [
+			'blocking' => false,
+			'compress' => true,
+			'httpversion' => '1.1',
+			'limit_response_size' => 100,
+		] );
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			$transient = get_transient( 'sbp_warmup_errors' );
 			$errors    = is_array( $transient ) ? $transient : [];

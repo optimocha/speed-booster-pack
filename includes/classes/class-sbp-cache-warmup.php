@@ -47,28 +47,30 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 
 		$response = wp_remote_get( $home_url, $remote_get_args );
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$transient = get_transient( 'sbp_warmup_errors' );
-			$errors    = is_array( $transient ) ? $transient : [];
-			$errors['errors'][] = __('Error occured while processing home page url', 'speed-booster');
+			$transient          = get_transient( 'sbp_warmup_errors' );
+			$errors             = is_array( $transient ) ? $transient : [];
+			$errors['errors'][] = __( 'Error occured while processing home page url', 'speed-booster' );
+
 			return false;
 		} else {
 			$urls = [];
-			$body = wp_remote_retrieve_body($response);
-			$dom = new HtmlDocument($body);
-			foreach ($dom->find('a') as $anchor_tag) {
+			$body = wp_remote_retrieve_body( $response );
+			$dom  = new HtmlDocument( $body );
+			foreach ( $dom->find( 'a' ) as $anchor_tag ) {
 				$href = $anchor_tag->href;
-				if (substr($href, 0, 1) == '#')
+				if ( substr( $href, 0, 1 ) == '#' ) {
 					continue;
-				$remote_url_host = wp_parse_url($href, PHP_URL_HOST);
-				$home_url_host = wp_parse_url($home_url, PHP_URL_HOST);
+				}
+				$remote_url_host = wp_parse_url( $href, PHP_URL_HOST );
+				$home_url_host   = wp_parse_url( $home_url, PHP_URL_HOST );
 				// Check if relative url or includes home url
-				if (substr($href, 0, 1) !== '/' && $remote_url_host !== $home_url_host) {
+				if ( substr( $href, 0, 1 ) !== '/' && $remote_url_host !== $home_url_host ) {
 					continue;
 				}
 
-				if (!in_array($href, $urls)) {
+				if ( ! in_array( $href, $urls ) ) {
 					$urls[] = $href;
-					$this->warmup_process->push_to_queue($href);
+					$this->warmup_process->push_to_queue( $href );
 				}
 			}
 			$this->warmup_process->save()->dispatch();

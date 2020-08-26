@@ -435,6 +435,13 @@ class Speed_Booster_Pack_Admin {
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
 				[
+					'id'         => 'caching_warmup_after_clear',
+					'type'       => 'switcher',
+					'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ), // BEYNTODO: Change text
+					'desc'       => __( 'Warm up cache everytime cache cleared.', 'speed-booster-pack' ), // BEYNTODO: Change text
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+				],
+				[
 					'id'         => 'caching_exclude_urls',
 					'class'      => 'caching-exclude-urls',
 					'type'       => 'code_editor',

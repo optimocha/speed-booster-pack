@@ -127,6 +127,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 	public static function clear_total_cache() {
 		sbp_delete_dir_recursively( SBP_CACHE_DIR );
 		self::create_settings_json();
+		if ( sbp_get_option( 'caching_warmup_after_clear' ) ) {
+			$warmup = new SBP_Cache_Warmup();
+			$warmup->start_process();
+			unset($warmup);
+		}
 	}
 
 	/**
