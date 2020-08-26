@@ -30,6 +30,7 @@ use SpeedBooster\SBP_JS_Optimizer;
 use SpeedBooster\SBP_Lazy_Loader;
 use SpeedBooster\SBP_Localize_Tracker;
 use SpeedBooster\SBP_Migrator;
+use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Preboost;
 use SpeedBooster\SBP_Special;
 use SpeedBooster\SBP_Cloudflare;
@@ -158,6 +159,7 @@ class Speed_Booster_Pack {
 		new SBP_CDN();
 		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
+		new SBP_Notice_Manager();
 		new SBP_Cache_Warmup();
 		new SBP_Cache();
 	}

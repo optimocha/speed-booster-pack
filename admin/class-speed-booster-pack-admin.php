@@ -1223,12 +1223,6 @@ class Speed_Booster_Pack_Admin {
         </div>';
 	}
 
-	public function show_warmup_complete() {
-		echo '<div class="notice notice-success is-dismissible">
-                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'Cache warmed up.', 'speed-booster-pack' ) ) . '</p>
-        </div>';
-	}
-
 	// LAHMACUNTODO: Modify this method(s)
 	public function show_cloudflare_notice() {
 		$transient_value = get_transient( 'sbp_notice_cloudflare' );
