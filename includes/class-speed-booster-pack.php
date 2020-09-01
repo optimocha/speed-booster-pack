@@ -34,6 +34,7 @@ use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Preboost;
 use SpeedBooster\SBP_Special;
 use SpeedBooster\SBP_Cloudflare;
+use SpeedBooster\SBP_Sucuri;
 use SpeedBooster\SBP_Tweaks;
 
 /**
@@ -159,7 +160,8 @@ class Speed_Booster_Pack {
 		new SBP_CDN();
 		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
-		new SBP_Notice_Manager();
+//		new SBP_Notice_Manager();
+		new SBP_Sucuri();
 		new SBP_Cache_Warmup();
 		new SBP_Cache();
 	}

@@ -10,7 +10,7 @@ if ( ! defined( 'WPINC' ) ) {
 class SBP_CDN extends SBP_Abstract_Module {
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'cdn_url' ) ) {
+		if ( ! sbp_get_option( 'cdn_url' ) ) {
 			return;
 		}
 
@@ -40,7 +40,7 @@ class SBP_CDN extends SBP_Abstract_Module {
 			'php',
 		];
 
-		$new_filters                    = apply_filters( 'sbp_cdn_excluded_extensions', $excluded_file_extensions );
+		$new_filters              = apply_filters( 'sbp_cdn_excluded_extensions', $excluded_file_extensions );
 		$excluded_file_extensions = array_merge( $excluded_file_extensions, $new_filters );
 		$excluded_file_extensions = array_unique( $excluded_file_extensions );
 

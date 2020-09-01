@@ -369,45 +369,7 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: PageSpeed Tricker */
 
 			/* BEGIN Section: Caching */
-			$cloudflare_fields    = [];
-			$cloudflare_transient = get_transient( 'sbp_cloudflare_status' );
-
-			if ( '0' === $cloudflare_transient ) {
-				$cloudflare_fields[] = [
-					'type'    => 'submessage',
-					'style'   => 'danger',
-					'content' => __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ),
-				];
-			}
-
-			$cloudflare_fields = array_merge( $cloudflare_fields,
-				[
-					[
-						'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
-						'id'    => 'cloudflare_enable',
-						'type'  => 'switcher',
-					],
-					[
-						'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
-						'id'    => 'cloudflare_api',
-						'type'  => 'text',
-						'desc'  => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
-					],
-					[
-						'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
-						'id'    => 'cloudflare_email',
-						'type'  => 'text',
-						'desc'  => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
-					],
-					[
-						'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
-						'id'    => 'cloudflare_zone',
-						'type'  => 'text',
-						'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
-					],
-				] );
-
-			$cache_fields = array_merge( [
+			$cache_fields = [
 				[
 					'id'    => 'module_caching',
 					'class' => 'module-caching',
@@ -461,8 +423,7 @@ class Speed_Booster_Pack_Admin {
 					'default'    => 'utm_source',
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
-			],
-				$cloudflare_fields );
+			];
 
 			$is_hosting_restricted    = false;
 			$restricted_hosting_error = '';
@@ -645,18 +606,6 @@ class Speed_Booster_Pack_Admin {
 							'type'    => 'switcher',
 							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 							'default' => true,
-						],
-
-						[
-							'title'      => __( 'Enable CDN', 'speed-booster-pack' ),
-							'id'         => 'cdn_url',
-							'class'      => 'cdn-url',
-							'type'       => 'text',
-							'before'     => 'http(s)://&nbsp;',
-							'after'      => '&nbsp;/',
-							'desc'       => __( 'Rewrites all asset URLs with the specified CDN domain. Enter the CDN domain without a protocol or a trailing slash; a relative protocol will be automatically added to all changed asset URLs.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_clear_cdn_url',
 						],
 						[
 							'title'      => __( 'Localize Google Analytics & Google Tag Manager', 'speed-booster-pack' ),
@@ -1047,6 +996,106 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Tweaks */
 
+			/* BEGIN Section: CDN & Proxy */
+			/* Begin Of Cloudflare Fields */
+			$cloudflare_fields    = [
+				[
+					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
+					'type'  => 'subheading',
+				],
+				[
+					'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
+					'id'    => 'cloudflare_enable',
+					'type'  => 'switcher',
+				],
+				[
+					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
+					'id'    => 'cloudflare_api',
+					'type'  => 'text',
+					'desc'  => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
+				],
+				[
+					'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
+					'id'    => 'cloudflare_email',
+					'type'  => 'text',
+					'desc'  => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
+				],
+				[
+					'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
+					'id'    => 'cloudflare_zone',
+					'type'  => 'text',
+					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
+				],
+			];
+			$cloudflare_transient = get_transient( 'sbp_cloudflare_status' );
+
+			if ( '0' === $cloudflare_transient ) {
+				array_splice( $cloudflare_fields,
+					1,
+					0,
+					[
+						[
+							'type'    => 'submessage',
+							'style'   => 'danger',
+							'content' => __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ),
+						],
+					] );
+			}
+			/* End Of Cloudflare Fields */
+
+			/* Begin Of Sucuri Fields */
+			$sucuri_fields = [
+				[
+					'title' => __( 'Sucuri', 'speed-booster-pack' ),
+					'type'  => 'subheading',
+				],
+				[
+					'title' => __( 'Connect to Sucuri', 'speed-booster-pack' ),
+					'id'    => 'sucuri_enable',
+					'type'  => 'switcher',
+				],
+				[
+					'title' => __( 'Sucuri API key', 'speed-booster-pack' ),
+					'id'    => 'sucuri_api',
+					'type'  => 'text',
+				],
+				[
+					'title' => __( 'Sucuri API Secret', 'speed-booster-pack' ),
+					'id'    => 'sucuri_secret',
+					'type'  => 'text',
+				],
+			];
+			/* End Of Sucuri Fields */
+
+			$proxy_fields = array_merge( [
+				[
+					'title' => __( 'CDN', 'speed-booster-pack' ),
+					'type'  => 'subheading',
+				],
+				[
+					'title'    => __( 'Enable CDN', 'speed-booster-pack' ),
+					'id'       => 'cdn_url',
+					'class'    => 'cdn-url',
+					'type'     => 'text',
+					'before'   => 'http(s)://&nbsp;',
+					'after'    => '&nbsp;/',
+					'desc'     => __( 'Rewrites all asset URLs with the specified CDN domain. Enter the CDN domain without a protocol or a trailing slash; a relative protocol will be automatically added to all changed asset URLs.', 'speed-booster-pack' ),
+					'sanitize' => 'sbp_clear_cdn_url',
+				],
+			],
+				$cloudflare_fields,
+				$sucuri_fields );
+			CSF::createSection(
+				$prefix,
+				array(
+					'title'  => __( 'CDN & Proxy', 'speed-booster-pack' ),
+					'id'     => 'cdn_proxy',
+					'icon'   => 'fa fa-directions',
+					'fields' => $proxy_fields,
+				)
+			);
+			/* END Section: CDN & Proxy */
+
 			/* BEGIN Section: Tools */
 			CSF::createSection(
 				$prefix,
@@ -1177,6 +1226,18 @@ class Speed_Booster_Pack_Admin {
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
 
+			if ( sbp_get_option( 'sucuri_enable' ) ) {
+				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_sucuri_cache' ), 'sbp_clear_sucuri_cache', 'sbp_nonce' );
+				$sbp_admin_menu  = [
+					'id'     => 'sbp_clear_sucuri_cache',
+					'parent' => 'speed_booster_pack',
+					'title'  => __( 'Clear Sucuri Cache', 'speed-booster-pack' ),
+					'href'   => $clear_cache_url,
+				];
+
+				$admin_bar->add_node( $sbp_admin_menu );
+			}
+
 			$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
 			$sbp_admin_menu  = [
 				'id'     => 'sbp_warmup_cache',
@@ -1194,18 +1255,12 @@ class Speed_Booster_Pack_Admin {
 			'sbp_notice_cache'             => 'show_cache_notice',
 			'sbp_notice_tracker_localizer' => 'show_localizer_notice',
 			'sbp_notice_cloudflare'        => 'show_cloudflare_notice',
-			'sbp_warmup_complete'          => 'show_warmup_complete',
+			'sbp_clear_sucuri_cache'       => 'show_sucuri_notice',
 		];
-
-//		if (get_transient('sbp_notice_cache')) {
-//			add_action( 'admin_notices', [ $this, 'show_cache_notice' ] );
-//			delete_transient( 'sbp_notice_cache' );
-//		}
 
 		foreach ( $transients as $transient => $method ) {
 			if ( get_transient( $transient ) && method_exists( $this, $method ) ) {
 				add_action( 'admin_notices', [ $this, $method ] );
-				delete_transient( $transient );
 			}
 		}
 	}
@@ -1215,22 +1270,36 @@ class Speed_Booster_Pack_Admin {
 		echo '<div class="notice notice-success is-dismissible">
                 <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>
         </div>';
+		delete_transient( 'sbp_notice_cache' );
 	}
 
 	public function show_localizer_notice() {
 		echo '<div class="notice notice-success is-dismissible">
                 <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>
         </div>';
+		delete_transient( 'sbp_notice_tracker_localizer' );
 	}
 
 	// LAHMACUNTODO: Modify this method(s)
 	public function show_cloudflare_notice() {
 		$transient_value = get_transient( 'sbp_notice_cloudflare' );
-		$error_message   = $transient_value == '1' ? 'Cloudflare cache cleared.' : 'Error occured while clearing cache.';
+		$error_message   = $transient_value == '1' ? 'Cloudflare cache cleared.' : 'Error occured while clearing Cloudflare cache.';
 		$notice_type     = $transient_value == '1' ? 'success' : 'error';
 		echo '<div class="notice notice-' . $notice_type . ' is-dismissible">
                 <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $error_message, 'speed-booster-pack' ) . '</p>
         </div>';
+		delete_transient( 'sbp_notice_cloudflare' );
+	}
+
+	public function show_sucuri_notice() {
+		$transient_value = get_transient( 'sbp_clear_sucuri_cache' );
+		$error_message   = $transient_value == '1' ? 'Sucuri cache cleared.' : 'Error occured while clearing Sucuri cache. ' . get_transient( 'sbp_sucuri_error' );
+		$notice_type     = $transient_value == '1' ? 'success' : 'error';
+		delete_transient( 'sbp_sucuri_error' );
+		echo '<div class="notice notice-' . $notice_type . ' is-dismissible">
+                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $error_message, 'speed-booster-pack' ) . '</p>
+        </div>';
+		delete_transient( 'sbp_clear_sucuri_cache' );
 	}
 
 	private function initialize_announce4wp() {
