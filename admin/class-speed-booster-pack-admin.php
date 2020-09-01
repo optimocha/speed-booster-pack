@@ -1203,47 +1203,47 @@ class Speed_Booster_Pack_Admin {
 			}
 
 			if ( sbp_get_option( 'localize_tracking_scripts' ) ) {
-				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_localized_analytics' ), 'sbp_clear_localized_analytics', 'sbp_nonce' );
+				$clear_tracking_scripts_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_localized_analytics' ), 'sbp_clear_localized_analytics', 'sbp_nonce' );
 				$sbp_admin_menu  = [
 					'id'     => 'sbp_clear_localized_scripts',
 					'parent' => 'speed_booster_pack',
 					'title'  => __( 'Clear Localized Scripts', 'speed-booster-pack' ),
-					'href'   => $clear_cache_url,
+					'href'   => $clear_tracking_scripts_url,
 				];
 
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
 
 			if ( sbp_get_option( 'cloudflare_enable' ) ) {
-				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cloudflare_cache' ), 'sbp_clear_cloudflare_cache', 'sbp_nonce' );
+				$clear_cloudflare_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cloudflare_cache' ), 'sbp_clear_cloudflare_cache', 'sbp_nonce' );
 				$sbp_admin_menu  = [
 					'id'     => 'sbp_clear_cloudflare_cache',
 					'parent' => 'speed_booster_pack',
 					'title'  => __( 'Clear Cloudflare Cache', 'speed-booster-pack' ),
-					'href'   => $clear_cache_url,
+					'href'   => $clear_cloudflare_cache_url,
 				];
 
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
 
 			if ( sbp_get_option( 'sucuri_enable' ) ) {
-				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_sucuri_cache' ), 'sbp_clear_sucuri_cache', 'sbp_nonce' );
+				$clear_sucuri_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_sucuri_cache' ), 'sbp_clear_sucuri_cache', 'sbp_nonce' );
 				$sbp_admin_menu  = [
 					'id'     => 'sbp_clear_sucuri_cache',
 					'parent' => 'speed_booster_pack',
 					'title'  => __( 'Clear Sucuri Cache', 'speed-booster-pack' ),
-					'href'   => $clear_cache_url,
+					'href'   => $clear_sucuri_cache_url,
 				];
 
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
 
-			$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
+			$warmup_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
 			$sbp_admin_menu  = [
 				'id'     => 'sbp_warmup_cache',
 				'parent' => 'speed_booster_pack',
 				'title'  => __( 'Warmup Cache', 'speed-booster-pack' ),
-				'href'   => $clear_cache_url,
+				'href'   => $warmup_cache_url,
 			];
 
 			$admin_bar->add_node( $sbp_admin_menu );
