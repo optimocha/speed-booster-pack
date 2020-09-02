@@ -19,6 +19,7 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 			// BEYNTODO: Change Text
 			$errors['errors'][] = sprintf( __( 'Error occured while processing url: %s', 'speed-booster' ), $item );
 		} else {
+			// LAHMACUNTODO: This transient is not setting after task.
 			set_transient( 'sbp_warmup_process', get_transient( 'sbp_warmup_process' ) + 1 );
 		}
 

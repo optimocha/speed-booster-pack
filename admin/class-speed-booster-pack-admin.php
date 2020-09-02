@@ -1276,6 +1276,12 @@ class Speed_Booster_Pack_Admin {
 		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_notice_tracker_localizer', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>', 'success', true, true );
 		}
+
+		// Warmup Notice
+		if ( $cached_page_count = get_transient( 'sbp_warmup_complete' ) ) {
+			// BEYNTODO: Add translator note
+			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'Static cache files created for %s pages.', 'speed-booster-pack' ), $cached_page_count ) . '</p>', 'success', true, true );
+		}
 	}
 
 	private function initialize_announce4wp() {
