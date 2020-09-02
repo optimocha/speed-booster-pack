@@ -11,6 +11,8 @@
  */
 
 // If this file is called directly, abort.
+use SpeedBooster\SBP_Notice_Manager;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -168,7 +170,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 
-		$this->set_flash_notices();
+		$this->set_notices();
 
 		$this->initialize_announce4wp();
 
@@ -1204,7 +1206,7 @@ class Speed_Booster_Pack_Admin {
 
 			if ( sbp_get_option( 'localize_tracking_scripts' ) ) {
 				$clear_tracking_scripts_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_localized_analytics' ), 'sbp_clear_localized_analytics', 'sbp_nonce' );
-				$sbp_admin_menu  = [
+				$sbp_admin_menu             = [
 					'id'     => 'sbp_clear_localized_scripts',
 					'parent' => 'speed_booster_pack',
 					'title'  => __( 'Clear Localized Scripts', 'speed-booster-pack' ),
@@ -1216,7 +1218,7 @@ class Speed_Booster_Pack_Admin {
 
 			if ( sbp_get_option( 'cloudflare_enable' ) ) {
 				$clear_cloudflare_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cloudflare_cache' ), 'sbp_clear_cloudflare_cache', 'sbp_nonce' );
-				$sbp_admin_menu  = [
+				$sbp_admin_menu             = [
 					'id'     => 'sbp_clear_cloudflare_cache',
 					'parent' => 'speed_booster_pack',
 					'title'  => __( 'Clear Cloudflare Cache', 'speed-booster-pack' ),
@@ -1228,7 +1230,7 @@ class Speed_Booster_Pack_Admin {
 
 			if ( sbp_get_option( 'sucuri_enable' ) ) {
 				$clear_sucuri_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_sucuri_cache' ), 'sbp_clear_sucuri_cache', 'sbp_nonce' );
-				$sbp_admin_menu  = [
+				$sbp_admin_menu         = [
 					'id'     => 'sbp_clear_sucuri_cache',
 					'parent' => 'speed_booster_pack',
 					'title'  => __( 'Clear Sucuri Cache', 'speed-booster-pack' ),
@@ -1239,7 +1241,7 @@ class Speed_Booster_Pack_Admin {
 			}
 
 			$warmup_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
-			$sbp_admin_menu  = [
+			$sbp_admin_menu   = [
 				'id'     => 'sbp_warmup_cache',
 				'parent' => 'speed_booster_pack',
 				'title'  => __( 'Warmup Cache', 'speed-booster-pack' ),
@@ -1250,56 +1252,30 @@ class Speed_Booster_Pack_Admin {
 		}
 	}
 
-	public function set_flash_notices() {
-		$transients = [
-			'sbp_notice_cache'             => 'show_cache_notice',
-			'sbp_notice_tracker_localizer' => 'show_localizer_notice',
-			'sbp_notice_cloudflare'        => 'show_cloudflare_notice',
-			'sbp_clear_sucuri_cache'       => 'show_sucuri_notice',
-		];
-
-		foreach ( $transients as $transient => $method ) {
-			if ( get_transient( $transient ) && method_exists( $this, $method ) ) {
-				add_action( 'admin_notices', [ $this, $method ] );
-			}
+	public function set_notices() {
+		// Set Sucuri Notice
+		if ( $transient_value = get_transient( 'sbp_clear_sucuri_cache' ) ) {
+			$notice_message = $transient_value == '1' ? 'Sucuri cache cleared.' : 'Error occured while clearing Sucuri cache. ' . get_transient( 'sbp_sucuri_error' );
+			$notice_type    = $transient_value == '1' ? 'success' : 'error';
+			SBP_Notice_Manager::display_notice( 'sbp_clear_sucuri_cache', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, true );
 		}
-	}
 
-	// LAHMACUNTODO: Unite all show_xxx_notice methods
-	public function show_cache_notice() {
-		echo '<div class="notice notice-success is-dismissible">
-                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>
-        </div>';
-		delete_transient( 'sbp_notice_cache' );
-	}
+		// Set Cloudflare Notice
+		if ( $transient_value = get_transient( 'sbp_notice_cloudflare' ) ) {
+			$notice_message = $transient_value == '1' ? 'Cloudflare cache cleared.' : 'Error occured while clearing Cloudflare cache.';
+			$notice_type    = $transient_value == '1' ? 'success' : 'error';
+			SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, true );
+		}
 
-	public function show_localizer_notice() {
-		echo '<div class="notice notice-success is-dismissible">
-                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>
-        </div>';
-		delete_transient( 'sbp_notice_tracker_localizer' );
-	}
+		// Set Cache Clear Notice
+		if ( get_transient( 'sbp_notice_cache' ) ) {
+			SBP_Notice_Manager::display_notice( 'sbp_notice_cache', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>', 'success', true, true );
+		}
 
-	// LAHMACUNTODO: Modify this method(s)
-	public function show_cloudflare_notice() {
-		$transient_value = get_transient( 'sbp_notice_cloudflare' );
-		$error_message   = $transient_value == '1' ? 'Cloudflare cache cleared.' : 'Error occured while clearing Cloudflare cache.';
-		$notice_type     = $transient_value == '1' ? 'success' : 'error';
-		echo '<div class="notice notice-' . $notice_type . ' is-dismissible">
-                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $error_message, 'speed-booster-pack' ) . '</p>
-        </div>';
-		delete_transient( 'sbp_notice_cloudflare' );
-	}
-
-	public function show_sucuri_notice() {
-		$transient_value = get_transient( 'sbp_clear_sucuri_cache' );
-		$error_message   = $transient_value == '1' ? 'Sucuri cache cleared.' : 'Error occured while clearing Sucuri cache. ' . get_transient( 'sbp_sucuri_error' );
-		$notice_type     = $transient_value == '1' ? 'success' : 'error';
-		delete_transient( 'sbp_sucuri_error' );
-		echo '<div class="notice notice-' . $notice_type . ' is-dismissible">
-                <p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $error_message, 'speed-booster-pack' ) . '</p>
-        </div>';
-		delete_transient( 'sbp_clear_sucuri_cache' );
+		// Set Localizer Cache Clear Notice
+		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
+			SBP_Notice_Manager::display_notice( 'sbp_notice_tracker_localizer', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>', 'success', true, true );
+		}
 	}
 
 	private function initialize_announce4wp() {
