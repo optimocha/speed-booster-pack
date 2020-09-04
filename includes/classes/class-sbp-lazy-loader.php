@@ -17,19 +17,54 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		}
 
 		add_action( 'wp_enqueue_scripts', [ $this, 'add_lazy_load_script' ] );
+
+		// We need async attribute on lazyload file
+		add_filter( 'script_loader_tag', [ $this, 'add_attribute_to_tag' ], 10, 2 );
+
 		add_filter( 'sbp_output_buffer', [ $this, 'lazy_load_handler' ] );
 	}
 
 	function add_lazy_load_script() {
-		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.1.0', true );
+		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.1.0' );
 		wp_add_inline_script( 'sbp-lazy-load',
 			'
-                (function() {
-                    var ll = new LazyLoad({
-                        elements_selector: "[loading=lazy]",
-                        use_native: true
-                    });
-                })();
+				window.lazyLoadOptions = {
+					elements_selector: "[loading=efe]",
+                    use_native: true
+				};
+				window.addEventListener(
+				"LazyLoad::Initialized",
+				function (event) {
+				    window.lazyLoadInstance = event.detail.instance;
+						if (window.MutationObserver) {
+							var observer = new MutationObserver(function (mutations) {
+							    mutations.forEach(function (mutation) {
+							        for (i = 0; i < mutation.addedNodes.length; i++) {
+							            if (typeof mutation.addedNodes[i].getElementsByTagName !== \'function\') {
+							                return;
+							            }
+							            if (typeof mutation.addedNodes[i].getElementsByClassName !== \'function\') {
+							                return;
+							            }
+							            imgs = mutation.addedNodes[i].getElementsByTagName(\'img\');
+							            iframes = mutation.addedNodes[i].getElementsByTagName(\'iframe\');
+							
+							            if (0 === imgs.length && 0 === iframes.length) {
+							                return;
+							            }
+							            lazyLoadInstance.update();
+							        }
+							    });
+							});
+							
+							var b = document.getElementsByTagName("body")[0];
+							var config = {childList: true, subtree: true};
+							
+							observer.observe(b, config);
+						}
+					},  
+					false
+				);
                 ' );
 	}
 
@@ -92,8 +127,8 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			);
 
 			// add loading attribute, but only if the tag doesn't have one
-			if( ! strpos( $newElement, 'loading=' ) ) {
-			$newElement = preg_replace(
+			if ( ! strpos( $newElement, 'loading=' ) ) {
+				$newElement = preg_replace(
 					"/<(img|source|iframe)(.*?) ?(\/?)>/is",
 					'<$1$2 loading="lazy" $3>',
 					$newElement
@@ -109,6 +144,14 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		$this->add_noscripts( $html );
 
 		return $html;
+	}
+
+	public function add_attribute_to_tag( $tag, $handle ) {
+		if ( 'sbp-lazy-load' !== $handle ) {
+			return $tag;
+		}
+
+		return str_replace( ' src=', ' async src=', $tag ); // defer the script
 	}
 
 	/**
