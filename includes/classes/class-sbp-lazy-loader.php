@@ -29,7 +29,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		wp_add_inline_script( 'sbp-lazy-load',
 			'
 				window.lazyLoadOptions = {
-					elements_selector: "[loading=efe]",
+					elements_selector: "[loading=lazy]",
                     use_native: true
 				};
 				window.addEventListener(
