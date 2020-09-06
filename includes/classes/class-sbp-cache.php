@@ -125,6 +125,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * Clears all cache files and regenerates settings.json file
 	 */
 	public static function clear_total_cache() {
+		do_action('sbp_before_cache_clear');
 		sbp_delete_dir_recursively( SBP_CACHE_DIR );
 		self::create_settings_json();
 		if ( sbp_get_option( 'caching_warmup_after_clear' ) && sbp_get_option( 'module_caching' ) ) {
@@ -351,6 +352,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	public function clear_homepage_cache() {
+		do_action('sbp_before_homepage_cache_clear');
+
 		global $wp_filesystem;
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
 		WP_Filesystem();
@@ -369,6 +372,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	public function clear_post_by_id( $post_id ) {
+		do_action('sbp_before_post_cache_clear');
+
 		global $wp_filesystem;
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
 		WP_Filesystem();

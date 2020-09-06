@@ -77,8 +77,8 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		$api_key = sbp_get_option( 'cloudflare_api' );
 		$zone    = sbp_get_option( 'cloudflare_zone' );
 
-		if ( ! $email || ! $api_key || ! $zone ) {
-			return;
+		if ( ! $email || ! $api_key || ! $zone || ! sbp_get_option('cloudflare_enable') ) {
+			return false;
 		}
 
 		$rocket_loader_status = false;

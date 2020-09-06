@@ -18,10 +18,30 @@ class SBP_CDN extends SBP_Abstract_Module {
 	}
 
 	public function cdn_rewriter( $html ) {
-		$included_directories = 'wp\-content|wp\-includes';
+		$special_chars   = [ '#', '$', '%', '^', '&', '*', '(', ')', '+', '=', '-', '[', ']', '\'', ';', ',', '.', '/', '{', '}', '|', ':', '<', '>', '?', '~' ];
+		$legalized_chars = array_map(
+			function ( $item ) {
+				return '\\' . $item;
+			},
+			$special_chars
+		);
+
+		$included_directories = [
+//			'wp-content',
+			'wp-includes',
+		];
 
 		//Prep Included Directories
 		$included_directories = apply_filters( 'sbp_cdn_included_directories', $included_directories );
+
+		$included_directories = array_map(
+			function ( $item ) use ( $special_chars, $legalized_chars ) {
+				return str_replace( $special_chars, $legalized_chars, $item );
+			},
+			$included_directories
+		);
+
+		$included_directories = implode( '|', $included_directories );
 
 		//Prep Site URL
 		$escaped_site_url = quotemeta( get_option( 'home' ) );

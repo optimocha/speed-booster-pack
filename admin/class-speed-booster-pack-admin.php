@@ -1004,7 +1004,7 @@ class Speed_Booster_Pack_Admin {
 			/* BEGIN Section: CDN & Proxy */
 			/* Begin Of Cloudflare Fields */
 			$is_rocket_loader_active = SBP_Cloudflare::get_rocket_loader_status();
-			$cloudflare_fields    = [
+			$cloudflare_fields       = [
 				[
 					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
 					'type'  => 'subheading',
@@ -1019,6 +1019,7 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'cf_rocket_loader_enable',
 					'type'  => 'switcher',
 					'value' => $is_rocket_loader_active,
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
@@ -1039,7 +1040,7 @@ class Speed_Booster_Pack_Admin {
 					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
 				],
 			];
-			$cloudflare_transient = get_transient( 'sbp_cloudflare_status' );
+			$cloudflare_transient    = get_transient( 'sbp_cloudflare_status' );
 
 			if ( '0' === $cloudflare_transient ) {
 				array_splice( $cloudflare_fields,
@@ -1250,15 +1251,17 @@ class Speed_Booster_Pack_Admin {
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
 
-			$warmup_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
-			$sbp_admin_menu   = [
-				'id'     => 'sbp_warmup_cache',
-				'parent' => 'speed_booster_pack',
-				'title'  => __( 'Warmup Cache', 'speed-booster-pack' ),
-				'href'   => $warmup_cache_url,
-			];
+			if ( sbp_get_option( 'module_caching' ) ) {
+				$warmup_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
+				$sbp_admin_menu   = [
+					'id'     => 'sbp_warmup_cache',
+					'parent' => 'speed_booster_pack',
+					'title'  => __( 'Warmup Cache', 'speed-booster-pack' ),
+					'href'   => $warmup_cache_url,
+				];
 
-			$admin_bar->add_node( $sbp_admin_menu );
+				$admin_bar->add_node( $sbp_admin_menu );
+			}
 		}
 	}
 
