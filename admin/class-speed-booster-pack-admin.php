@@ -11,6 +11,7 @@
  */
 
 // If this file is called directly, abort.
+use SpeedBooster\SBP_Cloudflare;
 use SpeedBooster\SBP_Notice_Manager;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -156,6 +157,8 @@ class Speed_Booster_Pack_Admin {
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::reset_transient' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
+
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::set_rocket_loader_status' );
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
 
@@ -1000,6 +1003,7 @@ class Speed_Booster_Pack_Admin {
 
 			/* BEGIN Section: CDN & Proxy */
 			/* Begin Of Cloudflare Fields */
+			$is_rocket_loader_active = SBP_Cloudflare::get_rocket_loader_status();
 			$cloudflare_fields    = [
 				[
 					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
@@ -1009,6 +1013,12 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
 					'id'    => 'cloudflare_enable',
 					'type'  => 'switcher',
+				],
+				[
+					'title' => __( 'Toggle Rocket Loader', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_rocket_loader_enable',
+					'type'  => 'switcher',
+					'value' => $is_rocket_loader_active,
 				],
 				[
 					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),

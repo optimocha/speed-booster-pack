@@ -72,6 +72,63 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		}
 	}
 
+	public static function get_rocket_loader_status() {
+		$email   = sbp_get_option( 'cloudflare_email' );
+		$api_key = sbp_get_option( 'cloudflare_api' );
+		$zone    = sbp_get_option( 'cloudflare_zone' );
+
+		if ( ! $email || ! $api_key || ! $zone ) {
+			return;
+		}
+
+		$rocket_loader_status = false;
+
+		if ( ! empty( $zone ) ) {
+			$headers = [
+				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
+				'x_auth_email' => 'X-Auth-Email: ' . $email,
+			];
+
+			$result = self::send_request( $zone, '/settings/rocket_loader', [], $headers );
+
+			if ( $result['success'] == true ) {
+				$rocket_loader_status = $result['result']['id'] == 'rocket_loader' && $result['result']['value'] == 'on';
+			}
+		}
+
+		return $rocket_loader_status;
+	}
+
+	public static function set_rocket_loader_status() {
+		$email   = sbp_get_option( 'cloudflare_email' );
+		$api_key = sbp_get_option( 'cloudflare_api' );
+		$zone    = sbp_get_option( 'cloudflare_zone' );
+
+		if ( ! $email || ! $api_key || ! $zone ) {
+			return;
+		}
+
+		if ( ! empty( $zone ) ) {
+			$headers = [
+				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
+				'x_auth_email' => 'X-Auth-Email: ' . $email,
+			];
+
+			$rocket_loader_status = sbp_get_option( 'cf_rocket_loader_enable' ) ? 'on' : 'off';
+
+			$result = self::send_request( $zone, '/settings/rocket_loader', [ 'value' => $rocket_loader_status ], $headers, 'PATCH' );
+
+			if ( $result['success'] == true ) {
+				$response = $result['result']['id'] == 'rocket_loader' && $result['result']['value'] == 'on';
+				if ( ! $response ) {
+					set_transient('rocket_loader_error', 1 );
+				}
+			}
+
+			set_transient('rocket_loader_error', 1 );
+		}
+	}
+
 	/**
 	 * @param $zone
 	 * @param $path
