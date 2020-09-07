@@ -13,6 +13,7 @@
 // If this file is called directly, abort.
 use SpeedBooster\SBP_Cloudflare;
 use SpeedBooster\SBP_Notice_Manager;
+use SpeedBooster\SBP_Utils;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -93,7 +94,7 @@ function sbp_sanitize_strip_tags( $value ) {
  *
  */
 function sbp_sanitize_caching_urls( $urls ) {
-	$urls = \SpeedBooster\SBP_Utils::explode_lines( $urls );
+	$urls = SBP_Utils::explode_lines( $urls );
 	foreach ( $urls as &$url ) {
 		$url = ltrim( $url, 'https://' );
 		$url = ltrim( $url, 'http://' );
@@ -427,8 +428,7 @@ class Speed_Booster_Pack_Admin {
 				],
 			];
 
-			$is_hosting_restricted = sbp_is_restricted_hosting();
-			$restricted_hosting_error = '';
+			$is_hosting_restricted    = sbp_is_restricted_hosting();
 
 			if ( $is_hosting_restricted === null && is_multisite() ) {
 				$multisite_warning = [
