@@ -186,6 +186,11 @@ ga('send', 'pageview');";
 			'remove_all_feeds'      => 'declutter_feed_links',
 		];
 
+		// Check if declutter_head is array or not
+		if ( ! is_array( $this->sbp_options['declutter_head'] ) ) {
+			$this->sbp_options['declutter_head'] = [];
+		}
+
 		foreach ( $declutter_settings as $old_option => $new_option ) {
 			if ( isset( $this->sbp_settings[ $old_option ] ) && $this->sbp_settings[ $old_option ] ) {
 				$this->sbp_options['declutter_head'][ $new_option ] = $this->sbp_settings[ $old_option ];
