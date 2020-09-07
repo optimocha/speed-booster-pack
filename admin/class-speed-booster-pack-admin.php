@@ -134,8 +134,6 @@ class Speed_Booster_Pack_Admin {
 	 */
 	private $version;
 
-	private $cloudflare_warning = false;
-
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -180,7 +178,6 @@ class Speed_Booster_Pack_Admin {
 		$this->create_settings_page();
 
 		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
-
 	}
 
 	/**
@@ -430,20 +427,10 @@ class Speed_Booster_Pack_Admin {
 				],
 			];
 
-			$is_hosting_restricted    = false;
+			$is_hosting_restricted = sbp_is_restricted_hosting();
 			$restricted_hosting_error = '';
 
-			if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
-				$is_hosting_restricted    = true;
-				$restricted_hosting_error = __( 'Since you\'re using Kinsta, cache feature is completely disabled to ensure compatibility with Kinsta\'s internal caching system.', 'speed-booster-pack' );
-			}
-
-			if ( defined( "IS_PRESSABLE" ) && IS_PRESSABLE ) {
-				$is_hosting_restricted    = true;
-				$restricted_hosting_error = __( 'Since you\'re using Pressable, cache feature is completely disabled to ensure compatibility with Pressable\'s internal caching system.', 'speed-booster-pack' );
-			}
-
-			if ( ! $is_hosting_restricted && is_multisite() ) {
+			if ( $is_hosting_restricted === null && is_multisite() ) {
 				$multisite_warning = [
 					'type'    => 'submessage',
 					'style'   => 'warning',
@@ -454,13 +441,13 @@ class Speed_Booster_Pack_Admin {
 				array_unshift( $cache_fields, $multisite_warning );
 			}
 
-			if ( $is_hosting_restricted ) {
+			if ( $is_hosting_restricted !== null ) {
 				$restricted_hosting_notice = [
 					[
 						'type'    => 'submessage',
 						'style'   => 'success',
-						'class'   => 'kinsta-warning',
-						'content' => $restricted_hosting_error,
+						'class'   => 'hosting-warning',
+						'content' => $is_hosting_restricted,
 					],
 				];
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
@@ -1019,7 +1006,6 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'cf_rocket_loader_enable',
 					'type'  => 'switcher',
 					'value' => $is_rocket_loader_active,
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
@@ -1203,7 +1189,7 @@ class Speed_Booster_Pack_Admin {
 		] );
 
 		if ( current_user_can( 'manage_options' ) ) {
-			if ( sbp_get_option( 'module_caching' ) && ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
+			if ( sbp_get_option( 'module_caching' ) && null === sbp_is_restricted_hosting() ) {
 				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
 				$sbp_admin_menu  = [
 					'id'     => 'sbp_clear_cache',
@@ -1251,7 +1237,7 @@ class Speed_Booster_Pack_Admin {
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
 
-			if ( sbp_get_option( 'module_caching' ) ) {
+			if ( sbp_get_option( 'module_caching' ) && null === sbp_is_restricted_hosting() ) {
 				$warmup_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
 				$sbp_admin_menu   = [
 					'id'     => 'sbp_warmup_cache',

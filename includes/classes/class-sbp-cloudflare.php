@@ -77,7 +77,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		$api_key = sbp_get_option( 'cloudflare_api' );
 		$zone    = sbp_get_option( 'cloudflare_zone' );
 
-		if ( ! $email || ! $api_key || ! $zone || ! sbp_get_option('cloudflare_enable') ) {
+		if ( ! $email || ! $api_key || ! $zone ) {
 			return false;
 		}
 
@@ -121,11 +121,11 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			if ( $result['success'] == true ) {
 				$response = $result['result']['id'] == 'rocket_loader' && $result['result']['value'] == 'on';
 				if ( ! $response ) {
-					set_transient('rocket_loader_error', 1 );
+					set_transient( 'rocket_loader_error', 1 );
 				}
 			}
 
-			set_transient('rocket_loader_error', 1 );
+			set_transient( 'rocket_loader_error', 1 );
 		}
 	}
 

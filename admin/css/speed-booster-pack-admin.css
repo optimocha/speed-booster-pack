@@ -5,7 +5,7 @@
 .sbp-settings input.disabled, .sbp-settings input:disabled {background:#FFF;border:1px solid #7e8993;color:inherit;box-shadow:0 0 0 transparent;}
 .sbp-settings .ui-spinner .ui-button {min-height:30px;box-shadow:none;}
 .sbp-settings .inactive-section > div {opacity:.7;filter:grayscale(1) blur(0.05px); pointer-events: none;}
-.sbp-settings .inactive-section .kinsta-warning {opacity:1;filter:none;}
+.sbp-settings .inactive-section .hosting-warning {opacity:1;filter:none;}
 
 .sbp-settings .cdn-url .csf-before-text, .sbp-settings .cdn-url .csf-after-text {display:inline-block;line-height:2;font-family:monospace;}
 .sbp-settings .cdn-url input {font-family:monospace;}

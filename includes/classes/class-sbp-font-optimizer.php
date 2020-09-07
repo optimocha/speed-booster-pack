@@ -105,6 +105,7 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 		$families = implode( '|', $families );
 
 		// parse subsets
+		// LAHMACUNTODO: Check if value null or not (array unique parameter)
 		$subsets = implode( ",", array_unique( $this->subsets ) );
 
 		$attributes = []; // Don't put attributes that doesn't exists
