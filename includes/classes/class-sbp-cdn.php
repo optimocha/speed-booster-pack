@@ -27,7 +27,7 @@ class SBP_CDN extends SBP_Abstract_Module {
 		);
 
 		$included_directories = [
-//			'wp-content',
+			'wp-content',
 			'wp-includes',
 		];
 
