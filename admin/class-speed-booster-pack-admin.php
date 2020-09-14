@@ -447,7 +447,7 @@ class Speed_Booster_Pack_Admin {
 						'type'    => 'submessage',
 						'style'   => 'success',
 						'class'   => 'hosting-warning',
-						'content' => $is_hosting_restricted,
+						'content' => $is_hosting_restricted, // LAHMACUNTODO: Place error message with company name here.
 					],
 				];
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
@@ -1081,6 +1081,18 @@ class Speed_Booster_Pack_Admin {
 					'desc'     => __( 'Rewrites all asset URLs with the specified CDN domain. Enter the CDN domain without a protocol or a trailing slash; a relative protocol will be automatically added to all changed asset URLs.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_clear_cdn_url',
 				],
+				[
+					'title' => __( 'Included Directories', 'speed-booster-pack' ),
+					'id' => 'cdn_includes',
+					'type' => 'code_editor',
+					'desc' => __( 'Write included directory names', 'speed-booster-pack' ), // BEYNTODO: Change text
+				],
+				[
+					'title' => __( 'Excluded Extensions', 'speed-booster-pack' ),
+					'id' => 'cdn_excludes',
+					'type' => 'code_editor',
+					'desc' => __( 'Excluded file extensions', 'speed-booster-pack' ), // BEYNTODO: Change text
+				],
 			],
 				$cloudflare_fields,
 				$sucuri_fields );
@@ -1120,15 +1132,14 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: Tools */
 
 			/* BEGIN Section: About */
-			/* BEYNTODO: İçerik yaz! */
 			CSF::createSection(
 				$prefix,
-				array(
+				[
 					'title'  => __( 'About', 'speed-booster-pack' ),
 					'id'     => 'about',
 					'class'  => 'about',
 					'icon'   => 'fa fa-info-circle',
-					'fields' => array(
+					'fields' => [
 
 						[
 							'type'    => 'heading',
@@ -1166,10 +1177,62 @@ class Speed_Booster_Pack_Admin {
 							'desc'    => sprintf( __( 'Fetches notices from %s, and shows them in a non-obtrusive manner. We intend to send essential notices only, and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener" target="_blank">speedboosterpack.com</a>' ),
 							'default' => true,
 						],
-					),
-				)
+					],
+				]
 			);
 			/* END Section: About */
+
+			/* BEGIN Section: Pro Services */
+			/* BEYNTODO: İçerik yaz! */
+			CSF::createSection(
+				$prefix,
+				[
+					'title'  => __( 'Pro Services', 'speed-booster-pack' ),
+					'id'     => 'pro-services',
+					'class'  => 'about',
+					'icon'   => 'fa fa-info-circle',
+					'fields' => [
+
+						[
+							'type'    => 'heading',
+							/* translators: %s = Optimocha  */
+							'content' => sprintf( __( 'About %s', 'speed-booster-pack' ), SBP_OWNER_NAME ),
+						],
+						[
+							'type'    => 'content',
+							/* translators: 1. Optimocha 2. Speed Booster Pack  */
+							'content' => '<p>' . sprintf( __( 'We are %1$s, a small team of speed optimization experts. Along with hundreds of websites we finished optimizing, we acquired %2$s in 2019 and we\'re working hard to make this plugin the best speed optimization plugin for WordPress ever since!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_PLUGIN_NAME ) . '</p><ul><li><a href="https://optimocha.com/speed-optimization-for-wordpress/" rel="external noopener" target="_blank">' .
+							             __( 'Visit our website', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/" rel="external noopener" target="_blank">' .
+							             __( 'Learn more about our tailored Complete Speed Optimization services', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/contact/" rel="external noopener" target="_blank">' .
+							             __( 'Contact us', 'speed-booster-pack' ) . '</a></li></ul>',
+						],
+						[
+							'type'    => 'subheading',
+							'content' => __( 'Special thanks', 'speed-booster-pack' ),
+						],
+						[
+							'type'    => 'content',
+							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
+							'content' => __( 'We made use of the following libraries and frameworks in Speed Booster Pack, so we\'d like to give them a shout out and thank them:', 'speed-booster-pack' ) .
+							             '<ul>
+											<li><a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a></li>
+											<li><a href="https://github.com/verlok/vanilla-lazyload" rel="external noopener" target="_blank">LazyLoad by Andrea Verlicchi</a></li>
+											<li><a href="https://codestarframework.com/" rel="external noopener" target="_blank">CodeStar Framework</a></li>
+										 </ul>',
+						],
+						[
+							'title'   => __( 'Allow external notices', 'speed-booster-pack' ),
+							'id'      => 'enable_external_notices',
+							'type'    => 'switcher',
+							'label'   => __( '', 'speed-booster-pack' ),
+							/* translators: %s = hyperlink to speedboosterpack.com  */
+							'desc'    => sprintf( __( 'Fetches notices from %s, and shows them in a non-obtrusive manner. We intend to send essential notices only, and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener" target="_blank">speedboosterpack.com</a>' ),
+							'default' => true,
+						],
+					],
+				]
+			);
+			/* END Section: Pro Services */
 		}
 	}
 
