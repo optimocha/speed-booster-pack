@@ -452,6 +452,7 @@ class Speed_Booster_Pack_Admin {
 				];
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
 			}
+			// LAHMACUNTODO: Do not show if error does not exists.
 
 			CSF::createSection(
 				$prefix,

@@ -9,6 +9,11 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Cloudflare extends SBP_Abstract_Module {
 	private static $api_url = 'https://api.cloudflare.com/client/v4/zones/';
+	private static $action_paths = [
+		'check_credentials' => '',
+		'rocket_loader'     => '/settings/rocket_loader',
+		'purge_cache'       => '/purge_cache',
+	];
 
 	public function __construct() {
 		if ( ! sbp_get_option( 'cloudflare_enable' ) ) {
@@ -20,16 +25,8 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 
 	public static function clear_cache() {
 		if ( sbp_get_option( 'cloudflare_enable' ) ) {
-			$email   = sbp_get_option( 'cloudflare_email' );
-			$api_key = sbp_get_option( 'cloudflare_api' );
-			$zone    = sbp_get_option( 'cloudflare_zone' );
+			$result = self::send_request( 'purge_cache', 'POST', [ 'purge_everything' => true ] );
 
-			$headers = [
-				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
-				'x_auth_email' => 'X-Auth-Email: ' . $email,
-			];
-
-			$result = self::send_request( $zone, '/purge_cache', [ 'purge_everything' => true ], $headers, 'POST' );
 			if ( true === $result['success'] ) {
 				return true;
 			}
@@ -47,22 +44,8 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public static function check_credentials() {
-		$email   = sbp_get_option( 'cloudflare_email' );
-		$api_key = sbp_get_option( 'cloudflare_api' );
-		$zone    = sbp_get_option( 'cloudflare_zone' );
-
-		if ( ! $email || ! $api_key || ! $zone ) {
-			return;
-		}
-
-		if ( 1 != get_transient( 'sbp_cloudflare_status' ) && ! empty( $zone ) ) {
-
-			$headers = [
-				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
-				'x_auth_email' => 'X-Auth-Email: ' . $email,
-			];
-
-			$result = self::send_request( $zone, '', [], $headers );
+		if ( 1 != get_transient( 'sbp_cloudflare_status' ) ) {
+			$result = self::send_request( 'check_credentials' );
 
 			if ( true !== $result['success'] ) {
 				set_transient( 'sbp_cloudflare_status', 0 );
@@ -73,33 +56,31 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public static function get_rocket_loader_status() {
-		$email   = sbp_get_option( 'cloudflare_email' );
-		$api_key = sbp_get_option( 'cloudflare_api' );
-		$zone    = sbp_get_option( 'cloudflare_zone' );
+		$result = self::send_request( 'rocket_loader' );
 
-		if ( ! $email || ! $api_key || ! $zone ) {
-			return false;
-		}
+		$rocket_loader_status = $result['result']['value'] == 'off';
 
-		$rocket_loader_status = false;
-
-		if ( ! empty( $zone ) ) {
-			$headers = [
-				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
-				'x_auth_email' => 'X-Auth-Email: ' . $email,
-			];
-
-			$result = self::send_request( $zone, '/settings/rocket_loader', [], $headers );
-
-			if ( $result['success'] == true ) {
-				$rocket_loader_status = $result['result']['id'] == 'rocket_loader' && $result['result']['value'] == 'on';
-			}
+		if ( $result['success'] == true ) {
+			$rocket_loader_status = $result['result']['id'] == 'rocket_loader' && $result['result']['value'] == 'on';
 		}
 
 		return $rocket_loader_status;
 	}
 
 	public static function set_rocket_loader_status() {
+		$rocket_loader_status = sbp_get_option( 'cf_rocket_loader_enable' ) ? 'on' : 'off';
+		$result               = self::send_request( 'rocket_loader', 'PATCH', [ 'value' => $rocket_loader_status ] );
+
+		if ( $result['success'] == true ) {
+			delete_transient( 'rocket_loader_error' );
+
+			return;
+		}
+
+		set_transient( 'rocket_loader_error', 1 );
+	}
+
+	public static function send_request( $action, $method = 'GET', $post_fields = [] ) {
 		$email   = sbp_get_option( 'cloudflare_email' );
 		$api_key = sbp_get_option( 'cloudflare_api' );
 		$zone    = sbp_get_option( 'cloudflare_zone' );
@@ -108,69 +89,56 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			return;
 		}
 
+		if ( ! isset( self::$action_paths[ $action ] ) ) {
+			return [
+				'success' => false,
+				'errors'  => [ __( 'Invalid action.', 'speed-booster-pack' ) ]
+			];
+		}
+
 		if ( ! empty( $zone ) ) {
 			$headers = [
 				'x_auth_key'   => 'X-Auth-Key: ' . $api_key,
 				'x_auth_email' => 'X-Auth-Email: ' . $email,
+				'content_type' => 'Content-Type: application/json',
 			];
 
-			$rocket_loader_status = sbp_get_option( 'cf_rocket_loader_enable' ) ? 'on' : 'off';
-
-			$result = self::send_request( $zone, '/settings/rocket_loader', [ 'value' => $rocket_loader_status ], $headers, 'PATCH' );
-
-			if ( $result['success'] == true ) {
-				$response = $result['result']['id'] == 'rocket_loader' && $result['result']['value'] == 'on';
-				if ( ! $response ) {
-					set_transient( 'rocket_loader_error', 1 );
-				}
+			if ( ! function_exists( 'curl_init' ) ) {
+				return [
+					'success' => false,
+					'errors'  => [ __( 'Curl is not enabled in your hosting.', 'speed-booster-pack' ) ]
+				];
 			}
 
-			set_transient( 'rocket_loader_error', 1 );
+			$curl_connection = curl_init();
+			$fields          = wp_json_encode( $post_fields );
+
+			curl_setopt( $curl_connection, CURLOPT_URL, self::$api_url . $zone . self::$action_paths[ $action ] );
+			curl_setopt( $curl_connection, CURLOPT_CUSTOMREQUEST, $method );
+			curl_setopt( $curl_connection, CURLOPT_POSTFIELDS, $fields );
+			curl_setopt( $curl_connection, CURLOPT_RETURNTRANSFER, true );
+			curl_setopt( $curl_connection, CURLOPT_HTTPHEADER, array_values( $headers ) );
+			curl_setopt( $curl_connection, CURLOPT_CONNECTTIMEOUT, 5 );
+			curl_setopt( $curl_connection, CURLOPT_TIMEOUT, 10 );
+			curl_setopt( $curl_connection, CURLOPT_USERAGENT, '"User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36"' );
+			curl_setopt( $curl_connection, CURLOPT_SSL_VERIFYHOST, false );
+			curl_setopt( $curl_connection, CURLOPT_SSL_VERIFYPEER, false );
+
+
+			$request_response = curl_exec( $curl_connection );
+			$result           = json_decode( $request_response, true );
+			curl_close( $curl_connection );
+
+			if ( ! is_array( $result ) ) {
+				return [
+					'success' => false,
+					'errors'  => [ __( 'Cloudflare didn\'t respond correctly.', 'speed-booster-pack' ) ],
+					'result'  => $request_response,
+				];
+			}
+
+			return $result;
 		}
-	}
-
-	/**
-	 * @param $zone
-	 * @param $path
-	 * @param array $post_fields
-	 * @param array $headers Valid HTTP headers to add.
-	 * @param string $method
-	 *
-	 * @return array|bool[]|mixed
-	 */
-	private static function send_request( $zone, $path, $post_fields = [], $headers = [], $method = 'GET' ) {
-		if ( ! function_exists( 'curl_init' ) ) {
-			return [ 'success' => false ];
-		}
-
-		$curl_connection = curl_init();
-
-		$default_headers = [
-			'content_type' => 'Content-Type: application/json',
-		];
-
-		$headers = array_filter( array_values( array_merge( $default_headers, $headers ) ) );
-
-		$fields = wp_json_encode( $post_fields );
-
-		curl_setopt( $curl_connection, CURLOPT_URL, self::$api_url . $zone . $path );
-		curl_setopt( $curl_connection, CURLOPT_CUSTOMREQUEST, $method );
-		curl_setopt( $curl_connection, CURLOPT_POSTFIELDS, $fields );
-		curl_setopt( $curl_connection, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $curl_connection, CURLOPT_HTTPHEADER, $headers );
-		curl_setopt( $curl_connection, CURLOPT_CONNECTTIMEOUT, 5 );
-		curl_setopt( $curl_connection, CURLOPT_TIMEOUT, 10 );
-		curl_setopt( $curl_connection, CURLOPT_USERAGENT, '"User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36"' );
-
-		$request_response = curl_exec( $curl_connection );
-		$result           = json_decode( $request_response, true );
-		curl_close( $curl_connection );
-
-		if ( ! is_array( $result ) ) {
-			return [ 'success' => false, 'errors' => [ __( 'Cloudflare didn\'t respond correctly.', 'speed-booster-pack' ) ] ];
-		}
-
-		return $result;
 	}
 
 	public function clear_cache_request_handler() {
