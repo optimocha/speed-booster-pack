@@ -1,0 +1,12 @@
+# Build files
+simplehtmldom_*.zip
+
+# Unit test data files
+tests/data/*
+!tests/data/.gitkeep
+
+# vscode configuration files
+.vscode/
+
+# Generated site data
+manual/site/
