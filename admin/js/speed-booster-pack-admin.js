@@ -145,6 +145,7 @@
                     }
                 } else {
                     alert(response.message);
+                    $('.with-preloader::before, .with-preloader::after').remove();
                 }
             }
         });

@@ -430,9 +430,9 @@ class Speed_Booster_Pack_Admin {
 				],
 			];
 
-			$is_hosting_restricted = sbp_is_restricted_hosting();
+			$restricted_hosting_name = sbp_is_restricted_hosting();
 
-			if ( $is_hosting_restricted === null && is_multisite() ) {
+			if ( $restricted_hosting_name === false && is_multisite() ) {
 				$multisite_warning = [
 					'type'    => 'submessage',
 					'style'   => 'warning',
@@ -443,19 +443,17 @@ class Speed_Booster_Pack_Admin {
 				array_unshift( $cache_fields, $multisite_warning );
 			}
 
-			if ( $is_hosting_restricted !== null ) {
+			if ( $restricted_hosting_name !== false ) {
 				$restricted_hosting_notice = [
 					[
 						'type'    => 'submessage',
 						'style'   => 'success',
 						'class'   => 'hosting-warning',
-						'content' => $is_hosting_restricted,
-						// LAHMACUNTODO: Place error message with company name here.
+						'content' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), $restricted_hosting_name, $restricted_hosting_name ),
 					],
 				];
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
 			}
-			// LAHMACUNTODO: Do not show if error does not exists.
 
 			CSF::createSection(
 				$prefix,
@@ -463,7 +461,7 @@ class Speed_Booster_Pack_Admin {
 					'title'  => __( 'Caching', 'speed-booster-pack' ),
 					'id'     => 'caching',
 					'icon'   => 'fa fa-server',
-					'class'  => $is_hosting_restricted ? 'inactive-section' : '',
+					'class'  => $restricted_hosting_name ? 'inactive-section' : '',
 					'fields' => $cache_fields,
 				]
 			);
