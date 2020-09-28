@@ -13,14 +13,57 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		'check_credentials' => '',
 		'rocket_loader'     => '/settings/rocket_loader',
 		'purge_cache'       => '/purge_cache',
+		'settings'          => '/settings',
 	];
 
 	public function __construct() {
+		add_action( 'wp_ajax_sbp_check_cloudflare', [ $this, 'check_credentials_ajax_handler' ] );
+		add_action( 'wp_ajax_sbp_get_cloudflare_settings', [ $this, 'sbp_get_cloudflare_settings' ] );
+
 		if ( ! sbp_get_option( 'cloudflare_enable' ) ) {
 			return;
 		}
 
 		add_action( 'admin_init', [ $this, 'clear_cache_request_handler' ] );
+	}
+
+	public static function update_cloudflare_settings() {
+		if ( ! sbp_get_option( 'cloudflare_enable' ) || get_transient( 'sbp_do_not_update_cloudflare' ) ) {
+			return;
+		}
+
+		$request_data = [
+			'items' => [
+				[
+					'id'    => 'rocket_loader',
+					'value' => sbp_get_option( 'cf_rocket_loader_enable' ) ? 'on' : 'off',
+				],
+				[
+					'id'    => 'development_mode',
+					'value' => sbp_get_option( 'cf_dev_mode_enable' ) ? 'on' : 'off',
+				],
+				[
+					'id'    => 'minify',
+					'value' => [
+						'css'  => sbp_get_option( 'cf_css_minify_enable' ) ? 'on' : 'off',
+						'html' => sbp_get_option( 'cf_html_minify_enable' ) ? 'on' : 'off',
+						'js'   => sbp_get_option( 'cf_js_minify_enable' ) ? 'on' : 'off',
+					],
+				],
+				[
+					'id'    => 'browser_cache_ttl',
+					'value' => (int) sbp_get_option( 'cf_browser_cache_ttl' ),
+				],
+			]
+		];
+
+		$response = self::send_request( 'settings', 'PATCH', $request_data );
+
+		if ( $response['success'] ) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public static function clear_cache() {
@@ -43,47 +86,26 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		}
 	}
 
-	public static function check_credentials() {
-		if ( 1 != get_transient( 'sbp_cloudflare_status' ) ) {
-			$result = self::send_request( 'check_credentials' );
+	public static function check_credentials( $override_credentials = [] ) {
+		$result = self::send_request( 'check_credentials', 'GET', [], $override_credentials );
 
-			if ( true !== $result['success'] ) {
-				set_transient( 'sbp_cloudflare_status', 0 );
-			} else {
-				set_transient( 'sbp_cloudflare_status', 1 );
-			}
-		}
-	}
-
-	public static function get_rocket_loader_status() {
-		$result = self::send_request( 'rocket_loader' );
-
-		$rocket_loader_status = $result['result']['value'] == 'off';
-
-		if ( $result['success'] == true ) {
-			$rocket_loader_status = $result['result']['id'] == 'rocket_loader' && $result['result']['value'] == 'on';
+		if ( true === $result['success'] ) {
+			return true;
 		}
 
-		return $rocket_loader_status;
+		return false;
 	}
 
-	public static function set_rocket_loader_status() {
-		$rocket_loader_status = sbp_get_option( 'cf_rocket_loader_enable' ) ? 'on' : 'off';
-		$result               = self::send_request( 'rocket_loader', 'PATCH', [ 'value' => $rocket_loader_status ] );
-
-		if ( $result['success'] == true ) {
-			delete_transient( 'rocket_loader_error' );
-
-			return;
-		}
-
-		set_transient( 'rocket_loader_error', 1 );
-	}
-
-	public static function send_request( $action, $method = 'GET', $post_fields = [] ) {
+	public static function send_request( $action, $method = 'GET', $post_fields = [], $override_credentials = [] ) {
 		$email   = sbp_get_option( 'cloudflare_email' );
 		$api_key = sbp_get_option( 'cloudflare_api' );
 		$zone    = sbp_get_option( 'cloudflare_zone' );
+
+		if ( $override_credentials !== [] ) {
+			if ( isset( $override_credentials['email'] ) && isset( $override_credentials['api_key'] ) && isset( $override_credentials['zone'] ) ) {
+				extract( $override_credentials );
+			}
+		}
 
 		if ( ! $email || ! $api_key || ! $zone ) {
 			return;
@@ -148,6 +170,51 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$notice_value = $result == true ? '1' : '2';
 			set_transient( 'sbp_notice_cloudflare', $notice_value, 60 );
 			wp_redirect( $redirect_url );
+		}
+	}
+
+	public function check_credentials_ajax_handler() {
+		if ( isset( $_POST['action'] ) && $_POST['action'] == 'sbp_check_cloudflare' && current_user_can( 'manage_options' ) ) {
+			$status = self::check_credentials( [
+				'email'   => $_POST['email'],
+				'api_key' => $_POST['api_key'],
+				'zone'    => $_POST['zone_id'],
+			] ) ? 'true' : 'false';
+
+			echo json_encode( [
+				'status' => $status,
+			] );
+			wp_die();
+		}
+	}
+
+	public function sbp_get_cloudflare_settings() {
+		if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_get_cloudflare_settings' && current_user_can('manage_options') ) {
+			$settings_to_fetch = [
+				'browser_cache_ttl',
+				'development_mode',
+				'minify',
+				'rocket_loader',
+			];
+			$settings          = [];
+
+			$result = self::send_request( 'settings' );
+			if ( $result['success'] ) {
+				foreach ( $result['result'] as $setting ) {
+					if ( in_array( $setting['id'], $settings_to_fetch ) ) {
+						$settings[ $setting['id'] ] = $setting;
+					}
+				}
+				delete_transient( 'sbp_do_not_update_cloudflare' );
+				echo json_encode( [ 'status' => 'success', 'results' => $settings ] );
+			} else {
+				set_transient( 'sbp_do_not_update_cloudflare', 1 );
+				echo json_encode( [
+					'status'  => 'failure',
+					'message' => 'Error occurred while fetching CloudFlare settings. Your changes will not affect your CloudFlare settings until CloudFlare connection provided successfully.'
+				] );
+			}
+			wp_die();
 		}
 	}
 }

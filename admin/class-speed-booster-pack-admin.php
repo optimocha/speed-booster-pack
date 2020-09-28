@@ -157,7 +157,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::set_rocket_loader_status' );
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
 
@@ -402,8 +402,10 @@ class Speed_Booster_Pack_Admin {
 				[
 					'id'         => 'caching_warmup_after_clear',
 					'type'       => 'switcher',
-					'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ), // BEYNTODO: Change text
-					'desc'       => __( 'Warm up cache everytime cache cleared.', 'speed-booster-pack' ), // BEYNTODO: Change text
+					'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
+					// BEYNTODO: Change text
+					'desc'       => __( 'Warm up cache everytime cache cleared.', 'speed-booster-pack' ),
+					// BEYNTODO: Change text
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
 				[
@@ -428,7 +430,7 @@ class Speed_Booster_Pack_Admin {
 				],
 			];
 
-			$is_hosting_restricted    = sbp_is_restricted_hosting();
+			$is_hosting_restricted = sbp_is_restricted_hosting();
 
 			if ( $is_hosting_restricted === null && is_multisite() ) {
 				$multisite_warning = [
@@ -447,7 +449,8 @@ class Speed_Booster_Pack_Admin {
 						'type'    => 'submessage',
 						'style'   => 'success',
 						'class'   => 'hosting-warning',
-						'content' => $is_hosting_restricted, // LAHMACUNTODO: Place error message with company name here.
+						'content' => $is_hosting_restricted,
+						// LAHMACUNTODO: Place error message with company name here.
 					],
 				];
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
@@ -799,9 +802,11 @@ class Speed_Booster_Pack_Admin {
 							],
 						],
 						[
-							'title'   => __( 'Remove Critical CSS After Load', 'speed-booster-pack' ), // BEYNTODO: Change Text
+							'title'   => __( 'Remove Critical CSS After Load', 'speed-booster-pack' ),
+							// BEYNTODO: Change Text
 							'id'      => 'remove_critical_css',
-							'desc'    => __( 'Remove critical CSS after all css files loaded.', 'speed-booster-pack' ), // BEYNTODO: Change Text
+							'desc'    => __( 'Remove critical CSS after all css files loaded.', 'speed-booster-pack' ),
+							// BEYNTODO: Change Text
 							'type'    => 'switcher',
 							'default' => true,
 						],
@@ -991,8 +996,7 @@ class Speed_Booster_Pack_Admin {
 
 			/* BEGIN Section: CDN & Proxy */
 			/* Begin Of Cloudflare Fields */
-			$is_rocket_loader_active = SBP_Cloudflare::get_rocket_loader_status();
-			$cloudflare_fields       = [
+			$cloudflare_fields    = [
 				[
 					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
 					'type'  => 'subheading',
@@ -1005,8 +1009,69 @@ class Speed_Booster_Pack_Admin {
 				[
 					'title' => __( 'Toggle Rocket Loader', 'speed-booster-pack' ), // BEYNTODO: Change title
 					'id'    => 'cf_rocket_loader_enable',
+					'class' => 'with-preloader',
 					'type'  => 'switcher',
-					'value' => $is_rocket_loader_active,
+					'dependency' => ['cloudflare_enable', '==', '1'],
+				],
+				[
+					'title' => __( 'Toggle Development Mode', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_dev_mode_enable',
+					'class' => 'with-preloader',
+					'type'  => 'switcher',
+					'dependency' => ['cloudflare_enable', '==', '1'],
+				],
+				[
+					'title' => __( 'Toggle CSS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_css_minify_enable',
+					'class' => 'with-preloader',
+					'type'  => 'switcher',
+					'dependency' => ['cloudflare_enable', '==', '1'],
+				],
+				[
+					'title' => __( 'Toggle HTML Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_html_minify_enable',
+					'class' => 'with-preloader',
+					'type'  => 'switcher',
+					'dependency' => ['cloudflare_enable', '==', '1'],
+				],
+				[
+					'title' => __( 'Toggle JS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_js_minify_enable',
+					'class' => 'with-preloader',
+					'type'  => 'switcher',
+					'dependency' => ['cloudflare_enable', '==', '1'],
+				],
+				[
+					'title' => __( 'Browser Cache TTL', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_browser_cache_ttl',
+					'class' => 'with-preloader',
+					'type'  => 'select',
+					'options' => [
+						0 => __( 'Respect Existing Headers', 'speed-booster-pack' ),
+						1800 => __( '30 minutes', 'speed-booster-pack' ),
+						3600 => __( '1 hour', 'speed-booster-pack' ),
+						7200 => __( '2 hours', 'speed-booster-pack' ),
+						10800 => __( '3 hours', 'speed-booster-pack' ),
+						14400 => __( '4 hours', 'speed-booster-pack' ),
+						18000 => __( '5 hours', 'speed-booster-pack' ),
+						28800 => __( '8 hours', 'speed-booster-pack' ),
+						43200 => __( '12 hours', 'speed-booster-pack' ),
+						57600 => __( '16 hours', 'speed-booster-pack' ),
+						72000 => __( '20 hours', 'speed-booster-pack' ),
+						86400 => __( '1 day', 'speed-booster-pack' ),
+						172800 => __( '2 days', 'speed-booster-pack' ),
+						259200 => __( '3 days', 'speed-booster-pack' ),
+						345600 => __( '4 days', 'speed-booster-pack' ),
+						432000 => __( '5 days', 'speed-booster-pack' ),
+						691200 => __( '8 days', 'speed-booster-pack' ),
+						1382400 => __( '16 days', 'speed-booster-pack' ),
+						2073600 => __( '24 days', 'speed-booster-pack' ),
+						2678400 => __( '1 month', 'speed-booster-pack' ),
+						5356800 => __( '2 months', 'speed-booster-pack' ),
+						16070400 => __( '6 months', 'speed-booster-pack' ),
+						31536000 => __( '1 year', 'speed-booster-pack' ),
+					],
+					'dependency' => ['cloudflare_enable', '==', '1'],
 				],
 				[
 					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
@@ -1026,8 +1091,16 @@ class Speed_Booster_Pack_Admin {
 					'type'  => 'text',
 					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
 				],
+				[
+					'type'    => 'content',
+					'content' => '
+				    <a href="#" class="button button-small sbp-cloudflare-test">Test Your Cloudflare Connection</a>
+				    <span class="sbp-cloudflare-incorrect" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> Your Cloudflare credentials are incorrect.</span>
+				    <span class="sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> Your Cloudflare credentials are correct.</span>
+				  ',
+				],
 			];
-			$cloudflare_transient    = get_transient( 'sbp_cloudflare_status' );
+			$cloudflare_transient = get_transient( 'sbp_cloudflare_status' );
 
 			if ( '0' === $cloudflare_transient ) {
 				array_splice( $cloudflare_fields,
@@ -1084,15 +1157,15 @@ class Speed_Booster_Pack_Admin {
 				],
 				[
 					'title' => __( 'Included Directories', 'speed-booster-pack' ),
-					'id' => 'cdn_includes',
-					'type' => 'code_editor',
-					'desc' => __( 'Write included directory names', 'speed-booster-pack' ), // BEYNTODO: Change text
+					'id'    => 'cdn_includes',
+					'type'  => 'code_editor',
+					'desc'  => __( 'Write included directory names', 'speed-booster-pack' ), // BEYNTODO: Change text
 				],
 				[
 					'title' => __( 'Excluded Extensions', 'speed-booster-pack' ),
-					'id' => 'cdn_excludes',
-					'type' => 'code_editor',
-					'desc' => __( 'Excluded file extensions', 'speed-booster-pack' ), // BEYNTODO: Change text
+					'id'    => 'cdn_excludes',
+					'type'  => 'code_editor',
+					'desc'  => __( 'Excluded file extensions', 'speed-booster-pack' ), // BEYNTODO: Change text
 				],
 			],
 				$cloudflare_fields,

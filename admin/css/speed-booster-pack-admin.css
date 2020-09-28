@@ -29,3 +29,54 @@
 #wpadminbar .quicklinks > ul > .sbp-admin-bar-item-with-icon > .ab-item {padding-left: 30px;position: relative;}
 
 #wpadminbar .quicklinks > ul > .sbp-admin-bar-item-with-icon img {position: absolute;top: 6px;left: 5px;}
+
+.sbp-cloudflare-incorrect, .sbp-cloudflare-correct {display: none; margin-left: 15px;}
+
+.with-preloader {position: relative; filter:grayscale(1) blur(0.5px);}
+.with-preloader:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, .1);
+}
+.with-preloader:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -10px;
+    margin-left: -10px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    border: 5px solid grey;
+    border-top-color: black;
+    -webkit-animation: loading 2s linear infinite;
+    animation: loading 2s linear infinite;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loading {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
