@@ -40,7 +40,7 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 		foreach ( $conditions as $condition ) {
 			if ( call_user_func( $condition ) ) {
 				$critical_css_codes = sbp_get_option( 'critical_css_codes' );
-				if ( isset( $critical_css_codes[ $condition ] ) ) {
+				if ( isset( $critical_css_codes[ $condition ] ) && $critical_css_codes[ $condition ] ) {
 					$critical_css_code = $critical_css_codes[ $condition ];
 					break;
 				}
