@@ -1005,71 +1005,71 @@ class Speed_Booster_Pack_Admin {
 					'type'  => 'switcher',
 				],
 				[
-					'title' => __( 'Toggle Rocket Loader', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'    => 'cf_rocket_loader_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1'],
+					'title'      => __( 'Toggle Rocket Loader', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'         => 'cf_rocket_loader_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1' ],
 				],
 				[
-					'title' => __( 'Toggle Development Mode', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'    => 'cf_dev_mode_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1'],
+					'title'      => __( 'Toggle Development Mode', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'         => 'cf_dev_mode_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1' ],
 				],
 				[
-					'title' => __( 'Toggle CSS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'    => 'cf_css_minify_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1'],
+					'title'      => __( 'Toggle CSS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'         => 'cf_css_minify_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1' ],
 				],
 				[
-					'title' => __( 'Toggle HTML Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'    => 'cf_html_minify_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1'],
+					'title'      => __( 'Toggle HTML Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'         => 'cf_html_minify_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1' ],
 				],
 				[
-					'title' => __( 'Toggle JS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'    => 'cf_js_minify_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1'],
+					'title'      => __( 'Toggle JS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'         => 'cf_js_minify_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1' ],
 				],
 				[
-					'title' => __( 'Browser Cache TTL', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'    => 'cf_browser_cache_ttl',
-					'class' => 'with-preloader',
-					'type'  => 'select',
-					'options' => [
-						0 => __( 'Respect Existing Headers', 'speed-booster-pack' ),
-						1800 => __( '30 minutes', 'speed-booster-pack' ),
-						3600 => __( '1 hour', 'speed-booster-pack' ),
-						7200 => __( '2 hours', 'speed-booster-pack' ),
-						10800 => __( '3 hours', 'speed-booster-pack' ),
-						14400 => __( '4 hours', 'speed-booster-pack' ),
-						18000 => __( '5 hours', 'speed-booster-pack' ),
-						28800 => __( '8 hours', 'speed-booster-pack' ),
-						43200 => __( '12 hours', 'speed-booster-pack' ),
-						57600 => __( '16 hours', 'speed-booster-pack' ),
-						72000 => __( '20 hours', 'speed-booster-pack' ),
-						86400 => __( '1 day', 'speed-booster-pack' ),
-						172800 => __( '2 days', 'speed-booster-pack' ),
-						259200 => __( '3 days', 'speed-booster-pack' ),
-						345600 => __( '4 days', 'speed-booster-pack' ),
-						432000 => __( '5 days', 'speed-booster-pack' ),
-						691200 => __( '8 days', 'speed-booster-pack' ),
-						1382400 => __( '16 days', 'speed-booster-pack' ),
-						2073600 => __( '24 days', 'speed-booster-pack' ),
-						2678400 => __( '1 month', 'speed-booster-pack' ),
-						5356800 => __( '2 months', 'speed-booster-pack' ),
+					'title'      => __( 'Browser Cache TTL', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'         => 'cf_browser_cache_ttl',
+					'class'      => 'with-preloader',
+					'type'       => 'select',
+					'options'    => [
+						0        => __( 'Respect Existing Headers', 'speed-booster-pack' ),
+						1800     => __( '30 minutes', 'speed-booster-pack' ),
+						3600     => __( '1 hour', 'speed-booster-pack' ),
+						7200     => __( '2 hours', 'speed-booster-pack' ),
+						10800    => __( '3 hours', 'speed-booster-pack' ),
+						14400    => __( '4 hours', 'speed-booster-pack' ),
+						18000    => __( '5 hours', 'speed-booster-pack' ),
+						28800    => __( '8 hours', 'speed-booster-pack' ),
+						43200    => __( '12 hours', 'speed-booster-pack' ),
+						57600    => __( '16 hours', 'speed-booster-pack' ),
+						72000    => __( '20 hours', 'speed-booster-pack' ),
+						86400    => __( '1 day', 'speed-booster-pack' ),
+						172800   => __( '2 days', 'speed-booster-pack' ),
+						259200   => __( '3 days', 'speed-booster-pack' ),
+						345600   => __( '4 days', 'speed-booster-pack' ),
+						432000   => __( '5 days', 'speed-booster-pack' ),
+						691200   => __( '8 days', 'speed-booster-pack' ),
+						1382400  => __( '16 days', 'speed-booster-pack' ),
+						2073600  => __( '24 days', 'speed-booster-pack' ),
+						2678400  => __( '1 month', 'speed-booster-pack' ),
+						5356800  => __( '2 months', 'speed-booster-pack' ),
 						16070400 => __( '6 months', 'speed-booster-pack' ),
 						31536000 => __( '1 year', 'speed-booster-pack' ),
 					],
-					'dependency' => ['cloudflare_enable', '==', '1'],
+					'dependency' => [ 'cloudflare_enable', '==', '1' ],
 				],
 				[
 					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
@@ -1317,8 +1317,8 @@ class Speed_Booster_Pack_Admin {
 				'title' => 'Speed Booster',
 				'href'  => admin_url( 'admin.php?page=sbp-settings' ),
 				'meta'  => [
-					'target'   => '_self',
-					'html'     => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'admin/images/icon.svg") no-repeat 5px center;padding-left:25px;filter: brightness(0.7) sepia(1) hue-rotate(50deg) saturate(1.5);}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
+					'target' => '_self',
+					'html'   => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'admin/images/icon.svg") no-repeat 5px center;padding-left:25px;filter: brightness(0.7) sepia(1) hue-rotate(50deg) saturate(1.5);}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
 				],
 			] );
 
@@ -1406,13 +1406,19 @@ class Speed_Booster_Pack_Admin {
 
 		// Set Localizer Cache Clear Notice
 		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
-			SBP_Notice_Manager::display_notice( 'sbp_notice_tracker_localizer', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>', 'success', true, 'recurrent' );
+			SBP_Notice_Manager::display_notice( 'sbp_notice_tracker_localizer', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>', 'success', true, 'flash' );
 		}
 
 		// Warmup Notice
-		if ( $cached_page_count = get_transient( 'sbp_warmup_complete' ) ) {
+		if ( get_transient( 'sbp_warmup_started' ) ) {
+//			 BEYNTODO: Add translator note
+			SBP_Notice_Manager::display_notice( 'sbp_warmup_started', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup started.', 'speed-booster-pack' ) . '</p>', 'success', true, 'recurrent' );
+		}
+
+		// Warmup Notice
+		if ( get_transient( 'sbp_warmup_complete' ) ) {
 			// BEYNTODO: Add translator note
-			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'Static cache files created for %s pages.', 'speed-booster-pack' ), $cached_page_count ) . '</p>', 'success', true, 'recurrent' );
+			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Static cache files created.', 'speed-booster-pack' ) . '</p>', 'success', true, 'recurrent' );
 		}
 	}
 

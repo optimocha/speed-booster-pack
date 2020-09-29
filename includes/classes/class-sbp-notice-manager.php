@@ -15,13 +15,15 @@ class SBP_Notice_Manager {
 			$dismissed_notices   = self::get_dismissed_notices();
 			$dismissed_notices[] = $id;
 			update_user_meta( get_current_user_id(), 'sbp_dismissed_notices', $dismissed_notices );
+			wp_die();
 		}
 	}
 
 	public function remove_notice_transient() {
-		if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_remove_notice_transient' ) { // Remove notice transient for one time processes like "cache cleared"
+		if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_remove_notice_transient' && current_user_can( 'manage_options' ) ) { // Remove notice transient for one time processes like "cache cleared"
 			$id = $_GET['notice_id'];
 			delete_transient( $id );
+			wp_die();
 		}
 	}
 
@@ -35,7 +37,7 @@ class SBP_Notice_Manager {
 	 * If notice is like "Cache cleared" etc. set recurrent to true. If recurrent is true, notice manager will check transient.
 	 */
 	public static function display_notice( $id, $text, $type = 'success', $is_dismissible = true, $notice_type = 'one_time' ) {
-		$action = $notice_type == 'one_time' ? 'sbp_remove_notice_transient' : 'sbp_dismiss_notice';
+		$action = $notice_type == 'recurrent' ? 'sbp_remove_notice_transient' : 'sbp_dismiss_notice';
 		if ( self::should_display( $id ) || ( $notice_type == 'recurrent' && get_transient( $id ) ) || ( $notice_type == 'flash' && ! get_transient( $id ) ) ) {
 			add_action( 'admin_notices',
 				function () use ( $type, $is_dismissible, $id, $text, $action ) {
