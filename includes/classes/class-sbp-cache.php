@@ -126,7 +126,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * Clears all cache files and regenerates settings.json file
 	 */
 	public static function clear_total_cache() {
-		do_action('sbp_before_cache_clear');
+		do_action( 'sbp_before_cache_clear' );
 		sbp_delete_dir_recursively( SBP_CACHE_DIR );
 		self::create_settings_json();
 		if ( sbp_get_option( 'caching_warmup_after_clear' ) && sbp_get_option( 'module_caching' ) ) {
@@ -134,7 +134,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$warmup->start_process();
 			unset( $warmup );
 		}
-		do_action('sbp_after_cache_clear');
+		do_action( 'sbp_after_cache_clear' );
 	}
 
 	/**
@@ -320,7 +320,10 @@ class SBP_Cache extends SBP_Abstract_Module {
 					SBP_Cache::set_wp_cache_constant( false );
 					if ( file_exists( $advanced_cache_path ) ) {
 						if ( ! unlink( $advanced_cache_path ) ) {
-							return wp_send_json_error( [ 'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ), 'errors' => [] ] );
+							return wp_send_json_error( [
+								'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ),
+								'errors' => []
+							] );
 						}
 					}
 				}
@@ -354,7 +357,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	public function clear_homepage_cache() {
-		do_action('sbp_before_homepage_cache_clear');
+		do_action( 'sbp_before_homepage_cache_clear' );
 
 		global $wp_filesystem;
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
@@ -371,11 +374,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 		if ( $wp_filesystem->exists( $mobile_home_cache ) ) {
 			@unlink( $mobile_home_cache );
 		}
-		do_action('sbp_after_homepage_cache_clear');
+		do_action( 'sbp_after_homepage_cache_clear' );
 	}
 
 	public function clear_post_by_id( $post_id ) {
-		do_action('sbp_before_post_cache_clear');
+		do_action( 'sbp_before_post_cache_clear' );
 
 		global $wp_filesystem;
 		require_once( ABSPATH . '/wp-admin/includes/file.php' );
@@ -393,7 +396,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			@unlink( $mobile_home_cache );
 		}
 
-		do_action('sbp_after_post_cache_clear');
+		do_action( 'sbp_after_post_cache_clear' );
 	}
 
 	public static function generate_htaccess( $saved_data = [] ) {
