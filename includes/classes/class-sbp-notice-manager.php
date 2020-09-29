@@ -30,17 +30,21 @@ class SBP_Notice_Manager {
 	 * @param $text
 	 * @param string $type
 	 * @param bool $is_dismissible
-	 * @param false $recurrent
+	 * @param string $notice_type one_time|recurrent|flash
 	 *
 	 * If notice is like "Cache cleared" etc. set recurrent to true. If recurrent is true, notice manager will check transient.
 	 */
-	public static function display_notice( $id, $text, $type = 'success', $is_dismissible = true, $recurrent = false ) {
-		$action = $recurrent ? 'sbp_remove_notice_transient' : 'sbp_dismiss_notice';
-		if ( self::should_display( $id ) || ( $recurrent == true && get_transient( $id ) ) ) {
+	public static function display_notice( $id, $text, $type = 'success', $is_dismissible = true, $notice_type = 'one_time' ) {
+		$action = $notice_type == 'one_time' ? 'sbp_remove_notice_transient' : 'sbp_dismiss_notice';
+		if ( self::should_display( $id ) || ( $notice_type == 'recurrent' && get_transient( $id ) ) || ( $notice_type == 'flash' && ! get_transient( $id ) ) ) {
 			add_action( 'admin_notices',
 				function () use ( $type, $is_dismissible, $id, $text, $action ) {
 					echo '<div class="notice sbp-notice notice-' . $type . ' ' . ( $is_dismissible ? 'is-dismissible' : null ) . '"data-notice-action="' . $action . '" data-notice-id="' . $id . '">' . $text . '</div>';
 				} );
+
+			if ( $notice_type == 'flash' ) {
+				delete_transient( $id );
+			}
 		}
 	}
 

@@ -1389,30 +1389,30 @@ class Speed_Booster_Pack_Admin {
 		if ( $transient_value = get_transient( 'sbp_clear_sucuri_cache' ) ) {
 			$notice_message = $transient_value == '1' ? 'Sucuri cache cleared.' : 'Error occured while clearing Sucuri cache. ' . get_transient( 'sbp_sucuri_error' );
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
-			SBP_Notice_Manager::display_notice( 'sbp_clear_sucuri_cache', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, true );
+			SBP_Notice_Manager::display_notice( 'sbp_clear_sucuri_cache', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, 'recurrent' );
 		}
 
 		// Set Cloudflare Notice
 		if ( $transient_value = get_transient( 'sbp_notice_cloudflare' ) ) {
 			$notice_message = $transient_value == '1' ? 'Cloudflare cache cleared.' : 'Error occured while clearing Cloudflare cache.';
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
-			SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, true );
+			SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, 'recurrent' );
 		}
 
 		// Set Cache Clear Notice
 		if ( get_transient( 'sbp_notice_cache' ) ) {
-			SBP_Notice_Manager::display_notice( 'sbp_notice_cache', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>', 'success', true, true );
+			SBP_Notice_Manager::display_notice( 'sbp_notice_cache', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>', 'success', true, 'flash' );
 		}
 
 		// Set Localizer Cache Clear Notice
 		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
-			SBP_Notice_Manager::display_notice( 'sbp_notice_tracker_localizer', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>', 'success', true, true );
+			SBP_Notice_Manager::display_notice( 'sbp_notice_tracker_localizer', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>', 'success', true, 'recurrent' );
 		}
 
 		// Warmup Notice
 		if ( $cached_page_count = get_transient( 'sbp_warmup_complete' ) ) {
 			// BEYNTODO: Add translator note
-			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'Static cache files created for %s pages.', 'speed-booster-pack' ), $cached_page_count ) . '</p>', 'success', true, true );
+			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'Static cache files created for %s pages.', 'speed-booster-pack' ), $cached_page_count ) . '</p>', 'success', true, 'recurrent' );
 		}
 	}
 
