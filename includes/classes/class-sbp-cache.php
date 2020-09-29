@@ -16,6 +16,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private $file_name = 'index.html';
 
 	public function __construct() {
+		// LAHMACUNTODO: Add hosting company check to here.
 		if ( ! sbp_get_option( 'module_caching' ) || isset( $_SERVER['KINSTA_CACHE_ZONE'] ) || ( defined( 'IS_PRESSABLE' ) && IS_PRESSABLE ) ) {
 			return;
 		}
@@ -133,6 +134,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$warmup->start_process();
 			unset( $warmup );
 		}
+		do_action('sbp_after_cache_clear');
 	}
 
 	/**
@@ -369,6 +371,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 		if ( $wp_filesystem->exists( $mobile_home_cache ) ) {
 			@unlink( $mobile_home_cache );
 		}
+		do_action('sbp_after_homepage_cache_clear');
 	}
 
 	public function clear_post_by_id( $post_id ) {
@@ -389,6 +392,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 		if ( $wp_filesystem->exists( $mobile_home_cache ) ) {
 			@unlink( $mobile_home_cache );
 		}
+
+		do_action('sbp_after_post_cache_clear');
 	}
 
 	public static function generate_htaccess( $saved_data = [] ) {
