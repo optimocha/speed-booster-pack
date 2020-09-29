@@ -1313,7 +1313,7 @@ class Speed_Booster_Pack_Admin {
 		$admin_bar->add_menu( [
 			'id'    => 'speed_booster_pack',
 			'title' => 'Speed Booster',
-			'href'  => admin_url( '?page=sbp-settings' ),
+			'href'  => admin_url( 'admin.php?page=sbp-settings' ),
 			'meta'  => [
 				'target'   => '_self',
 				'title'    => __( 'Hello', 'some-textdomain' ),
