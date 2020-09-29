@@ -1310,21 +1310,19 @@ class Speed_Booster_Pack_Admin {
 
 	public function add_admin_bar_links( WP_Admin_Bar $admin_bar ) {
 
-		$admin_bar->add_menu( [
-			'id'    => 'speed_booster_pack',
-			'title' => 'Speed Booster',
-			'href'  => admin_url( 'admin.php?page=sbp-settings' ),
-			'meta'  => [
-				'target'   => '_self',
-				'title'    => __( 'Hello', 'some-textdomain' ),
-				'html'     => '<img src="' . SBP_URL . 'admin/images/icon.svg" style="width: 20px; height: 20px;" />',
-				'class'    => 'wpse--item sbp-admin-bar-item-with-icon',
-				'tabindex' => PHP_INT_MAX,
-			],
-		] );
-
 		if ( current_user_can( 'manage_options' ) ) {
-			if ( sbp_get_option( 'module_caching' ) && null === sbp_is_restricted_hosting() ) {
+
+			$admin_bar->add_menu( [
+				'id'    => 'speed_booster_pack',
+				'title' => 'Speed Booster',
+				'href'  => admin_url( 'admin.php?page=sbp-settings' ),
+				'meta'  => [
+					'target'   => '_self',
+					'html'     => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'admin/images/icon.svg") no-repeat 5px center;padding-left:25px;filter: brightness(0.7) sepia(1) hue-rotate(50deg) saturate(1.5);}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
+				],
+			] );
+
+			if ( sbp_get_option( 'module_caching' ) && false === sbp_is_restricted_hosting() ) {
 				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
 				$sbp_admin_menu  = [
 					'id'     => 'sbp_clear_cache',
@@ -1372,7 +1370,7 @@ class Speed_Booster_Pack_Admin {
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
 
-			if ( sbp_get_option( 'module_caching' ) && null === sbp_is_restricted_hosting() ) {
+			if ( sbp_get_option( 'module_caching' ) && false === sbp_is_restricted_hosting() ) {
 				$warmup_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
 				$sbp_admin_menu   = [
 					'id'     => 'sbp_warmup_cache',
