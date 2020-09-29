@@ -26,9 +26,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 
 	function add_lazy_load_script() {
 		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.1.0' );
-		wp_add_inline_script( 'sbp-lazy-load',
-			'
-				window.lazyLoadOptions = {
+		$lazy_loader_script = 'window.lazyLoadOptions = {
 					elements_selector: "[loading=lazy]",
                     use_native: true
 				};
@@ -64,8 +62,9 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 						}
 					},  
 					false
-				);
-                ' );
+				);';
+		$lazy_loader_script = apply_filters('sbp_lazyload_script', $lazy_loader_script);
+		wp_add_inline_script( 'sbp-lazy-load', $lazy_loader_script );
 	}
 
 	function lazy_load_handler( $html ) {
