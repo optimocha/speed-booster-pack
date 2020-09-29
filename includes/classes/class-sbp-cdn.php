@@ -8,12 +8,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class SBP_CDN extends SBP_Abstract_Module {
-	/**
-	 * included_directories, excluded_extensions property olacak.
-	 * html'i islemek icin bir fonksiyon (buffer'a)
-	 * her eylem icin ayri bir metod yaz (ara, haric tut...)
-	 * cdn url icin bir property olustur
-	 */
 
 	private $included_dirs = [];
 	private $excluded_extensions = [
