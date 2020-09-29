@@ -10,8 +10,8 @@ class SBP_Notice_Manager {
 	}
 
 	public function dismiss_notice() {
-		if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_dismiss_notice' ) { // Dismiss notice for ever
-			$id = $_GET['notice_id'];
+		if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_dismiss_notice' && current_user_can( 'manage_options' ) ) { // Dismiss notice for ever
+			$id                  = $_GET['notice_id'];
 			$dismissed_notices   = self::get_dismissed_notices();
 			$dismissed_notices[] = $id;
 			update_user_meta( get_current_user_id(), 'sbp_dismissed_notices', $dismissed_notices );
