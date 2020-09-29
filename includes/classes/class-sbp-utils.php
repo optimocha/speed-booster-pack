@@ -36,8 +36,15 @@ class SBP_Utils extends SBP_Abstract_Module {
 	 * Check if a plugin is active or not.
 	 * @since 3.8.3
 	 */
-	public static function is_plugin_active( $path ) {
-		return in_array( $path, get_option( 'active_plugins' ) );
+	public static function is_plugin_active( $plugin ) {
+		$is_plugin_active_for_network = false;
+
+		$plugins = get_site_option( 'active_sitewide_plugins' );
+		if ( isset( $plugins[ $plugin ] ) ) {
+			$is_plugin_active_for_network = true;
+		}
+
+		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || $is_plugin_active_for_network;
 	}
 
 }
