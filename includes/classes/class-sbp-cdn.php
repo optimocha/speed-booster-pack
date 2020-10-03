@@ -45,7 +45,7 @@ class SBP_CDN extends SBP_Abstract_Module {
 			$new_url = $this->replace_url( $url );
 
 			// Replace URL With CDN URL
-			$html = str_replace( $url, $new_url, $html );
+			$html = sbp_str_replace_first( $url, $new_url, $html );
 		}
 
 		return $html;
@@ -90,7 +90,26 @@ class SBP_CDN extends SBP_Abstract_Module {
 
 	private function replace_url( $url ) {
 		$cdn_url = '//' . sbp_get_option( 'cdn_url' );
-		return str_replace( $this->site_url, $cdn_url, $url );
+
+		if ( preg_match( '/^(http|https):\/\//', $url ) ) {
+			return str_replace( $this->site_url, $cdn_url, $url );
+		}
+
+		// Check if relative path
+		// We'll need this in the future
+//		if ( substr( $url, 0, 2 ) == '//' ) {
+//			// Remove http/s from site url
+//			$site_url = preg_replace( '#^(http|https)://#', '', $this->site_url );
+//			return $site_url . 'cukubikbik';
+//
+//			return str_replace( $site_url, $cdn_url, $url );
+//		}
+
+		if ( substr( $url, 0, 1 ) === '/' ) {
+			return $cdn_url . $url;
+		}
+
+		return $url;
 	}
 
 	private function is_excluded( $url ) {

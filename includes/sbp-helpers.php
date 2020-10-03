@@ -72,3 +72,9 @@ if ( ! function_exists( 'sbp_is_restricted_hosting' ) ) {
 		return false;
 	}
 }
+
+function sbp_str_replace_first( $from, $to, $content ) {
+	$from = '/' . preg_quote( $from, '/' ) . '/';
+
+	return preg_replace( $from, $to, $content, 1 );
+}
