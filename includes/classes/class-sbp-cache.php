@@ -16,8 +16,9 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private $file_name = 'index.html';
 
 	public function __construct() {
-		// LAHMACUNTODO: Add hosting company check to here.
-		if ( ! sbp_get_option( 'module_caching' ) || isset( $_SERVER['KINSTA_CACHE_ZONE'] ) || ( defined( 'IS_PRESSABLE' ) && IS_PRESSABLE ) ) {
+		$hosting_restriction = sbp_get_disabled_features();
+
+		if ( ! sbp_get_option( 'module_caching' ) || ( $hosting_restriction['name'] !== null && in_array( 'caching', $hosting_restriction['disabled_features'] ) ) ) {
 			return;
 		}
 

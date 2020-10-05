@@ -44,32 +44,57 @@ if ( ! function_exists( 'sbp_delete_dir_recursively' ) ) {
 }
 
 if ( ! function_exists( 'sbp_is_restricted_hosting' ) ) {
-	function sbp_is_restricted_hosting() {
+	function sbp_get_disabled_features() {
 		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) && $_SERVER['KINSTA_CACHE_ZONE'] ) {
 			return 'Kinsta';
 		}
 
 		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) { // LAHMACUNTODO: Check here
-			return 'WP Engine';
+			return [ 'name' => 'WP Engine', 'disable_features' => [] ];
 		}
 
 		$hosting_provider_constants = [
-			'GD_SYSTEM_PLUGIN_DIR' => 'GoDaddy',
-			'MM_BASE_DIR'          => 'Bluehost',
-			'PAGELYBIN'            => 'Pagely',
-			'KINSTAMU_VERSION'     => 'Kinsta',
-			'FLYWHEEL_CONFIG_DIR'  => 'Flywheel',
-			'IS_PRESSABLE'         => 'Pressable',
-			'VIP_GO_ENV'           => 'WordPress VIP',
+			'GD_SYSTEM_PLUGIN_DIR' => [
+				'name'              => 'GoDaddy',
+				'disabled_features' => []
+			],
+			'MM_BASE_DIR'          => [
+				'name'              => 'Bluehost',
+				'disabled_features' => []
+			],
+			'PAGELYBIN'            => [
+				'name'              => 'Pagely',
+				'disabled_features' => []
+			],
+			'KINSTAMU_VERSION'     => [
+				'name'              => 'Kinsta',
+				'disabled_features' => []
+			],
+			'FLYWHEEL_CONFIG_DIR'  => [
+				'name'              => 'Flywheel',
+				'disabled_features' => []
+			],
+			'IS_PRESSABLE'         => [
+				'name'              => 'Pressable',
+				'disabled_features' => []
+			],
+			'VIP_GO_ENV'           => [
+				'name'              => 'WordPress VIP',
+				'disabled_features' => [],
+			],
+			'KINSTA_CACHE_ZONE'    => [
+				'name'              => 'Kinsta',
+				'disabled_features' => [ 'caching' ],
+			],
 		];
 
-		foreach ( $hosting_provider_constants as $constant => $company_name ) {
+		foreach ( $hosting_provider_constants as $constant => $company_info ) {
 			if ( defined( $constant ) && constant( $constant ) ) {
-				return $company_name;
+				return $company_info;
 			}
 		}
 
-		return false;
+		return [ 'name' => null, 'disabled_features' => [] ]; // Return this structure to avoid undefined index errors.
 	}
 }
 

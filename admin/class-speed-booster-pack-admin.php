@@ -135,6 +135,8 @@ class Speed_Booster_Pack_Admin {
 	 */
 	private $version;
 
+	private $hosting_restriction = null;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -212,6 +214,8 @@ class Speed_Booster_Pack_Admin {
 
 			// Set a unique slug-like ID
 			$prefix = 'sbp_options';
+
+			$this->hosting_restriction = sbp_get_disabled_features();
 
 			// Create options
 			CSF::createOptions( $prefix,
@@ -430,26 +434,13 @@ class Speed_Booster_Pack_Admin {
 				],
 			];
 
-			$restricted_hosting_name = sbp_is_restricted_hosting();
-
-			if ( $restricted_hosting_name === false && is_multisite() ) {
-				$multisite_warning = [
-					'type'    => 'submessage',
-					'style'   => 'warning',
-					/* translators: %s = hyperlink to the contact form */
-					'content' => sprintf( __( 'Caching in Speed Booster Pack isn\'t tested with WordPress Multisite, proceed with caution! We\'d appreciate getting feedback from you if you find any bugs over at %s.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/contact/?sbp_version=' . SBP_VERSION . '" rel="external noopener" target="_blank">speedboosterpack.com</a>' ),
-				];
-
-				array_unshift( $cache_fields, $multisite_warning );
-			}
-
-			if ( $restricted_hosting_name !== false ) {
+			if ( in_array( 'caching', $this->hosting_restriction['disabled_features'] ) ) {
 				$restricted_hosting_notice = [
 					[
 						'type'    => 'submessage',
 						'style'   => 'success',
 						'class'   => 'hosting-warning',
-						'content' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), $restricted_hosting_name, $restricted_hosting_name ),
+						'content' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), $this->hosting_restriction['name'], $this->hosting_restriction['name'] ),
 					],
 				];
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
@@ -461,7 +452,7 @@ class Speed_Booster_Pack_Admin {
 					'title'  => __( 'Caching', 'speed-booster-pack' ),
 					'id'     => 'caching',
 					'icon'   => 'fa fa-server',
-					'class'  => $restricted_hosting_name ? 'inactive-section' : '',
+					'class'  => in_array( 'caching', $this->hosting_restriction['disabled_features'] ) ? 'inactive-section' : '',
 					'fields' => $cache_fields,
 				]
 			);
@@ -1322,13 +1313,25 @@ class Speed_Booster_Pack_Admin {
 				],
 			] );
 
-			if ( sbp_get_option( 'module_caching' ) && false === sbp_is_restricted_hosting() ) {
+			if ( sbp_get_option( 'module_caching' ) && ! in_array( 'caching', $this->hosting_restriction['disabled_features'] ) ) {
+				// Cache clear
 				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
 				$sbp_admin_menu  = [
 					'id'     => 'sbp_clear_cache',
 					'parent' => 'speed_booster_pack',
 					'title'  => __( 'Clear Cache', 'speed-booster-pack' ),
 					'href'   => $clear_cache_url,
+				];
+
+				$admin_bar->add_node( $sbp_admin_menu );
+
+				// Cache warmup
+				$warmup_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
+				$sbp_admin_menu   = [
+					'id'     => 'sbp_warmup_cache',
+					'parent' => 'speed_booster_pack',
+					'title'  => __( 'Warmup Cache', 'speed-booster-pack' ),
+					'href'   => $warmup_cache_url,
 				];
 
 				$admin_bar->add_node( $sbp_admin_menu );
@@ -1365,18 +1368,6 @@ class Speed_Booster_Pack_Admin {
 					'parent' => 'speed_booster_pack',
 					'title'  => __( 'Clear Sucuri Cache', 'speed-booster-pack' ),
 					'href'   => $clear_sucuri_cache_url,
-				];
-
-				$admin_bar->add_node( $sbp_admin_menu );
-			}
-
-			if ( sbp_get_option( 'module_caching' ) && false === sbp_is_restricted_hosting() ) {
-				$warmup_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_warmup_cache' ), 'sbp_warmup_cache', 'sbp_nonce' );
-				$sbp_admin_menu   = [
-					'id'     => 'sbp_warmup_cache',
-					'parent' => 'speed_booster_pack',
-					'title'  => __( 'Warmup Cache', 'speed-booster-pack' ),
-					'href'   => $warmup_cache_url,
 				];
 
 				$admin_bar->add_node( $sbp_admin_menu );
