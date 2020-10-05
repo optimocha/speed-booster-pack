@@ -716,19 +716,19 @@ class Speed_Booster_Pack_Admin {
 							'title' => 'Critical CSS',
 						],
 						[
-							'id'      => 'enable_critical_css',
+							'id'      => 'enable_criticalcss',
 							'title'   => __( 'Enable Critical CSS', 'speed-booster-pack' ),
 							'type'    => 'switcher',
 							'default' => false,
 						],
 						[
-							'id'       => 'critical_css_default',
+							'id'       => 'criticalcss_default',
 							'type'     => 'code_editor',
 							'before'   => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
 						[
-							'id'         => 'critical_css_codes',
+							'id'         => 'criticalcss_codes',
 							'type'       => 'accordion',
 							'title'      => '',
 							'sanitize'   => 'sbp_sanitize_strip_tags',
@@ -808,7 +808,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'title'   => __( 'Remove Critical CSS After Load', 'speed-booster-pack' ),
 							// BEYNTODO: Change Text
-							'id'      => 'remove_critical_css',
+							'id'      => 'remove_criticalcss',
 							'desc'    => __( 'Remove critical CSS after all css files loaded.', 'speed-booster-pack' ),
 							// BEYNTODO: Change Text
 							'type'    => 'switcher',

@@ -11,21 +11,21 @@ use simplehtmldom\HtmlDocument;
 
 class SBP_Critical_CSS extends SBP_Abstract_Module {
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'enable_critical_css' ) ) {
+		if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'enable_criticalcss' ) ) {
 			return;
 		}
 
-		add_filter( 'sbp_output_buffer', [ $this, 'handle_critical_css' ] );
+		add_filter( 'sbp_output_buffer', [ $this, 'handle_criticalcss' ] );
 	}
 
-	public function handle_critical_css( $html ) {
+	public function handle_criticalcss( $html ) {
 		if ( is_embed() ) {
 			return $html;
 		}
 
 
 		// Find Default Critical CSS Code if exists
-		$critical_css_code = sbp_get_option( 'critical_css_default' );
+		$criticalcss_code = sbp_get_option( 'criticalcss_default' );
 
 		$conditions = [
 			'is_front_page',
@@ -39,21 +39,21 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 
 		foreach ( $conditions as $condition ) {
 			if ( call_user_func( $condition ) ) {
-				$critical_css_codes = sbp_get_option( 'critical_css_codes' );
-				if ( isset( $critical_css_codes[ $condition ] ) && $critical_css_codes[ $condition ] ) {
-					$critical_css_code = $critical_css_codes[ $condition ];
+				$criticalcss_codes = sbp_get_option( 'criticalcss_codes' );
+				if ( isset( $criticalcss_codes[ $condition ] ) && $criticalcss_codes[ $condition ] ) {
+					$criticalcss_code = $criticalcss_codes[ $condition ];
 					break;
 				}
 			}
 		}
 
-		$critical_css_code = wp_strip_all_tags( trim( $critical_css_code ) );
-		if ( empty( $critical_css_code ) ) {
+		$criticalcss_code = wp_strip_all_tags( trim( $criticalcss_code ) );
+		if ( empty( $criticalcss_code ) ) {
 			return $html;
 		}
 
-		$html = str_replace( '</title>', '</title>' . PHP_EOL . '<style id="sbp-critical-css">' . wp_strip_all_tags( $critical_css_code ) . '</style>', $html );
-		if ( sbp_get_option( 'remove_critical_css' ) ) {
+		$html = str_replace( '</title>', '</title>' . PHP_EOL . '<style id="sbp-critical-css">' . wp_strip_all_tags( $criticalcss_code ) . '</style>', $html );
+		if ( sbp_get_option( 'remove_criticalcss' ) ) {
 			$html = str_replace( '</body>', '<script>window.addEventListener("load", function(event) {document.getElementById("sbp-critical-css").media="none";})</script>' . PHP_EOL . '</body>', $html );
 		}
 
