@@ -459,117 +459,132 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: Caching */
 
 			/* BEGIN Section: Assets */
+			$asset_fields = [
+				[
+					/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
+					'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
+					'id'      => 'module_assets',
+					'type'    => 'switcher',
+					'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+					'default' => true,
+				],
+				[
+					'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
+					'id'         => 'minify_html',
+					'type'       => 'switcher',
+					'desc'       => __( 'Removes all whitespace characters from the HTML output, minimizing the HTML size.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Optimize Google Fonts', 'speed-booster-pack' ),
+					'id'         => 'optimize_gfonts',
+					'type'       => 'switcher',
+					'desc'       => __( 'Combines all Google Fonts URLs into a single URL and optimizes loading of that URL.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				]
+			];
+
+			if ( $this->hosting_restriction['name'] !== null && in_array( 'lazyload', $this->hosting_restriction['disabled_features'] ) ) {
+				$asset_fields = array_merge( $asset_fields, [
+					[
+						'type'    => 'submessage',
+						'style'   => 'success',
+						'class'   => 'hosting-warning',
+						'content' => sprintf( __( 'Since you\'re using %s, lazyload feature is completely disabled to ensure compatibility with internal lazyload system of %s.' ), $this->hosting_restriction['name'], $this->hosting_restriction['name'] ),
+					],
+				] );
+			}
+
+			$asset_fields = array_merge( $asset_fields, [
+				[
+					'title'      => __( 'Lazy load media', 'speed-booster-pack' ),
+					'id'         => 'lazyload',
+					'type'       => 'switcher',
+					'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					'class'      => in_array( 'lazyload', $this->hosting_restriction['disabled_features'] ) ? ' inactive-section' : null,
+				],
+				[
+					'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
+					'id'         => 'lazyload_exclude',
+					'class'      => 'lazyload-exclude' . in_array( 'lazyload', $this->hosting_restriction['disabled_features'] ) ? ' inactive-section' : null,
+					'type'       => 'code_editor',
+					'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_clear_http',
+				],
+				[
+					'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
+					'id'         => 'js_optimize',
+					'desc'       => __( 'Loads JavaScript better, avoiding render blocking issues. Moving all tags to the footer (before the &lt;/body&gt; tag) causes less issues but if you know what you\'re doing, deferring JS tags makes your website work faster. Use the exclusions list to keep certain scripts from breaking your site!', 'speed-booster-pack' ),
+					'type'       => 'button_set',
+					'options'    => [
+						'off'   => __( 'Off', 'speed-booster-pack' ),
+						'defer' => __( 'Defer', 'speed-booster-pack' ),
+						'move'  => __( 'Move to footer', 'speed-booster-pack' ),
+					],
+					'default'    => 'off',
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'JavaScript exclusions', 'speed-booster-pack' ),
+					'id'         => 'js_exclude',
+					'class'      => 'js-exclude',
+					'type'       => 'code_editor',
+					'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
+					'default'    => 'js/jquery/jquery.js',
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Inline all CSS', 'speed-booster-pack' ),
+					'id'         => 'css_inline',
+					'type'       => 'switcher',
+					'desc'       => __( 'Inlines all CSS files into the HTML output. Useful for lightweight designs but might be harmful for websites with over 500KB of total CSS.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Minify all inlined CSS', 'speed-booster-pack' ),
+					'id'         => 'css_minify',
+					'type'       => 'switcher',
+					'desc'       => __( 'Minifies the already inlined CSS.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'CSS exclusions', 'speed-booster-pack' ),
+					'id'         => 'css_exclude',
+					'class'      => 'css-exclude',
+					'type'       => 'code_editor',
+					'desc'       => __( 'If your design breaks after enabling the CSS options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Preload assets', 'speed-booster-pack' ),
+					'id'         => 'preboost',
+					'class'      => 'preboost',
+					'type'       => 'fieldset',
+					'fields'     => [
+						[
+							'id'    => 'preboost_enable',
+							'type'  => 'switcher',
+							'label' => __( 'Enable preloading of the assets specified below.', 'speed-booster-pack' ),
+						],
+						[
+							'id'   => 'preboost_include',
+							'type' => 'code_editor',
+							'desc' => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
+						],
+					],
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				],
+			] );
+
 			CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'Assets', 'speed-booster-pack' ),
 					'id'     => 'assets',
 					'icon'   => 'fa fa-code',
-					'fields' => [
-
-						[
-							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
-							'id'      => 'module_assets',
-							'type'    => 'switcher',
-							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default' => true,
-						],
-						[
-							'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
-							'id'         => 'minify_html',
-							'type'       => 'switcher',
-							'desc'       => __( 'Removes all whitespace characters from the HTML output, minimizing the HTML size.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Optimize Google Fonts', 'speed-booster-pack' ),
-							'id'         => 'optimize_gfonts',
-							'type'       => 'switcher',
-							'desc'       => __( 'Combines all Google Fonts URLs into a single URL and optimizes loading of that URL.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Lazy load media', 'speed-booster-pack' ),
-							'id'         => 'lazyload',
-							'type'       => 'switcher',
-							'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
-							'id'         => 'lazyload_exclude',
-							'class'      => 'lazyload-exclude',
-							'type'       => 'code_editor',
-							'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_clear_http',
-						],
-						[
-							'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
-							'id'         => 'js_optimize',
-							'desc'       => __( 'Loads JavaScript better, avoiding render blocking issues. Moving all tags to the footer (before the &lt;/body&gt; tag) causes less issues but if you know what you\'re doing, deferring JS tags makes your website work faster. Use the exclusions list to keep certain scripts from breaking your site!', 'speed-booster-pack' ),
-							'type'       => 'button_set',
-							'options'    => [
-								'off'   => __( 'Off', 'speed-booster-pack' ),
-								'defer' => __( 'Defer', 'speed-booster-pack' ),
-								'move'  => __( 'Move to footer', 'speed-booster-pack' ),
-							],
-							'default'    => 'off',
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'JavaScript exclusions', 'speed-booster-pack' ),
-							'id'         => 'js_exclude',
-							'class'      => 'js-exclude',
-							'type'       => 'code_editor',
-							'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
-							'default'    => 'js/jquery/jquery.js',
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Inline all CSS', 'speed-booster-pack' ),
-							'id'         => 'css_inline',
-							'type'       => 'switcher',
-							'desc'       => __( 'Inlines all CSS files into the HTML output. Useful for lightweight designs but might be harmful for websites with over 500KB of total CSS.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Minify all inlined CSS', 'speed-booster-pack' ),
-							'id'         => 'css_minify',
-							'type'       => 'switcher',
-							'desc'       => __( 'Minifies the already inlined CSS.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'CSS exclusions', 'speed-booster-pack' ),
-							'id'         => 'css_exclude',
-							'class'      => 'css-exclude',
-							'type'       => 'code_editor',
-							'desc'       => __( 'If your design breaks after enabling the CSS options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Preload assets', 'speed-booster-pack' ),
-							'id'         => 'preboost',
-							'class'      => 'preboost',
-							'type'       => 'fieldset',
-							'fields'     => [
-								[
-									'id'    => 'preboost_enable',
-									'type'  => 'switcher',
-									'label' => __( 'Enable preloading of the assets specified below.', 'speed-booster-pack' ),
-								],
-								[
-									'id'   => 'preboost_include',
-									'type' => 'code_editor',
-									'desc' => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
-								],
-							],
-							'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						],
-
-					],
+					'fields' => $asset_fields,
 				]
 			);
 			/* END Section: Assets */

@@ -12,7 +12,9 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	private $noscripts = [];
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) ) {
+		$hosting_restriction = sbp_get_disabled_features();
+
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) || ( $hosting_restriction['name'] !== null && in_array( 'lazyload', $hosting_restriction['disabled_features'] ) ) ) {
 			return;
 		}
 

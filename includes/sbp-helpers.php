@@ -84,7 +84,7 @@ if ( ! function_exists( 'sbp_is_restricted_hosting' ) ) {
 			],
 			'KINSTA_CACHE_ZONE'    => [
 				'name'              => 'Kinsta',
-				'disabled_features' => [ 'caching' ],
+				'disabled_features' => [],
 			],
 		];
 
