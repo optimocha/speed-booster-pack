@@ -152,7 +152,6 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
-		// TODO: the Cloudflare credentials warning doesn't show up after saving, but after saving + refreshing.
 		add_action( 'csf_loaded', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::reset_transient' );
@@ -507,7 +506,7 @@ class Speed_Booster_Pack_Admin {
 				[
 					'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
 					'id'         => 'lazyload_exclude',
-					'class'      => 'lazyload-exclude' . in_array( 'lazyload', $this->hosting_restriction['disabled_features'] ) ? ' inactive-section' : null,
+					'class'      => 'lazyload-exclude' . ( in_array( 'lazyload', $this->hosting_restriction['disabled_features'] ) ? ' inactive-section' : null ),
 					'type'       => 'code_editor',
 					'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
@@ -1005,52 +1004,65 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
 					'type'  => 'subheading',
 				],
+//				[
+//					'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
+//					'id'    => 'cloudflare_enable',
+//					'type'  => 'switcher',
+//				],
 				[
-					'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
-					'id'    => 'cloudflare_enable',
+					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
+					'id'    => 'cloudflare_api',
+					'type'  => 'text',
+					'desc'  => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
+				],
+				[
+					'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
+					'id'    => 'cloudflare_email',
+					'type'  => 'text',
+					'desc'  => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
+				],
+				[
+					'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
+					'id'    => 'cloudflare_zone',
+					'type'  => 'text',
+					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
+				],
+				[
+					'title' => __( 'Toggle Rocket Loader', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_rocket_loader_enable',
+					'class' => 'with-preloader',
 					'type'  => 'switcher',
 				],
 				[
-					'title'      => __( 'Toggle Rocket Loader', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'         => 'cf_rocket_loader_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1' ],
+					'title' => __( 'Toggle Development Mode', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_dev_mode_enable',
+					'class' => 'with-preloader',
+					'type'  => 'switcher',
 				],
 				[
-					'title'      => __( 'Toggle Development Mode', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'         => 'cf_dev_mode_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1' ],
+					'title' => __( 'Toggle CSS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_css_minify_enable',
+					'class' => 'with-preloader',
+					'type'  => 'switcher',
 				],
 				[
-					'title'      => __( 'Toggle CSS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'         => 'cf_css_minify_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1' ],
+					'title' => __( 'Toggle HTML Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_html_minify_enable',
+					'class' => 'with-preloader',
+					'type'  => 'switcher',
 				],
 				[
-					'title'      => __( 'Toggle HTML Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'         => 'cf_html_minify_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1' ],
+					'title' => __( 'Toggle JS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'    => 'cf_js_minify_enable',
+					'class' => 'with-preloader',
+					'type'  => 'switcher',
 				],
 				[
-					'title'      => __( 'Toggle JS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'         => 'cf_js_minify_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1' ],
-				],
-				[
-					'title'      => __( 'Browser Cache TTL', 'speed-booster-pack' ), // BEYNTODO: Change title
-					'id'         => 'cf_browser_cache_ttl',
-					'class'      => 'with-preloader',
-					'type'       => 'select',
-					'options'    => [
+					'title'   => __( 'Browser Cache TTL', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'id'      => 'cf_browser_cache_ttl',
+					'class'   => 'with-preloader',
+					'type'    => 'select',
+					'options' => [
 						0        => __( 'Respect Existing Headers', 'speed-booster-pack' ),
 						1800     => __( '30 minutes', 'speed-booster-pack' ),
 						3600     => __( '1 hour', 'speed-booster-pack' ),
@@ -1075,32 +1087,16 @@ class Speed_Booster_Pack_Admin {
 						16070400 => __( '6 months', 'speed-booster-pack' ),
 						31536000 => __( '1 year', 'speed-booster-pack' ),
 					],
-					'dependency' => [ 'cloudflare_enable', '==', '1' ],
-				],
-				[
-					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
-					'id'    => 'cloudflare_api',
-					'type'  => 'text',
-					'desc'  => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
-				],
-				[
-					'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
-					'id'    => 'cloudflare_email',
-					'type'  => 'text',
-					'desc'  => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
-				],
-				[
-					'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
-					'id'    => 'cloudflare_zone',
-					'type'  => 'text',
-					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
 				],
 				[
 					'type'    => 'content',
 					'content' => '
-				    <a href="#" class="button button-small sbp-cloudflare-test">Test Your Cloudflare Connection</a>
-				    <span class="sbp-cloudflare-incorrect" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> Your Cloudflare credentials are incorrect.</span>
-				    <span class="sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> Your Cloudflare credentials are correct.</span>
+				    <span>
+				    	<a href="#" class="button button-small sbp-cloudflare-test">Test Your Cloudflare Connection <span class="sbp-cloudflare-spinner"></span></a>
+			        </span>
+				    <span class="sbp-cloudflare-info-text sbp-cloudflare-incorrect" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> ' . __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ) . '</span>
+				    <span class="sbp-cloudflare-info-text sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> ' . __( 'Your Cloudflare credentials are correct.', 'speed-booster-pack' ) . '</span>
+				    <span class="sbp-cloudflare-info-text sbp-cloudflare-warning" style="color:orange; vertical-align: middle;"><i class="fa fa-exclamation-circle"></i> ' . __( 'You should provide your Cloudflare credentials and save settings to see CloudFlare options.', 'speed-booster-pack' ) . '</span>
 				  ',
 				],
 			];
@@ -1364,7 +1360,7 @@ class Speed_Booster_Pack_Admin {
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
 
-			if ( sbp_get_option( 'cloudflare_enable' ) ) {
+			if ( SBP_Cloudflare::is_cloudflare_active() ) {
 				$clear_cloudflare_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cloudflare_cache' ), 'sbp_clear_cloudflare_cache', 'sbp_nonce' );
 				$sbp_admin_menu             = [
 					'id'     => 'sbp_clear_cloudflare_cache',
@@ -1393,14 +1389,14 @@ class Speed_Booster_Pack_Admin {
 	public function set_notices() {
 		// Set Sucuri Notice
 		if ( $transient_value = get_transient( 'sbp_clear_sucuri_cache' ) ) {
-			$notice_message = $transient_value == '1' ? 'Sucuri cache cleared.' : 'Error occured while clearing Sucuri cache. ' . get_transient( 'sbp_sucuri_error' );
+			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ', 'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
 			SBP_Notice_Manager::display_notice( 'sbp_clear_sucuri_cache', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, 'recurrent' );
 		}
 
 		// Set Cloudflare Notice
 		if ( $transient_value = get_transient( 'sbp_notice_cloudflare' ) ) {
-			$notice_message = $transient_value == '1' ? 'Cloudflare cache cleared.' : 'Error occured while clearing Cloudflare cache.';
+			$notice_message = $transient_value == '1' ? __( 'Cloudflare cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Cloudflare cache. Possible reason: Credentials invalid.', 'speed-booster-pack' );
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
 			SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, 'recurrent' );
 		}

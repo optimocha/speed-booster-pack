@@ -20,7 +20,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		add_action( 'wp_ajax_sbp_check_cloudflare', [ $this, 'check_credentials_ajax_handler' ] );
 		add_action( 'wp_ajax_sbp_get_cloudflare_settings', [ $this, 'sbp_get_cloudflare_settings' ] );
 
-		if ( ! sbp_get_option( 'cloudflare_enable' ) ) {
+		if ( ! self::is_cloudflare_active() ) {
 			return;
 		}
 
@@ -28,7 +28,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public static function update_cloudflare_settings() {
-		if ( ! sbp_get_option( 'cloudflare_enable' ) || get_transient( 'sbp_do_not_update_cloudflare' ) ) {
+		if ( get_transient( 'sbp_do_not_update_cloudflare' ) || ! self::is_cloudflare_active() ) {
 			return;
 		}
 
@@ -67,7 +67,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public static function clear_cache() {
-		if ( sbp_get_option( 'cloudflare_enable' ) ) {
+		if ( self::is_cloudflare_active() ) {
 			$result = self::send_request( 'purge_cache', 'POST', [ 'purge_everything' => true ] );
 
 			if ( true === $result['success'] ) {
@@ -189,7 +189,16 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public function sbp_get_cloudflare_settings() {
-		if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_get_cloudflare_settings' && current_user_can('manage_options') ) {
+		if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_get_cloudflare_settings' && current_user_can( 'manage_options' ) ) {
+			// Check if empty
+			if ( ! sbp_get_option( 'cloudflare_email' ) || ! sbp_get_option( 'cloudflare_api' ) || ! sbp_get_option( 'cloudflare_zone' ) ) {
+				echo json_encode( [
+					'status'  => 'empty_info',
+					'message' => __( 'You did not provide any CloudFlare credentials.', 'speed-booster-pack' )
+				] );
+				wp_die();
+			}
+
 			$settings_to_fetch = [
 				'browser_cache_ttl',
 				'development_mode',
@@ -216,5 +225,9 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			}
 			wp_die();
 		}
+	}
+
+	public static function is_cloudflare_active() {
+		return sbp_get_option( 'cloudflare_email' ) && sbp_get_option( 'cloudflare_api' ) && sbp_get_option( 'cloudflare_zone' );
 	}
 }

@@ -28,9 +28,14 @@
      * Although scripts in the WordPress core, Plugins and Themes may be
      * practising this, we should strive to set a better example in our own work.
      */
+    $(window).on('load', function() {
+        $('span .sbp-cloudflare-test').attr('disabled', 'disabled').css('opacity', '0.6');
+    });
 
     $(document).on('click', '.sbp-cloudflare-test', function (e) {
         e.preventDefault();
+        $('.sbp-cloudflare-info-text').hide();
+        $('.sbp-cloudflare-test .sbp-cloudflare-spinner').show();
         $(e.target).attr('disabled', 'disabled').css('opacity', '0.6');
         $('.sbp-cloudflare-incorrect, .sbp-cloudflare-correct').hide();
 
@@ -51,6 +56,7 @@
                 }
             },
             complete: function () {
+                $('.sbp-cloudflare-test .sbp-cloudflare-spinner').hide();
                 $(e.target).removeAttr('disabled').css('opacity', '1');
             }
         });
@@ -142,29 +148,36 @@
                         id_field_matches.map(function (match) {
                             $.changeInputs(match, response);
                         });
+                        $('.with-preloader').show();
                     }
+                } else if (response.status === 'empty_info') {
+                    $('.sbp-cloudflare-warning').show();
                 } else {
-                    alert(response.message);
+                    $('.sbp-cloudflare-incorrect').show();
                     $('.with-preloader::before, .with-preloader::after').remove();
                 }
+            },
+            complete: function() {
+                $('.sbp-cloudflare-test .sbp-cloudflare-spinner').hide();
+                $('.sbp-cloudflare-test').removeAttr('disabled').css('opacity', 1);
             }
         });
     };
 
     let hasCloudflareChecked = false;
 
-    $(document).on('change', '[data-depend-id="cloudflare_enable"]', function () {
-        $.checkCloudflareSettings();
-
-        hasCloudflareChecked = true;
-    });
+    // $(document).on('change', '[data-depend-id="cloudflare_enable"]', function () {
+    //     $.checkCloudflareSettings();
+    //
+    //     hasCloudflareChecked = true;
+    // });
 
     $(window).on('hashchange csf.hashchange', function () {
 
         if (hasCloudflareChecked === false) {
             var hash = window.location.hash.replace('#tab=', '');
 
-            if (hash === 'cdn-proxy' && $('[data-depend-id="cloudflare_enable"]').val() === '1') {
+            if (hash === 'cdn-proxy') {
                 $.checkCloudflareSettings();
 
                 hasCloudflareChecked = true;

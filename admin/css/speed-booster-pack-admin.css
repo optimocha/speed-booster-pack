@@ -25,9 +25,9 @@
 
 .sbp-settings {max-width:75rem;}
 
-.sbp-cloudflare-incorrect, .sbp-cloudflare-correct {display: none; margin-left: 15px;}
+.sbp-cloudflare-info-text {display: none; margin-left: 15px;}
 
-.with-preloader {position: relative; filter:grayscale(1) blur(0.5px);}
+.with-preloader {position: relative; filter:grayscale(1) blur(0.5px); display: none;}
 .with-preloader:before {
     content: "";
     position: absolute;
@@ -43,13 +43,37 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    margin-top: -10px;
+    margin-top: -12.5px;
     margin-left: -10px;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     border-radius: 50px;
     border: 5px solid grey;
     border-top-color: black;
+    -webkit-animation: loading 2s linear infinite;
+    animation: loading 2s linear infinite;
+}
+
+.sbp-cloudflare-test {
+    position: relative;
+}
+
+.sbp-cloudflare-spinner {
+    display: inline-block;
+    width: 15px;
+}
+
+.sbp-cloudflare-spinner:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    margin-top: -4px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50px;
+    border: 3px solid #cbdfe8;
+    border-top-color: #6aacc8;
     -webkit-animation: loading 2s linear infinite;
     animation: loading 2s linear infinite;
 }
