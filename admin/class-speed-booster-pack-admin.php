@@ -158,7 +158,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );
+		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
 

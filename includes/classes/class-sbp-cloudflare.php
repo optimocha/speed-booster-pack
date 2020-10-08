@@ -27,9 +27,30 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		add_action( 'admin_init', [ $this, 'clear_cache_request_handler' ] );
 	}
 
-	public static function update_cloudflare_settings() {
-		// LAHMACUNTODO: Update settings only when they changed.
-		if ( get_transient( 'sbp_do_not_update_cloudflare' ) || ! self::is_cloudflare_active() ) {
+	public static function update_cloudflare_settings( $saved_data ) {
+		// Check if settings are updated or not.
+		$cf_options = [
+			'cloudflare_api',
+			'cloudflare_email',
+			'cloudflare_zone',
+			'cf_rocket_loader_enable',
+			'cf_dev_mode_enable',
+			'cf_css_minify_enable',
+			'cf_html_minify_enable',
+			'cf_js_minify_enable',
+			'cf_browser_cache_ttl',
+		];
+
+		$has_options_changed = false;
+
+		foreach ( $cf_options as $option ) {
+			if ( sbp_get_option( $option ) != $saved_data[ $option ] ) {
+				$has_options_changed = true;
+				break;
+			}
+		}
+
+		if ( get_transient( 'sbp_do_not_update_cloudflare' ) || ! self::is_cloudflare_active() || ! $has_options_changed ) {
 			return;
 		}
 
@@ -37,29 +58,30 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			'items' => [
 				[
 					'id'    => 'rocket_loader',
-					'value' => sbp_get_option( 'cf_rocket_loader_enable' ) ? 'on' : 'off',
+					'value' => $saved_data['cf_rocket_loader_enable'] ? 'on' : 'off',
 				],
 				[
 					'id'    => 'development_mode',
-					'value' => sbp_get_option( 'cf_dev_mode_enable' ) ? 'on' : 'off',
+					'value' => $saved_data['cf_dev_mode_enable'] ? 'on' : 'off',
 				],
 				[
 					'id'    => 'minify',
 					'value' => [
-						'css'  => sbp_get_option( 'cf_css_minify_enable' ) ? 'on' : 'off',
-						'html' => sbp_get_option( 'cf_html_minify_enable' ) ? 'on' : 'off',
-						'js'   => sbp_get_option( 'cf_js_minify_enable' ) ? 'on' : 'off',
+						'css'  => $saved_data['cf_css_minify_enable'] ? 'on' : 'off',
+						'html' => $saved_data['cf_html_minify_enable'] ? 'on' : 'off',
+						'js'   => $saved_data['cf_js_minify_enable'] ? 'on' : 'off',
 					],
 				],
 				[
 					'id'    => 'browser_cache_ttl',
-					'value' => (int) sbp_get_option( 'cf_browser_cache_ttl' ),
+					'value' => (int) $saved_data['cf_browser_cache_ttl'],
 				],
 			]
 		];
 
 		$response = self::send_request( 'settings', 'PATCH', $request_data );
 
+//		die('Settings have been changed');
 		if ( $response['success'] ) {
 			return true;
 		} else {
@@ -229,6 +251,6 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public static function is_cloudflare_active() {
-		return sbp_get_option('cloudflare_enable') && sbp_get_option( 'cloudflare_email' ) && sbp_get_option( 'cloudflare_api' ) && sbp_get_option( 'cloudflare_zone' );
+		return sbp_get_option( 'cloudflare_enable' ) && sbp_get_option( 'cloudflare_email' ) && sbp_get_option( 'cloudflare_api' ) && sbp_get_option( 'cloudflare_zone' );
 	}
 }
