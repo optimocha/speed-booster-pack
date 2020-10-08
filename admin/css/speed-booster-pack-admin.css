@@ -58,6 +58,13 @@
     position: relative;
 }
 
+.sbp-cloudflare-fetching {
+    padding-left: 15px;
+    color: orange;
+    margin-top: 3px;
+    display: inline-block;
+}
+
 .sbp-cloudflare-spinner {
     display: inline-block;
     width: 15px;

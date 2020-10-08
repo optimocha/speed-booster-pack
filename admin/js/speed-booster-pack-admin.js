@@ -161,6 +161,7 @@
             complete: function() {
                 $('.sbp-cloudflare-test .sbp-cloudflare-spinner').hide();
                 $('.sbp-cloudflare-test').removeAttr('disabled').css('opacity', 1);
+                $('.sbp-cloudflare-fetching').remove();
             }
         });
     };

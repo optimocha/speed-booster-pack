@@ -1093,6 +1093,7 @@ class Speed_Booster_Pack_Admin {
 					'content' => '
 				    <span>
 				    	<a href="#" class="button button-small sbp-cloudflare-test">Test Your Cloudflare Connection <span class="sbp-cloudflare-spinner"></span></a>
+				    	<span class="sbp-cloudflare-fetching">' . __( 'Fetching Cloudflare settings...', 'speed-booster-pack' ) . '</span>
 			        </span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-incorrect" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> ' . __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ) . '</span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> ' . __( 'Your Cloudflare credentials are correct.', 'speed-booster-pack' ) . '</span>
