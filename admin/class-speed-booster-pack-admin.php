@@ -135,8 +135,6 @@ class Speed_Booster_Pack_Admin {
 	 */
 	private $version;
 
-	private $hosting_restriction = null;
-
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -213,8 +211,6 @@ class Speed_Booster_Pack_Admin {
 
 			// Set a unique slug-like ID
 			$prefix = 'sbp_options';
-
-			$this->hosting_restriction = sbp_get_disabled_features();
 
 			// Create options
 			CSF::createOptions( $prefix,
@@ -433,13 +429,14 @@ class Speed_Booster_Pack_Admin {
 				],
 			];
 
-			if ( in_array( 'caching', $this->hosting_restriction['disabled_features'] ) ) {
+			$should_disable_caching = sbp_should_disable_feature( 'caching' );
+			if ( $should_disable_caching ) {
 				$restricted_hosting_notice = [
 					[
 						'type'    => 'submessage',
 						'style'   => 'success',
 						'class'   => 'hosting-warning',
-						'content' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), $this->hosting_restriction['name'], $this->hosting_restriction['name'] ),
+						'content' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), $should_disable_caching, $should_disable_caching ),
 					],
 				];
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
@@ -451,7 +448,7 @@ class Speed_Booster_Pack_Admin {
 					'title'  => __( 'Caching', 'speed-booster-pack' ),
 					'id'     => 'caching',
 					'icon'   => 'fa fa-server',
-					'class'  => in_array( 'caching', $this->hosting_restriction['disabled_features'] ) ? 'inactive-section' : '',
+					'class'  => sbp_should_disable_feature( 'caching' ) ? 'inactive-section' : '',
 					'fields' => $cache_fields,
 				]
 			);
@@ -483,13 +480,14 @@ class Speed_Booster_Pack_Admin {
 				]
 			];
 
-			if ( $this->hosting_restriction['name'] !== null && in_array( 'lazyload', $this->hosting_restriction['disabled_features'] ) ) {
+			$should_disable_lazyload = sbp_should_disable_feature( 'lazyload' );
+			if ( $should_disable_lazyload ) {
 				$asset_fields = array_merge( $asset_fields, [
 					[
 						'type'    => 'submessage',
 						'style'   => 'success',
 						'class'   => 'hosting-warning',
-						'content' => sprintf( __( 'Since you\'re using %s, lazyload feature is completely disabled to ensure compatibility with internal lazyload system of %s.' ), $this->hosting_restriction['name'], $this->hosting_restriction['name'] ),
+						'content' => sprintf( __( 'Since you\'re using %s, lazyload feature is completely disabled to ensure compatibility with internal lazyload system of %s.' ), $should_disable_lazyload, $should_disable_lazyload ),
 					],
 				] );
 			}
@@ -501,12 +499,12 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'switcher',
 					'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-					'class'      => in_array( 'lazyload', $this->hosting_restriction['disabled_features'] ) ? ' inactive-section' : null,
+					'class'      => $should_disable_lazyload ? ' inactive-section' : null,
 				],
 				[
 					'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
 					'id'         => 'lazyload_exclude',
-					'class'      => 'lazyload-exclude' . ( in_array( 'lazyload', $this->hosting_restriction['disabled_features'] ) ? ' inactive-section' : null ),
+					'class'      => 'lazyload-exclude' . ( $should_disable_lazyload ? ' inactive-section' : null ),
 					'type'       => 'code_editor',
 					'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
@@ -716,7 +714,7 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							'id'      => 'enable_criticalcss',
-							'title'   => __( 'Enable Critical CSS', 'speed-booster-pack' ),
+							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( ' Critical CSS', 'speed-booster-pack' ),
 							'type'    => 'switcher',
 							'default' => false,
 						],
@@ -1325,7 +1323,7 @@ class Speed_Booster_Pack_Admin {
 				],
 			] );
 
-			if ( sbp_get_option( 'module_caching' ) && ! in_array( 'caching', $this->hosting_restriction['disabled_features'] ) ) {
+			if ( sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' ) ) {
 				// Cache clear
 				$clear_cache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_cache' ), 'sbp_clear_total_cache', 'sbp_nonce' );
 				$sbp_admin_menu  = [

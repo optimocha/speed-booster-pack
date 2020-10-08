@@ -16,9 +16,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private $file_name = 'index.html';
 
 	public function __construct() {
-		$hosting_restriction = sbp_get_disabled_features();
-
-		if ( ! sbp_get_option( 'module_caching' ) || ( $hosting_restriction['name'] !== null && in_array( 'caching', $hosting_restriction['disabled_features'] ) ) ) {
+		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) ) {
 			return;
 		}
 

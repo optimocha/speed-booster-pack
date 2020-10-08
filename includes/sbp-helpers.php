@@ -43,8 +43,8 @@ if ( ! function_exists( 'sbp_delete_dir_recursively' ) ) {
 	}
 }
 
-if ( ! function_exists( 'sbp_is_restricted_hosting' ) ) {
-	function sbp_get_disabled_features() {
+if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
+	function sbp_get_hosting_restrictions() {
 		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) && $_SERVER['KINSTA_CACHE_ZONE'] ) {
 			return 'Kinsta';
 		}
@@ -84,7 +84,7 @@ if ( ! function_exists( 'sbp_is_restricted_hosting' ) ) {
 			],
 			'KINSTA_CACHE_ZONE'    => [
 				'name'              => 'Kinsta',
-				'disabled_features' => ['caching', 'lazyload', 'javascript'],
+				'disabled_features' => [ 'caching', 'lazyload' ],
 			],
 		];
 
@@ -98,8 +98,18 @@ if ( ! function_exists( 'sbp_is_restricted_hosting' ) ) {
 	}
 }
 
-function sbp_should_disable_feature($feature_name) {
-	return false;
+if ( ! function_exists( 'sbp_should_disable_feature' ) ) {
+	function sbp_should_disable_feature( $feature_name ) {
+		$hosting_restrictions = sbp_get_hosting_restrictions();
+
+		if ($hosting_restrictions['name'] !== null) {
+			if (in_array($feature_name, $hosting_restrictions['disabled_features'])) {
+				return $hosting_restrictions['name'];
+			}
+		}
+
+		return false;
+	}
 }
 
 function sbp_str_replace_first( $from, $to, $content ) {
