@@ -28,6 +28,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public static function update_cloudflare_settings() {
+		// LAHMACUNTODO: Update settings only when they changed.
 		if ( get_transient( 'sbp_do_not_update_cloudflare' ) || ! self::is_cloudflare_active() ) {
 			return;
 		}
@@ -228,6 +229,6 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	}
 
 	public static function is_cloudflare_active() {
-		return sbp_get_option( 'cloudflare_email' ) && sbp_get_option( 'cloudflare_api' ) && sbp_get_option( 'cloudflare_zone' );
+		return sbp_get_option('cloudflare_enable') && sbp_get_option( 'cloudflare_email' ) && sbp_get_option( 'cloudflare_api' ) && sbp_get_option( 'cloudflare_zone' );
 	}
 }

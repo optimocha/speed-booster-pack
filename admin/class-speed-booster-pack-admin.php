@@ -289,7 +289,7 @@ class Speed_Booster_Pack_Admin {
 							             '<strong>' . __( 'Special', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module has features for specific cases like CDN usage, localizing tracker scripts, adding custom JavaScript code and optimizations for some popular plugins.', 'speed-booster-pack' ) . '</li><li>' .
 							             '<strong>' . __( 'Tweaks', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module lets you tweak the WordPress core and your page sources by dequeueing core scripts/styles, decluttering &lt;head&gt;, optimizing revisions and the Heartbeat API and so on.', 'speed-booster-pack' ) . '</li></ul>' .
 							             '<p>' . __( 'Feel free to experiment, and don\'t forget to create exclude rules when necessary!', 'speed-booster-pack' ) . '</p>',
-						],
+						], // LAHMACUNTODO: Fetching clouflare settings ibaresi ekle.
 						[
 							'type'    => 'subheading',
 							'content' => __( 'Upcoming features', 'speed-booster-pack' ),
@@ -1004,11 +1004,11 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
 					'type'  => 'subheading',
 				],
-//				[
-//					'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
-//					'id'    => 'cloudflare_enable',
-//					'type'  => 'switcher',
-//				],
+				[
+					'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
+					'id'    => 'cloudflare_enable',
+					'type'  => 'switcher',
+				],
 				[
 					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
 					'id'    => 'cloudflare_api',
@@ -1391,14 +1391,14 @@ class Speed_Booster_Pack_Admin {
 		if ( $transient_value = get_transient( 'sbp_clear_sucuri_cache' ) ) {
 			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ', 'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
-			SBP_Notice_Manager::display_notice( 'sbp_clear_sucuri_cache', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, 'recurrent' );
+			SBP_Notice_Manager::display_notice( 'sbp_clear_sucuri_cache', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, 'flash' );
 		}
 
 		// Set Cloudflare Notice
 		if ( $transient_value = get_transient( 'sbp_notice_cloudflare' ) ) {
 			$notice_message = $transient_value == '1' ? __( 'Cloudflare cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Cloudflare cache. Possible reason: Credentials invalid.', 'speed-booster-pack' );
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
-			SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, 'recurrent' );
+			SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>', $notice_type, true, 'flash' );
 		}
 
 		// Set Cache Clear Notice

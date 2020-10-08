@@ -84,7 +84,7 @@ if ( ! function_exists( 'sbp_is_restricted_hosting' ) ) {
 			],
 			'KINSTA_CACHE_ZONE'    => [
 				'name'              => 'Kinsta',
-				'disabled_features' => [],
+				'disabled_features' => ['caching', 'lazyload', 'javascript'],
 			],
 		];
 
@@ -96,6 +96,10 @@ if ( ! function_exists( 'sbp_is_restricted_hosting' ) ) {
 
 		return [ 'name' => null, 'disabled_features' => [] ]; // Return this structure to avoid undefined index errors.
 	}
+}
+
+function sbp_should_disable_feature($feature_name) {
+	return false;
 }
 
 function sbp_str_replace_first( $from, $to, $content ) {
