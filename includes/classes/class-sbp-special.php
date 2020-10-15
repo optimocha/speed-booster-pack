@@ -82,7 +82,7 @@ class SBP_Special extends SBP_Abstract_Module {
 		if ( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			global $wp_scripts;
 			$handle = 'wc-cart-fragments';
-			if ( isset( $wp_scripts->registered[ $handle ] ) ) {
+			if ( isset( $wp_scripts->registered[ $handle ] ) && $wp_scripts->registered[ $handle ]->src ) {
 				$load_cart_fragments_path               = $wp_scripts->registered[ $handle ]->src;
 				$wp_scripts->registered[ $handle ]->src = null;
 				wp_add_inline_script(
