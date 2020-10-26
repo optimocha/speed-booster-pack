@@ -112,7 +112,6 @@ class Speed_Booster_Pack {
 			"ai-debug-blocks"               => "1", // ad inserter
 			"ao_noptimize"                  => "1", // autoptimize
 			"ao_noptirocket"                => "1", // autoptimize & wp rocket
-			"brizy"                         => "edit", // brizy builder
 			"bt-beaverbuildertheme"         => "show", // beaver builder 2
 			"ct_builder"                    => "true", // oxygen builder
 			"customize_changeset_uuid"      => null, // wordpress core customizer
@@ -132,6 +131,15 @@ class Speed_Booster_Pack {
 			if ( isset( $_GET[ $query_string ] ) && ( $value == $_GET[ $query_string ] || null == $value ) ) {
 				return false;
 			}
+		}
+
+		// Brizy Editor
+		if (
+			class_exists( 'Brizy_Editor' )
+			&&
+			( isset( $_GET[ Brizy_Editor::prefix( '-edit' ) ] ) || isset( $_GET[ Brizy_Editor::prefix( '-edit-iframe' ) ] ) )
+		) {
+			return false;
 		}
 
 		return true;
