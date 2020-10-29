@@ -102,8 +102,8 @@ if ( ! function_exists( 'sbp_should_disable_feature' ) ) {
 	function sbp_should_disable_feature( $feature_name ) {
 		$hosting_restrictions = sbp_get_hosting_restrictions();
 
-		if ($hosting_restrictions['name'] !== null) {
-			if (in_array($feature_name, $hosting_restrictions['disabled_features'])) {
+		if ( $hosting_restrictions['name'] !== null ) {
+			if ( in_array( $feature_name, $hosting_restrictions['disabled_features'] ) ) {
 				return $hosting_restrictions['name'];
 			}
 		}
@@ -112,8 +112,26 @@ if ( ! function_exists( 'sbp_should_disable_feature' ) ) {
 	}
 }
 
-function sbp_str_replace_first( $from, $to, $content ) {
-	$from = '/' . preg_quote( $from, '/' ) . '/';
+if ( ! function_exists( 'sbp_str_replace_first' ) ) {
+	function sbp_str_replace_first( $from, $to, $content ) {
+		$from = '/' . preg_quote( $from, '/' ) . '/';
 
-	return preg_replace( $from, $to, $content, 1 );
+		return preg_replace( $from, $to, $content, 1 );
+	}
+}
+
+if ( ! function_exists( 'sbp_get_filesystem' ) ) {
+	/**
+	 * Return WP_Filesystem instance
+	 *
+	 * @return mixed
+	 */
+	function sbp_get_filesystem() {
+		global $wp_filesystem;
+
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+
+		return $wp_filesystem;
+	}
 }

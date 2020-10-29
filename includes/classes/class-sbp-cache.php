@@ -108,20 +108,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	/**
-	 * Return WP_Filesystem instance
-	 *
-	 * @return mixed
-	 */
-	private function get_filesystem() {
-		global $wp_filesystem;
-
-		require_once( ABSPATH . '/wp-admin/includes/file.php' );
-		WP_Filesystem();
-
-		return $wp_filesystem;
-	}
-
-	/**
 	 * Clears all cache files and regenerates settings.json file
 	 */
 	public static function clear_total_cache() {
@@ -152,7 +138,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return $html;
 		}
 
-		$wp_filesystem = $this->get_filesystem();
+		$wp_filesystem = sbp_get_filesystem();
 
 		if ( ! $wp_filesystem->exists( SBP_CACHE_DIR . 'settings.json' ) ) {
 			self::create_settings_json();
