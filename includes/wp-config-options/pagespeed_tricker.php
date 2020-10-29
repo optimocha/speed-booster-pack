@@ -6,3 +6,5 @@ if(preg_match('/Lighthouse/i',$_SERVER['HTTP_USER_AGENT'])) {
 	exit;
 }
 // END SBP_PageSpeed_Tricker
+
+?>

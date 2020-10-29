@@ -162,12 +162,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::generate_htaccess' );
 
-		add_action( 'csf_sbp_options_saved',
-			function () {
-				require SBP_INC_PATH . 'classes/class-sbp-pagespeed-tricker.php';
-				$pst = new SpeedBooster\SBP_PageSpeed_Tricker();
-				$pst->toggle_lines();
-			} );
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_WP_Config_Injector::generate_wp_config_inject_file' );
 
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 
@@ -1420,6 +1415,16 @@ class Speed_Booster_Pack_Admin {
 		if ( get_transient( 'sbp_warmup_complete' ) ) {
 			// BEYNTODO: Add translator note
 			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Static cache files created.', 'speed-booster-pack' ) . '</p>', 'success', true, 'recurrent' );
+		}
+
+		// WP-Config Inject File Error
+		if ( get_transient( 'sbp_wp_config_inject_error' ) ) {
+			SBP_Notice_Manager::display_notice( 'sbp_wp_config_inject_error', '<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Can not write plugins/speed-booster-pack/includes/wp-config-options/wp-config-inject.php file. Some ' . SBP_PLUGIN_NAME . ' features may not work. Please check your file permissions.', 'speed-booster-pack' ) . '</p>', 'error', true, 'recurrent' );
+		}
+
+		// WP-Config File Error
+		if ( get_transient( 'sbp_wp_config_error' ) ) {
+			SBP_Notice_Manager::display_notice( 'sbp_wp_config_error', '<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Can not write wp-config.php file. Some ' . SBP_PLUGIN_NAME . ' features may not work. Please check your file permissions.', 'speed-booster-pack' ) . '</p>', 'error', true, 'recurrent' );
 		}
 	}
 
