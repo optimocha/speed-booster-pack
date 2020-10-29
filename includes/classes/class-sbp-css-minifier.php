@@ -3,6 +3,8 @@
 namespace SpeedBooster;
 
 // If this file is called directly, abort.
+use simplehtmldom\HtmlDocument;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -15,37 +17,42 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	];
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'css_inline' ) ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'css_inline' ) || sbp_get_option( 'enable_criticalcss' ) ) {
 			return;
 		}
 
 		$this->set_exceptions();
 
-		add_action( 'wp_print_styles', [ $this, 'print_styles' ] );
+//		add_action( 'wp_print_styles', [ $this, 'print_styles' ] );
+		add_filter( 'sbp_output_buffer', [ $this, 'print_styles' ] );
 	}
 
-	public function print_styles() {
+	public function print_styles( $html ) {
 		if ( sbp_get_option( 'css_minify' ) ) {
 			$minify = true;
 		} else {
 			$minify = false;
 		}
 
-		$this->generate_styles_list();
+		$this->generate_styles_list( $html );
+		return $html;
 
 		$not_inlined = [];
 
 		foreach ( $this->styles_list as $style ) {
-			echo "<style type=\"text/css\" " . ( $style['media'] ? "media=\"{$style['media']}\"" : '' ) . ">";
+		    // Unlink link tags with specific href attributes.
+//			echo "<style type=\"text/css\" " . ( $style['media'] ? "media=\"{$style['media']}\"" : '' ) . " " . ( isset( $id ) ? 'id="' . $style['id'] . '"' : null ) . ">";
 			if ( ! $this->inline_css( $style['src'], $minify ) ) {
 				$not_inlined[] = $style;
 			}
-			echo "</style>";
+//			echo "</style>";
 		}
+
 		if ( ! empty( $not_inlined ) ) {
 			foreach ( $not_inlined as $style ) {
 				?>
-                <link rel="stylesheet" href="<?php echo $style['src'] ?>" type="text/css" <?php echo $style['media'] ? "media=\"{$style['media']}\"" : '' ?> /><?php
+                <link rel="stylesheet" href="<?php echo $style['src'] ?>"
+                      type="text/css" <?php echo $style['media'] ? "media=\"{$style['media']}\"" : '' ?> /><?php
 			}
 		}
 
@@ -55,6 +62,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	private function set_exceptions() {
 		$sbp_exceptions   = SBP_Utils::explode_lines( sbp_get_option( 'css_exclude' ) );
 		$this->exceptions = array_merge( $sbp_exceptions, $this->exceptions );
+		// TODO: Add filter to exceptions
 
 		foreach ( $this->exceptions as $key => $exception ) {
 			if ( trim( $exception ) != '' ) {
@@ -63,18 +71,19 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		}
 	}
 
-	private function generate_styles_list() {
-		global $wp_styles;
+	private function generate_styles_list( $html ) {
+		$dom = new HtmlDocument();
+		$dom->load( $html );
 
-		if ( isset( $wp_styles->queue ) && is_array( $wp_styles->queue ) ) {
-			foreach ( $wp_styles->queue as $style ) {
-				if ( ! $this->is_css_excluded( $style ) ) {
-					$this->styles_list[] = [
-						'src'   => $wp_styles->registered[ $style ]->src,
-						'media' => $wp_styles->registered[ $style ]->args,
-					];
-				}
-			}
+		$links = $dom->find( 'link[rel=stylesheet]' );
+		foreach ( $links as $link ) {
+		    if ( ! $this->is_css_excluded( $link->id ) ) {
+			    $this->styles_list[] = [
+				    'src'   => $link->href,
+				    'media' => $link->media,
+				    'id'    => $link->id,
+			    ];
+		    }
 		}
 	}
 
@@ -117,10 +126,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 
 			$css = $this->rebuilding_css_urls( $css, $url );
 
-			echo $css;
-
-			return true;
-
+			return $css;
 		} else {
 
 			return false;
@@ -203,9 +209,16 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		}
 
 		foreach ( $this->exceptions as $exception ) {
-			if ( $file->handle == $exception || strpos( $file->src, $exception ) !== false ) {
-				return true;
-			}
+		    if (is_string($file) && $file) {
+		        if ( strpos( $file, $exception ) !== false ) {
+		            // TODO: Check this condition
+		            return true;
+		        }
+		    } else {
+			    if ( $file->handle == $exception || strpos( $file->src, $exception ) !== false ) {
+				    return true;
+			    }
+		    }
 		}
 
 		return false;
