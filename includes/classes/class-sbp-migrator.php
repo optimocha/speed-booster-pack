@@ -7,6 +7,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// TODO: Run wp-config-injector and htaccess generator
 class SBP_Migrator {
 	private $sbp_settings; // Old options
 	private $sbp_options; // New options

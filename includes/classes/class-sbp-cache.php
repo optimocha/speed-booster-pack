@@ -529,10 +529,7 @@ AddEncoding gzip              svgz
 
 # END Speed Booster Pack';
 
-		global $wp_filesystem;
-
-		require_once( ABSPATH . '/wp-admin/includes/file.php' );
-		WP_Filesystem();
+		$wp_filesystem = sbp_get_filesystem();
 
 		$htaccess_file_path = get_home_path() . '/.htaccess';
 
