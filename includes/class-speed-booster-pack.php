@@ -252,25 +252,10 @@ class Speed_Booster_Pack {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
 		$plugin_admin = new Speed_Booster_Pack_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
-		// TODO: Move this function to the Utilities class.
-		add_action( 'upgrader_process_complete',
-			function ( $upgrader_object, $hook_extra ) {
-				$our_plugin = 'speed-booster-pack/speed-booster-pack.php';
-				if ( $hook_extra['action'] == 'update' && $hook_extra['type'] == 'plugin' && isset( $hook_extra['plugins'] ) ) {
-					if ( in_array( $our_plugin, $hook_extra['plugins'] ) ) {
-						SBP_Cache::generate_htaccess();
-					}
-				}
-			},
-			10,
-			2 );
-
 	}
 
 	/**

@@ -35,6 +35,7 @@ class SBP_Migrator {
 
 	public function __construct() {
 		add_action( 'init', [ $this, 'check_migrate_notice' ] );
+		add_action( 'upgrader_process_complete', [ $this, 'sbp_upgrade_completed' ], 10, 2 );
 
 		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
 
@@ -44,6 +45,8 @@ class SBP_Migrator {
 			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
 		}
 	}
+
+	// SBP_WP_Config_Injector::generate_wp_config_inject_file();
 
 	public function check_migrate_notice() {
 		if ( get_transient( 'sbp_upgraded_notice' ) && current_user_can( 'manage_options' ) ) {
@@ -63,6 +66,29 @@ class SBP_Migrator {
 					wp_add_inline_script( 'jquery', $dismiss_notice_script );
 				} );
 			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
+		}
+	}
+
+	/**
+	 * This function runs when WordPress completes its upgrade process
+	 * It iterates through each plugin updated to see if ours is included
+	 *
+	 * @param $upgrader_object Array
+	 * @param $options Array
+	 */
+	public function sbp_upgrade_completed( $upgrader_object, $options ) {
+		// The path to our plugin's main file
+		$our_plugin = 'speed-booster-pack/speed-booster-pack.php';
+		// If an update has taken place and the updated type is plugins and the plugins element exists
+		if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
+			// Iterate through the plugins being updated and check if ours is there
+			foreach ( $options['plugins'] as $plugin ) {
+				if ( $plugin == $our_plugin ) {
+					SBP_WP_Config_Injector::generate_wp_config_inject_file();
+					SBP_Cache::generate_htaccess();
+					SBP_Cache::set_wp_cache_constant();
+				}
+			}
 		}
 	}
 
