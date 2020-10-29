@@ -52,14 +52,13 @@ class SBP_WP_Config_Injector {
 		}
 
 		if ( $wp_filesystem->exists( $wp_config_file ) && is_writable( $wp_config_file ) ) {
-			if ( $wp_filesystem->is_writable( $wp_config_file ) ) {
-				$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
-				if ( ! preg_match( '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', $wp_config_content ) ) {
-					$modified_content = str_replace( '<?php', '<?php' . PHP_EOL . PHP_EOL . '// BEGIN SBP_WP_Config' . PHP_EOL . 'include_once "' . SBP_PATH . 'includes/wp-config-options/wp-config-inject.php";' . PHP_EOL . '// END SBP_WP_Config' . PHP_EOL, $wp_config_content );
-					$wp_filesystem->put_contents( $wp_config_file, $modified_content );
-				}
-				delete_transient( 'sbp_wp_config_error' );
+			$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
+			if ( ! preg_match( '/\/\/ BEGIN SBP_WP_Config -' . SBP_VERSION . '-(.*?)\/\/ END SBP_WP_Config/si', $wp_config_content ) ) {
+				$wp_config_content = preg_replace('/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', '', $wp_config_content);
+				$modified_content = str_replace( '<?php', '<?php' . PHP_EOL . PHP_EOL . '// BEGIN SBP_WP_Config -' . SBP_VERSION . '-' . PHP_EOL . 'include_once "' . SBP_PATH . 'includes/wp-config-options/wp-config-inject.php";' . PHP_EOL . '// END SBP_WP_Config' . PHP_EOL, $wp_config_content );
+				$wp_filesystem->put_contents( $wp_config_file, $modified_content );
 			}
+			delete_transient( 'sbp_wp_config_error' );
 		} else {
 			set_transient( 'sbp_wp_config_error', 1 );
 		}
