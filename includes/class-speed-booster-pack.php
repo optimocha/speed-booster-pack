@@ -159,13 +159,13 @@ class Speed_Booster_Pack {
 		new SBP_Font_Optimizer();
 		new SBP_Compatibility_Checker();
 		new SBP_Preboost();
+		new SBP_CDN();
 		new SBP_Lazy_Loader();
 		new SBP_CSS_Minifier();
 		new SBP_Critical_CSS();
 		new SBP_HTML_Minifier();
 		new SBP_Localize_Tracker();
 		new SBP_Special();
-		new SBP_CDN();
 		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
 		new SBP_Notice_Manager();

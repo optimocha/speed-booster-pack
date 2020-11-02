@@ -21,6 +21,12 @@ class SBP_Utils extends SBP_Abstract_Module {
 	}
 
 	public static function get_file_extension_from_url( $url ) {
+		$url = self::clear_hashes_and_question_mark( $url );
+
+		return pathinfo( $url, PATHINFO_EXTENSION );
+	}
+
+	public static function clear_hashes_and_question_mark( $url ) {
 		// Remove Query String
 		if ( strpos( $url, "?" ) !== false ) {
 			$url = substr( $url, 0, strpos( $url, "?" ) );
@@ -29,7 +35,7 @@ class SBP_Utils extends SBP_Abstract_Module {
 			$url = substr( $url, 0, strpos( $url, "#" ) );
 		}
 
-		return pathinfo( $url, PATHINFO_EXTENSION );
+		return $url;
 	}
 
 	/**

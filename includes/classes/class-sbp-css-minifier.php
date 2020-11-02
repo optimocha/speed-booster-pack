@@ -15,11 +15,13 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		'admin-bar',
 		'dashicons',
 	];
+	private $dom = null;
 
 	public function __construct() {
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'css_inline' ) || sbp_get_option( 'enable_criticalcss' ) ) {
 			return;
 		}
+		$this->dom = new HtmlDocument();
 
 		$this->set_exceptions();
 
@@ -34,29 +36,21 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 			$minify = false;
 		}
 
-		$this->generate_styles_list( $html );
-		return $html;
+		$this->dom->load( $html );
 
-		$not_inlined = [];
+		$this->generate_styles_list();
 
 		foreach ( $this->styles_list as $style ) {
-		    // Unlink link tags with specific href attributes.
-//			echo "<style type=\"text/css\" " . ( $style['media'] ? "media=\"{$style['media']}\"" : '' ) . " " . ( isset( $id ) ? 'id="' . $style['id'] . '"' : null ) . ">";
-			if ( ! $this->inline_css( $style['src'], $minify ) ) {
-				$not_inlined[] = $style;
-			}
-//			echo "</style>";
-		}
-
-		if ( ! empty( $not_inlined ) ) {
-			foreach ( $not_inlined as $style ) {
-				?>
-                <link rel="stylesheet" href="<?php echo $style['src'] ?>"
-                      type="text/css" <?php echo $style['media'] ? "media=\"{$style['media']}\"" : '' ?> /><?php
+			$inlined_css = $this->inline_css( $style['src'], $minify );
+			$links       = $this->dom->find( 'link[rel=stylesheet]' );
+			foreach ( $links as $link ) {
+				if ( $link->href === $style['src'] && $inlined_css !== false ) {
+					$link->outertext = '<style id="' . $link->id . '" data-sbp-style="generated" media="' . ( isset( $link->media ) && $link->media ? $link->media : 'all' ) . '">' . $inlined_css . '</style>';
+				}
 			}
 		}
 
-		$this->unregister_styles();
+		return $this->dom;
 	}
 
 	private function set_exceptions() {
@@ -71,55 +65,40 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		}
 	}
 
-	private function generate_styles_list( $html ) {
-		$dom = new HtmlDocument();
-		$dom->load( $html );
-
-		$links = $dom->find( 'link[rel=stylesheet]' );
+	private function generate_styles_list() {
+		$links = $this->dom->find( 'link[rel=stylesheet]' );
 		foreach ( $links as $link ) {
-		    if ( ! $this->is_css_excluded( $link->id ) ) {
-			    $this->styles_list[] = [
-				    'src'   => $link->href,
-				    'media' => $link->media,
-				    'id'    => $link->id,
-			    ];
-		    }
-		}
-	}
-
-	private function unregister_styles() {
-		global $wp_styles;
-
-		if ( isset( $wp_styles->queue ) && is_array( $wp_styles->queue ) ) {
-			foreach ( $wp_styles->queue as $style ) {
-				if ( $this->is_css_excluded( $style ) ) {
-					continue;
-				}
-
-				wp_dequeue_style( $style );
-				wp_deregister_style( $style );
+			if ( ! $this->is_css_excluded( $link->id ) ) {
+				$this->styles_list[] = [
+					'src'   => $link->href,
+					'media' => $link->media,
+					'id'    => $link->id,
+				];
 			}
 		}
 	}
 
 	private function inline_css( $url, $minify = true ) {
 		$base_url = get_bloginfo( 'wpurl' );
-		$path     = false;
 
-		if ( strpos( $url, $base_url ) !== false ) {
-
-			$path = str_replace( $base_url, rtrim( ABSPATH, '/' ), $url );
-
-		} elseif ( $url[0] == '/' && $url[1] != '/' ) {
-
-			$path = rtrim( ABSPATH, '/' ) . $url;
-			$url  = $base_url . $url;
+		$cdn_url = sbp_get_option( 'cdn_url' );
+		if ( $cdn_url ) {
+			$base_url = '//' . $cdn_url;
 		}
 
-		if ( $path && file_exists( $path ) ) {
+		$url = ltrim($url, 'https:');
+		$url = ltrim($url, 'http:');
 
-			$css = file_get_contents( $path );
+		if ( strpos( $url, $base_url ) !== 0 ) {
+			return false;
+		}
 
+		$prefix = 'http' . ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ? 's' : null );
+		$url = substr($url, 0, 2) == '//' ? $prefix . ':' . $url : $url;
+		$url = SBP_Utils::clear_hashes_and_question_mark( $url );
+
+		$css = file_get_contents( $url );
+		if ( $css ) {
 			if ( $minify ) {
 				$css = $this->minify_css( $css );
 			}
@@ -127,11 +106,9 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 			$css = $this->rebuilding_css_urls( $css, $url );
 
 			return $css;
-		} else {
-
-			return false;
 		}
 
+		return false;
 	}
 
 	private function rebuilding_css_urls( $css, $url ) {
@@ -202,23 +179,10 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	}
 
 	private function is_css_excluded( $file ) {
-		global $wp_styles;
-
-		if ( is_string( $file ) && isset( $wp_styles->registered[ $file ] ) ) {
-			$file = $wp_styles->registered[ $file ];
-		}
-
 		foreach ( $this->exceptions as $exception ) {
-		    if (is_string($file) && $file) {
-		        if ( strpos( $file, $exception ) !== false ) {
-		            // TODO: Check this condition
-		            return true;
-		        }
-		    } else {
-			    if ( $file->handle == $exception || strpos( $file->src, $exception ) !== false ) {
-				    return true;
-			    }
-		    }
+			if ( strpos( $file->src, $exception ) !== false ) {
+				return true;
+			}
 		}
 
 		return false;
