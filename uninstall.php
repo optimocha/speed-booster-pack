@@ -84,10 +84,6 @@ WP_Filesystem();
 $htaccess_file_path = get_home_path() . '/.htaccess';
 
 if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
-	global $wp_filesystem;
-
-	require_once( ABSPATH . '/wp-admin/includes/file.php' );
-
 	$current_htaccess = $wp_filesystem->get_contents( $htaccess_file_path );
 
 	if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
@@ -109,6 +105,21 @@ $users = get_users( 'role=administrator' );
 foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_dismissed_notices' );
 	delete_user_meta( $user->ID, 'sbp_dismissed_compat_notices' );
+}
+
+// Delete wp-config-inject from wp-config.php
+if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {
+	$wp_config_file = ABSPATH . 'wp-config.php';
+} else {
+	$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
+}
+
+if ($wp_filesystem->is_writable($wp_config_file)) {
+	$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
+	$modified_wp_config_content = preg_replace( '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', '', $wp_config_content );
+	$wp_filesystem->put_contents( $wp_config_file, $modified_wp_config_content );
+} else {
+	wp_die('wp-config.php file is not writable. You might get a warning because of an include statement. Please remove lines between // BEGIN SP_WP_Config and // END SBP_WP_Config');
 }
 
 // TODO: uninstall.php: Also delete the sbp_announcements option and all the other transients & usermeta we put.

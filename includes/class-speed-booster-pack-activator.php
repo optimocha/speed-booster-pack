@@ -11,6 +11,7 @@
  */
 
 use SpeedBooster\SBP_Cache;
+use SpeedBooster\SBP_WP_Config_Injector;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -38,6 +39,7 @@ class Speed_Booster_Pack_Activator {
 	 */
 	public static function activate() {
 		SBP_Cache::generate_htaccess();
+		SBP_WP_Config_Injector::generate_wp_config_inject_file();
 	}
 
 }

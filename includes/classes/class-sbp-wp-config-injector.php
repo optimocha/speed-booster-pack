@@ -43,6 +43,21 @@ class SBP_WP_Config_Injector {
 		}
 	}
 
+	public static function remove_wp_config_lines() {
+		$wp_filesystem = sbp_get_filesystem();
+		if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {
+			$wp_config_file = ABSPATH . 'wp-config.php';
+		} else {
+			$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
+		}
+
+		if ( $wp_filesystem->exists( $wp_config_file ) && is_writable( $wp_config_file ) ) {
+			$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
+			$modified_content = preg_replace( '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', '', $wp_config_content );
+			$wp_filesystem->put_contents( $wp_config_file, $modified_content );
+		}
+	}
+
 	private static function modify_wp_config() {
 		$wp_filesystem = sbp_get_filesystem();
 		if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {
