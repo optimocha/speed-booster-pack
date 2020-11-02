@@ -45,7 +45,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 			$links       = $this->dom->find( 'link[rel=stylesheet]' );
 			foreach ( $links as $link ) {
 				if ( $link->href === $style['src'] && $inlined_css !== false ) {
-					$link->outertext = '<style id="' . $link->id . '" data-sbp-style="generated" media="' . ( isset( $link->media ) && $link->media ? $link->media : 'all' ) . '">' . $inlined_css . '</style>';
+					$link->outertext = '<style id="' . $link->id . '" media="' . ( isset( $link->media ) && $link->media ? $link->media : 'all' ) . '">' . $inlined_css . '</style>';
 				}
 			}
 		}
@@ -56,7 +56,8 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	private function set_exceptions() {
 		$sbp_exceptions   = SBP_Utils::explode_lines( sbp_get_option( 'css_exclude' ) );
 		$this->exceptions = array_merge( $sbp_exceptions, $this->exceptions );
-		// TODO: Add filter to exceptions
+		$this->exceptions = array_merge( $this->exceptions, apply_filters('sbp_css_optimizer_exceptions', $this->exceptions) );
+		$this->exceptions = array_unique($this->exceptions);
 
 		foreach ( $this->exceptions as $key => $exception ) {
 			if ( trim( $exception ) != '' ) {
@@ -88,6 +89,8 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 
 		$url = ltrim($url, 'https:');
 		$url = ltrim($url, 'http:');
+		$base_url = ltrim($base_url, 'https:');
+		$base_url = ltrim($base_url, 'http:');
 
 		if ( strpos( $url, $base_url ) !== 0 ) {
 			return false;
