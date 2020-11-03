@@ -613,6 +613,7 @@ class Speed_Booster_Pack_Admin {
 							'before'                 => '<p>' . __( 'Code blocks added with this tool can be loaded in the header, the footer and can even be delayed.', 'speed-booster-pack' ) . '</p>',
 							'accordion_title_number' => true,
 							'accordion_title_auto'   => false,
+							'sanitize'               => false,
 							'fields'                 => [
 								[
 									'id'     => 'custom_codes_item',
