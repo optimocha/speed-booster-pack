@@ -56,35 +56,43 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 		$hosting_provider_constants = [
 			'GD_SYSTEM_PLUGIN_DIR' => [
 				'name'              => 'GoDaddy',
-				'disabled_features' => []
+				'disabled_features' => [],
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'GoDaddy', 'GoDaddy' ),
 			],
 			'MM_BASE_DIR'          => [
 				'name'              => 'Bluehost',
-				'disabled_features' => []
+				'disabled_features' => [],
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Bluehost', 'Bluehost' ),
 			],
 			'PAGELYBIN'            => [
 				'name'              => 'Pagely',
-				'disabled_features' => []
+				'disabled_features' => [],
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Pagely', 'Pagely' ),
 			],
 			'KINSTAMU_VERSION'     => [
 				'name'              => 'Kinsta',
-				'disabled_features' => []
+				'disabled_features' => [],
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Kinsta', 'Kinsta' ),
 			],
 			'FLYWHEEL_CONFIG_DIR'  => [
 				'name'              => 'Flywheel',
-				'disabled_features' => []
+				'disabled_features' => [],
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Flywheel', 'Flywheel' ),
 			],
 			'IS_PRESSABLE'         => [
 				'name'              => 'Pressable',
-				'disabled_features' => []
+				'disabled_features' => [],
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Pressable', 'Pressable' ),
 			],
 			'VIP_GO_ENV'           => [
 				'name'              => 'WordPress VIP',
 				'disabled_features' => [],
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'WordPress VIP', 'WordPress VIP' ),
 			],
 			'KINSTA_CACHE_ZONE'    => [
 				'name'              => 'Kinsta',
 				'disabled_features' => [ 'caching', 'lazyload' ],
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Kinsta', 'Kinsta' ),
 			],
 		];
 
@@ -94,7 +102,10 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 			}
 		}
 
-		return [ 'name' => null, 'disabled_features' => [] ]; // Return this structure to avoid undefined index errors.
+		return [ 'name'              => null,
+		         'disabled_features' => [],
+		         'error_message'     => ''
+		]; // Return this structure to avoid undefined index errors.
 	}
 }
 
@@ -104,8 +115,16 @@ if ( ! function_exists( 'sbp_should_disable_feature' ) ) {
 
 		if ( $hosting_restrictions['name'] !== null ) {
 			if ( in_array( $feature_name, $hosting_restrictions['disabled_features'] ) ) {
-				return $hosting_restrictions['name'];
+				return $hosting_restrictions;
 			}
+		}
+
+		if ( ! get_option( 'permalink_structure' ) ) {
+			// BEYNTODO: Write text for error message.
+			return [ 'name'              => 'Permalink',
+			         'disabled_features' => [ 'caching' ],
+			         'error_message'     => __( 'You should use Permalinks to enable caching module.', 'speed-booster-pack' )
+			];
 		}
 
 		return false;

@@ -431,7 +431,7 @@ class Speed_Booster_Pack_Admin {
 						'type'    => 'submessage',
 						'style'   => 'success',
 						'class'   => 'hosting-warning',
-						'content' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), $should_disable_caching, $should_disable_caching ),
+						'content' => $should_disable_caching['error_message'],
 					],
 				];
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
