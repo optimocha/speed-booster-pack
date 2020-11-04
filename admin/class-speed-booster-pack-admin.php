@@ -1427,6 +1427,22 @@ class Speed_Booster_Pack_Admin {
 		if ( get_transient( 'sbp_wp_config_error' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_wp_config_error', '<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Can not write wp-config.php file. Some ' . SBP_PLUGIN_NAME . ' features may not work. Please check your file permissions.', 'speed-booster-pack' ) . '</p>', 'error', true, 'recurrent' );
 		}
+
+		// WP-Config File Error
+		if ( get_transient( 'sbp_warmup_errors' ) ) {
+			$list   = '';
+			$errors = get_transient( 'sbp_warmup_errors' );
+			if ( is_array( $errors ) ) {
+				foreach ( $errors as $error ) {
+					$extras = [];
+					if ( isset( $error['options']['user-agent'] ) && $error['options']['user-agent'] === 'Mobile' ) {
+						$extras[] = '(Mobile)';
+					}
+					$list .= '<li><a href="' . $error['url'] . '" target="_blank">' . $error['url'] . ' ' . implode( ' ', $extras ) . '</a></li>';
+				}
+				SBP_Notice_Manager::display_notice( 'sbp_warmup_errors', '<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Cache warmup completed but following pages may not be cached. Please check this pages are available. (Hover this notice to see all errors)', 'speed-booster-pack' ) . '</p><ul class="warmup-cache-error-list">' . $list . '</ul>', 'error', true, 'recurrent' );
+			}
+		}
 	}
 
 	private function initialize_announce4wp() {

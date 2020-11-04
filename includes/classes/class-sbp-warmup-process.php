@@ -10,16 +10,19 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 	private $began = false;
 
 	protected function task( $item ) {
-		$options      = isset( $item['options'] ) ? $item['options'] : [];
-		$args         = array_merge( [
-			'blocking'    => false,
-			'compress'    => true,
-			'httpversion' => '1.1',
+		$item['url'] = SBP_Utils::clear_hashes_and_question_mark( $item['url'] );
+		if ( in_array( $item['url'], $this->done ) ) {
+			return false;
+		}
+
+		$options = isset( $item['options'] ) ? $item['options'] : [];
+		$args    = array_merge( [
+			'blocking'            => false,
+			'compress'            => true,
+			'httpversion'         => '1.1',
 			'limit_response_size' => 100,
 		], $options );
 
-		// TODO: Remove question marks and sharps from url
-		// TODO: Check if same url exists
 		$this->done[] = $item;
 
 		$response = wp_remote_get( $item['url'], $args );

@@ -106,3 +106,11 @@
         transform: rotate(360deg);
     }
 }
+
+.warmup-cache-error-list {
+    display: none;
+}
+
+.sbp-notice:hover .warmup-cache-error-list {
+    display: block;
+}
