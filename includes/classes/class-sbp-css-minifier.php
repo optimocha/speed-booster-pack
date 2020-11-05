@@ -56,8 +56,8 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	private function set_exceptions() {
 		$sbp_exceptions   = SBP_Utils::explode_lines( sbp_get_option( 'css_exclude' ) );
 		$this->exceptions = array_merge( $sbp_exceptions, $this->exceptions );
-		$this->exceptions = array_merge( $this->exceptions, apply_filters('sbp_css_optimizer_exceptions', $this->exceptions) );
-		$this->exceptions = array_unique($this->exceptions);
+		$this->exceptions = array_merge( $this->exceptions, apply_filters( 'sbp_css_optimizer_exceptions', $this->exceptions ) );
+		$this->exceptions = array_unique( $this->exceptions );
 
 		foreach ( $this->exceptions as $key => $exception ) {
 			if ( trim( $exception ) != '' ) {
@@ -69,7 +69,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	private function generate_styles_list() {
 		$links = $this->dom->find( 'link[rel=stylesheet]' );
 		foreach ( $links as $link ) {
-			if ( ! $this->is_css_excluded( $link->id ) ) {
+			if ( ! $this->is_css_excluded( $link ) ) {
 				$this->styles_list[] = [
 					'src'   => $link->href,
 					'media' => $link->media,
@@ -87,18 +87,18 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 			$base_url = '//' . $cdn_url;
 		}
 
-		$url = ltrim($url, 'https:');
-		$url = ltrim($url, 'http:');
-		$base_url = ltrim($base_url, 'https:');
-		$base_url = ltrim($base_url, 'http:');
+		$url      = ltrim( $url, 'https:' );
+		$url      = ltrim( $url, 'http:' );
+		$base_url = ltrim( $base_url, 'https:' );
+		$base_url = ltrim( $base_url, 'http:' );
 
 		if ( strpos( $url, $base_url ) !== 0 ) {
 			return false;
 		}
 
 		$prefix = 'http' . ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ? 's' : null );
-		$url = substr($url, 0, 2) == '//' ? $prefix . ':' . $url : $url;
-		$url = SBP_Utils::clear_hashes_and_question_mark( $url );
+		$url    = substr( $url, 0, 2 ) == '//' ? $prefix . ':' . $url : $url;
+		$url    = SBP_Utils::clear_hashes_and_question_mark( $url );
 
 		$css = file_get_contents( $url );
 		if ( $css ) {
@@ -181,9 +181,9 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		return $code;
 	}
 
-	private function is_css_excluded( $file ) {
+	private function is_css_excluded( $link ) {
 		foreach ( $this->exceptions as $exception ) {
-			if ( strpos( $file->src, $exception ) !== false ) {
+			if ( strpos( $link->href, $exception ) !== false ) {
 				return true;
 			}
 		}
