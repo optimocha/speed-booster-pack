@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class SBP_Warmup_Process extends \WP_Background_Process {
 	protected $action = 'warmup';
 	private $done = [];

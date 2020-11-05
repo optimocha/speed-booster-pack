@@ -2,6 +2,11 @@
 
 namespace SpeedBooster;
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 class SBP_Notice_Manager {
 	public function __construct() {
 		add_action( 'wp_ajax_sbp_dismiss_notice', [ $this, 'dismiss_notice' ] );
