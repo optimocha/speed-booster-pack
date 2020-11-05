@@ -12,7 +12,7 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 	private $done = [];
 	private $success = [];
 	private $failed = [];
-	private $began = false;
+	private $begun = false;
 
 	protected function task( $item ) {
 		$item['url'] = SBP_Utils::clear_hashes_and_question_mark( $item['url'] );
@@ -37,9 +37,9 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 			$this->success[] = $item;
 		}
 
-		if ( $this->began === false ) {
+		if ( $this->begun === false ) {
 			set_transient( 'sbp_warmup_started', 1 );
-			$this->began = true;
+			$this->begun = true;
 		}
 
 		return false;
@@ -49,7 +49,6 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 		/* translator: %s is the url of the page */
 		// BEYNTODO: Change Text
 		set_transient( 'sbp_warmup_errors', $this->failed );
-
 		set_transient( 'sbp_warmup_complete', true );
 		delete_transient( 'sbp_warmup_started' );
 		parent::complete();
