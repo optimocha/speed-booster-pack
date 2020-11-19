@@ -1,5 +1,11 @@
 <?php
 
+use SpeedBooster\SBP_Utils;
+
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 if ( ! function_exists( 'sbp_get_filesystem' ) ) {
 	function sbp_get_filesystem() {
 		global $wp_filesystem;
@@ -102,9 +108,10 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 			}
 		}
 
-		return [ 'name'              => null,
-		         'disabled_features' => [],
-		         'error_message'     => ''
+		return [
+			'name'              => null,
+			'disabled_features' => [],
+			'error_message'     => ''
 		]; // Return this structure to avoid undefined index errors.
 	}
 }
@@ -121,9 +128,10 @@ if ( ! function_exists( 'sbp_should_disable_feature' ) ) {
 
 		if ( ! get_option( 'permalink_structure' ) ) {
 			// BEYNTODO: Write text for error message.
-			return [ 'name'              => 'Permalink',
-			         'disabled_features' => [ 'caching' ],
-			         'error_message'     => __( 'You should use Permalinks to enable caching module.', 'speed-booster-pack' )
+			return [
+				'name'              => 'Permalink',
+				'disabled_features' => [ 'caching' ],
+				'error_message'     => __( 'You should use Permalinks to enable caching module.', 'speed-booster-pack' )
 			];
 		}
 
@@ -152,5 +160,101 @@ if ( ! function_exists( 'sbp_get_filesystem' ) ) {
 		WP_Filesystem();
 
 		return $wp_filesystem;
+	}
+}
+
+if ( ! function_exists( 'sbp_posabs' ) ) {
+	/**
+	 * Returns absolute value of a number. Returns 1 if value is zero.
+	 *
+	 * @param $value
+	 *
+	 * @return float|int
+	 * @since 4.0.0
+	 *
+	 */
+	function sbp_posabs( $value ) {
+		if ( 0 == $value ) {
+			return 1;
+		}
+
+		return absint( $value );
+	}
+}
+
+if ( ! function_exists( 'sbp_clear_cdn_url' ) ) {
+	/**
+	 * Removes http(s?):// and trailing slash from the url
+	 *
+	 * @param $url
+	 *
+	 * @return string
+	 * @since 4.0.0
+	 *
+	 */
+	function sbp_clear_cdn_url( $url ) {
+		return preg_replace( "#^[^:/.]*[:/]+#i", "", rtrim( $url, '/' ) );
+	}
+}
+
+if ( ! function_exists( 'sbp_clear_http' ) ) {
+	/**
+	 * Removes http:// from the url
+	 *
+	 * @param $url
+	 *
+	 * @return string
+	 * @since 4.0.0
+	 *
+	 */
+	function sbp_clear_http( $url ) {
+		return str_replace( "http://", "//", $url );
+	}
+}
+
+if ( ! function_exists( 'sbp_sanitize_strip_tags' ) ) {
+	/**
+	 * Trims and strips the tags from given value. Takes one dimensional array or string as argument. Returns the modified value.
+	 *
+	 * @param $value array|string
+	 *
+	 * @return array|string
+	 */
+	function sbp_sanitize_strip_tags( $value ) {
+		if ( is_array( $value ) ) {
+			$value = array_map(
+				function ( $item ) {
+					return trim( strip_tags( $item ) );
+				},
+				$value
+			);
+		} else {
+			$value = trim( strip_tags( $value ) );
+		}
+
+		return $value;
+	}
+}
+
+if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
+	/**
+	 * Sanitizes excluded URLs for caching
+	 *
+	 * @param $urls
+	 *
+	 * @return string
+	 * @since 4.0.0
+	 *
+	 */
+	function sbp_sanitize_caching_urls( $urls ) {
+		$urls = SBP_Utils::explode_lines( $urls );
+		foreach ( $urls as &$url ) {
+			$url = ltrim( $url, 'https://' );
+			$url = ltrim( $url, 'http://' );
+			$url = ltrim( $url, '//' );
+			$url = rtrim( $url, '/' );
+		}
+
+		return implode( PHP_EOL, $urls );
 	}
 }
