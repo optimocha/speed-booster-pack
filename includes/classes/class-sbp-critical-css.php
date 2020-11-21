@@ -23,7 +23,6 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 			return $html;
 		}
 
-
 		// Find Default Critical CSS Code if exists
 		$criticalcss_code = sbp_get_option( 'criticalcss_default' );
 
