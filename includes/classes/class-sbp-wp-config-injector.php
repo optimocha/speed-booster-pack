@@ -17,7 +17,7 @@ class SBP_WP_Config_Injector {
 	public static function generate_wp_config_inject_file() {
 		foreach ( self::$options as $option ) {
 			if ( sbp_get_option( $option ) ) {
-				$filename = SBP_PATH . 'includes/wp-config-options/' . $option . '.php';
+				$filename = SBP_PATH . 'templates/php/wp-config/' . $option . '.php';
 				if ( \file_exists( $filename ) ) {
 					self::$wp_config_inject_content[] = file_get_contents( $filename );
 				}

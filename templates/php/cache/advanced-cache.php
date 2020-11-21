@@ -16,21 +16,13 @@ if ( ! empty( $_COOKIE ) ) {
 	}
 }
 
-// Get settings
-$settings_file = WP_CONTENT_DIR . '/cache/speed-booster/settings.json';
-$settings      = sbp_parse_settings_file( $settings_file );
-
-if ( ! $settings ) {
-	return false;
-}
-
 // Set default file name
 $filename = 'index.html';
 
 // Check for query strings
-if ( ! empty( $_GET ) && isset( $settings['caching_include_query_strings'] ) ) {
+if ( ! empty( $_GET ) ) {
 	// Get included rules
-	$include_query_strings = sbp_explode_lines( $settings['caching_include_query_strings'] );
+	$include_query_strings = sbp_explode_lines( '{{__CACHING_QUERY_STRING_INCLUDES__}}' );
 
 	$query_string_file_name = '';
 	// Put all query string parameters in order to generate same filename even if parameter order is different
@@ -57,19 +49,15 @@ if ( ! is_readable( $cache_file_path ) ) {
 }
 
 // Check if cache file is expired
-if ( isset( $settings['caching_expiry'] ) && ! empty( $settings['caching_expiry'] ) ) {
-	$caching_expiry = $settings['caching_expiry'] * HOUR_IN_SECONDS;
-	if ( ( filemtime( $cache_file_path ) + $caching_expiry ) < time() ) {
-		return false;
-	}
+$caching_expiry = '{{__CACHING_EXPIRY__}}' * HOUR_IN_SECONDS;
+if ( ( filemtime( $cache_file_path ) + $caching_expiry ) < time() ) {
+	return false;
 }
 
-if ( isset( $settings['caching_exclude_urls'] ) ) {
-	$exclude_urls = sbp_explode_lines( $settings['caching_exclude_urls'] );
-	$current_url  = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
-	if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
-		return false;
-	}
+$exclude_urls = sbp_explode_lines( '{{__CACHING_EXCLUDE_URLS__}}' );
+$current_url  = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
+if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
+	return false;
 }
 
 // output cached file
@@ -102,12 +90,9 @@ function sbp_is_mobile() {
 
 // generate cache path
 function get_cache_file_path() {
-	global $settings;
 	$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster';
 
-	if ( sbp_is_mobile() && isset( $settings['caching_separate_mobile'] ) && $settings['caching_separate_mobile'] ) {
-		$cache_dir = WP_CONTENT_DIR . '/cache/speed-booster/mobile';
-	}
+	'__SEPARATE_MOBILE_CACHING__';
 
 	$path = sprintf(
 		'%s%s%s%s',
@@ -128,19 +113,6 @@ function get_cache_file_path() {
 	}
 
 	return rtrim( $path, "/" ) . "/";
-}
-
-// read settings file
-function sbp_parse_settings_file( $settings_file ) {
-	if ( ! file_exists( $settings_file ) ) {
-		return false;
-	}
-
-	if ( ! $settings = json_decode( file_get_contents( $settings_file ), true ) ) {
-		return false;
-	}
-
-	return $settings;
 }
 
 function sbp_explode_lines( $text ) {
