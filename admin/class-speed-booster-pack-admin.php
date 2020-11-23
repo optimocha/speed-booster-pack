@@ -1087,19 +1087,18 @@ class Speed_Booster_Pack_Admin {
 					'title'  => __( 'Tools', 'speed-booster-pack' ),
 					'id'     => 'tools',
 					'icon'   => 'fa fa-tools',
-					'fields' => array(
-						array(
+					'fields' => [
+						[
 							'type'    => 'subheading',
 							/* translators: %s = Speed Booster Pack  */
 							'content' => sprintf( __( 'Backup %s Settings', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-						),
-						array(
+						],
+						[
 							'id'    => 'backup',
 							'type'  => 'backup',
 							'title' => '',
-						),
-
-					),
+						],
+					],
 				)
 			);
 			/* END Section: Tools */
