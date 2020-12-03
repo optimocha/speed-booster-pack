@@ -31,6 +31,7 @@ use SpeedBooster\SBP_JS_Optimizer;
 use SpeedBooster\SBP_Lazy_Loader;
 use SpeedBooster\SBP_Localize_Tracker;
 use SpeedBooster\SBP_Migrator;
+use SpeedBooster\SBP_Newsletter;
 use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Preboost;
 use SpeedBooster\SBP_Special;
@@ -155,6 +156,7 @@ class Speed_Booster_Pack {
 			return false;
 		}
 		new SBP_WP_Dashboard();
+		new SBP_Newsletter();
 		new SBP_Migrator();
 		new SBP_JS_Optimizer();
 		new SBP_Tweaks();

@@ -28,7 +28,7 @@
      * Although scripts in the WordPress core, Plugins and Themes may be
      * practising this, we should strive to set a better example in our own work.
      */
-    $(window).on('load', function() {
+    $(window).on('load', function () {
         $('span .sbp-cloudflare-test').attr('disabled', 'disabled').css('opacity', '0.6');
     });
 
@@ -158,7 +158,7 @@
                     $('.with-preloader::before, .with-preloader::after').remove();
                 }
             },
-            complete: function() {
+            complete: function () {
                 $('.sbp-cloudflare-test .sbp-cloudflare-spinner').hide();
                 $('.sbp-cloudflare-test').removeAttr('disabled').css('opacity', 1);
                 $('.sbp-cloudflare-fetching').remove();
@@ -186,6 +186,32 @@
             }
         }
 
+    });
+
+    $(document).on('submit', "#sbp-subscribe-newsletter-form", function (e) {
+        e.preventDefault();
+        var $form = $("#subscribe-newsletter-form");
+        var name = $form.find('input[name="first_name"]').val();
+        var email = $form.find('input[name="email"]').val();
+        var gdpr = $form.find('input[name="gdpr"]').val();
+        $('#sbp-newsletter-subscribe-button').attr('disabled', 'disabled').css('text-shadow', 'none');
+        $.ajax({
+            type: 'POST',
+            url: 'https://sendfox.com/form/104ezx/3o64jv',
+            data: {first_name: name, email: email, gdpr: gdpr},
+            success: function (data, statusText) {
+                $('.sbp-newsletter-success').show();
+                $('.sbp-subscribe-content-wrapper').hide();
+                $('#sbp-subscribe-newsletter-form').parent().parent().find('> p').hide();
+                if (statusText === 'success') {
+                    $.ajax({
+                        type: 'POST',
+                        url: ajaxurl,
+                        data: {action: 'sbp_hide_newsletter_pointer'}
+                    });
+                }
+            }
+        });
     });
 
 })(jQuery);
