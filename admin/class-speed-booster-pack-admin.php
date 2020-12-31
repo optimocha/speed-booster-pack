@@ -1391,6 +1391,10 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	public function set_notices() {
+		if (SBP_Utils::is_plugin_active('autoptimize/autoptimize.php')) {
+			SBP_Notice_Manager::display_notice( 'autoptimize_inline_defer_css', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf(__( 'It looks like Autoptimize is active on your site. Autoptimize\'s "defer and inline css" feature may cause conflict with %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME) . '</p>', 'warning', true, 'recurrent' );
+		}
+
 		// Set Sucuri Notice
 		if ( $transient_value = get_transient( 'sbp_clear_sucuri_cache' ) ) {
 			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ', 'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
