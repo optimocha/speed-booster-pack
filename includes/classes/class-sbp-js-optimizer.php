@@ -108,9 +108,9 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		'googletag.display',
 		'document.write',
 		'google_ad',
-		'adsbygoogle',
 		'<!--',
 		'JS_Optimizer_Comment_Placeholder',
+		'window.lazyLoadOptions',
 	];
 
 	/**
