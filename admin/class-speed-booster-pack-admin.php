@@ -708,7 +708,6 @@ class Speed_Booster_Pack_Admin {
 							'type'  => 'subheading',
 							'title' => 'Critical CSS',
 						],
-						
 						[
 							'id'      => 'enable_criticalcss',
 							'title'   => __( 'Enable', 'speed-booster-pack' ) . ' ' . __( ' Critical CSS', 'speed-booster-pack' ),
