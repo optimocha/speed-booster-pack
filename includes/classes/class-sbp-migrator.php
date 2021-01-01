@@ -83,7 +83,7 @@ class SBP_Migrator {
 			// Iterate through the plugins being updated and check if ours is there
 			foreach ( $options['plugins'] as $plugin ) {
 				if ( $plugin == $our_plugin ) {
-					SBP_WP_Config_Injector::generate_wp_config_inject_file();
+					SBP_WP_Config_Injector::inject_wp_config();
 					SBP_Cache::generate_htaccess();
 					SBP_Cache::set_wp_cache_constant();
 				}
