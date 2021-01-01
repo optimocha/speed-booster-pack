@@ -162,7 +162,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::generate_htaccess' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_WP_Config_Injector::generate_wp_config_inject_file' );
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_WP_Config_Injector::inject_wp_config' );
 
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 

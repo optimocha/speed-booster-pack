@@ -107,7 +107,7 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_dismissed_compat_notices' );
 }
 
-// Delete wp-config-inject from wp-config.php
+// Delete injected lines from wp-config.php
 if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {
 	$wp_config_file = ABSPATH . 'wp-config.php';
 } else {
