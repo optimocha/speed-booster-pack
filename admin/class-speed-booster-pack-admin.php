@@ -524,7 +524,7 @@ class Speed_Booster_Pack_Admin {
 					'class'      => 'js-exclude',
 					'type'       => 'code_editor',
 					'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
-					'default'    => 'js/jquery/jquery.js',
+					'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 				],
 				[
@@ -713,14 +713,14 @@ class Speed_Booster_Pack_Admin {
 							'title'   => __( 'Enable', 'speed-booster-pack' ) . ' ' . __( ' Critical CSS', 'speed-booster-pack' ),
 							'type'    => 'switcher',
 							'default' => false,
-							'desc'     => sprintf(__('Critical CSS is a method to optimize CSS delivery, <a href="%s" rel="external noopener" target="_blank">recommended by Google</a>. It allows you to defer all your CSS files and inline the styles of your content above the fold. You can generate critical CSS needed for your website <a href="%s" rel="external noopener" target="_blank">using a tool like this</a> and paste them below.', 'speed-booster-pack'), 'https://web.dev/extract-critical-css/', 'https://www.sitelocity.com/critical-path-css-generator'),
+							'desc'    => sprintf( __( 'Critical CSS is a method to optimize CSS delivery, <a href="%s" rel="external noopener" target="_blank">recommended by Google</a>. It allows you to defer all your CSS files and inline the styles of your content above the fold. You can generate critical CSS needed for your website <a href="%s" rel="external noopener" target="_blank">using a tool like this</a> and paste them below.', 'speed-booster-pack' ), 'https://web.dev/extract-critical-css/', 'https://www.sitelocity.com/critical-path-css-generator' ),
 						],
 						[
 							'id'       => 'criticalcss_default',
 							'type'     => 'code_editor',
 							'before'   => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
 							'sanitize' => 'sbp_sanitize_strip_tags',
-							'desc' => sprintf(__('This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. <a href="%s" rel="external noopener" target="_blank">Learn more about the template hierarchy of WordPress.</a>', 'speed-booster-pack'), 'https://developer.wordpress.org/themes/basics/template-hierarchy/'),
+							'desc'     => sprintf( __( 'This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. <a href="%s" rel="external noopener" target="_blank">Learn more about the template hierarchy of WordPress.</a>', 'speed-booster-pack' ), 'https://developer.wordpress.org/themes/basics/template-hierarchy/' ),
 						],
 						[
 							'id'         => 'criticalcss_codes',
@@ -735,7 +735,7 @@ class Speed_Booster_Pack_Admin {
 											'id'   => 'is_front_page',
 											'type' => 'code_editor',
 //											'title' => 'CSS Code',
-											'desc' => sprintf(__('This CSS block will be injected into the front page of your website. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack'), 'https://developer.wordpress.org/reference/functions/is_front_page/', '<code>is_front_page()</code>'),
+											'desc' => sprintf( __( 'This CSS block will be injected into the front page of your website. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack' ), 'https://developer.wordpress.org/reference/functions/is_front_page/', '<code>is_front_page()</code>' ),
 										],
 									],
 								],
@@ -746,7 +746,7 @@ class Speed_Booster_Pack_Admin {
 											'id'   => 'is_home',
 											'type' => 'code_editor',
 //											'title' => 'CSS Code',
-											'desc' => sprintf(__('This CSS block will be injected into the blog homepage of your website. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack'), 'https://developer.wordpress.org/reference/functions/is_home/', '<code>is_home()</code>'),
+											'desc' => sprintf( __( 'This CSS block will be injected into the blog homepage of your website. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack' ), 'https://developer.wordpress.org/reference/functions/is_home/', '<code>is_home()</code>' ),
 										],
 									],
 								],
@@ -757,7 +757,7 @@ class Speed_Booster_Pack_Admin {
 											'id'   => 'is_single',
 											'type' => 'code_editor',
 //											'title' => 'CSS Code',
-											'desc' => sprintf(__('This CSS block will be injected into all single posts. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack'), 'https://developer.wordpress.org/reference/functions/is_single/', '<code>is_single()</code>'),
+											'desc' => sprintf( __( 'This CSS block will be injected into all single posts. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack' ), 'https://developer.wordpress.org/reference/functions/is_single/', '<code>is_single()</code>' ),
 										],
 									],
 								],
@@ -768,7 +768,7 @@ class Speed_Booster_Pack_Admin {
 											'id'   => 'is_page',
 											'type' => 'code_editor',
 //											'title' => 'CSS Code',
-											'desc' => sprintf(__('This CSS block will be injected into all static pages. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack'), 'https://developer.wordpress.org/reference/functions/is_page/', '<code>is_page()</code>'),
+											'desc' => sprintf( __( 'This CSS block will be injected into all static pages. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack' ), 'https://developer.wordpress.org/reference/functions/is_page/', '<code>is_page()</code>' ),
 										],
 									],
 								],
@@ -779,7 +779,7 @@ class Speed_Booster_Pack_Admin {
 											'id'   => 'is_category',
 											'type' => 'code_editor',
 //											'title' => 'CSS Code',
-											'desc' => sprintf(__('This CSS block will be injected into all category archive pages. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack'), '1. https://developer.wordpress.org/reference/functions/is_category/', '<code>is_category()</code>'),
+											'desc' => sprintf( __( 'This CSS block will be injected into all category archive pages. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack' ), '1. https://developer.wordpress.org/reference/functions/is_category/', '<code>is_category()</code>' ),
 										],
 									],
 								],
@@ -790,7 +790,7 @@ class Speed_Booster_Pack_Admin {
 											'id'   => 'is_tag',
 											'type' => 'code_editor',
 //											'title' => 'CSS Code',
-											'desc' => sprintf(__('This CSS block will be injected into all tag archive pages. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack'), 'https://developer.wordpress.org/reference/functions/is_tag/', '<code>is_tag()</code>'),
+											'desc' => sprintf( __( 'This CSS block will be injected into all tag archive pages. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack' ), 'https://developer.wordpress.org/reference/functions/is_tag/', '<code>is_tag()</code>' ),
 										],
 									],
 								],
@@ -801,7 +801,7 @@ class Speed_Booster_Pack_Admin {
 											'id'   => 'is_archive',
 											'type' => 'code_editor',
 //											'title' => 'CSS Code',
-											'desc' => sprintf(__('This CSS block will be injected into all archive pages. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack'), 'https://developer.wordpress.org/reference/functions/is_archive/', '<code>is_archive()</code>'),
+											'desc' => sprintf( __( 'This CSS block will be injected into all archive pages. <a href="%s" rel="external noopener" target="_blank">Learn more about %s.</a>', 'speed-booster-pack' ), 'https://developer.wordpress.org/reference/functions/is_archive/', '<code>is_archive()</code>' ),
 										],
 									],
 								],
@@ -1391,8 +1391,8 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	public function set_notices() {
-		if (SBP_Utils::is_plugin_active('autoptimize/autoptimize.php')) {
-			SBP_Notice_Manager::display_notice( 'autoptimize_inline_defer_css', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf(__( 'It looks like Autoptimize is active on your site. Autoptimize\'s "defer and inline css" feature may cause conflict with %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME) . '</p>', 'warning', true, 'recurrent' );
+		if ( SBP_Utils::is_plugin_active( 'autoptimize/autoptimize.php' ) ) {
+			SBP_Notice_Manager::display_notice( 'autoptimize_inline_defer_css', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'It looks like Autoptimize is active on your site. Autoptimize\'s "defer and inline css" feature may cause conflict with %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>', 'warning', true, 'recurrent' );
 		}
 
 		// Set Sucuri Notice
