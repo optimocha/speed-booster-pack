@@ -12,7 +12,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	private $noscripts = [];
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) || sbp_should_disable_feature('lazyload') ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) || sbp_should_disable_feature( 'lazyload' ) ) {
 			return;
 		}
 
@@ -63,25 +63,32 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 					},  
 					false
 				);';
-		$lazy_loader_script = apply_filters('sbp_lazyload_script', $lazy_loader_script);
+		$lazy_loader_script = apply_filters( 'sbp_lazyload_script', $lazy_loader_script );
 		wp_add_inline_script( 'sbp-lazy-load', $lazy_loader_script );
 	}
 
 	function lazy_load_handler( $html ) {
+		if ( is_embed() != false ) {
+			return $html;
+		}
+
 		$this->replace_with_noscripts( $html );
 
 		$lazyload_exclusions = SBP_Utils::explode_lines( sbp_get_option( 'lazyload_exclude' ) );
 		// Add default lazyload exclusions
-		$lazyload_exclusions[] = 'data-no-lazy';
-		$lazyload_exclusions[] = 'skip-lazy';
-		$lazyload_exclusions[] = 'loading=eager';
-		$lazyload_exclusions[] = 'loading="eager';
-		$lazyload_exclusions[] = "loading='eager";
-		$lazyload_exclusions[] = 'loading=auto';
-		$lazyload_exclusions[] = 'loading="auto';
-		$lazyload_exclusions[] = "loading='auto";
-		$lazyload_exclusions   = apply_filters( 'sbp_lazyload_exclusions', $lazyload_exclusions );
-		$placeholder           = 'data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%203%202%27%3E%3C/svg%3E';
+		$default_lazyload_exclusions = [
+			'data-no-lazy',
+			'skip-lazy',
+			'loading=eager',
+			'loading="eager"',
+			'loading=\'eager\'',
+			'loading=auto',
+			'loading="auto"',
+			'loading=\'auto\'',
+			'wp-embedded-content',
+		];
+		$lazyload_exclusions         = apply_filters( 'sbp_lazyload_exclusions', array_merge( $lazyload_exclusions, $default_lazyload_exclusions ) );
+		$placeholder                 = 'data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%203%202%27%3E%3C/svg%3E';
 
 		// Find all images
 		preg_match_all( '/<(img|source|iframe)(.*?) (src=)[\'|"](.*?)[\'|"](.*?)>/is', $html, $resource_elements );
