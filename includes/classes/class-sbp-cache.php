@@ -149,17 +149,16 @@ class SBP_Cache extends SBP_Abstract_Module {
 			// Get included rules
 			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
 
-			$query_string_file_name = 'index';
+			$query_string_file_name = '';
 			// Order get parameters alphabetically (to get same filename for every order of query parameters)
 			ksort( $_GET );
 			foreach ( $_GET as $key => $value ) {
 				if ( in_array( $key, $include_query_strings ) ) {
-					$query_string_file_name .= "-$key-$value";
+					$query_string_file_name .= "$key-$value-";
 				}
 			}
 			if ( '' !== $query_string_file_name ) {
-				$query_string_file_name .= '.html';
-				$this->file_name        = md5( $query_string_file_name );
+				$this->file_name        = md5( $query_string_file_name ) . '.html';
 			}
 		}
 

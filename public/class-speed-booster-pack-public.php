@@ -55,15 +55,13 @@ class Speed_Booster_Pack_Public {
 
 	/**
 	 * Basically a hook for functions which use output buffer
-	 *
-	 * @param string $html html response from output buffer
 	 */
 	public function template_redirect() {
 		ob_start( [ $this, 'output_buffer' ] );
 	}
 
 	public function output_buffer( $html ) {
-		$html = apply_filters( 'sbp_output_buffer', $html );
+		$html  = apply_filters( 'sbp_output_buffer', $html );
 
 		return $html;
 	}

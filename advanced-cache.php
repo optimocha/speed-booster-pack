@@ -45,8 +45,7 @@ if ( ! empty( $_GET ) && isset( $settings['caching_include_query_strings'] ) ) {
 	}
 
 	if ( '' !== $query_string_file_name ) {
-		$query_string_file_name .= '.html';
-		$filename               = md5( $query_string_file_name );
+		$filename = md5( $query_string_file_name ) . '.html';
 	}
 }
 
