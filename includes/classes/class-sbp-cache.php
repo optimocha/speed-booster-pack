@@ -488,6 +488,8 @@ AddEncoding gzip              svgz
   ExpiresByType image/jpeg                            "access plus 1 month"
   ExpiresByType image/png                             "access plus 1 month"
   ExpiresByType image/apng                            "access plus 1 month"
+  ExpiresByType image/avif                            "access plus 1 month"
+  ExpiresByType image/avif-sequence                   "access plus 1 month"
   ExpiresByType image/svg+xml                         "access plus 1 month"
   ExpiresByType image/webp                            "access plus 1 month"
   ExpiresByType video/mp4                             "access plus 1 month"
