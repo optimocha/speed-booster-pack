@@ -328,31 +328,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things. Let\'s begin!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-						],
-						[
-							'type'    => 'notice',
-							'style'   => 'success',
-							'content' => 'This is a notice field. And using style "success"',
-						],
-						[
-							'type'    => 'notice',
-							'style'   => 'warning',
-							'content' => 'This is a notice field. And using style "success"',
-						],
-						[
-							'type'    => 'notice',
-							'style'   => 'error',
-							'content' => 'This is a notice field. And using style "success"',
-						],
-						[
-							'type'    => 'content',
-							'content' => 'This is a content field. You can write some html here.',
-						],
-						[
-							'type'    => 'submessage',
-							'style'   => 'success',
-							'content' => 'This is a submessage field. And using style "success"',
+							'content' => sprintf( __( 'This experimental feature is here to show you how easy it is to get top scores with Google PageSpeed (or Lighthouse to be exact), and how meaningless it is to obsess over these metrics. Google doesn\'t have a guideline about any penalties for websites manipulating Lighthouse metrics, but that doesn\'t mean they won\'t. Thus, take this feature as a joke and use only to experiment. By activating the feature, you acknowledge that you have sole responsibility for any kind of effects on your website.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						],
 						[
 							/* translators: %s = PageSpeed Tricker  */
