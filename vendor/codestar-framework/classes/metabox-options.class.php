@@ -25,10 +25,12 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
       'exclude_post_types' => array(),
       'page_templates'     => '',
       'post_formats'       => '',
+      'show_reset'         => false,
       'show_restore'       => false,
       'enqueue_webfont'    => true,
       'async_webfont'      => false,
       'output_css'         => true,
+      'nav'                => 'normal',
       'theme'              => 'dark',
       'class'              => '',
       'defaults'           => array(),
@@ -139,7 +141,7 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
     public function add_meta_box( $post_type ) {
 
       if ( ! in_array( $post_type, $this->args['exclude_post_types'] ) ) {
-        add_meta_box( $this->unique, wp_kses_post( $this->args['title'] ), array( &$this, 'add_meta_box_content' ), $this->post_type, $this->args['context'], $this->args['priority'], $this->args );
+        add_meta_box( $this->unique, $this->args['title'], array( &$this, 'add_meta_box_content' ), $this->post_type, $this->args['context'], $this->args['priority'], $this->args );
       }
 
     }
@@ -185,11 +187,13 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
 
       global $post;
 
-      $has_nav  = ( count( $this->sections ) > 1 && $this->args['context'] !== 'side' ) ? true : false;
-      $show_all = ( ! $has_nav ) ? ' csf-show-all' : '';
-      $errors   = ( is_object ( $post ) ) ? get_post_meta( $post->ID, '_csf_errors_'. $this->unique, true ) : array();
-      $errors   = ( ! empty( $errors ) ) ? $errors : array();
-      $theme    = ( $this->args['theme'] ) ? ' csf-theme-'. $this->args['theme'] : '';
+      $has_nav   = ( count( $this->sections ) > 1 && $this->args['context'] !== 'side' ) ? true : false;
+      $show_all  = ( ! $has_nav ) ? ' csf-show-all' : '';
+      $post_type = ( is_object ( $post ) ) ? $post->post_type : '';
+      $errors    = ( is_object ( $post ) ) ? get_post_meta( $post->ID, '_csf_errors_'. $this->unique, true ) : array();
+      $errors    = ( ! empty( $errors ) ) ? $errors : array();
+      $theme     = ( $this->args['theme'] ) ? ' csf-theme-'. $this->args['theme'] : '';
+      $nav_type  = ( $this->args['nav'] === 'inline' ) ? 'inline' : 'normal';
 
       if ( is_object ( $post ) && ! empty( $errors ) ) {
         delete_post_meta( $post->ID, '_csf_errors_'. $this->unique );
@@ -203,7 +207,7 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
 
           if ( $has_nav ) {
 
-            echo '<div class="csf-nav csf-nav-metabox">';
+            echo '<div class="csf-nav csf-nav-'. esc_attr( $nav_type ) .' csf-nav-metabox">';
 
               echo '<ul>';
 
@@ -211,10 +215,14 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
 
               foreach ( $this->sections as $section ) {
 
+                if ( ! empty( $section['post_type'] ) && ! in_array( $post_type, array_filter( (array) $section['post_type'] ) ) ) {
+                  continue;
+                }
+
                 $tab_error = ( ! empty( $errors['sections'][$tab_key] ) ) ? '<i class="csf-label-error csf-error">!</i>' : '';
                 $tab_icon  = ( ! empty( $section['icon'] ) ) ? '<i class="csf-tab-icon '. esc_attr( $section['icon'] ) .'"></i>' : '';
 
-                echo '<li><a href="#">'. wp_kses_post( $tab_icon . $section['title'] . $tab_error ) .'</a></li>';
+                echo '<li><a href="#">'. $tab_icon . $section['title'] . $tab_error .'</a></li>';
 
                 $tab_key++;
 
@@ -234,14 +242,18 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
 
             foreach ( $this->sections as $section ) {
 
+              if ( ! empty( $section['post_type'] ) && ! in_array( $post_type, array_filter( (array) $section['post_type'] ) ) ) {
+                continue;
+              }
+
               $section_onload = ( ! $has_nav ) ? ' csf-onload' : '';
               $section_class  = ( ! empty( $section['class'] ) ) ? ' '. $section['class'] : '';
               $section_title  = ( ! empty( $section['title'] ) ) ? $section['title'] : '';
               $section_icon   = ( ! empty( $section['icon'] ) ) ? '<i class="csf-section-icon '. esc_attr( $section['icon'] ) .'"></i>' : '';
 
-              echo '<div class="csf-section'. esc_attr( $section_onload . $section_class ) .'">';
+              echo '<div class="csf-section hidden'. esc_attr( $section_onload . $section_class ) .'">';
 
-              echo ( $section_title || $section_icon ) ? '<div class="csf-section-title"><h3>'. wp_kses_post( $section_icon . $section_title ) .'</h3></div>' : '';
+              echo ( $section_title || $section_icon ) ? '<div class="csf-section-title"><h3>'. $section_icon . $section_title .'</h3></div>' : '';
 
               if ( ! empty( $section['fields'] ) ) {
 
@@ -261,7 +273,7 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
 
               } else {
 
-                echo '<div class="csf-no-option">'. esc_html__( 'No option provided by developer.', 'csf' ) .'</div>';
+                echo '<div class="csf-no-option">'. esc_html__( 'No data available.', 'csf' ) .'</div>';
 
               }
 
@@ -273,13 +285,13 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
 
             echo '</div>';
 
-            if ( ! empty( $this->args['show_restore'] ) ) {
+            if ( ! empty( $this->args['show_restore'] ) || ! empty( $this->args['show_reset'] ) ) {
 
-              echo '<div class="csf-sections-restore">';
+              echo '<div class="csf-sections-reset">';
               echo '<label>';
-              echo '<input type="checkbox" name="'. esc_attr( $this->unique ) .'[_restore]" />';
-              echo '<span class="button csf-button-restore">'. esc_html__( 'Restore', 'csf' ) .'</span>';
-              echo '<span class="button csf-button-cancel">'. sprintf( '<small>( %s )</small> %s', esc_html__( 'update post for restore ', 'csf' ), esc_html__( 'Cancel', 'csf' ) ) .'</span>';
+              echo '<input type="checkbox" name="'. esc_attr( $this->unique ) .'[_reset]" />';
+              echo '<span class="button csf-button-reset">'. esc_html__( 'Reset', 'csf' ) .'</span>';
+              echo '<span class="button csf-button-cancel">'. sprintf( '<small>( %s )</small> %s', esc_html__( 'update post', 'csf' ), esc_html__( 'Cancel', 'csf' ) ) .'</span>';
               echo '</label>';
               echo '</div>';
 
@@ -287,7 +299,7 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
 
           echo '</div>';
 
-          echo ( $has_nav ) ? '<div class="csf-nav-background"></div>' : '';
+          echo ( $has_nav && $nav_type === 'normal' ) ? '<div class="csf-nav-background"></div>' : '';
 
           echo '<div class="clear"></div>';
 
@@ -377,7 +389,7 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
 
       do_action( "csf_{$this->unique}_save_before", $data, $post_id, $this );
 
-      if ( empty( $data ) || ! empty( $request['_restore'] ) ) {
+      if ( empty( $data ) || ! empty( $request['_reset'] ) ) {
 
         if ( $this->args['data_type'] !== 'serialize' ) {
           foreach ( $data as $key => $value ) {

@@ -12,7 +12,7 @@ if ( ! class_exists( 'CSF' ) ) {
 
     // Default constants
     public static $premium  = true;
-    public static $version  = '2.1.7';
+    public static $version  = '2.2.1';
     public static $dir      = '';
     public static $url      = '';
     public static $css      = '';
@@ -56,6 +56,7 @@ if ( ! class_exists( 'CSF' ) ) {
       add_action( 'admin_enqueue_scripts', array( 'CSF', 'add_admin_enqueue_scripts' ) );
       add_action( 'wp_enqueue_scripts', array( 'CSF', 'add_typography_enqueue_styles' ), 80 );
       add_action( 'wp_head', array( 'CSF', 'add_custom_css' ), 80 );
+      add_filter( 'admin_body_class', array( 'CSF', 'add_admin_body_class' ) );
 
     }
 
@@ -215,8 +216,13 @@ if ( ! class_exists( 'CSF' ) ) {
         }
 
         // Once editor setup for gutenberg and media buttons
-        if ( ! empty( CSF::$shortcode_instances ) ) {
-          CSF_Shortcoder::once_editor_setup();
+        if ( ! empty( self::$shortcode_instances ) ) {
+          foreach ( self::$shortcode_instances as $instance ) {
+            if ( ! empty( $instance['show_in_editor'] ) ) {
+              CSF_Shortcoder::once_editor_setup();
+              break;
+            }
+          }
         }
 
       }
@@ -281,9 +287,9 @@ if ( ! class_exists( 'CSF' ) ) {
     public static function constants() {
 
       // We need this path-finder code for set URL of framework
-      $dirname        = wp_normalize_path( dirname( dirname( __FILE__ ) ) );
-      $theme_dir      = wp_normalize_path( get_parent_theme_file_path() );
-      $plugin_dir     = wp_normalize_path( WP_PLUGIN_DIR );
+      $dirname        = str_replace( '//', '/', wp_normalize_path( dirname( dirname( __FILE__ ) ) ) );
+      $theme_dir      = str_replace( '//', '/', wp_normalize_path( get_parent_theme_file_path() ) );
+      $plugin_dir     = str_replace( '//', '/', wp_normalize_path( WP_PLUGIN_DIR ) );
       $located_plugin = ( preg_match( '#'. self::sanitize_dirname( $plugin_dir ) .'#', self::sanitize_dirname( $dirname ) ) ) ? true : false;
       $directory      = ( $located_plugin ) ? $plugin_dir : $theme_dir;
       $directory_uri  = ( $located_plugin ) ? WP_PLUGIN_URL : get_parent_theme_file_uri();
@@ -426,63 +432,63 @@ if ( ! class_exists( 'CSF' ) ) {
       $enqueue  = false;
       $wpscreen = get_current_screen();
 
-      if( ! empty( self::$args['admin_options'] ) ) {
+      if ( ! empty( self::$args['admin_options'] ) ) {
         foreach ( self::$args['admin_options'] as $argument ) {
-          if( substr( $wpscreen->id, -strlen( $argument['menu_slug'] ) ) === $argument['menu_slug'] ) {
+          if ( substr( $wpscreen->id, -strlen( $argument['menu_slug'] ) ) === $argument['menu_slug'] ) {
             $enqueue = true;
           }
         }
       }
 
-      if( ! empty( self::$args['metabox_options'] ) ) {
+      if ( ! empty( self::$args['metabox_options'] ) ) {
         foreach ( self::$args['metabox_options'] as $argument ) {
-          if( in_array( $wpscreen->post_type, (array) $argument['post_type'] ) ) {
+          if ( in_array( $wpscreen->post_type, (array) $argument['post_type'] ) ) {
             $enqueue = true;
           }
         }
       }
 
-      if( ! empty( self::$args['taxonomy_options'] ) ) {
+      if ( ! empty( self::$args['taxonomy_options'] ) ) {
         foreach ( self::$args['taxonomy_options'] as $argument ) {
-          if( $wpscreen->taxonomy === $argument['taxonomy'] ) {
+          if ( $wpscreen->taxonomy === $argument['taxonomy'] ) {
             $enqueue = true;
           }
         }
       }
 
-      if( ! empty( self::$args['shortcode_options'] ) ) {
-        foreach ( self::$args['shortcode_options'] as $argument ) {
-          if( $argument['show_in_editor'] && $wpscreen->base === 'post' ) {
+      if ( ! empty( self::$shortcode_instances ) ) {
+        foreach ( self::$shortcode_instances as $argument ) {
+          if ( ( $argument['show_in_editor'] && $wpscreen->base === 'post' ) || $argument['show_in_custom'] ) {
             $enqueue = true;
           }
         }
       }
 
-      if( ! empty( self::$args['widget_options'] ) && ( $wpscreen->id === 'widgets' || $wpscreen->id === 'customize' ) ) {
+      if ( ! empty( self::$args['widget_options'] ) && ( $wpscreen->id === 'widgets' || $wpscreen->id === 'customize' ) ) {
         $enqueue = true;
       }
 
-      if( ! empty( self::$args['customize_options'] ) && $wpscreen->id === 'customize' ) {
+      if ( ! empty( self::$args['customize_options'] ) && $wpscreen->id === 'customize' ) {
         $enqueue = true;
       }
 
-      if( ! empty( self::$args['nav_menu_options'] ) && $wpscreen->id === 'nav-menus' ) {
+      if ( ! empty( self::$args['nav_menu_options'] ) && $wpscreen->id === 'nav-menus' ) {
         $enqueue = true;
       }
 
-      if( ! empty( self::$args['profile_options'] ) && $wpscreen->id === 'profile' ) {
+      if ( ! empty( self::$args['profile_options'] ) && ( $wpscreen->id === 'profile' || $wpscreen->id === 'user-edit' ) ) {
         $enqueue = true;
       }
 
-      if( ! empty( self::$args['comment_options'] ) && $wpscreen->id === 'comment' ) {
+      if ( ! empty( self::$args['comment_options'] ) && $wpscreen->id === 'comment' ) {
         $enqueue = true;
       }
 
-      if( $wpscreen->id === 'tools_page_csf-welcome' ) {
+      if ( $wpscreen->id === 'tools_page_csf-welcome' ) {
         $enqueue = true;
       }
 
-      if( ! $enqueue ) {
+      if ( ! $enqueue ) {
         return;
       }
 
@@ -500,35 +506,30 @@ if ( ! class_exists( 'CSF' ) ) {
       if ( apply_filters( 'csf_fa4', false ) ) {
         wp_enqueue_style( 'csf-fa', 'https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome'. $min .'.css', array(), '4.7.0', 'all' );
       } else {
-        wp_enqueue_style( 'csf-fa5', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/all'. $min .'.css', array(), '5.13.0', 'all' );
-        wp_enqueue_style( 'csf-fa5-v4-shims', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.0/css/v4-shims'. $min .'.css', array(), '5.13.0', 'all' );
+        wp_enqueue_style( 'csf-fa5', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all'. $min .'.css', array(), '5.14.0', 'all' );
+        wp_enqueue_style( 'csf-fa5-v4-shims', 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/v4-shims'. $min .'.css', array(), '5.14.0', 'all' );
       }
 
       // Main style
-      wp_enqueue_style( 'csf', CSF::include_plugin_url( 'assets/css/style'. $min .'.css' ), array(), self::$version, 'all' );
+      wp_enqueue_style( 'csf', self::include_plugin_url( 'assets/css/style'. $min .'.css' ), array(), self::$version, 'all' );
 
       // Main RTL styles
       if ( is_rtl() ) {
-        wp_enqueue_style( 'csf-rtl', CSF::include_plugin_url( 'assets/css/style-rtl'. $min .'.css' ), array(), self::$version, 'all' );
+        wp_enqueue_style( 'csf-rtl', self::include_plugin_url( 'assets/css/style-rtl'. $min .'.css' ), array(), self::$version, 'all' );
       }
 
       // Main scripts
-      wp_enqueue_script( 'csf-plugins', CSF::include_plugin_url( 'assets/js/plugins'. $min .'.js' ), array(), self::$version, true );
-      wp_enqueue_script( 'csf', CSF::include_plugin_url( 'assets/js/main'. $min .'.js' ), array( 'csf-plugins' ), self::$version, true );
+      wp_enqueue_script( 'csf-plugins', self::include_plugin_url( 'assets/js/plugins'. $min .'.js' ), array(), self::$version, true );
+      wp_enqueue_script( 'csf', self::include_plugin_url( 'assets/js/main'. $min .'.js' ), array( 'csf-plugins' ), self::$version, true );
 
       // Main variables
       wp_localize_script( 'csf', 'csf_vars', array(
-        'color_palette'  => apply_filters( 'csf_color_palette', array() ),
-        'i18n'           => array(
-          // global localize
-          'confirm'             => esc_html__( 'Are you sure?', 'csf' ),
-          'reset_notification'  => esc_html__( 'Restoring options.', 'csf' ),
-          'import_notification' => esc_html__( 'Importing options.', 'csf' ),
-
-          // chosen localize
+        'color_palette'     => apply_filters( 'csf_color_palette', array() ),
+        'i18n'              => array(
+          'confirm'         => esc_html__( 'Are you sure?', 'csf' ),
           'typing_text'     => esc_html__( 'Please enter %s or more characters', 'csf' ),
           'searching_text'  => esc_html__( 'Searching...', 'csf' ),
-          'no_results_text' => esc_html__( 'No results match', 'csf' ),
+          'no_results_text' => esc_html__( 'No results found.', 'csf' ),
         ),
       ) );
 
@@ -558,28 +559,58 @@ if ( ! class_exists( 'CSF' ) ) {
     // Add typography enqueue styles to front page
     public static function add_typography_enqueue_styles() {
 
-      if( ! empty( self::$webfonts ) ) {
+      if ( ! empty( self::$webfonts ) ) {
 
-        if( ! empty( self::$webfonts['enqueue'] ) ) {
+        if ( ! empty( self::$webfonts['enqueue'] ) ) {
 
-          $api    = '//fonts.googleapis.com/css';
-          $query  = array( 'family' => implode( '%7C', self::$webfonts['enqueue'] ), 'display' => 'swap' );
-          $handle = 'csf-google-web-fonts';
+          $query = array();
+          $fonts = array();
 
-          if( ! empty( self::$subsets ) ) {
+          foreach ( self::$webfonts['enqueue'] as $family => $styles ) {
+            $fonts[] = $family . ( ( ! empty( $styles ) ) ? ':'. implode( ',', $styles ) : '' );
+          }
+
+          if ( ! empty( $fonts ) ) {
+            $query['family'] = implode( '%7C', $fonts );
+          }
+
+          if ( ! empty( self::$subsets ) ) {
             $query['subset'] = implode( ',', self::$subsets );
           }
 
-          wp_enqueue_style( $handle, esc_url( add_query_arg( $query, $api ) ), array(), null );
+          $query['display'] = 'swap';
 
-        } else {
+          wp_enqueue_style( 'csf-google-web-fonts', esc_url( add_query_arg( $query, '//fonts.googleapis.com/css' ) ), array(), null );
+
+        }
+
+        if ( ! empty( self::$webfonts['async'] ) ) {
+
+          $fonts = array();
+
+          foreach ( self::$webfonts['async'] as $family => $styles ) {
+            $fonts[] = $family . ( ( ! empty( $styles ) ) ? ':'. implode( ',', $styles ) : '' );
+          }
 
           wp_enqueue_script( 'csf-google-web-fonts', esc_url( '//ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js' ), array(), null );
-          wp_localize_script( 'csf-google-web-fonts', 'WebFontConfig', array( 'google' => array( 'families' => array_values( self::$webfonts['async'] ) ) ) );
+
+          wp_localize_script( 'csf-google-web-fonts', 'WebFontConfig', array( 'google' => array( 'families' => $fonts ) ) );
 
         }
 
       }
+
+    }
+
+    // Add admin body class
+    public static function add_admin_body_class( $classes ) {
+
+      if ( apply_filters( 'csf_fa4', false ) ) {
+        $classes .= 'csf-fa5-shims';
+      }
+
+      return $classes;
+
     }
 
     // Add custom css to front page
@@ -600,7 +631,7 @@ if ( ! class_exists( 'CSF' ) ) {
         $field_type = $field['type'];
 
         $field            = array();
-        $field['content'] = sprintf( esc_html__( 'Ooops! This field type (%s) can not be used here, yet.', 'csf' ), '<strong>'. $field_type .'</strong>' );
+        $field['content'] = esc_html__( 'Oops! Not allowed.', 'csf' ) .' <strong>('. $field_type .')</strong>';
         $field['type']    = 'notice';
         $field['style']   = 'danger';
 
@@ -651,13 +682,13 @@ if ( ! class_exists( 'CSF' ) ) {
         echo '<div class="csf-field csf-field-'. $field_type . $is_pseudo . $class . $visible .'"'. $depend .'>';
 
         if ( ! empty( $field['fancy_title'] ) ) {
-          echo '<div class="csf-fancy-title">' . wp_kses_post( $field['fancy_title'] ) .'</div>';
+          echo '<div class="csf-fancy-title">' . $field['fancy_title'] .'</div>';
         }
 
         if ( ! empty( $field['title'] ) ) {
           echo '<div class="csf-title">';
-          echo '<h4>'. wp_kses_post( $field['title'] ) .'</h4>';
-          echo ( ! empty( $field['subtitle'] ) ) ? '<div class="csf-subtitle-text">'. wp_kses_post( $field['subtitle'] ) .'</div>' : '';
+          echo '<h4>'. $field['title'] .'</h4>';
+          echo ( ! empty( $field['subtitle'] ) ) ? '<div class="csf-subtitle-text">'. $field['subtitle'] .'</div>' : '';
           echo '</div>';
         }
 
@@ -674,11 +705,11 @@ if ( ! class_exists( 'CSF' ) ) {
           $instance = new $classname( $field, $value, $unique, $where, $parent );
           $instance->render();
         } else {
-          echo '<p>'. esc_html__( 'This field class is not available!', 'csf' ) .'</p>';
+          echo '<p>'. esc_html__( 'Field not found!', 'csf' ) .'</p>';
         }
 
       } else {
-        echo '<p>'. esc_html__( 'This type is not found!', 'csf' ) .'</p>';
+        echo '<p>'. esc_html__( 'Field not found!', 'csf' ) .'</p>';
       }
 
       echo ( ! empty( $field['title'] ) || ! empty( $field['fancy_title'] ) ) ? '</div>' : '';

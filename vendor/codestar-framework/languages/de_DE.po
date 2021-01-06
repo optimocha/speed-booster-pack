@@ -1,10 +1,8 @@
-# Copyright (C) 2020 Codestar
+# Copyright (C) 2021 Codestar
 # This file is distributed under the same license as the Codestar Framework package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Codestar Framework 2.1.7.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/codestar-"
-"framework\n"
+"Project-Id-Version: Codestar Framework 2.2.1\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
@@ -61,19 +59,18 @@ msgid "Are you sure to reset this section options?"
 msgstr "Bist du dir sicher?"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
-#: fields/backup/backup.php:31
 msgid "Reset All"
 msgstr "Alles zurücksetzen"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 #: classes/comment-options.class.php:213 classes/metabox-options.class.php:282
+#: fields/backup/backup.php:31
 msgid "Reset"
 msgstr "Zurücksetzen"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 msgid "Are you sure you want to reset all settings to default values?"
-msgstr ""
-"Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?"
+msgstr "Möchtest du wirklich alle Einstellungen auf ihre Standardwerte zurücksetzen?"
 
 #: classes/admin-options.class.php:668 classes/comment-options.class.php:196
 #: classes/metabox-options.class.php:265 fields/button_set/button_set.php:56
@@ -90,51 +87,35 @@ msgstr "aktualisierter beitrag"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: classes/setup.class.php:527
+#: classes/setup.class.php:529
 msgid "Are you sure?"
 msgstr "Bist du dir sicher?"
 
-#: classes/setup.class.php:528
+#: classes/setup.class.php:530
 msgid "Please enter %s or more characters"
 msgstr "Bitte %s oder mehr Buchstaben eingeben"
 
-#: classes/setup.class.php:529
+#: classes/setup.class.php:531
 msgid "Searching..."
 msgstr "Suche nach..."
 
-#: classes/setup.class.php:530
+#: classes/setup.class.php:532
 msgid "No results found."
 msgstr "Keine Ergebnisse."
 
-#: classes/setup.class.php:602
+#: classes/setup.class.php:615
 msgid "Oops! Not allowed."
 msgstr "Hoppla! Nicht zulässig."
 
-#: classes/setup.class.php:676 classes/setup.class.php:680
+#: classes/setup.class.php:689 classes/setup.class.php:693
 msgid "Field not found!"
 msgstr "Feld nicht gefunden!"
 
-#: classes/shortcode-options.class.php:35
-msgid "Add Shortcode"
-msgstr "Shortcode Hinzufügen"
-
-#: classes/shortcode-options.class.php:36
-msgid "Select a shortcode"
-msgstr "Shortcode auswählen"
-
-#: classes/shortcode-options.class.php:37
-msgid "Insert Shortcode"
-msgstr "Füge Shortcode ein"
-
-#: classes/shortcode-options.class.php:44
-msgid "Write shortcode here..."
-msgstr "Schreibe hier den shortcode..."
-
-#: classes/shortcode-options.class.php:239 fields/group/group.php:23
+#: classes/shortcode-options.class.php:251 fields/group/group.php:23
 msgid "Add New"
 msgstr "Neue hinzufügen"
 
-#: classes/shortcode-options.class.php:276 functions/actions.php:16
+#: classes/shortcode-options.class.php:288 functions/actions.php:16
 #: functions/actions.php:68 functions/actions.php:106 functions/actions.php:141
 #: functions/actions.php:170
 msgid "Error: Invalid nonce verification."
@@ -439,6 +420,18 @@ msgstr "Icon Hinzufügen"
 msgid "Remove Icon"
 msgstr "Icon Entfernen"
 
+#: fields/link/link.php:20
+msgid "Add Link"
+msgstr "Link hinzufügen"
+
+#: fields/link/link.php:21
+msgid "Edit Link"
+msgstr "Link bearbeiten"
+
+#: fields/link/link.php:22
+msgid "Remove Link"
+msgstr "Link entfernen"
+
 #: fields/link_color/link_color.php:37
 msgid "Hover"
 msgstr ""
@@ -657,3 +650,15 @@ msgstr "Dieses Feld ist erforderlich."
 #: functions/validate.php:68 functions/validate.php:146
 msgid "Please enter a valid URL."
 msgstr "Bitte gib eine gültige URL an."
+
+#~ msgid "Add Shortcode"
+#~ msgstr "Shortcode Hinzufügen"
+
+#~ msgid "Select a shortcode"
+#~ msgstr "Shortcode auswählen"
+
+#~ msgid "Insert Shortcode"
+#~ msgstr "Füge Shortcode ein"
+
+#~ msgid "Write shortcode here..."
+#~ msgstr "Schreibe hier den shortcode..."

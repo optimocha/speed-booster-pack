@@ -1,10 +1,8 @@
-# Copyright (C) 2020 Codestar
+# Copyright (C) 2021 Codestar
 # This file is distributed under the same license as the Codestar Framework package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Codestar Framework 2.1.7.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/codestar-"
-"framework\n"
+"Project-Id-Version: Codestar Framework 2.2.1\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
@@ -62,12 +60,12 @@ msgid "Are you sure to reset this section options?"
 msgstr "Êtes-vous sûr?"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
-#: fields/backup/backup.php:31
 msgid "Reset All"
 msgstr "Tout réinitialiser"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 #: classes/comment-options.class.php:213 classes/metabox-options.class.php:282
+#: fields/backup/backup.php:31
 msgid "Reset"
 msgstr "Réinitialiser"
 
@@ -92,51 +90,35 @@ msgstr "màj de publication"
 msgid "Cancel"
 msgstr "Annuler"
 
-#: classes/setup.class.php:527
+#: classes/setup.class.php:529
 msgid "Are you sure?"
 msgstr "Êtes-vous sûr?"
 
-#: classes/setup.class.php:528
+#: classes/setup.class.php:530
 msgid "Please enter %s or more characters"
 msgstr "Por favor, introduce %s o más caracteres"
 
-#: classes/setup.class.php:529
+#: classes/setup.class.php:531
 msgid "Searching..."
 msgstr "Recherche..."
 
-#: classes/setup.class.php:530
+#: classes/setup.class.php:532
 msgid "No results found."
 msgstr "Aucun résultat."
 
-#: classes/setup.class.php:602
+#: classes/setup.class.php:615
 msgid "Oops! Not allowed."
 msgstr "Oups! Non autorisé."
 
-#: classes/setup.class.php:676 classes/setup.class.php:680
+#: classes/setup.class.php:689 classes/setup.class.php:693
 msgid "Field not found!"
 msgstr "Champ introuvable!"
 
-#: classes/shortcode-options.class.php:35
-msgid "Add Shortcode"
-msgstr "Ajouter le code court"
-
-#: classes/shortcode-options.class.php:36
-msgid "Select a shortcode"
-msgstr "Sélectionner un code court"
-
-#: classes/shortcode-options.class.php:37
-msgid "Insert Shortcode"
-msgstr "Insertion de code court"
-
-#: classes/shortcode-options.class.php:44
-msgid "Write shortcode here..."
-msgstr "Placez le code court ici..."
-
-#: classes/shortcode-options.class.php:239 fields/group/group.php:23
+#: classes/shortcode-options.class.php:251 fields/group/group.php:23
 msgid "Add New"
 msgstr "Ajouter produit"
 
-#: classes/shortcode-options.class.php:276 functions/actions.php:16
+#: classes/shortcode-options.class.php:288 functions/actions.php:16
 #: functions/actions.php:68 functions/actions.php:106 functions/actions.php:141
 #: functions/actions.php:170
 msgid "Error: Invalid nonce verification."
@@ -441,6 +423,18 @@ msgstr "Ajouter Icône"
 msgid "Remove Icon"
 msgstr "Retirer Icône"
 
+#: fields/link/link.php:20
+msgid "Add Link"
+msgstr "Ajout de lien"
+
+#: fields/link/link.php:21
+msgid "Edit Link"
+msgstr "Lien d’édition"
+
+#: fields/link/link.php:22
+msgid "Remove Link"
+msgstr "Enlever le lien"
+
 #: fields/link_color/link_color.php:37
 msgid "Hover"
 msgstr ""
@@ -659,3 +653,15 @@ msgstr "Champ obligatoire."
 #: functions/validate.php:68 functions/validate.php:146
 msgid "Please enter a valid URL."
 msgstr "Veuillez saisir une adresse valide."
+
+#~ msgid "Add Shortcode"
+#~ msgstr "Ajouter le code court"
+
+#~ msgid "Select a shortcode"
+#~ msgstr "Sélectionner un code court"
+
+#~ msgid "Insert Shortcode"
+#~ msgstr "Insertion de code court"
+
+#~ msgid "Write shortcode here..."
+#~ msgstr "Placez le code court ici..."

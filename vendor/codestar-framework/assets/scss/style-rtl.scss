@@ -10,7 +10,7 @@
  *     01. 03. Navigation
  *     01. 04. Content
  *     01. 05. Section
- *     01. 06. Show All Options
+ *     01. 06. Show All Settings
  *     01. 07. Search Input
  *     01. 08. Copyright
  *     01. 09. Metabox
@@ -52,8 +52,6 @@
  * ---------------------------------------------------------
  *
  */
-@import "compass";
-@import "vendor/mixins";
 
 /**
  * 01. Base
@@ -116,7 +114,7 @@
       }
 
       &.csf-tab-expanded .csf-arrow:after{
-        @include transform( rotate(-90deg) );
+        transform: rotate(-90deg);
       }
     }
 
@@ -246,6 +244,11 @@
     .csf--blocks{
       flex-direction: row-reverse;
     }
+  }
+
+  .csf--unit{
+    left: 4px;
+    right: auto;
   }
 }
 
@@ -565,7 +568,7 @@
  */
 .csf-field-sortable{
 
-  .csf--sortable-helper{
+  .csf-sortable-helper{
     border-left: none;
     border-right: 1px solid #eee;
   }
@@ -578,6 +581,11 @@
 
   .csf--wrap{
     float: right;
+  }
+
+  .csf--unit{
+    left: 4px;
+    right: auto;
   }
 }
 

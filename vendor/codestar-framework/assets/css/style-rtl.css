@@ -10,7 +10,7 @@
  *     01. 03. Navigation
  *     01. 04. Content
  *     01. 05. Section
- *     01. 06. Show All Options
+ *     01. 06. Show All Settings
  *     01. 07. Search Input
  *     01. 08. Copyright
  *     01. 09. Metabox
@@ -107,9 +107,6 @@
   left: 10px;
 }
 .csf-nav ul li.csf-tab-expanded .csf-arrow:after {
-  -moz-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
 .csf-nav ul ul li a {
@@ -216,6 +213,10 @@
 }
 .csf-field-typography .csf--blocks-inputs .csf--blocks {
   flex-direction: row-reverse;
+}
+.csf-field-typography .csf--unit {
+  left: 4px;
+  right: auto;
 }
 
 /**
@@ -466,7 +467,7 @@
 /**
  * 02. 25. Field: sortable
  */
-.csf-field-sortable .csf--sortable-helper {
+.csf-field-sortable .csf-sortable-helper {
   border-left: none;
   border-right: 1px solid #eee;
 }
@@ -476,6 +477,10 @@
  */
 .csf-field-number .csf--wrap {
   float: right;
+}
+.csf-field-number .csf--unit {
+  left: 4px;
+  right: auto;
 }
 
 /**
