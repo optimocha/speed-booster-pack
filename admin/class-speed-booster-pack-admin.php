@@ -1308,7 +1308,7 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	public function set_notices() {
-		if ( SBP_Utils::is_plugin_active( 'autoptimize/autoptimize.php' ) && sbp_get_option( 'enable_criticalcss' ) && get_option( 'autoptimize_css_defer' ) ) {
+		if ( SBP_Utils::is_plugin_active( 'autoptimize/autoptimize.php' ) && sbp_get_option( 'enable_criticalcss' ) && get_option( 'autoptimize_css_defer' ) && sbp_get_option( 'module_css' ) ) {
 			SBP_Notice_Manager::display_notice( 'autoptimize_inline_defer_css', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'It looks like Autoptimize is active on your site. Autoptimize\'s "defer and inline css" feature may cause conflict with %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>', 'warning' );
 		}
 
