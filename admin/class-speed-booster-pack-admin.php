@@ -693,6 +693,7 @@ class Speed_Booster_Pack_Admin {
 							'type'    => 'switcher',
 							'default' => false,
 							'desc'    => sprintf( __( 'Critical CSS is a method to optimize CSS delivery, %1$srecommended by Google%2$s. It allows you to defer all your CSS files and inline the styles of your content above the fold. You can generate critical CSS needed for your website %3$susing a tool like this%4$s and paste them below.', 'speed-booster-pack' ), '<a href="https://web.dev/extract-critical-css/" rel="external noopener" target="_blank">', '</a>', '<a href="https://www.sitelocity.com/critical-path-css-generator" rel="external noopener" target="_blank">', '</a>' ),
+							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 						],
 						[
 							'id'       => 'criticalcss_default',
@@ -700,6 +701,7 @@ class Speed_Booster_Pack_Admin {
 							'before'   => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
 							'sanitize' => 'sbp_sanitize_strip_tags',
 							'desc'     => sprintf( __( 'This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. %1$sLearn more about the template hierarchy of WordPress.%2$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/themes/basics/template-hierarchy/" rel="external noopener" target="_blank">', '</a>' ),
+							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 						],
 						[
 							'id'         => 'criticalcss_codes',
@@ -778,6 +780,7 @@ class Speed_Booster_Pack_Admin {
 									],
 								],
 							],
+							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 						],
 						[
 							'title'   => __( 'Remove critical CSS after onload', 'speed-booster-pack' ),
@@ -787,6 +790,7 @@ class Speed_Booster_Pack_Admin {
 							// BEYNTODO: Change Text
 							'type'    => 'switcher',
 							'default' => true,
+							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 						],
 					],
 				]
