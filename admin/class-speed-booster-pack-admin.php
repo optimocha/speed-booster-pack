@@ -96,11 +96,13 @@ function sbp_sanitize_strip_tags( $value ) {
 function sbp_sanitize_caching_urls( $urls ) {
 	$urls = SBP_Utils::explode_lines( $urls );
 	foreach ( $urls as &$url ) {
-		$url = ltrim( $url, 'https://' );
-		$url = ltrim( $url, 'http://' );
-		$url = ltrim( $url, '//' );
-		$url = rtrim( $url, '/' );
+		$url = preg_replace( '#^https?://(.*?)#', '\1', $url );
+		$url = preg_replace( '#(.*?)\#(.*?)$#', '\1', $url );
+		$url = preg_replace( '#(.*?)\?(.*?)$#', '\1', $url );
+		$url = preg_replace( '#(.*?)\/$#', '\1', $url );
 	}
+
+	$urls = array_unique($urls);
 
 	return implode( PHP_EOL, $urls );
 }
