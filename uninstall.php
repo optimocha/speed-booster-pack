@@ -121,5 +121,3 @@ if ($wp_filesystem->is_writable($wp_config_file)) {
 } else {
 	wp_die('wp-config.php file is not writable. You might get a warning because of an include statement. Please remove lines between // BEGIN SP_WP_Config and // END SBP_WP_Config');
 }
-
-// TODO: uninstall.php: Also delete the sbp_announcements option and all the other transients & usermeta we put.
