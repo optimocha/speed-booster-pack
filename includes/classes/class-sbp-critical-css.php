@@ -58,7 +58,7 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 		}
 
 		$dom = new HtmlDocument();
-		$dom->load( $html );
+		$dom->load( $html, true, false );
 
 		// Find all links
 		$links = $dom->find( 'link[rel=stylesheet]' );

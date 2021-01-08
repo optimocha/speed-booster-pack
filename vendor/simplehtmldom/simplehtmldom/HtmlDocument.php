@@ -193,10 +193,10 @@ class HtmlDocument
 
 			// Edited By Speed Booster Pack. Do not minify html!
 			// Remove whitespace and newlines between tags
-//			$this->doc = preg_replace('/\>([\t\s]*[\r\n]^[\t\s]*)\</m', '><', $this->doc);
+			$this->doc = preg_replace('/\>([\t\s]*[\r\n]^[\t\s]*)\</m', '><', $this->doc);
 
 			// Remove whitespace and newlines in text
-//			$this->doc = preg_replace('/([\t\s]*[\r\n]^[\t\s]*)/m', ' ', $this->doc);
+			$this->doc = preg_replace('/([\t\s]*[\r\n]^[\t\s]*)/m', ' ', $this->doc);
 
 			// Restore temporarily removed elements and calculate new size
 			$this->doc = $this->restore_noise($this->doc);
