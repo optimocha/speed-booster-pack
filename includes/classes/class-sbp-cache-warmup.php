@@ -60,7 +60,8 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 		} else {
 			$urls = [];
 			$body = wp_remote_retrieve_body( $response );
-			$dom  = new HtmlDocument( $body, true, false );
+			$dom  = new HtmlDocument();
+			$dom->load( $body, true, false );
 			foreach ( $dom->find( 'a' ) as $anchor_tag ) {
 				$href = $anchor_tag->href;
 				if ( substr( $href, 0, 1 ) == '#' ) {
@@ -77,7 +78,9 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 					$urls[] = $href;
 					$this->warmup_process->push_to_queue( [ 'url' => $href ] );
 					if ( sbp_get_option( 'caching_separate_mobile' ) ) {
-						$this->warmup_process->push_to_queue( [ 'url' => $href, 'options' => ['user-agent' => 'Mobile'] ] );
+						$this->warmup_process->push_to_queue( [ 'url'     => $href,
+						                                        'options' => [ 'user-agent' => 'Mobile' ]
+						] );
 					}
 				}
 			}
