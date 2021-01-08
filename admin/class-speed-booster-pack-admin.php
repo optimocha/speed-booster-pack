@@ -168,7 +168,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 
-		$this->set_notices();
+		add_action( 'init', [ $this, 'set_notices' ] );
 
 		$this->initialize_announce4wp();
 
@@ -688,19 +688,19 @@ class Speed_Booster_Pack_Admin {
 							'title' => 'Critical CSS',
 						],
 						[
-							'id'      => 'enable_criticalcss',
-							'title'   => __( 'Enable', 'speed-booster-pack' ) . ' ' . __( ' Critical CSS', 'speed-booster-pack' ),
-							'type'    => 'switcher',
-							'default' => false,
-							'desc'    => sprintf( __( 'Critical CSS is a method to optimize CSS delivery, %1$srecommended by Google%2$s. It allows you to defer all your CSS files and inline the styles of your content above the fold. You can generate critical CSS needed for your website %3$susing a tool like this%4$s and paste them below.', 'speed-booster-pack' ), '<a href="https://web.dev/extract-critical-css/" rel="external noopener" target="_blank">', '</a>', '<a href="https://www.sitelocity.com/critical-path-css-generator" rel="external noopener" target="_blank">', '</a>' ),
+							'id'         => 'enable_criticalcss',
+							'title'      => __( 'Enable', 'speed-booster-pack' ) . ' ' . __( ' Critical CSS', 'speed-booster-pack' ),
+							'type'       => 'switcher',
+							'default'    => false,
+							'desc'       => sprintf( __( 'Critical CSS is a method to optimize CSS delivery, %1$srecommended by Google%2$s. It allows you to defer all your CSS files and inline the styles of your content above the fold. You can generate critical CSS needed for your website %3$susing a tool like this%4$s and paste them below.', 'speed-booster-pack' ), '<a href="https://web.dev/extract-critical-css/" rel="external noopener" target="_blank">', '</a>', '<a href="https://www.sitelocity.com/critical-path-css-generator" rel="external noopener" target="_blank">', '</a>' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 						],
 						[
-							'id'       => 'criticalcss_default',
-							'type'     => 'code_editor',
-							'before'   => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
-							'sanitize' => 'sbp_sanitize_strip_tags',
-							'desc'     => sprintf( __( 'This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. %1$sLearn more about the template hierarchy of WordPress.%2$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/themes/basics/template-hierarchy/" rel="external noopener" target="_blank">', '</a>' ),
+							'id'         => 'criticalcss_default',
+							'type'       => 'code_editor',
+							'before'     => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
+							'sanitize'   => 'sbp_sanitize_strip_tags',
+							'desc'       => sprintf( __( 'This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. %1$sLearn more about the template hierarchy of WordPress.%2$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/themes/basics/template-hierarchy/" rel="external noopener" target="_blank">', '</a>' ),
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
 						[
@@ -783,13 +783,13 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
 						[
-							'title'   => __( 'Remove critical CSS after onload', 'speed-booster-pack' ),
+							'title'      => __( 'Remove critical CSS after onload', 'speed-booster-pack' ),
 							// BEYNTODO: Change Text
-							'id'      => 'remove_criticalcss',
-							'desc'    => __( 'Remove critical CSS after all css files loaded.', 'speed-booster-pack' ),
+							'id'         => 'remove_criticalcss',
+							'desc'       => __( 'Remove critical CSS after all css files loaded.', 'speed-booster-pack' ),
 							// BEYNTODO: Change Text
-							'type'    => 'switcher',
-							'default' => true,
+							'type'       => 'switcher',
+							'default'    => true,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
 					],
@@ -1309,7 +1309,7 @@ class Speed_Booster_Pack_Admin {
 
 	public function set_notices() {
 		if ( SBP_Utils::is_plugin_active( 'autoptimize/autoptimize.php' ) && sbp_get_option( 'enable_criticalcss' ) && get_option( 'autoptimize_css_defer' ) ) {
-			SBP_Notice_Manager::display_notice( 'autoptimize_inline_defer_css', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'It looks like Autoptimize is active on your site. Autoptimize\'s "defer and inline css" feature may cause conflict with %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>', 'warning');
+			SBP_Notice_Manager::display_notice( 'autoptimize_inline_defer_css', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'It looks like Autoptimize is active on your site. Autoptimize\'s "defer and inline css" feature may cause conflict with %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>', 'warning' );
 		}
 
 		// Set Sucuri Notice
