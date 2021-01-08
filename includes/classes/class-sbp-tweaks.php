@@ -12,7 +12,6 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		'trim_query_strings'     => 'trim_query_strings',
 		'dequeue_emoji_scripts'  => 'dequeue_emoji_scripts',
 		'disable_self_pingbacks' => 'disable_self_pingbacks',
-		'dequeue_jquery_migrate' => 'dequeue_jquery_migrate',
 		'dequeue_dashicons'      => 'dequeue_dashicons',
 		'post_revisions'         => 'post_revisions',
 		'autosave_interval'      => 'autosave_interval',
@@ -158,12 +157,6 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		}
 	}
 
-	// Remove jQuery Migrate
-
-	private function dequeue_jquery_migrate() {
-		add_action( 'wp_default_scripts', [ $this, 'dequeue_jquery_migrate_handle' ] );
-	}
-
 	/**
 	 * @param $scripts
 	 */
@@ -258,9 +251,14 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 				add_filter( 'heartbeat_settings', [ $this, 'heartbeat_settings_handle' ] );
 				break;
 			case "disabled":
-				add_action( 'init', wp_deregister_script( 'heartbeat' ) );
+				add_action( 'wp_enqueue_scripts', [ $this, 'disable_heartbeat' ] );
+				add_action( 'admin_enqueue_scripts', [ $this, 'disable_heartbeat' ] );
 				break;
 		}
+	}
+
+	public function disable_heartbeat() {
+		wp_deregister_script( 'heartbeat' );
 	}
 
 	public function heartbeat_settings_handle() {

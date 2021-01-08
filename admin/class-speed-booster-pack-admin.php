@@ -848,13 +848,6 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
-							'title'      => __( 'Dequeue jQuery Migrate', 'speed-booster-pack' ),
-							'id'         => 'dequeue_jquery_migrate',
-							'type'       => 'switcher',
-							'desc'       => __( 'If you\'re sure that the jQuery plugins used in your website work with jQuery 1.9 and above, this is totally safe to enable.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
 							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
 							'id'         => 'dequeue_dashicons',
 							'type'       => 'switcher',

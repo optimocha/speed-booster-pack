@@ -14,7 +14,6 @@ class SBP_Migrator {
 		'query_strings'                   => 'trim_query_strings',
 		'remove_emojis'                   => 'dequeue_emoji_scripts',
 		'disable_self_pingbacks'          => 'disable_self_pingbacks',
-		'remove_jquery_migrate'           => 'dequeue_jquery_migrate',
 		'disable_dashicons'               => 'dequeue_dashicons',
 		'limit_post_revisions'            => 'post_revisions',
 		'autosave_interval'               => 'autosave_interval',
