@@ -701,7 +701,7 @@ class Speed_Booster_Pack_Admin {
 							'before'   => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
 							'sanitize' => 'sbp_sanitize_strip_tags',
 							'desc'     => sprintf( __( 'This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. %1$sLearn more about the template hierarchy of WordPress.%2$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/themes/basics/template-hierarchy/" rel="external noopener" target="_blank">', '</a>' ),
-							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
+							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
 						[
 							'id'         => 'criticalcss_codes',
@@ -780,7 +780,7 @@ class Speed_Booster_Pack_Admin {
 									],
 								],
 							],
-							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
+							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
 						[
 							'title'   => __( 'Remove critical CSS after onload', 'speed-booster-pack' ),
@@ -790,7 +790,7 @@ class Speed_Booster_Pack_Admin {
 							// BEYNTODO: Change Text
 							'type'    => 'switcher',
 							'default' => true,
-							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
+							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
 					],
 				]
