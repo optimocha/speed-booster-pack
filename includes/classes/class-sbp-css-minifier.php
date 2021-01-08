@@ -23,9 +23,8 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		}
 		$this->dom = new HtmlDocument();
 
-		$this->set_excptions();
+		$this->set_exceptions();
 
-//		add_action( 'wp_print_styles', [ $this, 'print_styles' ] );
 		add_filter( 'sbp_output_buffer', [ $this, 'print_styles' ] );
 	}
 

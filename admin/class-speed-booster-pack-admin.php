@@ -102,7 +102,7 @@ function sbp_sanitize_caching_urls( $urls ) {
 		$url = preg_replace( '#(.*?)\/$#', '\1', $url );
 	}
 
-	$urls = array_unique($urls);
+	$urls = array_unique( $urls );
 
 	return implode( PHP_EOL, $urls );
 }
@@ -328,7 +328,8 @@ class Speed_Booster_Pack_Admin {
 					'icon'   => 'fa fa-tachometer-alt',
 					'fields' => [
 						[
-							'type'    => 'content',
+							'type'    => 'submessage',
+							'style'   => 'warning',
 							/* translators: %s = Speed Booster Pack  */
 							'content' => sprintf( __( 'This experimental feature is here to show you how easy it is to get top scores with Google PageSpeed (or Lighthouse to be exact), and how meaningless it is to obsess over these metrics. Google doesn\'t have a guideline about any penalties for websites manipulating Lighthouse metrics, but that doesn\'t mean they won\'t. Thus, take this feature as a joke and use only to experiment. By activating the feature, you acknowledge that you have sole responsibility for any kind of effects on your website.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						],
@@ -1303,8 +1304,8 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	public function set_notices() {
-		if ( SBP_Utils::is_plugin_active( 'autoptimize/autoptimize.php' ) ) {
-			SBP_Notice_Manager::display_notice( 'autoptimize_inline_defer_css', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'It looks like Autoptimize is active on your site. Autoptimize\'s "defer and inline css" feature may cause conflict with %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>', 'warning', true, 'recurrent' );
+		if ( SBP_Utils::is_plugin_active( 'autoptimize/autoptimize.php' ) && sbp_get_option( 'enable_criticalcss' ) && get_option( 'autoptimize_css_defer' ) ) {
+			SBP_Notice_Manager::display_notice( 'autoptimize_inline_defer_css', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . sprintf( __( 'It looks like Autoptimize is active on your site. Autoptimize\'s "defer and inline css" feature may cause conflict with %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>', 'warning');
 		}
 
 		// Set Sucuri Notice
