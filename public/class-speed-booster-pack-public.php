@@ -62,6 +62,7 @@ class Speed_Booster_Pack_Public {
 
 	public function output_buffer( $html ) {
 		$html  = apply_filters( 'sbp_output_buffer', $html );
+		$html .= PHP_EOL . '<!-- Optimized By Speed Booster Pack v' . SBP_VERSION . ' -->';
 
 		return $html;
 	}
