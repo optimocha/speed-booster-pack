@@ -325,7 +325,7 @@ class Speed_Booster_Pack_Admin {
 				[
 					'title'  => __( 'PageSpeed Tricker', 'speed-booster-pack' ),
 					'id'     => 'pagespeed_tricker_module',
-					'icon'   => 'fa fa-tachometer-alt',
+					'icon'   => 'fa fa-magic',
 					'fields' => [
 						[
 							'type'    => 'submessage',
@@ -671,7 +671,7 @@ class Speed_Booster_Pack_Admin {
 				[
 					'title'  => __( 'CSS Optimizations', 'speed-booster-pack' ),
 					'id'     => 'css',
-					'icon'   => 'fa fa-bolt',
+					'icon'   => 'fa fa-palette',
 					'fields' => [
 
 						[

@@ -82,12 +82,12 @@ define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' );
 /**
  * Path for localized script files.
  */
-define( 'SBP_LOCALIZED_SCRIPT_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
+define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
 
 /**
  * URL for localized script files.
  */
-define( 'SBP_LOCALIZED_SCRIPT_URL', WP_CONTENT_URL . '/uploads/speed-booster/' );
+define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' );
 
 /**
  * Load all plugin options

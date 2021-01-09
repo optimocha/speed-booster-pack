@@ -101,7 +101,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_total_cache' ) ) {
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			self::clear_total_cache();
-			SBP_Cloudflare::clear_cache();
 			set_transient( 'sbp_notice_cache', '1', 60 );
 			wp_redirect( $redirect_url );
 		}
@@ -119,6 +118,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$warmup->start_process();
 			unset( $warmup );
 		}
+		SBP_Cloudflare::clear_cache();
 		do_action( 'sbp_after_cache_clear' );
 	}
 

@@ -9,8 +9,8 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $file_name = '';
-	private $dir_path = SBP_LOCALIZED_SCRIPT_DIR;
-	private $dir_url = SBP_LOCALIZED_SCRIPT_URL;
+	private $dir_path = SBP_UPLOADS_DIR;
+	private $dir_url = SBP_UPLOADS_URL;
 	private $analytics_url = 'https://www.google-analytics.com/analytics.js';
 	private $gtm_url = 'https://www.googletagmanager.com/gtm.js?id=';
 	private $gtag_url = 'https://www.googletagmanager.com/gtag/js?id=';
@@ -174,7 +174,7 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	public static function clear_analytics_dir() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_localized_analytics' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_localized_analytics' ) ) {
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
-			sbp_delete_dir_recursively( SBP_LOCALIZED_SCRIPT_DIR );
+			sbp_delete_dir_recursively( SBP_UPLOADS_DIR );
 			set_transient( 'sbp_notice_tracker_localizer', '1', 60 );
 			wp_redirect( $redirect_url );
 		}
