@@ -1270,7 +1270,7 @@ class Speed_Booster_Pack_Admin {
 			}
 
 			if ( sbp_get_option( 'localize_tracking_scripts' ) ) {
-				$clear_tracking_scripts_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_localized_analytics' ), 'sbp_clear_localized_analytics', 'sbp_nonce' );
+				$clear_tracking_scripts_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_refresh_localized_analytics' ), 'sbp_refresh_localized_analytics', 'sbp_nonce' );
 				$sbp_admin_menu             = [
 					'id'     => 'sbp_clear_localized_scripts',
 					'parent' => 'speed_booster_pack',
