@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, performance, cache
 Requires at least: 4.6
 Tested up to: 5.6
 Requires PHP: 5.6
-Stable tag: 4.0.1
+Stable tag: 4.1.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,7 +105,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.1.0 =
 
-*Release Date: 08 January 2021*
+*Release Date: 15 January 2021*
 
 * **NEW - Critical CSS**: Improve your First Contentful Paint (FCP) and Largest Contentful Paint (LCP) times and eliminate the "Eliminate render-blocking resource" recommendation
 * **NEW - Sucuri integration**: Now you can enter your Sucuri API keys to have Speed Booster Pack clear Sucuri's cache each time SBP's cache is cleared.
@@ -156,3 +156,9 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Updated**: Updated external libraries (lazyload.js and instantpage.js) to their latest versions.
 
 *You can read the rest of the changelog on the [Speed Booster Pack documentation](https://speedboosterpack.com/docs/) page.
+
+== Upgrade Notice ==
+
+= 4.1.0 =
+
+- We have brand new features called Manual Critical CSS and PageSpeed Tricker, plus a TON of improvements to our existing features. Update now and enjoy an even faster website!
