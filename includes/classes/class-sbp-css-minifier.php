@@ -18,7 +18,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	private $dom = null;
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'css_inline' ) || sbp_get_option( 'enable_criticalcss' ) ) {
+		if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'css_inline' ) || sbp_get_option( 'enable_criticalcss' ) ) {
 			return;
 		}
 		$this->dom = new HtmlDocument();
