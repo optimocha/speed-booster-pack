@@ -123,7 +123,7 @@ if ( ! function_exists( 'sbp_should_disable_feature' ) ) {
 			// BEYNTODO: Write text for error message.
 			return [ 'name'              => 'Permalink',
 			         'disabled_features' => [ 'caching' ],
-			         'error_message'     => __( 'You should use Permalinks to enable caching module.', 'speed-booster-pack' )
+			         'error_message'     => __( 'You must enable permalinks to use caching.', 'speed-booster-pack' )
 			];
 		}
 

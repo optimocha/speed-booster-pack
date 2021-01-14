@@ -62,8 +62,8 @@ class SBP_Preboost extends SBP_Abstract_Module {
 			foreach ( $urls as $url ) {
 				$type                   = $this->get_type( $url );
 				$mime_type              = $this->get_mime_type( SBP_Utils::get_file_extension_from_url( $url ) );
-				$mime_type_attribute    = $mime_type ? " type='" . esc_attr( $mime_type ) . "'" : '';
-				$link_tag               = "<link rel='preload' href='" . esc_url( $url ) . "' as='" . esc_attr( $type ) . "'$mime_type_attribute crossorigin />";
+				$mime_type_attribute    = $mime_type ? " type='" . esc_attr( $mime_type ) . "' crossorigin" : '';
+				$link_tag               = "<link rel='preload' href='" . esc_url( $url ) . "' as='" . esc_attr( $type ) . "'$mime_type_attribute />";
 				$this->appending_script .= $link_tag . PHP_EOL;
 			}
 		}

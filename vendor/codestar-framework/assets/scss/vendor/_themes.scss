@@ -53,8 +53,8 @@
 
         a{
           color: #999;
+          border-color: #2f2f2f;
           background-color: #222;
-          border-bottom: 1px solid #2f2f2f;
 
           &:hover{
             color: #fff;
@@ -64,20 +64,6 @@
         .csf-active{
           color: #fff;
           background-color: #111;
-
-          &:after{
-            content: " ";
-            position: absolute;
-            right: 0;
-            top: 50%;
-            height: 0;
-            width: 0;
-            pointer-events: none;
-            border: solid transparent;
-            border-right-color: #fff;
-            border-width: 4px;
-            margin-top: -4px;
-          }
         }
       }
 
@@ -86,8 +72,8 @@
         li{
 
           a{
+            border-color: #2f2f2f;
             background-color: #191919;
-            border-bottom: 1px solid #2f2f2f;
           }
 
           .csf-active{
@@ -102,7 +88,65 @@
     }
 
     > ul > li:last-child > a{
-      border-bottom: none;
+      border: none;
+    }
+  }
+
+  .csf-nav-normal{
+
+    ul{
+
+      li{
+
+        a{
+          border-bottom-width: 1px;
+          border-bottom-style: solid;
+        }
+
+        .csf-active:after{
+          content: " ";
+          position: absolute;
+          right: 0;
+          top: 50%;
+          height: 0;
+          width: 0;
+          pointer-events: none;
+          border: solid transparent;
+          border-right-color: #fff;
+          border-width: 4px;
+          margin-top: -4px;
+        }
+      }
+    }
+  }
+
+  .csf-nav-inline{
+    background-color: #222;
+
+    ul{
+
+      li{
+
+        a{
+          text-align: center;
+          border-right-width: 1px;
+          border-right-style: solid;
+        }
+
+        .csf-active:after{
+          content: " ";
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          height: 0;
+          width: 0;
+          pointer-events: none;
+          border: solid transparent;
+          border-bottom-color: #fff;
+          border-width: 4px;
+          margin-left: -4px;
+        }
+      }
     }
   }
 
@@ -123,7 +167,7 @@
 
   .csf-container{
     border: 1px solid #ccd0d4;
-    @include box-shadow(0 0 15px rgba(black, 0.04));
+    box-shadow: 0 0 15 rgba(0,0,0,0.04);
   }
 
   .csf-header-inner{
@@ -167,28 +211,19 @@
       li{
 
         a{
-          color: #666;
+          font-weight: 500;
+          color: #444;
           background-color: #f5f5f5;
-          border-bottom: 1px solid #ccd0d4;
 
           &:hover{
-            color: #222;
+            color: #111;
+            background-color: #fff;
           }
         }
 
         .csf-active{
-          color: #222;
+          color: #111;
           background-color: #fff;
-
-          &:after{
-            content: "";
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: -1px;
-            width: 1px;
-            background-color: #fff;
-          }
         }
       }
 
@@ -198,14 +233,59 @@
 
           a{
             background-color: #eee;
-            border-bottom: 1px solid #ccd0d4;
           }
         }
       }
     }
+  }
 
-    > ul > li:last-child > a{
-      border-bottom: none;
+  .csf-nav-normal{
+
+    > ul{
+      margin-right: -1px;
+      margin-bottom: -1px;
+
+      li{
+
+        a{
+          border-bottom: 1px solid #ccd0d4;
+          border-right: 1px solid #ccd0d4;
+        }
+
+        .csf-active{
+          border-right-color: #fff;
+        }
+      }
+    }
+  }
+
+  .csf-nav-inline{
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ccd0d4;
+
+    > ul{
+      margin-bottom: -1px;
+
+      li{
+
+        a{
+          text-align: center;
+          border-right: 1px solid #ccd0d4;
+          border-bottom: 1px solid #ccd0d4;
+        }
+
+        .csf-active{
+          border-bottom-color: #fff;
+        }
+      }
+
+      ul{
+        display: none !important
+      }
+    }
+
+    .csf-arrow:after{
+      display: none;
     }
   }
 

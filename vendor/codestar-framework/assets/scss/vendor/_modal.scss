@@ -57,7 +57,7 @@
     &:active,
     &:focus{
       outline: none;
-      @include box-shadow(none);
+      box-shadow: none;
     }
   }
 
@@ -88,7 +88,7 @@
   width: 100%;
   padding: 14px 0;
   background-color: #f5f5f5;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
 
   select{
     display: block;
@@ -124,7 +124,7 @@
   }
 
   &:hover{
-    @include opacity(0.5);
+    opacity: 0.5;
   }
 }
 
@@ -133,7 +133,7 @@
   width: 100%;
   padding: 15px 0;
   background-color: #f5f5f5;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #ddd;
 }
 
 .csf-modal-overlay{
@@ -143,7 +143,7 @@
   width: 100%;
   height: 100%;
   background-color: #000;
-  @include opacity(0.5);
+  opacity: 0.5;
 }
 
 /**
@@ -185,10 +185,10 @@
     border-radius: 2px;
     color: #fff;
     background-color: #e14d43;
-    @include opacity(0.5);
+    opacity: 0.5;
 
     &:hover{
-      @include opacity(1);
+      opacity: 0.5;
     }
   }
 }
@@ -267,8 +267,8 @@
     text-align: center;
     border: 1px solid #ccc;
     background-color: #f7f7f7;
-    @include border-radius(2px);
-    @include box-shadow(1px 1px 0 rgba(black, 0.05));
+    border-radius: 2px;
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.05);
 
     &:hover {
       color: #fff;
@@ -299,8 +299,8 @@
   width: 20px;
   height: 20px;
   background: #ccc;
-  @include border-radius(20px);
-  @include box-shadow(0 2px 5px rgba(black, 0.070));
+  border-radius: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.07);
 
   &:after{
     position: absolute;
@@ -312,19 +312,19 @@
     margin-top: -2px;
     margin-left: -2px;
     background-color: white;
-    @include animation-duration(0.5s);
-    @include animation-iteration-count(infinite);
-    @include animation-timing-function(linear);
-    @include animation-name(csfLoader);
-    @include border-radius(4px);
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-name: csfLoader;
+    border-radius: 4px;
   }
 }
 
-@include keyframes(csfLoader){
-  0%{
-    @include transform( rotate(0deg) translateX(-6px) rotate(0deg) );
+@keyframes csfLoader {
+  0% {
+    transform: rotate(0deg) translateX(-6px) rotate(0deg);
   }
-  100%{
-    @include transform( rotate(360deg) translateX(-6px) rotate(-360deg) );
+  100% {
+    transform: rotate(360deg) translateX(-6px) rotate(-360deg);
   }
 }

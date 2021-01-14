@@ -3,7 +3,7 @@ Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
 Tags: speed, pagespeed, optimization, performance, cache
 Requires at least: 4.6
-Tested up to: 5.5
+Tested up to: 5.6
 Requires PHP: 5.6
 Stable tag: 4.0.1
 License: GPLv3 or later
@@ -102,6 +102,34 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.1.0 =
+
+*Release Date: 08 January 2021*
+
+* **NEW - Critical CSS**: Improve your First Contentful Paint (FCP) and Largest Contentful Paint (LCP) times and eliminate the "Eliminate render-blocking resource" recommendation
+* **NEW - Sucuri integration**: Now you can enter your Sucuri API keys to have Speed Booster Pack clear Sucuri's cache each time SBP's cache is cleared.
+* **NEW - PageSpeed Tricker**: This experimental feature lets you see how easy it is to _manipulate_ your PageSpeed/Lighthouse scores. Using this on a live website is NOT recommended! Just have fun with it.
+* **NEW - Cache warmup**: Now you can automatically cache all pages that are linked from your homepage using the Cache Warmup setting.
+
+* **Improved - CDN**: Our CDN feature is rewritten, making it way more efficient!
+* **Improved - Cloudflare settings**: Now you can control your Cloudflare settings on a more granular level!
+* **Improved - Lazy loading**: Lazy loading now works better, faster and with more themes & plugins. Most importantly, now our lazy loader supports infinite scrollers!
+* **Improved - .htaccess**: Added support for caching AVIF file format on browsers.
+* **Improved - Localize Analytics**: Added an admin bar button to refresh the local analytics file. Also, moved the local analytics file into the /uploads/speed-booster/ directory.
+* **Improved - Hosting compatibility**: Improved compatibility with various hosting companies.
+* **Improved - Plugin compatibility**: Improved compatibility with various performance plugins.
+* **Improved - Options framework**: Removed folders of unused fields in Codestar Framework, which powers our options framework.
+* **Improved - Uninstalling process**: Updated `uninstall.php` for better cleanup upon SBP deletion.
+* **Improved - /vendor/**: External frameworks are now loaded from within a /vendor/ directory, using Composer.
+
+* **Fixed**: The `crossorigin` parameter is added _only_ to preloaded fonts, not all preload links.
+* **Fixed**: WordPress 5.6 changed the jQuery core filename, breaking most performance-related plugins including ours. Fixed that one.
+* **Fixed**: Heartbeat settings caused a small PHP notice, which is now fixed.
+
+* **Updated**: Options framework and lazy load library are updated to their latest versions.
+
+* **Removed**: Option to disable jQuery Migrate is now gone.
 
 = 4.0.1 =
 

@@ -14,7 +14,6 @@ class SBP_Migrator {
 		'query_strings'                   => 'trim_query_strings',
 		'remove_emojis'                   => 'dequeue_emoji_scripts',
 		'disable_self_pingbacks'          => 'disable_self_pingbacks',
-		'remove_jquery_migrate'           => 'dequeue_jquery_migrate',
 		'disable_dashicons'               => 'dequeue_dashicons',
 		'limit_post_revisions'            => 'post_revisions',
 		'autosave_interval'               => 'autosave_interval',
@@ -83,7 +82,7 @@ class SBP_Migrator {
 			// Iterate through the plugins being updated and check if ours is there
 			foreach ( $options['plugins'] as $plugin ) {
 				if ( $plugin == $our_plugin ) {
-					SBP_WP_Config_Injector::generate_wp_config_inject_file();
+					SBP_WP_Config_Injector::inject_wp_config();
 					SBP_Cache::generate_htaccess();
 					SBP_Cache::set_wp_cache_constant();
 				}

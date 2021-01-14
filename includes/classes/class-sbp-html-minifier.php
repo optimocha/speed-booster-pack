@@ -10,7 +10,6 @@ if ( ! defined( 'WPINC' ) ) {
 class SBP_HTML_Minifier extends SBP_Abstract_Module {
 	private $minify_css = true;
 	private $minify_js = false;
-	private $info_comment = true;
 	private $remove_comments = true;
 
 	private $html;

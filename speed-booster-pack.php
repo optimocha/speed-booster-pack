@@ -6,7 +6,7 @@
  * Plugin Name:       Speed Booster Pack
  * Plugin URI:        https://speedboosterpack.com
  * Description:       PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize & cache your site with this smart plugin!
- * Version:           4.0.0
+ * Version:           4.1.0
  * Author:            Optimocha
  * Author URI:        https://optimocha.com
  * License:           GPLv3 or later
@@ -32,7 +32,7 @@ define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' );
 /**
  * Current plugin version.
  */
-define( 'SBP_VERSION', '4.0.0' );
+define( 'SBP_VERSION', '4.1.0' );
 
 /**
  * Plugin website URL.
@@ -82,12 +82,12 @@ define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' );
 /**
  * Path for localized script files.
  */
-define( 'SBP_LOCALIZED_SCRIPT_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
+define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
 
 /**
  * URL for localized script files.
  */
-define( 'SBP_LOCALIZED_SCRIPT_URL', WP_CONTENT_URL . '/uploads/speed-booster/' );
+define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' );
 
 /**
  * Load all plugin options

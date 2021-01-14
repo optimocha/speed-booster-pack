@@ -58,7 +58,7 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 		}
 
 		$dom = new HtmlDocument();
-		$dom->load( $html );
+		$dom->load( $html, true, false );
 
 		// Find all links
 		$links = $dom->find( 'link[rel=stylesheet]' );
@@ -66,7 +66,6 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 			if ( ! isset( $link->media ) || $link->media !== 'print' ) {
 				$link->media  = 'print';
 				$link->onload = "this.media='all'";
-				$link->outertext = '<link rel="preload" href="' . $link->href . '" as="style">' . PHP_EOL . $link->outertext;
 			}
 		}
 

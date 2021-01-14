@@ -25,7 +25,6 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 
 		$this->set_exceptions();
 
-//		add_action( 'wp_print_styles', [ $this, 'print_styles' ] );
 		add_filter( 'sbp_output_buffer', [ $this, 'print_styles' ] );
 	}
 
@@ -36,7 +35,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 			$minify = false;
 		}
 
-		$this->dom->load( $html );
+		$this->dom->load( $html, true, false );
 
 		$this->generate_styles_list();
 
