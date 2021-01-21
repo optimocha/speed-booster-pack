@@ -11,9 +11,6 @@
  */
 
 // If this file is called directly, abort.
-use SpeedBooster\SBP_Cloudflare;
-use SpeedBooster\SBP_Notice_Manager;
-
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }

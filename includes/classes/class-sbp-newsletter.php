@@ -51,7 +51,10 @@ class SBP_Newsletter {
             jQuery(document).ready(function ($) {
                 $('#toplevel_page_sbp-settings').pointer({
                     content: '<?php echo $pointer_content; ?>',
-                    position: 'left',
+                    position: {
+                        edge: 'left',
+                        align: 'center',
+                    },
                     close: function () {
                         $.post(ajaxurl, {
                             action: 'sbp_hide_newsletter_pointer'
