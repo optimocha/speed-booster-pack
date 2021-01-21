@@ -106,7 +106,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.1.0 =
 
-*Release Date: 15 January 2021*
+*Release Date: 21 January 2021*
 
 * **NEW - Critical CSS**: Improve your First Contentful Paint (FCP) and Largest Contentful Paint (LCP) times and eliminate the "Eliminate render-blocking resource" recommendation
 * **NEW - Sucuri integration**: Now you can enter your Sucuri API keys to have Speed Booster Pack clear Sucuri's cache each time SBP's cache is cleared.
