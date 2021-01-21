@@ -25,7 +25,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	}
 
 	function add_lazy_load_script() {
-		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.1.0', true );
+		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.3.0', true );
 		$lazy_loader_script = 'window.lazyLoadOptions = {
 					elements_selector: "[loading=lazy]",
                     use_native: true
