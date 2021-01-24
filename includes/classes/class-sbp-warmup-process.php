@@ -22,10 +22,8 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 
 		$options = isset( $item['options'] ) ? $item['options'] : [];
 		$args    = array_merge( [
-			'blocking'            => false,
 			'compress'            => true,
 			'httpversion'         => '1.1',
-			'limit_response_size' => 100,
 		], $options );
 
 		$this->done[] = $item;
@@ -33,6 +31,8 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 		$response = wp_remote_get( $item['url'], $args );
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			$this->failed[] = $item;
+			// ZTODO: Clear cache for failed pages.
+            // Future reference: url_to_postid
 		} else {
 			$this->success[] = $item;
 		}
@@ -46,9 +46,8 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 	}
 
 	protected function complete() {
-		/* translator: %s is the url of the page */
-		// BEYNTODO: Change Text
 		set_transient( 'sbp_warmup_errors', $this->failed );
+		// Clear cache for failed items.
 		set_transient( 'sbp_warmup_complete', true );
 		delete_transient( 'sbp_warmup_started' );
 		parent::complete();
