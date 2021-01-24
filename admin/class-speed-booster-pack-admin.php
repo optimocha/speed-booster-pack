@@ -1363,7 +1363,9 @@ class Speed_Booster_Pack_Admin {
 					if ( isset( $error['options']['user-agent'] ) && $error['options']['user-agent'] === 'Mobile' ) {
 						$extras[] = '(Mobile)';
 					}
-					$list .= '<li><a href="' . $error['url'] . '" target="_blank">' . $error['url'] . ' ' . implode( ' ', $extras ) . '</a></li>';
+					if (isset($error['url'])) {
+                        $list .= '<li><a href="' . $error['url'] . '" target="_blank">' . $error['url'] . ' ' . implode( ' ', $extras ) . '</a></li>';
+                    }
 				}
 				SBP_Notice_Manager::display_notice( 'sbp_warmup_errors', '<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Cache warmup completed but following pages may not be cached. Please check this pages are available. (Hover this notice to see all errors)', 'speed-booster-pack' ) . '</p><ul class="warmup-cache-error-list">' . $list . '</ul>', 'error', true, 'recurrent' );
 			}
