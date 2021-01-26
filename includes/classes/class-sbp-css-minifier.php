@@ -105,7 +105,7 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 				$css = $this->minify_css( $css );
 			}
 
-			$css = $this->rebuilding_css_urls( $css, $url );
+			$css = $this->rebuild_css_urls( $css, $url );
 
 			return $css;
 		}
@@ -113,16 +113,15 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 		return false;
 	}
 
-	private function rebuilding_css_urls( $css, $url ) {
+	private function rebuild_css_urls( $css, $url ) {
 		$css_dir = substr( $url, 0, strrpos( $url, '/' ) );
 
 		// remove empty url() declarations
 		$css = preg_replace( "/url\(\s?\)/", "", $css );
 		// new regex expression
-		$css = preg_replace( "/url(?!\(['\"]?(data:|http:|https:))\(['\"]?([^\/][^'\"\)]*)['\"]?\)/i",
+		$css = preg_replace( "/url\s*(?!\(['\"]?(data:|http:|https:))\(\s*['\"]?([^\/][^'\"\)]*)['\"]?\s*\)/i",
 			"url({$css_dir}/$2)",
 			$css );
-
 
 		return $css;
 	}
