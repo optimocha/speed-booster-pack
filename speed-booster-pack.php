@@ -165,6 +165,7 @@ function sbp_autoloader( $class_name ) {
  * @since    4.0.0
  */
 function run_speed_booster_pack() {
+	if( preg_match( '/\.(txt|pdf|xml|ico)$/', $_SERVER['REQUEST_URI'] ) ) {return;}
 
 	$plugin = new Speed_Booster_Pack();
 	$plugin->run();
