@@ -282,7 +282,7 @@ class Speed_Booster_Pack_Admin {
 							             '<strong>' . __( 'Special', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module has features for specific cases like CDN usage, localizing tracker scripts, adding custom JavaScript code and optimizations for some popular plugins.', 'speed-booster-pack' ) . '</li><li>' .
 							             '<strong>' . __( 'Tweaks', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module lets you tweak the WordPress core and your page sources by dequeueing core scripts/styles, decluttering &lt;head&gt;, optimizing revisions and the Heartbeat API and so on.', 'speed-booster-pack' ) . '</li></ul>' .
 							             '<p>' . __( 'Feel free to experiment, and don\'t forget to create exclude rules when necessary!', 'speed-booster-pack' ) . '</p>',
-						], // LAHMACUNTODO: Fetching clouflare settings ibaresi ekle.
+						], // Z_TODO: Fetching clouflare settings ibaresi ekle.
 						[
 							'type'    => 'subheading',
 							'content' => __( 'Upcoming features', 'speed-booster-pack' ),
@@ -432,37 +432,37 @@ class Speed_Booster_Pack_Admin {
 					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
 				],
 				[
-					'title' => __( 'Toggle Rocket Loader', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'title' => __( 'Rocket Loader', 'speed-booster-pack' ),
 					'id'    => 'cf_rocket_loader_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
 				],
 				[
-					'title' => __( 'Toggle Development Mode', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'title' => __( 'Development Mode', 'speed-booster-pack' ),
 					'id'    => 'cf_dev_mode_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
 				],
 				[
-					'title' => __( 'Toggle CSS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'title' => __( 'Minify CSS', 'speed-booster-pack' ),
 					'id'    => 'cf_css_minify_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
 				],
 				[
-					'title' => __( 'Toggle HTML Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'title' => __( 'Minify HTML', 'speed-booster-pack' ),
 					'id'    => 'cf_html_minify_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
 				],
 				[
-					'title' => __( 'Toggle JS Minify', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'title' => __( 'Minify JS', 'speed-booster-pack' ),
 					'id'    => 'cf_js_minify_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
 				],
 				[
-					'title'   => __( 'Browser Cache TTL', 'speed-booster-pack' ), // BEYNTODO: Change title
+					'title'   => __( 'Browser Cache TTL', 'speed-booster-pack' ),
 					'id'      => 'cf_browser_cache_ttl',
 					'class'   => 'with-preloader',
 					'type'    => 'select',
@@ -496,12 +496,12 @@ class Speed_Booster_Pack_Admin {
 					'type'    => 'content',
 					'content' => '
 				    <span>
-				    	<a href="#" class="button button-small sbp-cloudflare-test">Test Your Cloudflare Connection <span class="sbp-cloudflare-spinner"></span></a>
+				    	<a href="#" class="button button-small sbp-cloudflare-test">' . __( 'Test Cloudflare connection', 'speed-booster-pack' ) . '<span class="sbp-cloudflare-spinner"></span></a>
 				    	<span class="sbp-cloudflare-fetching">' . __( 'Fetching Cloudflare settings...', 'speed-booster-pack' ) . '</span>
 			        </span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-incorrect" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> ' . __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ) . '</span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> ' . __( 'Your Cloudflare credentials are correct.', 'speed-booster-pack' ) . '</span>
-				    <span class="sbp-cloudflare-info-text sbp-cloudflare-warning" style="color:orange; vertical-align: middle;"><i class="fa fa-exclamation-circle"></i> ' . __( 'You should provide your Cloudflare credentials and save settings to see CloudFlare options.', 'speed-booster-pack' ) . '</span>
+				    <span class="sbp-cloudflare-info-text sbp-cloudflare-warning" style="color:orange; vertical-align: middle;"><i class="fa fa-exclamation-circle"></i> ' . __( 'Enter your Cloudflare credentials and save settings to see CloudFlare options.', 'speed-booster-pack' ) . '</span>
 				  ',
 				],
 			];
@@ -565,13 +565,13 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Included Directories', 'speed-booster-pack' ),
 					'id'    => 'cdn_includes',
 					'type'  => 'code_editor',
-					'desc'  => __( 'Write included directory names', 'speed-booster-pack' ), // BEYNTODO: Change text
+					'desc'  => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
 				],
 				[
 					'title' => __( 'Excluded Extensions', 'speed-booster-pack' ),
 					'id'    => 'cdn_excludes',
 					'type'  => 'code_editor',
-					'desc'  => __( 'Excluded file extensions', 'speed-booster-pack' ), // BEYNTODO: Change text
+					'desc'  => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
 				],
 			],
 				$cloudflare_fields,
@@ -587,19 +587,18 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: CDN & Proxy */
 
-			// BEYNTODO: Need to check the new section.
-			/* BEGIN Section: CSS Optimizations */
+			/* BEGIN Section: Optimize CSS */
 			CSF::createSection(
 				$prefix,
 				[
-					'title'  => __( 'CSS Optimizations', 'speed-booster-pack' ),
+					'title'  => __( 'Optimize CSS', 'speed-booster-pack' ),
 					'id'     => 'css',
 					'icon'   => 'fa fa-palette',
 					'fields' => [
 
 						[
 							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'CSS Optimizations', 'speed-booster-pack' ),
+							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Optimize CSS', 'speed-booster-pack' ),
 							'id'      => 'module_css',
 							'class'   => 'module-css',
 							'type'    => 'switcher',
@@ -638,6 +637,7 @@ class Speed_Booster_Pack_Admin {
 										[
 											'id'   => 'is_front_page',
 											'type' => 'code_editor',
+											// Z_TODO: Edit the following description.
 											'desc' => sprintf( __( 'This CSS block will be injected into the front page of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_front_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_front_page()</code>' ), '</a>' ),
 										],
 									],
@@ -707,10 +707,8 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							'title'      => __( 'Remove critical CSS after onload', 'speed-booster-pack' ),
-							// BEYNTODO: Change Text
 							'id'         => 'remove_criticalcss',
-							'desc'       => __( 'Remove critical CSS after all css files loaded.', 'speed-booster-pack' ),
-							// BEYNTODO: Change Text
+							'desc'       => __( 'Remove critical CSS the onload event fires on browser. Enable this only if you\'re having styling issues when the pages finish loading.', 'speed-booster-pack' ),
 							'type'       => 'switcher',
 							'default'    => true,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
@@ -744,7 +742,7 @@ class Speed_Booster_Pack_Admin {
 					],
 				]
 			);
-			/* END Section: CSS Optimizations */
+			/* END Section: Optimize CSS */
 
 			/* BEGIN Section: Assets */
 			$asset_fields = [
@@ -1331,13 +1329,11 @@ class Speed_Booster_Pack_Admin {
 
 		// Warmup Notice
 		if ( get_transient( 'sbp_warmup_started' ) ) {
-//			 BEYNTODO: Add translator note
 			SBP_Notice_Manager::display_notice( 'sbp_warmup_started', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup started.', 'speed-booster-pack' ) . '</p>', 'success', true, 'recurrent' );
 		}
 
 		// Warmup Notice
 		if ( get_transient( 'sbp_warmup_complete' ) ) {
-			// BEYNTODO: Add translator note
 			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Static cache files created.', 'speed-booster-pack' ) . '</p>', 'info', true, 'recurrent' );
 		}
 
