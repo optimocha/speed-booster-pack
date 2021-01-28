@@ -93,7 +93,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		if ( self::is_cloudflare_active() ) {
 			$result = self::send_request( 'purge_cache', 'POST', [ 'purge_everything' => true ] );
 
-			if ( true === $result['success'] ) {
+			if ( $result && true === $result['success'] ) {
 				return true;
 			}
 		}
@@ -112,7 +112,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 	public static function check_credentials( $override_credentials = [] ) {
 		$result = self::send_request( 'check_credentials', 'GET', [], $override_credentials );
 
-		if ( true === $result['success'] ) {
+		if ( $result && true === $result['success'] ) {
 			return true;
 		}
 
@@ -231,7 +231,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$settings          = [];
 
 			$result = self::send_request( 'settings' );
-			if ( $result['success'] ) {
+			if ( $result && $result['success'] ) {
 				foreach ( $result['result'] as $setting ) {
 					if ( in_array( $setting['id'], $settings_to_fetch ) ) {
 						$settings[ $setting['id'] ] = $setting;

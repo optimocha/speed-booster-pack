@@ -351,9 +351,7 @@ class Speed_Booster_Pack_Admin {
 					'id'         => 'caching_warmup_after_clear',
 					'type'       => 'switcher',
 					'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
-					// BEYNTODO: Change text
-					'desc'       => __( 'Warm up cache everytime cache cleared.', 'speed-booster-pack' ),
-					// BEYNTODO: Change text
+					'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
 				[
@@ -1340,7 +1338,7 @@ class Speed_Booster_Pack_Admin {
 		// Warmup Notice
 		if ( get_transient( 'sbp_warmup_complete' ) ) {
 			// BEYNTODO: Add translator note
-			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Static cache files created.', 'speed-booster-pack' ) . '</p>', 'success', true, 'recurrent' );
+			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete', '<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Static cache files created.', 'speed-booster-pack' ) . '</p>', 'info', true, 'recurrent' );
 		}
 
 		// WP-Config Inject File Error
@@ -1351,22 +1349,6 @@ class Speed_Booster_Pack_Admin {
 		// WP-Config File Error
 		if ( get_transient( 'sbp_wp_config_error' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_wp_config_error', '<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Can not write wp-config.php file. Some ' . SBP_PLUGIN_NAME . ' features may not work. Please check your file permissions.', 'speed-booster-pack' ) . '</p>', 'error', true, 'recurrent' );
-		}
-
-		// WP-Config File Error
-		if ( get_transient( 'sbp_warmup_errors' ) ) {
-			$list   = '';
-			$errors = get_transient( 'sbp_warmup_errors' );
-			if ( is_array( $errors ) ) {
-				foreach ( $errors as $error ) {
-					$extras = [];
-					if ( isset( $error['options']['user-agent'] ) && $error['options']['user-agent'] === 'Mobile' ) {
-						$extras[] = '(Mobile)';
-					}
-					$list .= '<li><a href="' . $error['url'] . '" target="_blank">' . $error['url'] . ' ' . implode( ' ', $extras ) . '</a></li>';
-				}
-				SBP_Notice_Manager::display_notice( 'sbp_warmup_errors', '<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Cache warmup completed but following pages may not be cached. Please check this pages are available. (Hover this notice to see all errors)', 'speed-booster-pack' ) . '</p><ul class="warmup-cache-error-list">' . $list . '</ul>', 'error', true, 'recurrent' );
-			}
 		}
 	}
 
