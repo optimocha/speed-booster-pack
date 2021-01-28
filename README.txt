@@ -105,7 +105,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
-*Release Date: 21 January 2021*
+*Release Date: 25 January 2021*
 
 * **Improved**: Wrote better descriptions for certain settings.
 * **Fixed**: Tiny warning on Cloudflare settings.
