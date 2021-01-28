@@ -351,9 +351,7 @@ class Speed_Booster_Pack_Admin {
 					'id'         => 'caching_warmup_after_clear',
 					'type'       => 'switcher',
 					'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
-					// BEYNTODO: Change text
-					'desc'       => __( 'Creates cached files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
-					// BEYNTODO: Change text
+					'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
 				],
 				[
