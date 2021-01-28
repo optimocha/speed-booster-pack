@@ -105,7 +105,13 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
-B_TODO
+*Release Date: 21 January 2021*
+
+* **Improved**: Wrote better descriptions for certain settings.
+* **Fixed**: Tiny warning on Cloudflare settings.
+* **Fixed**: Inline CSS wasn't able to parse some `url()` values, until now.
+* **Fixed**: Cache warmup now handles pages with a better working process.
+* **Fixed**: SBP won't try to _optimize_ files that are generated on-the-fly by WordPress (like robots.txt or the RSS feeds).
 
 = 4.1.0 =
 
