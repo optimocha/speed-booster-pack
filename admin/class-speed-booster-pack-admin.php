@@ -152,8 +152,6 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
-		add_action( 'csf_loaded', '\SpeedBooster\SBP_Cloudflare::check_credentials' );
-
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::reset_transient' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
@@ -436,30 +434,35 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'cf_rocket_loader_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
+					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
 				],
 				[
 					'title' => __( 'Development Mode', 'speed-booster-pack' ),
 					'id'    => 'cf_dev_mode_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
+					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
 				],
 				[
 					'title' => __( 'Minify CSS', 'speed-booster-pack' ),
 					'id'    => 'cf_css_minify_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
+					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
 				],
 				[
 					'title' => __( 'Minify HTML', 'speed-booster-pack' ),
 					'id'    => 'cf_html_minify_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
+					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
 				],
 				[
 					'title' => __( 'Minify JS', 'speed-booster-pack' ),
 					'id'    => 'cf_js_minify_enable',
 					'class' => 'with-preloader',
 					'type'  => 'switcher',
+					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
 				],
 				[
 					'title'   => __( 'Browser Cache TTL', 'speed-booster-pack' ),
@@ -491,6 +494,7 @@ class Speed_Booster_Pack_Admin {
 						16070400 => __( '6 months', 'speed-booster-pack' ),
 						31536000 => __( '1 year', 'speed-booster-pack' ),
 					],
+					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
 				],
 				[
 					'type'    => 'content',
