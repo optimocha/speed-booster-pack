@@ -2,7 +2,6 @@
 Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
 Tags: speed, pagespeed, optimization, performance, cache
-Stable tag: 4.1.0
 Requires at least: 4.6
 Tested up to: 5.6
 Requires PHP: 5.6
@@ -104,6 +103,8 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.1.1 =
 
 *Release Date: 28 January 2021*
 

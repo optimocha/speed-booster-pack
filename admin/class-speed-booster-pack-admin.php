@@ -280,7 +280,7 @@ class Speed_Booster_Pack_Admin {
 							             '<strong>' . __( 'Special', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module has features for specific cases like CDN usage, localizing tracker scripts, adding custom JavaScript code and optimizations for some popular plugins.', 'speed-booster-pack' ) . '</li><li>' .
 							             '<strong>' . __( 'Tweaks', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module lets you tweak the WordPress core and your page sources by dequeueing core scripts/styles, decluttering &lt;head&gt;, optimizing revisions and the Heartbeat API and so on.', 'speed-booster-pack' ) . '</li></ul>' .
 							             '<p>' . __( 'Feel free to experiment, and don\'t forget to create exclude rules when necessary!', 'speed-booster-pack' ) . '</p>',
-						], // Z_TODO: Fetching clouflare settings ibaresi ekle.
+						],
 						[
 							'type'    => 'subheading',
 							'content' => __( 'Upcoming features', 'speed-booster-pack' ),
@@ -504,6 +504,7 @@ class Speed_Booster_Pack_Admin {
 				    	<span class="sbp-cloudflare-fetching">' . __( 'Fetching Cloudflare settings...', 'speed-booster-pack' ) . '</span>
 			        </span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-incorrect" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> ' . __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ) . '</span>
+				    <span class="sbp-cloudflare-info-text sbp-cloudflare-connection-issue" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> ' . __( 'Error occured while connecting Cloudflare.', 'speed-booster-pack' ) . '</span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> ' . __( 'Your Cloudflare credentials are correct.', 'speed-booster-pack' ) . '</span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-warning" style="color:orange; vertical-align: middle;"><i class="fa fa-exclamation-circle"></i> ' . __( 'Enter your Cloudflare credentials and save settings to see CloudFlare options.', 'speed-booster-pack' ) . '</span>
 				  ',
