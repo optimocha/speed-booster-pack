@@ -220,7 +220,7 @@ class HtmlDocument
 		// end
 		$this->root->_[HtmlNode::HDOM_INFO_END] = $this->cursor;
 		$this->parse_charset();
-		$this->decode();
+//		$this->decode();
 		unset($this->doc);
 
 		// make load function chainable
