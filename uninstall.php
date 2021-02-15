@@ -114,10 +114,11 @@ if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {
 	$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
 }
 
-if ($wp_filesystem->is_writable($wp_config_file)) {
-	$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
-	$modified_wp_config_content = preg_replace( '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', '', $wp_config_content );
-	$wp_filesystem->put_contents( $wp_config_file, $modified_wp_config_content );
-} else {
-	wp_die('wp-config.php file is not writable. You might get a warning because of an include statement. Please remove lines between // BEGIN SP_WP_Config and // END SBP_WP_Config');
+$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
+$config_regex = '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si';
+if ( preg_match( $config_regex, $wp_config_content ) ) {
+	if ($wp_filesystem->is_writable($wp_config_file)) {
+		$modified_wp_config_content = preg_replace( $config_regex, '', $wp_config_content );
+		$wp_filesystem->put_contents( $wp_config_file, $modified_wp_config_content );
+	}
 }
