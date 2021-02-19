@@ -9,17 +9,17 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Tweaks extends SBP_Abstract_Module {
 	private $tweak_settings = [
-		'trim_query_strings'     => 'trim_query_strings',
-		'dequeue_emoji_scripts'  => 'dequeue_emoji_scripts',
-		'disable_self_pingbacks' => 'disable_self_pingbacks',
-		'dequeue_dashicons'      => 'dequeue_dashicons',
-		'post_revisions'         => 'post_revisions',
-		'autosave_interval'      => 'autosave_interval',
-		'dequeue_block_library'  => 'dequeue_block_library',
-		'disable_post_embeds'    => 'disable_post_embeds',
-		'instant_page'           => 'instant_page',
-		'heartbeat_settings'     => 'heartbeat_settings',
-		'declutter_head'         => [
+		'trim_query_strings'           => 'trim_query_strings',
+		'dequeue_emoji_scripts'        => 'dequeue_emoji_scripts',
+		'disable_self_pingbacks'       => 'disable_self_pingbacks',
+		'dequeue_dashicons'            => 'dequeue_dashicons',
+		'post_revisions'               => 'post_revisions',
+		'autosave_interval'            => 'autosave_interval',
+		'dequeue_block_library'        => 'dequeue_block_library',
+		'disable_post_embeds'          => 'disable_post_embeds',
+		'instant_page'                 => 'instant_page',
+		'heartbeat_settings'           => 'heartbeat_settings',
+		'declutter_head'               => [
 			'declutter_shortlinks'           => 'declutter_shortlinks',
 			'declutter_adjacent_posts_links' => 'declutter_adjacent_posts_links',
 			'declutter_wlw'                  => 'declutter_wlw',
@@ -28,6 +28,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 			'declutter_feed_links'           => 'declutter_feed_links',
 			'declutter_wp_version'           => 'declutter_wp_version',
 		],
+		'dequeue_comment_reply_script' => 'dequeue_comment_reply_script',
 	];
 
 	public function __construct() {
@@ -274,6 +275,14 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 
 	public function instant_page_handle() {
 		wp_enqueue_script( 'sbp-ins-page', SBP_URL . 'public/js/inspage.js', false, '5.1.0', true );
+	}
+
+	private function dequeue_comment_reply_script() {
+		add_action( 'init', [ $this, 'comment_reply_script_handle' ] );
+	}
+
+	public function comment_reply_script_handle() {
+		wp_deregister_script( 'comment-reply' );
 	}
 
 	private function declutter_shortlinks() {
