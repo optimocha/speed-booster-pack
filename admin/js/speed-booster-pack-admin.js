@@ -51,8 +51,10 @@
                 response = JSON.parse(response);
                 if (response.status === 'true') {
                     $('.sbp-cloudflare-correct').show();
-                } else {
+                } else if (response.status === 'false') {
                     $('.sbp-cloudflare-incorrect').show();
+                } else {
+                    $('.sbp-cloudflare-connection-issue').show();
                 }
             },
             complete: function () {
@@ -153,8 +155,11 @@
                 } else if (response.status === 'empty_info') {
                     $('.sbp-cloudflare-warning').show();
                 } else {
-                    // Z_TODO: Baglanti hatalarinda ozel uyari goster.
-                    $('.sbp-cloudflare-incorrect').show();
+                    if (response.status === 'null') {
+                        $('.sbp-cloudflare-connection-issue').show();
+                    } else {
+                        $('.sbp-cloudflare-incorrect').show();
+                    }
                     $('.with-preloader::before, .with-preloader::after').remove();
                 }
             },

@@ -116,6 +116,10 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			return true;
 		}
 
+		if ( !$result ) {
+			return null;
+		}
+
 		return false;
 	}
 
@@ -202,10 +206,18 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 				'email'   => $_POST['email'],
 				'api_key' => $_POST['api_key'],
 				'zone'    => $_POST['zone_id'],
-			] ) ? 'true' : 'false';
+			] );
+
+			if ($status === true) {
+				$return_value = 'true';
+			} else if ($status === null) {
+				$return_value = 'null';
+			} else {
+				$return_value = 'false';
+			}
 
 			echo json_encode( [
-				'status' => $status,
+				'status' => $return_value,
 			] );
 			wp_die();
 		}

@@ -88,7 +88,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			'wp-embedded-content',
 		];
 		$lazyload_exclusions         = apply_filters( 'sbp_lazyload_exclusions', array_merge( $lazyload_exclusions, $default_lazyload_exclusions ) );
-		$placeholder                 = 'data:image/svg+xml,%3Csvg%20xmlns%3D%27http://www.w3.org/2000/svg%27%20viewBox%3D%270%200%203%202%27%3E%3C/svg%3E';
+		$placeholder                 = 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=';
 
 		// Find all images
 		preg_match_all( '/<(img|source|iframe)(.*?) (src=)[\'|"](.*?)[\'|"](.*?)>/is', $html, $resource_elements );
