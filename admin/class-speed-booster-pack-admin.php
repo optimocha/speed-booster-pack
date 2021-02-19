@@ -985,6 +985,13 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
+							'title' => __( 'Dequeue Comment Reply Script', 'speed-booster-pack' ), // B_TODO: Translations
+							'desc' => __( 'Disables comment reply script.', 'speed-booster-pack' ), // B_TODO: Translations
+							'id' => 'dequeue_comment_reply_script',
+							'type' => 'switcher',
+							'dependency' => ['module_tweaks', '==', '1', '', 'visible'],
+						],
+						[
 							/* translators: %s = <head>  */
 							'title'      => sprintf( __( 'Declutter %s', 'speed-booster-pack' ), '<code>&lt;head&gt;</code>' ),
 							'id'         => 'declutter_head',
