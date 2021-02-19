@@ -103,7 +103,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_total_cache' ) ) {
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			self::clear_total_cache();
-			SBP_Cloudflare::clear_cache();
 			set_transient( 'sbp_notice_cache', '1', 60 );
 			wp_redirect( $redirect_url );
 		}
@@ -121,6 +120,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$warmup->start_process();
 			unset( $warmup );
 		}
+		SBP_Cloudflare::clear_cache();
 		do_action( 'sbp_after_cache_clear' );
 	}
 
@@ -151,17 +151,16 @@ class SBP_Cache extends SBP_Abstract_Module {
 			// Get included rules
 			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
 
-			$query_string_file_name = 'index';
+			$query_string_file_name = '';
 			// Order get parameters alphabetically (to get same filename for every order of query parameters)
 			ksort( $_GET );
 			foreach ( $_GET as $key => $value ) {
 				if ( in_array( $key, $include_query_strings ) ) {
-					$query_string_file_name .= "-$key-$value";
+					$query_string_file_name .= "$key-$value-";
 				}
 			}
 			if ( '' !== $query_string_file_name ) {
-				$query_string_file_name .= '.html';
-				$this->file_name        = md5( $query_string_file_name );
+				$this->file_name        = md5( $query_string_file_name ) . '.html';
 			}
 		}
 
@@ -486,6 +485,8 @@ AddEncoding gzip              svgz
   ExpiresByType image/jpeg                            "access plus 1 month"
   ExpiresByType image/png                             "access plus 1 month"
   ExpiresByType image/apng                            "access plus 1 month"
+  ExpiresByType image/avif                            "access plus 1 month"
+  ExpiresByType image/avif-sequence                   "access plus 1 month"
   ExpiresByType image/svg+xml                         "access plus 1 month"
   ExpiresByType image/webp                            "access plus 1 month"
   ExpiresByType video/mp4                             "access plus 1 month"

@@ -34,8 +34,8 @@ if ( ! defined( 'SBP_CACHE_DIR' ) ) {
 	define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' );
 }
 
-if ( ! defined( 'SBP_LOCALIZED_SCRIPT_DIR' ) ) {
-	define( 'SBP_LOCALIZED_SCRIPT_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
+if ( ! defined( 'SBP_UPLOADS_DIR' ) ) {
+	define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
 }
 
 // Delete Directory Function
@@ -73,7 +73,7 @@ delete_option( 'sbp_options' );
 delete_option( 'sbp_notice_error' );
 delete_option( 'sbp_transient_error' );
 delete_dir( SBP_CACHE_DIR );
-delete_dir( SBP_LOCALIZED_SCRIPT_DIR );
+delete_dir( SBP_UPLOADS_DIR );
 
 // Clear htaccess
 global $wp_filesystem;
@@ -107,19 +107,18 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_dismissed_compat_notices' );
 }
 
-// Delete wp-config-inject from wp-config.php
+// Delete injected lines from wp-config.php
 if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {
 	$wp_config_file = ABSPATH . 'wp-config.php';
 } else {
 	$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
 }
 
-if ($wp_filesystem->is_writable($wp_config_file)) {
-	$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
-	$modified_wp_config_content = preg_replace( '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', '', $wp_config_content );
-	$wp_filesystem->put_contents( $wp_config_file, $modified_wp_config_content );
-} else {
-	wp_die('wp-config.php file is not writable. You might get a warning because of an include statement. Please remove lines between // BEGIN SP_WP_Config and // END SBP_WP_Config');
+$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
+$config_regex = '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si';
+if ( preg_match( $config_regex, $wp_config_content ) ) {
+	if ($wp_filesystem->is_writable($wp_config_file)) {
+		$modified_wp_config_content = preg_replace( $config_regex, '', $wp_config_content );
+		$wp_filesystem->put_contents( $wp_config_file, $modified_wp_config_content );
+	}
 }
-
-// TODO: uninstall.php: Also delete the sbp_announcements option and all the other transients & usermeta we put.

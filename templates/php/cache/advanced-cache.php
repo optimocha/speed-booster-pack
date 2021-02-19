@@ -37,8 +37,7 @@ if ( ! empty( $_GET ) ) {
 	}
 
 	if ( '' !== $query_string_file_name ) {
-		$query_string_file_name .= '.html';
-		$filename               = md5( $query_string_file_name );
+		$filename = md5( $query_string_file_name ) . '.html';
 	}
 }
 

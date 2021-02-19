@@ -444,7 +444,7 @@ class HtmlNode
 				{
 					case self::HDOM_QUOTE_SINGLE:
 						$quote = '\'';
-						$val = htmlentities($val, ENT_QUOTES, $this->dom->target_charset);
+						// $val = htmlentities($val, ENT_QUOTES, $this->dom->target_charset);
 						break;
 					case self::HDOM_QUOTE_NO:
 						$quote = '';
@@ -452,7 +452,7 @@ class HtmlNode
 					case self::HDOM_QUOTE_DOUBLE:
 					default:
 						$quote = '"';
-						$val = htmlentities($val, ENT_COMPAT, $this->dom->target_charset);
+						// $val = htmlentities($val, ENT_COMPAT, $this->dom->target_charset);
 				}
 
 				$ret .= $key

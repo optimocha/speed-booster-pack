@@ -121,7 +121,7 @@
   color: #fff;
   vertical-align: middle;
   background-color: #e10000;
-  @include border-radius(2px);
+  border-radius: 2px;
 }
 
 .csf-no-option{
@@ -136,4 +136,17 @@
 .csf-input-number::-webkit-outer-spin-button{
   -webkit-appearance: none;
   margin: 0;
+}
+
+.csf-fa5-shims{
+
+  .csf{
+
+    .fas,
+    .far,
+    .fab{
+      font-family: "FontAwesome";
+      font-style: normal;
+    }
+  }
 }

@@ -1,10 +1,8 @@
-# Copyright (C) 2020 Codestar
+# Copyright (C) 2021 Codestar
 # This file is distributed under the same license as the Codestar Framework package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Codestar Framework 2.1.7.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/codestar-"
-"framework\n"
+"Project-Id-Version: Codestar Framework 2.2.1\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
@@ -61,12 +59,12 @@ msgid "Are you sure to reset this section options?"
 msgstr "Bạn có chắc không?"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
-#: fields/backup/backup.php:31
 msgid "Reset All"
 msgstr "Đặt lại tất cả"
 
 #: classes/admin-options.class.php:570 classes/admin-options.class.php:693
 #: classes/comment-options.class.php:213 classes/metabox-options.class.php:282
+#: fields/backup/backup.php:31
 msgid "Reset"
 msgstr "Đặt lại"
 
@@ -89,51 +87,35 @@ msgstr "cập nhật Bài viết"
 msgid "Cancel"
 msgstr "Hủy"
 
-#: classes/setup.class.php:527
+#: classes/setup.class.php:529
 msgid "Are you sure?"
 msgstr "Bạn có chắc không?"
 
-#: classes/setup.class.php:528
+#: classes/setup.class.php:530
 msgid "Please enter %s or more characters"
 msgstr "Vui lòng nhập %s hoặc nhiều ký tự"
 
-#: classes/setup.class.php:529
+#: classes/setup.class.php:531
 msgid "Searching..."
 msgstr "Tìm kiếm..."
 
-#: classes/setup.class.php:530
+#: classes/setup.class.php:532
 msgid "No results found."
 msgstr "Không tìm thấy kết quả."
 
-#: classes/setup.class.php:602
+#: classes/setup.class.php:615
 msgid "Oops! Not allowed."
 msgstr "Ôi! Không cho phép."
 
-#: classes/setup.class.php:676 classes/setup.class.php:680
+#: classes/setup.class.php:689 classes/setup.class.php:693
 msgid "Field not found!"
 msgstr "Không tìm thấy trường!"
 
-#: classes/shortcode-options.class.php:35
-msgid "Add Shortcode"
-msgstr "Thêm Shortcode"
-
-#: classes/shortcode-options.class.php:36
-msgid "Select a shortcode"
-msgstr "Lựa chọn shortcode"
-
-#: classes/shortcode-options.class.php:37
-msgid "Insert Shortcode"
-msgstr "Chèn Shortcode"
-
-#: classes/shortcode-options.class.php:44
-msgid "Write shortcode here..."
-msgstr "Nhập shortcode ở đây..."
-
-#: classes/shortcode-options.class.php:239 fields/group/group.php:23
+#: classes/shortcode-options.class.php:251 fields/group/group.php:23
 msgid "Add New"
 msgstr "Thêm mới"
 
-#: classes/shortcode-options.class.php:276 functions/actions.php:16
+#: classes/shortcode-options.class.php:288 functions/actions.php:16
 #: functions/actions.php:68 functions/actions.php:106 functions/actions.php:141
 #: functions/actions.php:170
 msgid "Error: Invalid nonce verification."
@@ -438,6 +420,18 @@ msgstr "Thêm Biểu tượng"
 msgid "Remove Icon"
 msgstr "Bỏ Biểu tượng"
 
+#: fields/link/link.php:20
+msgid "Add Link"
+msgstr "Thêm liên kết"
+
+#: fields/link/link.php:21
+msgid "Edit Link"
+msgstr "Chỉnh sửa Liên kết"
+
+#: fields/link/link.php:22
+msgid "Remove Link"
+msgstr "Xóa đường dẫn"
+
 #: fields/link_color/link_color.php:37
 msgid "Hover"
 msgstr ""
@@ -656,3 +650,15 @@ msgstr "Mục này là bắt buộc."
 #: functions/validate.php:68 functions/validate.php:146
 msgid "Please enter a valid URL."
 msgstr "Hãy nhập lại đường dẫn hợp lệ."
+
+#~ msgid "Add Shortcode"
+#~ msgstr "Thêm Shortcode"
+
+#~ msgid "Select a shortcode"
+#~ msgstr "Lựa chọn shortcode"
+
+#~ msgid "Insert Shortcode"
+#~ msgstr "Chèn Shortcode"
+
+#~ msgid "Write shortcode here..."
+#~ msgstr "Nhập shortcode ở đây..."

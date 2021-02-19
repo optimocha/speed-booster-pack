@@ -55,7 +55,7 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 			return 'Kinsta';
 		}
 
-		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) { // LAHMACUNTODO: Check here
+		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) { // Z_TODO: Check here
 			return [ 'name' => 'WP Engine', 'disable_features' => [] ];
 		}
 

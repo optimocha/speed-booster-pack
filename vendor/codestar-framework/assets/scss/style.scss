@@ -14,7 +14,7 @@
  *     01. 07. Section
  *     01. 08. Footer
  *     01. 09. Copyright
- *     01. 10. Show All Options
+ *     01. 10. Show All Settings
  *     01. 11. Search Input
  *     01. 12. Metabox
  *     01. 13. Comment Metabox
@@ -61,7 +61,8 @@
  *     03. 36. Field: submessage
  *     03. 37. Field: notice
  *     03. 38. Field: number
- *     03. 39. Field: others
+ *     03. 39. Field: link
+ *     03. 40. Field: others
  * 04. Widget
  * 05. Customizer
  * 06. Taxonomy
@@ -79,8 +80,6 @@
  * ---------------------------------------------------------
  *
  */
-@import "compass";
-@import "vendor/mixins";
 @import "vendor/base";
 @import "vendor/themes";
 @import "vendor/fields";

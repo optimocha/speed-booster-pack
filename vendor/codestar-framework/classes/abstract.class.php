@@ -12,8 +12,6 @@ if ( ! class_exists( 'CSF_Abstract' ) ) {
 
     public $abstract   = '';
     public $output_css = '';
-    public $webfonts   = array();
-    public $subsets    = array();
 
     public function __construct() {
 
@@ -85,7 +83,7 @@ if ( ! class_exists( 'CSF_Abstract' ) ) {
 
                   }
 
-                } else if ( $field_check && $this->abstract === 'metabox' && is_singular() ) {
+                } else if ( $field_check && ( $this->abstract === 'metabox' && is_singular() || $this->abstract === 'taxonomy' && is_archive() ) ) {
 
                   if( ! empty( $combine_field ) ) {
 
@@ -107,10 +105,8 @@ if ( ! class_exists( 'CSF_Abstract' ) ) {
                 if ( $field_type === 'typography' && $this->args['enqueue_webfont'] && ! empty( $field_value['font-family'] ) ) {
 
                   $method = ( ! empty( $this->args['async_webfont'] ) ) ? 'async' : 'enqueue';
-                  $family = $instance->enqueue_google_fonts();
 
-                  CSF::$webfonts[$method][$family] = ( ! empty( $this->webfonts[$family] ) ) ? $family . ':' . implode( ',', $this->webfonts[$family] ) : $family;
-                  CSF::$subsets = $this->subsets;
+                  $instance->enqueue_google_fonts( $method );
 
                 }
 

@@ -46,7 +46,7 @@ class SBP_Notice_Manager {
 		if ( self::should_display( $id ) || ( $notice_type == 'recurrent' && get_transient( $id ) ) || ( $notice_type == 'flash' && ! get_transient( $id ) ) ) {
 			add_action( 'admin_notices',
 				function () use ( $type, $is_dismissible, $id, $text, $action ) {
-					echo '<div class="notice sbp-notice notice-' . $type . ' ' . ( $is_dismissible ? 'is-dismissible' : null ) . '"data-notice-action="' . $action . '" data-notice-id="' . $id . '">' . $text . '</div>';
+					echo '<div class="notice sbp-notice notice-' . $type . ' ' . ( $is_dismissible ? 'is-dismissible' : null ) . '" data-notice-action="' . $action . '" data-notice-id="' . $id . '">' . $text . '</div>';
 				} );
 
 			if ( $notice_type == 'flash' ) {
