@@ -261,6 +261,14 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_caching_urls',
 				],
 				[
+					'id'         => 'caching_exclude_cookies',
+					'class'      => 'caching-exclude-cookies',
+					'type'       => 'code_editor',
+					'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
+					'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+				],
+				[
 					'id'         => 'caching_include_query_strings',
 					'class'      => 'caching-include-query-strings',
 					'type'       => 'code_editor',

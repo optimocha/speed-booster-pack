@@ -7,7 +7,8 @@ if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET
 
 // Check if user logged in
 if ( ! empty( $_COOKIE ) ) {
-	$cookies_regex = '/^(comment_author|wordpress_logged_in|wp-postpass)_/';
+	$cookies = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_', '{{__CACHING_EXCLUDE_COOKIES__}}'];
+	$cookies_regex = '/^(' . implode('|', $cookies) . ')/';
 
 	foreach ( $_COOKIE as $key => $value ) {
 		if ( preg_match( $cookies_regex, $key ) ) {
