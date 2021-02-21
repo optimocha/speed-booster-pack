@@ -24,6 +24,7 @@ use SpeedBooster\SBP_Compatibility_Checker;
 use SpeedBooster\SBP_Critical_CSS;
 use SpeedBooster\SBP_CSS_Minifier;
 use SpeedBooster\SBP_Custom_Code_Manager;
+use SpeedBooster\SBP_Database_Optimizer;
 use SpeedBooster\SBP_WP_Dashboard;
 use SpeedBooster\SBP_Font_Optimizer;
 use SpeedBooster\SBP_HTML_Minifier;
@@ -156,6 +157,7 @@ class Speed_Booster_Pack {
 			return false;
 		}
 		new SBP_WP_Dashboard();
+		new SBP_Database_Optimizer();
 		new SBP_Newsletter();
 		new SBP_Migrator();
 		new SBP_JS_Optimizer();
