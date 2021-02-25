@@ -749,6 +749,7 @@ class Speed_Booster_Pack_Admin {
 							'id'   => 'preboost_include',
 							'type' => 'code_editor',
 							'desc' => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
+							'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
 						],
 					],
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
