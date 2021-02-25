@@ -709,7 +709,7 @@ class Speed_Booster_Pack_Admin {
 					'class'      => 'lazyload-exclude' . ( $should_disable_lazyload ? ' inactive-section' : null ),
 					'type'       => 'code_editor',
 					'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
-					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					'dependency' => [ 'module_assets|lazyload', '==|==', '1|1', '', 'visible|visible' ],
 					'sanitize'   => 'sbp_clear_http',
 				],
 				[
@@ -732,7 +732,7 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'code_editor',
 					'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 					'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					'dependency' => [ 'module_assets|js_optimize', '==|!=', '1|off', '', 'visible|visible' ],
 				],
 				[
 					'title'      => __( 'Preload assets', 'speed-booster-pack' ),
