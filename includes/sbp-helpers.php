@@ -54,7 +54,7 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) && $_SERVER['KINSTA_CACHE_ZONE'] ) {
 			return [
 				'name' => 'Kinsta',
-				'disable_features' => [ 'caching' ],
+				'disabled_features' => [ 'caching' ],
 				'error_message' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Kinsta', 'Kinsta' ),
 			];
 		}
@@ -62,7 +62,7 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) {
 			return [
 				'name' => 'WP Engine',
-				'disable_features' => [ 'caching' ],
+				'disabled_features' => [ 'caching' ],
 				'error_message' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'WP Engine', 'WP Engine' ),
 			];
 		}
