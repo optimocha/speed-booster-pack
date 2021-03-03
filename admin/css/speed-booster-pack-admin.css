@@ -114,3 +114,33 @@
 .sbp-notice:hover .warmup-cache-error-list {
     display: block;
 }
+
+.sbp-button-loading {
+    display: flex!important;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sbp-button-loading i {
+    display: none;
+}
+
+.sbp-button-loading.sbp-loading-active i {
+    display: block;
+}
+
+.sbp-button-loading i {
+    transform: scale(.7);
+}
+
+@keyframes rotating {
+    from {
+        transform: scale(.7) rotate(360deg);
+    }
+    to {
+        transform: scale(.7) rotate(0deg);
+    }
+}
+.sbp-button-loading i {
+    animation: rotating 2s linear infinite;
+}

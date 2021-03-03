@@ -72,8 +72,6 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_WP_Config_Injector::inject_wp_config' );
 
-		add_action( 'csf_loaded', '\SpeedBooster\SBP_Database_Optimizer::check_database_storage_engine' );
-
 		$this->create_settings_page();
 
 		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
@@ -1084,32 +1082,25 @@ class Speed_Booster_Pack_Admin {
 					'fields' => [
 						[
 							'type' => 'subheading',
-							'title' => 'Change Storage Engine',
-						],
-						[
-							'id'          => 'opt-select-4',
-							'type'        => 'select',
-							'title'       => 'Select Tables',
-							'chosen'      => true,
-							'multiple'    => true,
-							'placeholder' => 'Select an option',
-							'options'     => $database_tables,
-						],
-						[
-							'id'          => 'opt-select-4',
-							'type'        => 'select',
-							'title'       => 'Choose Database Engine',
-							'placeholder' => 'Select Storage Engine',
-							'options'     => [
-								'myisam' => 'MyISAM',
-								'innodb' => 'InnoDB',
-							],
+							'title' => 'Convert Database Tables to InnoDB',
 						],
 						[
 							'id' => 'button',
-							'title' => ' ',
+							'title' => '',
 							'type' => 'content',
-							'content' => '<button class="button button-primary">Convert</button>'
+							'content' => '
+								<button class="button button-primary sbp-scan-database-tables sbp-button-loading"><span>Scan Database Tables</span> <i class="dashicons dashicons-image-rotate"></i></button>
+								<table class="widefat fixed sbp-database-tables" cellspacing="0" style="margin-top: 20px; display: none;">
+								<thead>
+								<tr>
+								<th>Table Name</th>
+								<th>Actions</th>
+</tr>
+<tbody>
+</tbody>
+</thead>
+</table>
+							'
 						],
 					],
 				]
