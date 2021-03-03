@@ -1073,6 +1073,48 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Tweaks */
 
+			/** BEGIN Section: Database Optimization */
+			global $wpdb;
+			$database_tables = [];
+			$tables = $wpdb->get_results('SHOW TABLE STATUS');
+			foreach ($tables as $table) {
+				$database_tables[$table->Name] = $table->Name;
+			}
+
+			CSF::createSection(
+				$prefix,
+				[
+					'title' => 'Database Optimization',
+					'id' => 'database_optimization',
+					'icon' => 'fa fa-database',
+					'fields' => [
+						[
+							'type' => 'subheading',
+							'title' => 'Convert Database Tables to InnoDB',
+						],
+						[
+							'id' => 'button',
+							'title' => '',
+							'type' => 'content',
+							'content' => '
+								<button class="button button-primary sbp-scan-database-tables sbp-button-loading"><span>Scan Database Tables</span> <i class="dashicons dashicons-image-rotate"></i></button>
+								<table class="widefat fixed sbp-database-tables" cellspacing="0" style="margin-top: 20px; display: none;">
+								<thead>
+								<tr>
+								<th>Table Name</th>
+								<th>Actions</th>
+</tr>
+<tbody>
+</tbody>
+</thead>
+</table>
+							'
+						],
+					],
+				]
+			);
+			/** END Section: Database Optimization */
+
 			/* BEGIN Section: Tools */
 			CSF::createSection(
 				$prefix,
