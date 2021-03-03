@@ -219,4 +219,73 @@
         });
     });
 
+    $(document).on('click', '.sbp-scan-database-tables', function() {
+        var $button = $(this);
+        $button.addClass('sbp-loading-active');
+        $button.attr('disabled', 'disabled');
+
+        $.ajax({
+            type: 'GET',
+            url: ajaxurl,
+            data: {'action': 'sbp_database_action', 'sbp_action': 'fetch_non_innodb_tables'},
+            success: function(response) {
+                response = JSON.parse(response);
+                var $table = $('.sbp-database-tables');
+                var $tableBody = $('.sbp-database-tables tbody');
+                $tableBody.html('');
+                if (response.tables && response.tables.length > 0) {
+                    $table.show();
+                    response.tables.map(table => {
+                        $tableBody.append('<tr>' +
+                            '<td style="vertical-align: middle;">' + table.table_name + '</td>\n' +
+                            '<td>' +
+                            '<button type="button" class="button button-primary sbp-convert-table sbp-button-loading" data-table-name="' + table.table_name + '"><span>Convert To InnoDB</span> <i class="dashicons dashicons-image-rotate"></i></button>' +
+                            '</td>' +
+                            '</tr>');
+                    });
+                } else {
+                    $tableBody.html('<tr><td colspan="2">No database table found.</td></tr>'); // B_TODO: Check text
+                }
+            },
+            error: function(xhr, status) {
+                alert('Error occured while fetching database tables.'); // B_TODO: Check text
+            },
+            complete: function() {
+                $button.removeClass('sbp-loading-active');
+                $button.removeAttr('disabled');
+            }
+        });
+    });
+
+    $(document).on('click', '.sbp-convert-table', function() {
+        var $button = $(this);
+        var table_name = $button.data('table-name');
+
+        $button.addClass('sbp-loading-active');
+        $button.attr('disabled', 'disabled');
+
+        $.ajax({
+            type: 'GET',
+            url: ajaxurl,
+            data: {'action': 'sbp_database_action', 'sbp_action': 'convert_tables', 'sbp_convert_table_name': table_name},
+            success: function(response) {
+                response = JSON.parse(response);
+                if (response.status === 'failure') {
+                    $button.removeClass('sbp-loading-active');
+                    $button.removeAttr('disabled');
+                    alert(response.message);
+                } else {
+                    $button.parent().html('<span style="color: darkgreen;">Converted successfully.</span>'); // B_TODO: Check text
+                }
+            },
+            error: function(xhr, status) {
+                alert('Error occurred while fetching database tables.'); // B_TODO: Check text
+            },
+            complete: function() {
+                $button.removeClass('sbp-loading-active');
+                $button.removeAttr('disabled');
+            }
+        });
+    });
+
 })(jQuery);
