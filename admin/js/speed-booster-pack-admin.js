@@ -153,7 +153,7 @@
                 } else if (response.status === 'empty_info') {
                     $('.sbp-cloudflare-warning').show();
                 } else {
-                    // Z_TODO: Baglanti hatalarinda ozel uyari goster.
+
                     $('.sbp-cloudflare-incorrect').show();
                     $('.with-preloader::before, .with-preloader::after').remove();
                 }
