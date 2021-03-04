@@ -46,11 +46,19 @@ if ( ! function_exists( 'sbp_delete_dir_recursively' ) ) {
 if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 	function sbp_get_hosting_restrictions() {
 		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) && $_SERVER['KINSTA_CACHE_ZONE'] ) {
-			return 'Kinsta';
+			return [
+				'name' => 'Kinsta',
+				'disabled_features' => [ 'caching' ],
+				'error_message' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Kinsta', 'Kinsta' ),
+			];
 		}
 
 		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) { // Z_TODO: Check here
-			return [ 'name' => 'WP Engine', 'disable_features' => [] ];
+			return [
+				'name' => 'WP Engine',
+				'disabled_features' => [ 'caching' ],
+				'error_message' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'WP Engine', 'WP Engine' ),
+			];
 		}
 
 		$hosting_provider_constants = [
