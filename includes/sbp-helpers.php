@@ -56,7 +56,7 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) { // Z_TODO: Check here
 			return [
 				'name' => 'WP Engine',
-				'disabled_features' => [ 'caching' ],
+				'disabled_features' => [],
 				'error_message' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'WP Engine', 'WP Engine' ),
 			];
 		}
