@@ -51,8 +51,10 @@
                 response = JSON.parse(response);
                 if (response.status === 'true') {
                     $('.sbp-cloudflare-correct').show();
-                } else {
+                } else if (response.status === 'false') {
                     $('.sbp-cloudflare-incorrect').show();
+                } else {
+                    $('.sbp-cloudflare-connection-issue').show();
                 }
             },
             complete: function () {
