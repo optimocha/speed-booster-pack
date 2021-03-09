@@ -108,6 +108,13 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 	}
 }
 
+if ( ! function_exists( 'sbp_get_post_meta' ) ) {
+	function sbp_get_post_meta( $post_id, $option_key, $default = null ) {
+		$post_meta = get_post_meta($post_id, 'sbp_post_meta', true);
+
+		return ( isset( $post_meta[ $option_key ] ) ) ? $post_meta[ $option_key ] : $default;
+	}
+}
 
 /**
  * The code that runs during plugin activation.
@@ -139,9 +146,10 @@ require SBP_INC_PATH . 'class-speed-booster-pack.php';
 /**
  * Autoload classes which has SpeedBooster namespace
  *
+ * @param $class_name
+ *
  * @since 4.0.0
  *
- * @param $class_name
  */
 spl_autoload_register( 'sbp_autoloader' );
 function sbp_autoloader( $class_name ) {
@@ -165,7 +173,9 @@ function sbp_autoloader( $class_name ) {
  * @since    4.0.0
  */
 function run_speed_booster_pack() {
-	if( preg_match( '/(\.txt|\.pdf|\.xml|\.ico|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {return;}
+	if ( preg_match( '/(\.txt|\.pdf|\.xml|\.ico|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
+		return;
+	}
 
 	$plugin = new Speed_Booster_Pack();
 	$plugin->run();

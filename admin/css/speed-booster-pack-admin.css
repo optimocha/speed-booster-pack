@@ -13,7 +13,7 @@
 .sbp-settings .preboost .csf-fieldset-content>:first-child {padding-top:0;}
 .sbp-settings .preboost .csf-fieldset-content {border:0;box-shadow:none;}
 
-.sbp-settings .csf-field-code_editor .CodeMirror {height:190px;}
+.sbp-settings .csf-field-code_editor .CodeMirror, #sbp_post_meta .csf-field-code_editor .CodeMirror {height:190px;}
 .sbp-settings .csf-desc-text {color:#777;}
 .sbp-settings .csf-section.dashboard ul, .sbp-settings .csf-section.about ul {list-style:disc inside;}
 .sbp-settings .csf-section.dashboard .csf-field-content {padding:1rem 2rem;}

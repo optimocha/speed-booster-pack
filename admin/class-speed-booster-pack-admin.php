@@ -1189,6 +1189,24 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: About */
+
+			/* BEGIN Metaboxes */
+			$metabox_prefix = 'sbp_post_meta';
+			CSF::createMetabox( $metabox_prefix, [
+				'title'        => SBP_PLUGIN_NAME,
+				'post_type'    => 'page',
+			] );
+
+			CSF::createSection( $metabox_prefix, array(
+				'fields' => [
+					[
+						'id'    => 'sbp_preload',
+						'type'  => 'code_editor',
+						'title' => __( 'Page-Specific Preload Rules', 'speed-booster-pack' ),
+						'desc'  => __( 'This one is just some kind of test.', 'speed-booster-pack' ), // B_TODO: Change Text
+					],
+				]
+			) );
 		}
 	}
 }	
