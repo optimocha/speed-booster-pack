@@ -107,6 +107,12 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_dismissed_compat_notices' );
 }
 
+$pages = array('posts_per_page' => -1, 'post_type' => 'page');
+$pages_to_clear = get_posts($pages);
+foreach ($pages_to_clear as $post) {
+	delete_post_meta($post->ID, 'sbp_post_meta');
+}
+
 // Delete injected lines from wp-config.php
 if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {
 	$wp_config_file = ABSPATH . 'wp-config.php';
