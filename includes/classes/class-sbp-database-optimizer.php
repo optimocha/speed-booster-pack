@@ -69,6 +69,14 @@ class SBP_Database_Optimizer extends SBP_Abstract_Module {
 
 	public function handle_ajax_request() {
 		if ( current_user_can( 'manage_options' ) && isset( $_GET['sbp_action'] ) ) {
+			if ( ! wp_verify_nonce($_GET['nonce'], 'sbp_ajax_nonce') ) {
+				echo wp_json_encode([
+					'status' => 'failure',
+					'message' => __( 'Invalid nonce.', 'speed-booster-pack' ),
+				]);
+				wp_die();
+			}
+
 			switch ( $_GET['sbp_action'] ) {
 				case "fetch_non_innodb_tables":
 					$this->fetch_non_innodb_tables();

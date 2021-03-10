@@ -227,7 +227,7 @@
         $.ajax({
             type: 'GET',
             url: ajaxurl,
-            data: {'action': 'sbp_database_action', 'sbp_action': 'fetch_non_innodb_tables'},
+            data: {'action': 'sbp_database_action', 'sbp_action': 'fetch_non_innodb_tables', 'nonce': sbp_ajax_vars.nonce},
             success: function(response) {
                 response = JSON.parse(response);
                 var $table = $('.sbp-database-tables');
@@ -267,7 +267,7 @@
         $.ajax({
             type: 'GET',
             url: ajaxurl,
-            data: {'action': 'sbp_database_action', 'sbp_action': 'convert_tables', 'sbp_convert_table_name': table_name},
+            data: {'action': 'sbp_database_action', 'sbp_action': 'convert_tables', 'sbp_convert_table_name': table_name, 'nonce': sbp_ajax_vars.nonce},
             success: function(response) {
                 response = JSON.parse(response);
                 if (response.status === 'failure') {

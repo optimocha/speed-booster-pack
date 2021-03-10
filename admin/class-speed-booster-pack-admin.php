@@ -93,6 +93,9 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script($this->plugin_name, 'sbp_ajax_vars', [
+			'nonce' => wp_create_nonce('sbp_ajax_nonce'),
+		]);
 	}
 
 	public function load_dependencies() {
