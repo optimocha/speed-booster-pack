@@ -340,46 +340,46 @@ class Speed_Booster_Pack_Admin {
 					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
 				],
 				[
-					'title' => __( 'Rocket Loader', 'speed-booster-pack' ),
-					'id'    => 'cf_rocket_loader_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
+					'title'      => __( 'Rocket Loader', 'speed-booster-pack' ),
+					'id'         => 'cf_rocket_loader_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title' => __( 'Development Mode', 'speed-booster-pack' ),
-					'id'    => 'cf_dev_mode_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
+					'title'      => __( 'Development Mode', 'speed-booster-pack' ),
+					'id'         => 'cf_dev_mode_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title' => __( 'Minify CSS', 'speed-booster-pack' ),
-					'id'    => 'cf_css_minify_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
+					'title'      => __( 'Minify CSS', 'speed-booster-pack' ),
+					'id'         => 'cf_css_minify_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title' => __( 'Minify HTML', 'speed-booster-pack' ),
-					'id'    => 'cf_html_minify_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
+					'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
+					'id'         => 'cf_html_minify_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title' => __( 'Minify JS', 'speed-booster-pack' ),
-					'id'    => 'cf_js_minify_enable',
-					'class' => 'with-preloader',
-					'type'  => 'switcher',
-					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
+					'title'      => __( 'Minify JS', 'speed-booster-pack' ),
+					'id'         => 'cf_js_minify_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title'   => __( 'Browser Cache TTL', 'speed-booster-pack' ),
-					'id'      => 'cf_browser_cache_ttl',
-					'class'   => 'with-preloader',
-					'type'    => 'select',
-					'options' => [
+					'title'      => __( 'Browser Cache TTL', 'speed-booster-pack' ),
+					'id'         => 'cf_browser_cache_ttl',
+					'class'      => 'with-preloader',
+					'type'       => 'select',
+					'options'    => [
 						0        => __( 'Respect Existing Headers', 'speed-booster-pack' ),
 						1800     => __( '30 minutes', 'speed-booster-pack' ),
 						3600     => __( '1 hour', 'speed-booster-pack' ),
@@ -404,7 +404,7 @@ class Speed_Booster_Pack_Admin {
 						16070400 => __( '6 months', 'speed-booster-pack' ),
 						31536000 => __( '1 year', 'speed-booster-pack' ),
 					],
-					'dependency' => ['cloudflare_enable', '==', '1', '', 'visible'],
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'type'    => 'content',
@@ -446,7 +446,7 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Connect to Sucuri', 'speed-booster-pack' ),
 					'id'    => 'sucuri_enable',
 					'type'  => 'switcher',
-					'desc' => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s Cache\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+					'desc'  => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s Cache\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 				],
 				[
 					'title' => __( 'Sucuri API key', 'speed-booster-pack' ),
@@ -551,11 +551,11 @@ class Speed_Booster_Pack_Admin {
 									'title'  => 'is_front_page',
 									'fields' => [
 										[
-											'id'   => 'is_front_page',
-											'type' => 'code_editor',
+											'id'       => 'is_front_page',
+											'type'     => 'code_editor',
 											// Z_TODO: Edit the following description.
-											'desc' => sprintf( __( 'This CSS block will be injected into the front page of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_front_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_front_page()</code>' ), '</a>' ),
-											'settings'   => [ 'lineWrapping' => true ],
+											'desc'     => sprintf( __( 'This CSS block will be injected into the front page of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_front_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_front_page()</code>' ), '</a>' ),
+											'settings' => [ 'lineWrapping' => true ],
 										],
 									],
 								],
@@ -563,10 +563,10 @@ class Speed_Booster_Pack_Admin {
 									'title'  => 'is_home',
 									'fields' => [
 										[
-											'id'   => 'is_home',
-											'type' => 'code_editor',
-											'desc' => sprintf( __( 'This CSS block will be injected into the blog homepage of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_home/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_home()</code>' ), '</a>' ),
-											'settings'   => [ 'lineWrapping' => true ],
+											'id'       => 'is_home',
+											'type'     => 'code_editor',
+											'desc'     => sprintf( __( 'This CSS block will be injected into the blog homepage of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_home/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_home()</code>' ), '</a>' ),
+											'settings' => [ 'lineWrapping' => true ],
 										],
 									],
 								],
@@ -574,10 +574,10 @@ class Speed_Booster_Pack_Admin {
 									'title'  => 'is_single',
 									'fields' => [
 										[
-											'id'   => 'is_single',
-											'type' => 'code_editor',
-											'desc' => sprintf( __( 'This CSS block will be injected into all single posts. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_single/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_single()</code>' ), '</a>' ),
-											'settings'   => [ 'lineWrapping' => true ],
+											'id'       => 'is_single',
+											'type'     => 'code_editor',
+											'desc'     => sprintf( __( 'This CSS block will be injected into all single posts. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_single/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_single()</code>' ), '</a>' ),
+											'settings' => [ 'lineWrapping' => true ],
 										],
 									],
 								],
@@ -585,10 +585,10 @@ class Speed_Booster_Pack_Admin {
 									'title'  => 'is_page',
 									'fields' => [
 										[
-											'id'   => 'is_page',
-											'type' => 'code_editor',
-											'desc' => sprintf( __( 'This CSS block will be injected into all static pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_page()</code>' ), '</a>' ),
-											'settings'   => [ 'lineWrapping' => true ],
+											'id'       => 'is_page',
+											'type'     => 'code_editor',
+											'desc'     => sprintf( __( 'This CSS block will be injected into all static pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_page()</code>' ), '</a>' ),
+											'settings' => [ 'lineWrapping' => true ],
 										],
 									],
 								],
@@ -596,10 +596,10 @@ class Speed_Booster_Pack_Admin {
 									'title'  => 'is_category',
 									'fields' => [
 										[
-											'id'   => 'is_category',
-											'type' => 'code_editor',
-											'desc' => sprintf( __( 'This CSS block will be injected into all category archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_category/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_category()</code>' ), '</a>' ),
-											'settings'   => [ 'lineWrapping' => true ],
+											'id'       => 'is_category',
+											'type'     => 'code_editor',
+											'desc'     => sprintf( __( 'This CSS block will be injected into all category archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_category/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_category()</code>' ), '</a>' ),
+											'settings' => [ 'lineWrapping' => true ],
 										],
 									],
 								],
@@ -607,10 +607,10 @@ class Speed_Booster_Pack_Admin {
 									'title'  => 'is_tag',
 									'fields' => [
 										[
-											'id'   => 'is_tag',
-											'type' => 'code_editor',
-											'desc' => sprintf( __( 'This CSS block will be injected into all tag archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_tag/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_tag()</code>' ), '</a>' ),
-											'settings'   => [ 'lineWrapping' => true ],
+											'id'       => 'is_tag',
+											'type'     => 'code_editor',
+											'desc'     => sprintf( __( 'This CSS block will be injected into all tag archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_tag/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_tag()</code>' ), '</a>' ),
+											'settings' => [ 'lineWrapping' => true ],
 										],
 									],
 								],
@@ -618,10 +618,10 @@ class Speed_Booster_Pack_Admin {
 									'title'  => 'is_archive',
 									'fields' => [
 										[
-											'id'   => 'is_archive',
-											'type' => 'code_editor',
-											'desc' => sprintf( __( 'This CSS block will be injected into all archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_archive/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_archive()</code>' ), '</a>' ),
-											'settings'   => [ 'lineWrapping' => true ],
+											'id'       => 'is_archive',
+											'type'     => 'code_editor',
+											'desc'     => sprintf( __( 'This CSS block will be injected into all archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_archive/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_archive()</code>' ), '</a>' ),
+											'settings' => [ 'lineWrapping' => true ],
 										],
 									],
 								],
@@ -637,7 +637,7 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
 						[
-							'type' => 'subheading',
+							'type'  => 'subheading',
 							'title' => __( 'Inline & Minify CSS', 'speed-booster-pack' ),
 						],
 						[
@@ -813,13 +813,13 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'               => false,
 							'fields'                 => [
 								[
-									'id'     => 'custom_codes_item',
-									'type'   => 'code_editor',
-									'before' => '&lt;script&gt;',
-									'after'  => '&lt;/script&gt;',
+									'id'       => 'custom_codes_item',
+									'type'     => 'code_editor',
+									'before'   => '&lt;script&gt;',
+									'after'    => '&lt;/script&gt;',
 									/* translators: %s = script tag  */
-									'desc'   => sprintf( __( 'Paste the inline JavaScript here. DON\'T include the %s tags or else you might break it!', 'speed-booster-pack' ), '<code>&lt;script&gt;</code>' ),
-									'settings'   => [ 'lineWrapping' => true ],
+									'desc'     => sprintf( __( 'Paste the inline JavaScript here. DON\'T include the %s tags or else you might break it!', 'speed-booster-pack' ), '<code>&lt;script&gt;</code>' ),
+									'settings' => [ 'lineWrapping' => true ],
 								],
 								[
 									'title'   => __( 'Placement', 'speed-booster-pack' ),
@@ -1078,13 +1078,6 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: Tweaks */
 
 			/** BEGIN Section: Database Optimization */
-			global $wpdb;
-			$database_tables = [];
-			$tables = $wpdb->get_results('SHOW TABLE STATUS');
-			foreach ($tables as $table) {
-				$database_tables[$table->Name] = $table->Name;
-			}
-
 			CSF::createSection(
 				$prefix,
 				[

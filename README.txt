@@ -1,7 +1,7 @@
 === Speed Booster Pack ⚡ PageSpeed Optimization Suite ===
 Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
-Tags: speed, pagespeed, optimization, performance, cache
+Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
 Tested up to: 5.6
 Requires PHP: 5.6
@@ -104,6 +104,16 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
+= 4.1.2 =
+
+*Release Date: 4 March 2021*
+
+* **Improved**: Cloudflare integration improvements.
+* **Improved**: Hosting compatibility improvements.
+* **Improved**: Settings panel improvements.
+* **Fixed**: HTML encoding/decoding issues with the SimpleHtmlDom library.
+* **Fixed**: Changed the placeholder image data URI when lazy loading is active (used to show a broken image icon).
+
 = 4.1.1 =
 
 *Release Date: 28 January 2021*
@@ -167,9 +177,3 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Updated**: Updated external libraries (lazyload.js and instantpage.js) to their latest versions.
 
 *You can read the rest of the changelog on the [Speed Booster Pack documentation](https://speedboosterpack.com/docs/) page.
-
-== Upgrade Notice ==
-
-= 4.1.0 =
-
-- We have brand new features called Manual Critical CSS and PageSpeed Tricker, plus a TON of improvements to our existing features. Update now and enjoy an even faster website!
