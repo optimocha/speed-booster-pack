@@ -114,6 +114,11 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	];
 
 	/**
+	 * @var array $default_includes
+	 */
+	private $default_includes = [];
+
+	/**
 	 * Comment lines
 	 *
 	 * @var array $comments
@@ -152,6 +157,13 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private $exclude_rules = [];
 
 	/**
+	 * JavaScript inclusion rules
+	 *
+	 * @var array $include_rules
+	 */
+	private $include_rules = [];
+
+	/**
 	 * Property to decide if scripts will be deferred ro moved to footer (default is off, which means no optimization)
 	 *
 	 * @var mixed|null $optimize_strategy
@@ -166,6 +178,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		}
 
 		$this->exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
+		$this->include_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
 
 		add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
 	}
@@ -174,15 +187,16 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		$this->replace_comments_with_placeholders( $html );
 		$this->find_scripts_without_defer( $html );
 		$this->check_script_types();
-		$this->remove_excluded_scripts();
 
+		/** @removal
 		if ( $this->optimize_strategy == 'move' ) {
 			$this->move_scripts( $html );
-		} elseif ( $this->optimize_strategy == 'defer' ) {
-			$this->add_defer_attribute();
-			$this->convert_inline_to_base64();
-			$html = str_replace( $this->included_scripts, $this->changed_scripts, $html );
 		}
+		 */
+		$this->remove_excluded_scripts();
+		$this->add_defer_attribute();
+		$this->convert_inline_to_base64();
+		$html = str_replace( $this->included_scripts, $this->changed_scripts, $html );
 
 		$this->replace_placeholders_with_comments( $html );
 
@@ -256,8 +270,21 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private function remove_excluded_scripts() {
 		$script_count = count( $this->included_scripts );
 		for ( $i = 0; $i < $script_count; $i ++ ) {
-			foreach ( $this->exclude_rules as $rule ) {
-				if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
+			if ($this->optimize_strategy == 'everything') {
+				foreach ( $this->exclude_rules as $rule ) {
+					if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
+						unset( $this->included_scripts[ $i ] );
+					}
+				}
+			} else if ($this->optimize_strategy == 'custom') {
+				$has_found = false;
+				foreach ( $this->include_rules as $rule ) {
+					if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
+						$has_found = true;
+						continue;
+					}
+				}
+				if ($has_found  === false) {
 					unset( $this->included_scripts[ $i ] );
 				}
 			}

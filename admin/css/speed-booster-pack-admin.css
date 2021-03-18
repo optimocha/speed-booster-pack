@@ -144,3 +144,7 @@
 .sbp-button-loading i {
     animation: rotating 2s linear infinite;
 }
+
+.js-include.csf-depend-on, .js-exclude.csf-depend-on {
+    display: none;
+}

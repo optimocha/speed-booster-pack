@@ -726,12 +726,17 @@ class Speed_Booster_Pack_Admin {
 				[
 					'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
 					'id'         => 'js_optimize',
+					// B_TODO: Change description text
 					'desc'       => __( 'Loads JavaScript better, avoiding render blocking issues. Moving all tags to the footer (before the &lt;/body&gt; tag) causes less issues but if you know what you\'re doing, deferring JS tags makes your website work faster. Use the exclusions list to keep certain scripts from breaking your site!', 'speed-booster-pack' ),
 					'type'       => 'button_set',
 					'options'    => [
 						'off'   => __( 'Off', 'speed-booster-pack' ),
-						'defer' => __( 'Defer', 'speed-booster-pack' ),
-						'move'  => __( 'Move to footer', 'speed-booster-pack' ),
+						/* @removal
+							'defer' => __( 'Defer', 'speed-booster-pack' ),
+							'move'  => __( 'Move to footer', 'speed-booster-pack' ),
+						*/
+						'everything' => __( 'Everything', 'speed-booster-pack' ),
+						'custom' => __( 'Custom', 'speed-booster-pack' ),
 					],
 					'default'    => 'off',
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
@@ -743,7 +748,17 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'code_editor',
 					'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 					'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-					'dependency' => [ 'module_assets|js_optimize', '==|!=', '1|off', '', 'visible|visible' ],
+					'dependency' => [ 'module_assets|js_optimize', '==|==', '1|everything', '', 'visible|visible' ],
+				],
+				[
+					'title'      => __( 'JavaScript inclusions', 'speed-booster-pack' ),
+					'id'         => 'js_include',
+					'class'      => 'js-include',
+					'type'       => 'code_editor',
+					// B_TODO: Add description text
+					'desc'       => __( '', 'speed-booster-pack' ),
+					'default'    => '',
+					'dependency' => [ 'module_assets|js_optimize', '==|==', '1|custom', '', 'visible|visible' ],
 				],
 				[
 					'title'      => __( 'Preload assets', 'speed-booster-pack' ),
