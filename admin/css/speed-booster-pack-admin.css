@@ -148,3 +148,8 @@
 .js-include.csf-depend-on, .js-exclude.csf-depend-on {
     display: none;
 }
+
+.sbp-stars:hover svg {
+    fill: #ffdd00;
+    stroke: #d9bd00;
+}
