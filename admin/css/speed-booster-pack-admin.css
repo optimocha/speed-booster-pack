@@ -149,7 +149,11 @@
     display: none;
 }
 
-.sbp-stars:hover svg {
-    fill: #ffdd00;
-    stroke: #d9bd00;
+.sbp-stars svg {
+    fill: #ffd159;
+    stroke: #ffd159;
+}
+
+.sbp-stars svg:hover ~ svg {
+    fill: none;
 }
