@@ -625,6 +625,28 @@ class Speed_Booster_Pack_Admin {
 										],
 									],
 								],
+                                [
+                                    'title' => 'is_shop',
+                                    'fields' => [
+                                        [
+                                            'id'       => 'is_shop',
+                                            'type'     => 'code_editor',
+                                            'desc'     => sprintf( __( 'This CSS block will be injected into all shop pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-4" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_shop()</code>' ), '</a>' ),
+                                            'settings' => [ 'lineWrapping' => true ],
+                                        ],
+                                    ],
+                                ],
+                                [
+                                    'title' => 'is_product',
+                                    'fields' => [
+                                        [
+                                            'id'       => 'is_product',
+                                            'type'     => 'code_editor',
+                                            'desc'     => sprintf( __( 'This CSS block will be injected into all single product pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-7" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product()</code>' ), '</a>' ),
+                                            'settings' => [ 'lineWrapping' => true ],
+                                        ],
+                                    ],
+                                ],
 							],
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
