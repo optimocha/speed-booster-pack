@@ -106,13 +106,14 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.1.3 =
 
-*Release Date: 18 March 2021*
+*Release Date: 23 March 2021*
 
 * **Improved**: Cloudflare integration improvements.
 * **Improved**: Hosting compatibility improvements.
 * **Improved**: Settings panel improvements.
 * **Fixed**: HTML encoding/decoding issues with the SimpleHtmlDom library.
 * **Fixed**: Changed the placeholder image data URI when lazy loading is active (used to show a broken image icon).
+* **Fixed**: Kinsta compatibility improvements caused some PHP warnings - not anymore.
 
 = 4.1.1 =
 
