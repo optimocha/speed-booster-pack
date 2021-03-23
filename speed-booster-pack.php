@@ -89,7 +89,7 @@ define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
  */
 define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' );
 
-define( 'SBP_PLUGIN_BASENAME', plugin_basename(__FILE__) );
+define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 /**
  * Load all plugin options
@@ -112,7 +112,7 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 
 if ( ! function_exists( 'sbp_get_post_meta' ) ) {
 	function sbp_get_post_meta( $post_id, $option_key, $default = null ) {
-		$post_meta = get_post_meta($post_id, 'sbp_post_meta', true);
+		$post_meta = get_post_meta( $post_id, 'sbp_post_meta', true );
 
 		return ( isset( $post_meta[ $option_key ] ) ) ? $post_meta[ $option_key ] : $default;
 	}
