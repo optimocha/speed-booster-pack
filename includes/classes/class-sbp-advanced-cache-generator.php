@@ -74,9 +74,14 @@ class SBP_Advanced_Cache_Generator {
 
 	private static function caching_exclude_cookies() {
 		$arrayString = '';
-		$cookies = sbp_explode_lines(self::$options['caching_exclude_cookies']);
-		foreach ( $cookies as $cookie ) {
-			$arrayString .= "'$cookie', ";
+		$excluded_cookies = self::$options['caching_exclude_cookies'];
+		if ($excluded_cookies) {
+			$cookies = sbp_explode_lines( $excluded_cookies );
+			foreach ( $cookies as $cookie ) {
+				if ($cookie) {
+					$arrayString .= "'$cookie', ";
+				}
+			}
 		}
 		return $arrayString;
 	}

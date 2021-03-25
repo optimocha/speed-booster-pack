@@ -220,6 +220,23 @@ if ( ! function_exists( 'sbp_clear_http' ) ) {
 	}
 }
 
+if ( ! function_exists( 'sbp_remove_duplicates_and_empty' ) ) {
+	/**
+	 * Removes duplicated and empty elements from an array.
+	 *
+	 * @param $value array
+	 * @since 4.2.0
+	 *
+	 * @return array
+	 */
+	function sbp_remove_duplicates_and_empty( $value ) {
+		$value = array_filter($value);
+		$value = array_unique($value);
+
+		return $value;
+	}
+}
+
 if ( ! function_exists( 'sbp_sanitize_strip_tags' ) ) {
 	/**
 	 * Trims and strips the tags from given value. Takes one dimensional array or string as argument. Returns the modified value.
@@ -256,12 +273,49 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 	 */
 	function sbp_sanitize_caching_urls( $urls ) {
 		$urls = SBP_Utils::explode_lines( $urls );
+		$urls = sbp_remove_duplicates_and_empty($urls);
 		foreach ( $urls as &$url ) {
 			$url = ltrim( $url, 'https://' );
 			$url = ltrim( $url, 'http://' );
 			$url = ltrim( $url, '//' );
 			$url = rtrim( $url, '/' );
 		}
+
+		return implode( PHP_EOL, $urls );
+	}
+}
+
+if ( ! function_exists( 'sbp_sanitize_caching_cookies' ) ) {
+	/**
+	 * Sanitizes excluded cookies for caching
+	 *
+	 * @param $urls
+	 *
+	 * @return string
+	 * @since 4.2.0
+	 *
+	 */
+	function sbp_sanitize_caching_cookies( $urls ) {
+		$urls = SBP_Utils::explode_lines( $urls );
+		$urls = sbp_remove_duplicates_and_empty($urls);
+
+		return implode( PHP_EOL, $urls );
+	}
+}
+
+if ( ! function_exists( 'sbp_sanitize_caching_included_query_strings' ) ) {
+	/**
+	 * Sanitizes included query strings for caching
+	 *
+	 * @param $urls
+	 *
+	 * @return string
+	 * @since 4.2.0
+	 *
+	 */
+	function sbp_sanitize_caching_included_query_strings( $urls ) {
+		$urls = SBP_Utils::explode_lines( $urls );
+		$urls = sbp_remove_duplicates_and_empty($urls);
 
 		return implode( PHP_EOL, $urls );
 	}

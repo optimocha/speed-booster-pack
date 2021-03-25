@@ -270,6 +270,7 @@ class Speed_Booster_Pack_Admin {
 					'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
 					'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_caching_cookies',
 				],
 				[
 					'id'         => 'caching_include_query_strings',
@@ -281,6 +282,7 @@ class Speed_Booster_Pack_Admin {
 					                sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
 					'default'    => 'utm_source',
 					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_caching_included_query_strings',
 				],
 			];
 
