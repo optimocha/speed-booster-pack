@@ -76,7 +76,7 @@ class SBP_Advanced_Cache_Generator {
 		$arrayString = '';
 		$excluded_cookies = self::$options['caching_exclude_cookies'];
 		if ($excluded_cookies) {
-			$cookies = sbp_explode_lines( $excluded_cookies );
+			$cookies = SBP_Utils::explode_lines( $excluded_cookies );
 			foreach ( $cookies as $cookie ) {
 				if ($cookie) {
 					$arrayString .= "'$cookie', ";

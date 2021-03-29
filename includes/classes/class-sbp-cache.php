@@ -109,12 +109,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	/**
-	 * Clears all cache files and regenerates settings.json file
+	 * Clears all cache files
 	 */
 	public static function clear_total_cache() {
 		do_action( 'sbp_before_cache_clear' );
 		sbp_delete_dir_recursively( SBP_CACHE_DIR );
-		self::create_settings_json();
 		if ( sbp_get_option( 'caching_warmup_after_clear' ) && sbp_get_option( 'module_caching' ) ) {
 			$warmup = new SBP_Cache_Warmup();
 			$warmup->start_process();
@@ -141,10 +140,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 
 		$wp_filesystem = sbp_get_filesystem();
-
-		if ( ! $wp_filesystem->exists( SBP_CACHE_DIR . 'settings.json' ) ) {
-			self::create_settings_json();
-		}
 
 		// Check for query strings
 		if ( ! empty( $_GET ) ) {
@@ -282,7 +277,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	/**
-	 * Generates advanced-cache.php and settings.json on CSF options save.
+	 * Generates advanced-cache.php
 	 *
 	 * @param $saved_data
 	 */
@@ -296,8 +291,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 				SBP_Cache::set_wp_cache_constant( true );
 
 				file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', $advanced_cache_file_content );
-
-				self::create_settings_json( $saved_data );
 			} else {
 				SBP_Cache::set_wp_cache_constant( false );
 				if ( file_exists( $advanced_cache_path ) ) {
@@ -314,27 +307,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 				@unlink( $advanced_cache_path );
 			}
 		}
-	}
-
-	/**
-	 * Generates settings.json file from current options
-	 *
-	 * @param null $saved_data
-	 */
-	public static function create_settings_json( $options = null ) {
-		global $wp_filesystem;
-		require_once( ABSPATH . '/wp-admin/includes/file.php' );
-		WP_Filesystem();
-
-		wp_mkdir_p( WP_CONTENT_DIR . '/cache/speed-booster' );
-		$settings = [
-			'caching_include_query_strings' => $options !== null ? $options['caching_include_query_strings'] : sbp_get_option( 'caching_include_query_strings' ),
-			'caching_expiry'                => $options !== null ? $options['caching_expiry'] : sbp_get_option( 'caching_expiry' ),
-			'caching_exclude_urls'          => $options !== null ? $options['caching_exclude_urls'] : sbp_get_option( 'caching_exclude_urls' ),
-			'caching_separate_mobile'       => $options !== null ? $options['caching_separate_mobile'] : sbp_get_option( 'caching_separate_mobile' ),
-		];
-
-		$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );
 	}
 
 	public function clear_homepage_cache() {
