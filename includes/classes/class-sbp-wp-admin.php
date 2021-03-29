@@ -7,7 +7,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class SBP_WP_Dashboard {
+class SBP_WP_Admin {
 	public function __construct() {
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 		if ( is_admin() ) {
@@ -265,6 +265,8 @@ class SBP_WP_Dashboard {
 			}
 		}
 	}
+
+	// Z_TODO: Create generic timed notice method
 
 	private function initialize_announce4wp() {
 		if ( sbp_get_option( 'enable_external_notices' ) ) {
