@@ -793,6 +793,26 @@ class Speed_Booster_Pack_Admin {
 						'dependency' => [ 'module_assets|js_optimize', '==|==', '1|custom', '', 'visible|visible' ],
 					],
 					[
+						// B_TODO: Change Texts
+						'title'      => __( 'Move JavaScript To Footer', 'speed-booster-pack' ),
+						'id'         => 'move_to_footer',
+						// B_TODO: Change description text
+						'desc'       => __( '', 'speed-booster-pack' ),
+						'type'       => 'switcher',
+						'default'    => '',
+						'dependency' => [ 'module_assets|js_optimize', '==|==', '1|off', '', 'visible|visible|visible' ],
+					],
+					[
+						// B_TODO: Change Texts
+						'title'      => __( 'Move To Footer exclusions', 'speed-booster-pack' ),
+						'id'         => 'move_to_footer_exclude',
+						'type'       => 'code_editor',
+						// B_TODO: Change Texts
+						'desc'       => __( '', 'speed-booster-pack' ),
+						'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
+						'dependency' => [ 'module_assets|move_to_footer|js_optimize', '==|==|==', '1|1|off', '', 'visible|visible|visible' ],
+					],
+					[
 						'title'      => __( 'Preload assets', 'speed-booster-pack' ),
 						'id'         => 'preboost',
 						'class'      => 'preboost',

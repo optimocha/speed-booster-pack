@@ -38,10 +38,12 @@ class SBP_Migrator {
 		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
 
 		$this->sbp_settings = get_option( 'sbp_settings' );
+		$this->sbp_options = get_option( 'sbp_options' );
 		if ( $this->sbp_settings ) {
-			$this->sbp_options = get_option( 'sbp_options' );
 			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
 		}
+
+		$this->update_options();
 	}
 
 	// SBP_WP_Config_Injector::generate_wp_config_inject_file();
@@ -245,5 +247,24 @@ ga('send', 'pageview');";
 		if ( current_user_can( 'manage_options' ) ) {
 			delete_transient( 'sbp_upgraded_notice' );
 		}
+	}
+
+	/**
+	 *
+	 */
+	public function update_options() {
+		// Javascript Optimize Migration
+		$js_optimize = sbp_get_option( 'js_optimize' );
+		if ( $js_optimize === 'defer' ) {
+			$this->sbp_options['js_optimize'] = 'everything';
+		} elseif ( $js_optimize === 'move' ) {
+			$this->sbp_options['js_optimize'] = 'off';
+			$this->sbp_options['move_to_footer'] = 1;
+			$this->sbp_options['move_to_footer_exclude'] = $this->sbp_options['js_exclude'];
+			$this->sbp_options['js_exclude'] = '';
+		}
+
+		set_transient( 'sbp_upgraded_notice', 1 );
+		update_option( 'sbp_options', $this->sbp_options );
 	}
 }

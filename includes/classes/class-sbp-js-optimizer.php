@@ -164,20 +164,29 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private $include_rules = [];
 
 	/**
-	 * Property to decide if scripts will be deferred ro moved to footer (default is off, which means no optimization)
 	 *
 	 * @var mixed|null $optimize_strategy
 	 */
 	private $optimize_strategy = 'off';
 
-	public function __construct() {
-		$this->optimize_strategy = sbp_get_option( 'js_optimize' );
+	/**
+	 * @var mixed|null
+	 */
+	private $move_to_footer = false;
 
-		if ( ! sbp_get_option( 'module_assets' ) || $this->optimize_strategy == 'off' ) {
+	public function __construct() {
+		$this->optimize_strategy = sbp_get_option( 'js_optimize', 'off' );
+		$this->move_to_footer    = sbp_get_option( 'move_to_footer' );
+
+		if ( ! sbp_get_option( 'module_assets' ) || ( $this->optimize_strategy == 'off' && ! $this->move_to_footer ) ) {
 			return;
 		}
 
-		$this->exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
+		if ( $this->optimize_strategy === 'off' && $this->move_to_footer ) {
+			$this->exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'move_to_footer_exclude' ) ), $this->default_excludes );
+		} else {
+			$this->exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
+		}
 		$this->include_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
 
 		add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
@@ -188,11 +197,10 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		$this->find_scripts_without_defer( $html );
 		$this->check_script_types();
 
-		/** @removal
-		if ( $this->optimize_strategy == 'move' ) {
+		if ( $this->optimize_strategy === 'off' && $this->move_to_footer ) {
 			$this->move_scripts( $html );
 		}
-		 */
+
 		$this->remove_excluded_scripts();
 		$this->add_defer_attribute();
 		$this->convert_inline_to_base64();
@@ -215,7 +223,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 
 			foreach ( $comments as $comment ) {
 				$this->comments[] = $comment;
-				$html			 = str_replace( $comment, $this->comment_placeholder, $html );
+				$html             = str_replace( $comment, $this->comment_placeholder, $html );
 			}
 		}
 	}
@@ -270,13 +278,13 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private function remove_excluded_scripts() {
 		$script_count = count( $this->included_scripts );
 		for ( $i = 0; $i < $script_count; $i ++ ) {
-			if ($this->optimize_strategy == 'everything') {
+			if ( $this->optimize_strategy == 'everything' ) {
 				foreach ( $this->exclude_rules as $rule ) {
 					if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
 						unset( $this->included_scripts[ $i ] );
 					}
 				}
-			} else if ($this->optimize_strategy == 'custom') {
+			} elseif ( $this->optimize_strategy == 'custom' ) {
 				$has_found = false;
 				foreach ( $this->include_rules as $rule ) {
 					if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
@@ -284,7 +292,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 						continue;
 					}
 				}
-				if ($has_found  === false) {
+				if ( $has_found === false ) {
 					unset( $this->included_scripts[ $i ] );
 				}
 			}
@@ -307,9 +315,9 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private function add_defer_attribute() {
 		foreach ( $this->included_scripts as $script ) {
 			if ( str_ireplace( array( ' async', ' defer', 'data-noptimize="1"', 'data-cfasync="false"', 'data-pagespeed-no-defer' ), '', $script ) === $script ) {
-					$this->changed_scripts[] = str_ireplace( '<script', '<script defer', $script );
+				$this->changed_scripts[] = str_ireplace( '<script', '<script defer', $script );
 			} else {
-					$this->changed_scripts[] = $script;
+				$this->changed_scripts[] = $script;
 			}
 		}
 	}
@@ -320,8 +328,8 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 			if ( isset( $matches[2] ) && str_replace( array( 'data-noptimize="1"', 'data-cfasync="false"', 'data-pagespeed-no-defer' ), '', $matches[0] ) === $matches[0] ) {
 				$script_content = $matches[2];
 				$base64_script  = base64_encode( $script_content );
-				$script = str_replace( $script_content, '', $script );
-				$script = str_replace( '<script defer', '<script defer src="data:text/javascript;base64,' . $base64_script . '"', $script );
+				$script         = str_replace( $script_content, '', $script );
+				$script         = str_replace( '<script defer', '<script defer src="data:text/javascript;base64,' . $base64_script . '"', $script );
 			}
 		}
 	}
