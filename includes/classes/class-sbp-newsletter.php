@@ -10,41 +10,46 @@ if ( ! defined( 'ABSPATH' ) ) {
 class SBP_Newsletter {
 	public function __construct() {
 		// Only admins can view SpeedBoosterPack things.
-		if ( ! get_transient( 'sbp_hide_newsletter_pointer' ) ) {
-			add_action( 'admin_enqueue_scripts', [ $this, 'my_admin_enqueue_scripts' ] );
-		}
-
+		add_action( 'admin_enqueue_scripts', [ $this, 'my_admin_enqueue_scripts' ] );
 		add_action( 'wp_ajax_sbp_hide_newsletter_pointer', [ $this, 'hide_newsletter_pointer' ] );
 	}
 
 	function my_admin_enqueue_scripts() {
-	    if ( current_user_can( 'manage_options' ) ) {
-		    wp_enqueue_style( 'wp-pointer' );
-		    wp_enqueue_script( 'wp-pointer' );
-		    add_action( 'admin_print_footer_scripts', [ $this, 'my_admin_print_footer_scripts' ] );
-	    }
+		if ( current_user_can( 'manage_options' ) && ! get_user_meta( get_current_user_id(), 'sbp_hide_newsletter_pointer', true ) ) {
+			wp_enqueue_style( 'wp-pointer' );
+			wp_enqueue_script( 'wp-pointer' );
+			add_action( 'admin_print_footer_scripts', [ $this, 'my_admin_print_footer_scripts' ] );
+		}
 	}
 
 	function my_admin_print_footer_scripts() {
 		$current_user    = wp_get_current_user();
 		$pointer_content = sprintf( __( '<h3>%s</h3>', 'speed-booster-pack' ), SBP_PLUGIN_NAME );
-		$pointer_content .= sprintf( __( '<p>If you want updates from %s, enter your email and hit the subscribe button!</p>\'+', 'speed-booster-pack' ), SBP_PLUGIN_NAME );
-		$pointer_content .= '\'<div>\'+
-            	\'<form method="POST" action="https://sendfox.com/form/104ezx/3o64jv" id="sbp-subscribe-newsletter-form">\'+
-                    \'<div class="sbp-subscribe-content-wrapper">\'+
-                        \'<div>\'+
-                            \'<div class="mc-field-group" style="    margin-left: 15px;    width: 195px;    float: left;">\'+
-                                \'<input type="text" name="first_name" class="form-control" placeholder="Name" hidden value="' . $current_user->display_name . '" style="display:none">\'+
-                                \'<input type="text" value="' . $current_user->user_email . '" name="email" class="form-control" placeholder="Email*"  style="      width: 180px;    padding: 6px 5px;">\'+
-                                \'<input type="hidden" name="ml-submit" value="1" />\'+
-                            \'</div>\'+
-                            \'<input type="submit" value="Subscribe" name="subscribe" id="sbp-newsletter-subscribe-button" class="button mc-newsletter-sent" style="background: #0085ba; border-color: #006799; padding: 0px 16px; text-shadow: 0 -1px 1px #006799,1px 0 1px #006799,0 1px 1px #006799,-1px 0 1px #006799; height: 40px; margin-top: 1px; color: #fff; box-shadow: 0 1px 0 #006799;">\'+
-                        \'</div>\'+
-                        \'<div style="padding: 20px;"><label><input type="checkbox" name="gdpr" value="1" required=""> <span>I agree to receive email updates and promotions.</span></label></div>\'+
-                    \'</div>\'+
-                    \'<div style="padding: 10px 20px; color: darkgreen; display: none;" class="sbp-newsletter-success">' . __( 'You have successfully subscribed to our newsletter.', 'speed-booster-pack' ) . '</div>\'+
-            	\'</form>\'+
-            \'</div>';
+		$pointer_content .= sprintf( __( '<p>If you want updates from %s, enter your email and hit the subscribe button!</p>', 'speed-booster-pack' ), SBP_PLUGIN_NAME );
+		$pointer_content .= '
+<div id="sbp-subscription-form">
+    <div id="revue-embed">
+        <form action="https://www.getrevue.co/profile/optimocha/add_subscriber" method="post" id="revue-form" name="revue-form"  target="_blank">
+            <div class="revue-form-group">
+                <label for="member_email">Email address</label>
+                <input class="revue-form-field" placeholder="Your email address..." type="email" name="member[email]" id="member_email" value="' . $current_user->user_email . '">
+            </div>
+            <div class="revue-form-group">
+                <label for="member_first_name">First name <span class="optional">(Optional)</span></label>
+                <input class="revue-form-field" placeholder="First name... (Optional)" type="text" name="member[first_name]" id="member_first_name" value="' . $current_user->first_name . '">
+            </div>
+            <div class="revue-form-group">
+                <label for="member_last_name">Last name <span class="optional">(Optional)</span></label>
+                <input class="revue-form-field" placeholder="Last name... (Optional)" type="text" name="member[last_name]" id="member_last_name" value="' . $current_user->last_name . '">
+            </div>
+            <div class="revue-form-actions">
+                <input type="submit" value="Subscribe" name="member[subscribe]" id="member_submit">
+            </div>
+            <div class="revue-form-footer">By subscribing, you agree with Revue’s <a target="_blank" href="https://www.getrevue.co/terms">Terms</a> and <a target="_blank" href="https://www.getrevue.co/privacy">Privacy Policy</a>.</div>
+        </form>
+    </div>
+</div>';
+		$pointer_content = str_replace(PHP_EOL, '', $pointer_content);
 		?>
         <script type="text/javascript">
             //<![CDATA[
@@ -61,6 +66,13 @@ class SBP_Newsletter {
                         });
                     }
                 }).pointer('open');
+
+                $('#sbp-subscription-form #revue-form').on('submit', function() {
+                    setTimeout(function() {
+                        // B_TODO: Change Text
+                        $('#sbp-subscription-form').html('<div style="padding: 10px 20px; color: darkgreen;" class="sbp-newsletter-success"><?php _e( 'Thank you for subscribing to our newsletter.', 'speed-booster-pack' ) ?></div>');
+                    }, 3000);
+                });
             });
             //]]>
         </script>
@@ -69,7 +81,7 @@ class SBP_Newsletter {
 
 	public function hide_newsletter_pointer() {
 		if ( isset( $_POST['action'] ) && $_POST['action'] == 'sbp_hide_newsletter_pointer' && current_user_can( 'manage_options' ) ) {
-			set_transient( 'sbp_hide_newsletter_pointer', '1' );
+			update_user_meta( get_current_user_id(), 'sbp_hide_newsletter_pointer', '1' );
 			echo json_encode( [ 'status' => 'success', 'message' => 'hidden' ] );
 			wp_die();
 		}
