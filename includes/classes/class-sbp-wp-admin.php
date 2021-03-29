@@ -19,10 +19,11 @@ class SBP_WP_Admin {
 			add_action( 'admin_init', [ $this, 'tweet_notice' ] );
 		}
 
-		add_filter( 'plugin_row_meta', [ $this, 'sbp_plugin_meta_links' ], 10, 2 );
+		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
+		add_filter( 'plugin_action_links_' . SBP_PLUGIN_BASENAME, [ $this, 'settings_links' ], 10, 2 );
 	}
 
-	public function sbp_plugin_meta_links( $meta_fields, $file ) {
+	public function plugin_meta_links( $meta_fields, $file ) {
 		if ( SBP_PLUGIN_BASENAME == $file ) {
 			$plugin_url    = "https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post";
 			$meta_fields[] = "<a href='" . esc_url( $plugin_url ) . "' target='_blank' title='" . esc_html__( 'Rate Us',
@@ -267,6 +268,13 @@ class SBP_WP_Admin {
 	}
 
 	// Z_TODO: Create generic timed notice method
+
+	public function settings_links( $links ) {
+		$pro_link = ' <a href="https://optimocha.com/?ref=speed-booster-pack" target="_blank">Pro Services</a > ';
+		array_unshift( $links, $pro_link );
+
+		return $links;
+	}
 
 	private function initialize_announce4wp() {
 		if ( sbp_get_option( 'enable_external_notices' ) ) {
