@@ -191,7 +191,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 
 	private function autosave_interval() {
 		if ( ! empty( sbp_get_option( 'autosave_interval' ) ) && ! defined( 'AUTOSAVE_INTERVAL' ) ) {
-			define( 'AUTOSAVE_INTERVAL', sbp_get_option( 'autosave_interval' ) );
+			define( 'AUTOSAVE_INTERVAL', sbp_get_option( 'autosave_interval' ) * 60 );
 		}
 	}
 
