@@ -11,6 +11,8 @@
  */
 
 // If this file is called directly, abort.
+use SpeedBooster\SBP_Notice_Manager;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -75,6 +77,8 @@ class Speed_Booster_Pack_Admin {
 		$this->create_settings_page();
 
 		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
+
+		add_action( 'admin_print_footer_scripts', [$this, 'modify_menu_title'] );
 	}
 
 	/**
@@ -93,9 +97,11 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function enqueue_scripts() {
 		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script($this->plugin_name, 'sbp_ajax_vars', [
-			'nonce' => wp_create_nonce('sbp_ajax_nonce'),
-		]);
+		wp_localize_script( $this->plugin_name,
+			'sbp_ajax_vars',
+			[
+				'nonce' => wp_create_nonce( 'sbp_ajax_nonce' ),
+			] );
 	}
 
 	public function load_dependencies() {
@@ -117,7 +123,7 @@ class Speed_Booster_Pack_Admin {
 					'framework_class' => 'sbp-settings',
 
 					// menu settings
-					'menu_title'      => 'Speed Booster',
+					'menu_title'      => 'Speed Booster' . $this->modify_menu_title(),
 					'menu_icon'       => SBP_URL . 'admin/images/icon.svg',
 					'menu_slug'       => 'sbp-settings',
 					'menu_type'       => 'menu',
@@ -627,28 +633,28 @@ class Speed_Booster_Pack_Admin {
 										],
 									],
 								],
-                                [
-                                    'title' => 'is_shop',
-                                    'fields' => [
-                                        [
-                                            'id'       => 'is_shop',
-                                            'type'     => 'code_editor',
-                                            'desc'     => sprintf( __( 'This CSS block will be injected into all shop pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-4" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_shop()</code>' ), '</a>' ),
-                                            'settings' => [ 'lineWrapping' => true ],
-                                        ],
-                                    ],
-                                ],
-                                [
-                                    'title' => 'is_product',
-                                    'fields' => [
-                                        [
-                                            'id'       => 'is_product',
-                                            'type'     => 'code_editor',
-                                            'desc'     => sprintf( __( 'This CSS block will be injected into all single product pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-7" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product()</code>' ), '</a>' ),
-                                            'settings' => [ 'lineWrapping' => true ],
-                                        ],
-                                    ],
-                                ],
+								[
+									'title'  => 'is_shop',
+									'fields' => [
+										[
+											'id'       => 'is_shop',
+											'type'     => 'code_editor',
+											'desc'     => sprintf( __( 'This CSS block will be injected into all shop pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-4" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_shop()</code>' ), '</a>' ),
+											'settings' => [ 'lineWrapping' => true ],
+										],
+									],
+								],
+								[
+									'title'  => 'is_product',
+									'fields' => [
+										[
+											'id'       => 'is_product',
+											'type'     => 'code_editor',
+											'desc'     => sprintf( __( 'This CSS block will be injected into all single product pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-7" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product()</code>' ), '</a>' ),
+											'settings' => [ 'lineWrapping' => true ],
+										],
+									],
+								],
 							],
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
@@ -714,97 +720,99 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'switcher',
 					'desc'       => __( 'Combines all Google Fonts URLs into a single URL and optimizes loading of that URL.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-				]
+				],
 			];
 
 			$should_disable_lazyload = sbp_should_disable_feature( 'lazyload' );
 			if ( $should_disable_lazyload ) {
-				$asset_fields = array_merge( $asset_fields, [
+				$asset_fields = array_merge( $asset_fields,
 					[
-						'type'    => 'submessage',
-						'style'   => 'success',
-						'class'   => 'hosting-warning',
-						'content' => sprintf( __( 'Since you\'re using %s, lazyload feature is completely disabled to ensure compatibility with internal lazyload system of %s.' ), $should_disable_lazyload, $should_disable_lazyload ),
-					],
-				] );
+						[
+							'type'    => 'submessage',
+							'style'   => 'success',
+							'class'   => 'hosting-warning',
+							'content' => sprintf( __( 'Since you\'re using %s, lazyload feature is completely disabled to ensure compatibility with internal lazyload system of %s.' ), $should_disable_lazyload, $should_disable_lazyload ),
+						],
+					] );
 			}
 
-			$asset_fields = array_merge( $asset_fields, [
+			$asset_fields = array_merge( $asset_fields,
 				[
-					'title'      => __( 'Lazy load media', 'speed-booster-pack' ),
-					'id'         => 'lazyload',
-					'type'       => 'switcher',
-					'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
-					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-					'class'      => $should_disable_lazyload ? ' inactive-section' : null,
-				],
-				[
-					'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
-					'id'         => 'lazyload_exclude',
-					'class'      => 'lazyload-exclude' . ( $should_disable_lazyload ? ' inactive-section' : null ),
-					'type'       => 'code_editor',
-					'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
-					'dependency' => [ 'module_assets|lazyload', '==|==', '1|1', '', 'visible|visible' ],
-					'sanitize'   => 'sbp_clear_http',
-				],
-				[
-					'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
-					'id'         => 'js_optimize',
-					// B_TODO: Change description text
-					'desc'       => __( 'Loads JavaScript better, avoiding render blocking issues. Moving all tags to the footer (before the &lt;/body&gt; tag) causes less issues but if you know what you\'re doing, deferring JS tags makes your website work faster. Use the exclusions list to keep certain scripts from breaking your site!', 'speed-booster-pack' ),
-					'type'       => 'button_set',
-					'options'    => [
-						'off'   => __( 'Off', 'speed-booster-pack' ),
-						/* @removal
-							'defer' => __( 'Defer', 'speed-booster-pack' ),
-							'move'  => __( 'Move to footer', 'speed-booster-pack' ),
-						*/
-						'everything' => __( 'Everything', 'speed-booster-pack' ),
-						'custom' => __( 'Custom', 'speed-booster-pack' ),
+					[
+						'title'      => __( 'Lazy load media', 'speed-booster-pack' ),
+						'id'         => 'lazyload',
+						'type'       => 'switcher',
+						'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
+						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+						'class'      => $should_disable_lazyload ? ' inactive-section' : null,
 					],
-					'default'    => 'off',
-					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-				],
-				[
-					'title'      => __( 'JavaScript exclusions', 'speed-booster-pack' ),
-					'id'         => 'js_exclude',
-					'class'      => 'js-exclude',
-					'type'       => 'code_editor',
-					'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
-					'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-					'dependency' => [ 'module_assets|js_optimize', '==|==', '1|everything', '', 'visible|visible' ],
-				],
-				[
-					'title'      => __( 'JavaScript inclusions', 'speed-booster-pack' ),
-					'id'         => 'js_include',
-					'class'      => 'js-include',
-					'type'       => 'code_editor',
-					// B_TODO: Add description text
-					'desc'       => __( '', 'speed-booster-pack' ),
-					'default'    => '',
-					'dependency' => [ 'module_assets|js_optimize', '==|==', '1|custom', '', 'visible|visible' ],
-				],
-				[
-					'title'      => __( 'Preload assets', 'speed-booster-pack' ),
-					'id'         => 'preboost',
-					'class'      => 'preboost',
-					'type'       => 'fieldset',
-					'fields'     => [
-						[
-							'id'    => 'preboost_enable',
-							'type'  => 'switcher',
-							'label' => __( 'Enable preloading of the assets specified below.', 'speed-booster-pack' ),
-						],
-						[
-							'id'   => 'preboost_include',
-							'type' => 'code_editor',
-							'desc' => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
-							'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
-						],
+					[
+						'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
+						'id'         => 'lazyload_exclude',
+						'class'      => 'lazyload-exclude' . ( $should_disable_lazyload ? ' inactive-section' : null ),
+						'type'       => 'code_editor',
+						'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
+						'dependency' => [ 'module_assets|lazyload', '==|==', '1|1', '', 'visible|visible' ],
+						'sanitize'   => 'sbp_clear_http',
 					],
-					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-				],
-			] );
+					[
+						'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
+						'id'         => 'js_optimize',
+						// B_TODO: Change description text
+						'desc'       => __( 'Loads JavaScript better, avoiding render blocking issues. Moving all tags to the footer (before the &lt;/body&gt; tag) causes less issues but if you know what you\'re doing, deferring JS tags makes your website work faster. Use the exclusions list to keep certain scripts from breaking your site!', 'speed-booster-pack' ),
+						'type'       => 'button_set',
+						'options'    => [
+							'off'        => __( 'Off', 'speed-booster-pack' ),
+							/* @removal
+							 * 'defer' => __( 'Defer', 'speed-booster-pack' ),
+							 * 'move'  => __( 'Move to footer', 'speed-booster-pack' ),
+							 */
+							'everything' => __( 'Everything', 'speed-booster-pack' ),
+							'custom'     => __( 'Custom', 'speed-booster-pack' ),
+						],
+						'default'    => 'off',
+						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					],
+					[
+						'title'      => __( 'JavaScript exclusions', 'speed-booster-pack' ),
+						'id'         => 'js_exclude',
+						'class'      => 'js-exclude',
+						'type'       => 'code_editor',
+						'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
+						'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
+						'dependency' => [ 'module_assets|js_optimize', '==|==', '1|everything', '', 'visible|visible' ],
+					],
+					[
+						'title'      => __( 'JavaScript inclusions', 'speed-booster-pack' ),
+						'id'         => 'js_include',
+						'class'      => 'js-include',
+						'type'       => 'code_editor',
+						// B_TODO: Add description text
+						'desc'       => __( '', 'speed-booster-pack' ),
+						'default'    => '',
+						'dependency' => [ 'module_assets|js_optimize', '==|==', '1|custom', '', 'visible|visible' ],
+					],
+					[
+						'title'      => __( 'Preload assets', 'speed-booster-pack' ),
+						'id'         => 'preboost',
+						'class'      => 'preboost',
+						'type'       => 'fieldset',
+						'fields'     => [
+							[
+								'id'    => 'preboost_enable',
+								'type'  => 'switcher',
+								'label' => __( 'Enable preloading of the assets specified below.', 'speed-booster-pack' ),
+							],
+							[
+								'id'         => 'preboost_include',
+								'type'       => 'code_editor',
+								'desc'       => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
+								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
+							],
+						],
+						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					],
+				] );
 
 			CSF::createSection(
 				$prefix,
@@ -1050,11 +1058,11 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
-							'title' => __( 'Dequeue Comment Reply Script', 'speed-booster-pack' ), // B_TODO: Translations
-							'desc' => __( 'Disables comment reply script.', 'speed-booster-pack' ), // B_TODO: Translations
-							'id' => 'dequeue_comment_reply_script',
-							'type' => 'switcher',
-							'dependency' => ['module_tweaks', '==', '1', '', 'visible'],
+							'title'      => __( 'Dequeue Comment Reply Script', 'speed-booster-pack' ), // B_TODO: Translations
+							'desc'       => __( 'Disables comment reply script.', 'speed-booster-pack' ), // B_TODO: Translations
+							'id'         => 'dequeue_comment_reply_script',
+							'type'       => 'switcher',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
 						[
 							/* translators: %s = <head>  */
@@ -1120,31 +1128,31 @@ class Speed_Booster_Pack_Admin {
 			CSF::createSection(
 				$prefix,
 				[
-					'title' => 'Database Optimization',
-					'id' => 'database_optimization',
-					'icon' => 'fa fa-database',
+					'title'  => 'Database Optimization',
+					'id'     => 'database_optimization',
+					'icon'   => 'fa fa-database',
 					'fields' => [
 						[
-							'type' => 'subheading',
+							'type'  => 'subheading',
 							'title' => 'Convert Database Tables to InnoDB',
 						],
 						[
-							'id' => 'button',
-							'title' => '',
-							'type' => 'content',
+							'id'      => 'button',
+							'title'   => '',
+							'type'    => 'content',
 							'content' => '
 								<button class="button button-primary sbp-scan-database-tables sbp-button-loading"><span>Scan Database Tables</span> <i class="dashicons dashicons-image-rotate"></i></button>
 								<table class="widefat fixed sbp-database-tables" cellspacing="0" style="margin-top: 20px; display: none;">
-								<thead>
-								<tr>
-								<th>Table Name</th>
-								<th>Actions</th>
-</tr>
-<tbody>
-</tbody>
-</thead>
-</table>
-							'
+									<thead>
+										<tr>
+											<th>Table Name</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							',
 						],
 					],
 				]
@@ -1227,21 +1235,42 @@ class Speed_Booster_Pack_Admin {
 
 			/* BEGIN Metaboxes */
 			$metabox_prefix = 'sbp_post_meta';
-			CSF::createMetabox( $metabox_prefix, [
-				'title'        => SBP_PLUGIN_NAME,
-				'post_type'    => 'page',
-			] );
+			CSF::createMetabox( $metabox_prefix,
+				[
+					'title'     => SBP_PLUGIN_NAME,
+					'post_type' => 'page',
+				] );
 
-			CSF::createSection( $metabox_prefix, array(
-				'fields' => [
-					[
-						'id'    => 'sbp_preload',
-						'type'  => 'code_editor',
-						'title' => __( 'Page-Specific Preload Rules', 'speed-booster-pack' ),
-						'desc'  => __( 'This one is just some kind of test.', 'speed-booster-pack' ), // B_TODO: Change Text
+			CSF::createSection( $metabox_prefix,
+				array(
+					'fields' => [
+						[
+							'id'    => 'sbp_preload',
+							'type'  => 'code_editor',
+							'title' => __( 'Page-Specific Preload Rules', 'speed-booster-pack' ),
+							'desc'  => __( 'This one is just some kind of test.', 'speed-booster-pack' ), // B_TODO: Change Text
+						],
 					],
-				]
-			) );
+				) );
+		}
+	}
+
+	public function modify_menu_title() {
+		$count = SBP_Notice_Manager::get_notice_count();
+
+		if ( $count ) {
+			?>
+			<script type="text/javascript">
+                jQuery(document).ready(function ($) {
+                    $('#toplevel_page_sbp-settings .wp-menu-name').append('<span class="update-plugins count-<?php echo $count; ?>"><?php echo $count; ?></span>');
+                });
+			</script>
+			<?php
+
+			return sprintf(
+				' %1$s',
+				esc_html( number_format_i18n( $count ) )
+			);
 		}
 	}
 }	

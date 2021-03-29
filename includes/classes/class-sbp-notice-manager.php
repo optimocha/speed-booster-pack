@@ -8,6 +8,8 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class SBP_Notice_Manager {
+	private static $notice_count = 0;
+
 	public function __construct() {
 		add_action( 'wp_ajax_sbp_dismiss_notice', [ $this, 'dismiss_notice' ] );
 		add_action( 'wp_ajax_sbp_remove_notice_transient', [ $this, 'remove_notice_transient' ] );
@@ -52,6 +54,7 @@ class SBP_Notice_Manager {
 		if ( self::should_display( $id ) || ( $notice_type == 'recurrent' && get_transient( $id ) ) || ( $notice_type == 'flash' && ! get_transient( $id ) ) ) {
 			add_action( 'admin_notices',
 				function () use ( $type, $is_dismissible, $id, $text, $action ) {
+					self::$notice_count ++;
 					echo '<div class="notice sbp-notice notice-' . $type . ' ' . ( $is_dismissible ? 'is-dismissible' : null ) . '" data-notice-action="' . $action . '" data-notice-id="' . $id . '">' . $text . '</div>';
 				} );
 
@@ -85,5 +88,9 @@ class SBP_Notice_Manager {
 		    var data = {action: action, notice_id: notice_id};
 		    jQuery.get(ajaxurl, data);
 		});' );
+	}
+
+	public static function get_notice_count() {
+		return self::$notice_count;
 	}
 }
