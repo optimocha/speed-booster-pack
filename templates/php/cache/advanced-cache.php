@@ -1,5 +1,7 @@
 <?php
 
+define('SBP_CACHE_ALREADY_BYPASSED', true);
+
 // check if request method is GET
 if ( ! isset( $_SERVER['REQUEST_METHOD'] ) || $_SERVER['REQUEST_METHOD'] != 'GET' ) {
 	return false;

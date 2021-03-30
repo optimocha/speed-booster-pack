@@ -18,7 +18,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private $file_name = 'index.html';
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) ) {
+		global $sbp_cache_already_bypassed;
+		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) || defined('SBP_CACHE_ALREADY_BYPASSED') ) {
 			return;
 		}
 
@@ -37,7 +38,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @return bool
 	 */
 	private function should_bypass_cache() {
-
 		// Do not cache for logged in users
 		if ( is_user_logged_in() ) {
 			return true;
