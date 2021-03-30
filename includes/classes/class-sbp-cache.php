@@ -19,7 +19,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 	public function __construct() {
 		global $sbp_cache_already_bypassed;
-		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) || defined('SBP_CACHE_ALREADY_BYPASSED') ) {
+		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) ) {
 			return;
 		}
 
@@ -82,14 +82,12 @@ class SBP_Cache extends SBP_Abstract_Module {
 			}
 		}
 
-		// Check for exclude URLs
-		if ( sbp_get_option( 'caching_exclude_urls' ) ) {
-			$exclude_urls   = array_map( 'trim', explode( PHP_EOL, sbp_get_option( 'caching_exclude_urls' ) ) );
-			$exclude_urls[] = '/favicon.ico';
-			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
-			if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
-				return true;
-			}
+		if ($this->check_excluded_urls()) {
+			return true;
+		}
+
+		if ($this->check_cookies()) {
+			return true;
 		}
 
 		return false;
@@ -141,23 +139,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 		$wp_filesystem = sbp_get_filesystem();
 
-		// Check for query strings
-		if ( ! empty( $_GET ) ) {
-			// Get included rules
-			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
-
-			$query_string_file_name = '';
-			// Order get parameters alphabetically (to get same filename for every order of query parameters)
-			ksort( $_GET );
-			foreach ( $_GET as $key => $value ) {
-				if ( in_array( $key, $include_query_strings ) ) {
-					$query_string_file_name .= "$key-$value-";
-				}
-			}
-			if ( '' !== $query_string_file_name ) {
-				$this->file_name        = md5( $query_string_file_name ) . '.html';
-			}
-		}
+		$this->check_query_strings();
 
 		// Read cache file
 		$cache_file_path = $this->get_cache_file_path() . $this->file_name;
@@ -620,6 +602,57 @@ AddEncoding gzip              svgz
 			if ( $item['variation_id'] > 0 ) {
 				$variation_id = $item['variation_id'];
 				self::clear_post_by_id( $variation_id );
+			}
+		}
+	}
+
+	private function check_cookies() {
+		// Check if user logged in
+		if ( ! empty( $_COOKIE ) ) {
+			// Default Cookie Excludes
+			$cookies = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_'];
+			$excluded_cookies = sbp_get_option('caching_exclude_cookies');
+			$excluded_cookies = SBP_Utils::explode_lines($excluded_cookies);
+			$cookies = array_merge($cookies, $excluded_cookies);
+
+			$cookies_regex = '/^(' . implode('|', $cookies) . ')/';
+
+			foreach ( $_COOKIE as $key => $value ) {
+				if ( preg_match( $cookies_regex, $key ) ) {
+					return true;
+				}
+			}
+		}
+	}
+
+	private function check_query_strings() {
+		// Check for query strings
+		if ( ! empty( $_GET ) ) {
+			// Get included rules
+			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
+
+			$query_string_file_name = '';
+			// Order get parameters alphabetically (to get same filename for every order of query parameters)
+			ksort( $_GET );
+			foreach ( $_GET as $key => $value ) {
+				if ( in_array( $key, $include_query_strings ) ) {
+					$query_string_file_name .= "$key-$value-";
+				}
+			}
+			if ( '' !== $query_string_file_name ) {
+				$this->file_name = md5( $query_string_file_name ) . '.html';
+			}
+		}
+	}
+
+	private function check_excluded_urls() {
+		// Check for exclude URLs
+		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' ) ) {
+			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines($exclude_urls) );
+			$exclude_urls[] = '/favicon.ico';
+			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
+			if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
+				return true;
 			}
 		}
 	}
