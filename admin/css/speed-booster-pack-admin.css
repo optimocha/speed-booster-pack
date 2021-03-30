@@ -27,6 +27,10 @@
 
 .sbp-cloudflare-info-text {display: none; margin-left: 15px;}
 
+.with-preloader.csf-depend-on {
+    display: none;
+}
+
 .with-preloader {position: relative; filter:grayscale(1) blur(0.5px); display: none;}
 .with-preloader:before {
     content: "";
