@@ -280,16 +280,20 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		for ( $i = 0; $i < $script_count; $i ++ ) {
 			if ( $this->optimize_strategy == 'everything' ) {
 				foreach ( $this->exclude_rules as $rule ) {
-					if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
-						unset( $this->included_scripts[ $i ] );
+					if (isset($this->included_scripts[ $i ])) {
+						if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
+							unset( $this->included_scripts[ $i ] );
+						}
 					}
 				}
 			} elseif ( $this->optimize_strategy == 'custom' ) {
 				$has_found = false;
 				foreach ( $this->include_rules as $rule ) {
-					if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
-						$has_found = true;
-						continue;
+					if (isset($this->included_scripts[ $i ])) {
+						if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
+							$has_found = true;
+							continue;
+						}
 					}
 				}
 				if ( $has_found === false ) {
