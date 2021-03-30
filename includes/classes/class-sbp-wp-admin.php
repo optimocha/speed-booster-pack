@@ -15,8 +15,7 @@ class SBP_WP_Admin {
 			$this->set_notices();
 			$this->initialize_announce4wp();
 
-			add_action( 'admin_init', [ $this, 'rating_notice' ] );
-			add_action( 'admin_init', [ $this, 'tweet_notice' ] );
+			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
 		}
 
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
@@ -237,37 +236,34 @@ class SBP_WP_Admin {
 		}
 	}
 
-	public function rating_notice() {
-		if ( current_user_can( 'manage_options' ) ) {
-			$meta_key           = 'sbp_rating_notice_display_time';
-			$rating_notice_meta = get_user_meta( get_current_user_id(), $meta_key, true );
-			if ( ! $rating_notice_meta ) {
-				update_user_meta( get_current_user_id(), $meta_key, strtotime( '+7 days' ) );
-			} else {
-				if ($rating_notice_meta <= time()) {
-					// B_TODO: Change Text
-					SBP_Notice_Manager::display_notice('rate_wp_org', '<p>' . __( 'Rate us on <a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" target="_blank">wordpress.org</a>', 'speed-booster-pack' ) . '</p>', 'info', true, 'one_time');
+	public function timed_notifications() {
+		$notices = [
+			'tweet_sbp' => [
+				'show_after' => '+14 days',
+				// B_TODO: Change Text
+				'text' => __( 'Tweet about us', 'speed-booster-pack' ),
+			],
+			'rate_wp_org' => [
+				'show_after' => '+7 days',
+				// B_TODO: Change Text
+				'text' => __( 'Rate us on <a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" target="_blank">wordpress.org</a>', 'speed-booster-pack' ),
+			],
+		];
+
+		foreach ($notices as $notice_key => $notice) {
+			if ( current_user_can( 'manage_options' ) ) {
+				$meta_key           = $notice_key . '_notice_display_time';
+				$notice_meta = get_user_meta( get_current_user_id(), $meta_key, true );
+				if ( ! $notice_meta ) {
+					update_user_meta( get_current_user_id(), $meta_key, strtotime( $notice['show_after'] ) );
+				} else {
+					if ($notice_meta <= time()) {
+						SBP_Notice_Manager::display_notice($notice_key, '<p>' . $notice['text'] . '</p>', 'info');
+					}
 				}
 			}
 		}
 	}
-
-	public function tweet_notice() {
-		if ( current_user_can( 'manage_options' ) ) {
-			$meta_key           = 'sbp_tweet_notice_display_time';
-			$rating_notice_meta = get_user_meta( get_current_user_id(), $meta_key, true );
-			if ( ! $rating_notice_meta ) {
-				update_user_meta( get_current_user_id(), $meta_key, strtotime( '+14 days' ) );
-			} else {
-				if ($rating_notice_meta <= time()) {
-					// B_TODO: Change Text
-					SBP_Notice_Manager::display_notice('tweet_sbp', '<p>' . __( 'Tweet about us', 'speed-booster-pack' ) . '</p>', 'info', true, 'one_time');
-				}
-			}
-		}
-	}
-
-	// Z_TODO: Create generic timed notice method
 
 	public function settings_links( $links ) {
 		$pro_link = ' <a href="https://optimocha.com/?ref=speed-booster-pack" target="_blank">Pro Services</a > ';

@@ -59,7 +59,7 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 			];
 		}
 
-		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) { // Z_TODO: Check here
+		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) {
 			return [
 				'name' => 'WP Engine',
 				'disabled_features' => [],
