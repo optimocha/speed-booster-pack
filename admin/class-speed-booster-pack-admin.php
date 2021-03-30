@@ -511,6 +511,124 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: CDN & Proxy */
 
 			/* BEGIN Section: Optimize CSS */
+            $critical_css_fields = [
+	            [
+		            'title'  => 'is_front_page',
+		            'fields' => [
+			            [
+				            'id'       => 'is_front_page',
+				            'type'     => 'code_editor',
+				            // Z_TODO: Edit the following description.
+				            'desc'     => sprintf( __( 'This CSS block will be injected into the front page of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_front_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_front_page()</code>' ), '</a>' ),
+				            'settings' => [ 'lineWrapping' => true ],
+			            ],
+		            ],
+	            ],
+	            [
+		            'title'  => 'is_home',
+		            'fields' => [
+			            [
+				            'id'       => 'is_home',
+				            'type'     => 'code_editor',
+				            'desc'     => sprintf( __( 'This CSS block will be injected into the blog homepage of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_home/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_home()</code>' ), '</a>' ),
+				            'settings' => [ 'lineWrapping' => true ],
+			            ],
+		            ],
+	            ],
+	            [
+		            'title'  => 'is_single',
+		            'fields' => [
+			            [
+				            'id'       => 'is_single',
+				            'type'     => 'code_editor',
+				            'desc'     => sprintf( __( 'This CSS block will be injected into all single posts. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_single/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_single()</code>' ), '</a>' ),
+				            'settings' => [ 'lineWrapping' => true ],
+			            ],
+		            ],
+	            ],
+	            [
+		            'title'  => 'is_page',
+		            'fields' => [
+			            [
+				            'id'       => 'is_page',
+				            'type'     => 'code_editor',
+				            'desc'     => sprintf( __( 'This CSS block will be injected into all static pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_page()</code>' ), '</a>' ),
+				            'settings' => [ 'lineWrapping' => true ],
+			            ],
+		            ],
+	            ],
+	            [
+		            'title'  => 'is_category',
+		            'fields' => [
+			            [
+				            'id'       => 'is_category',
+				            'type'     => 'code_editor',
+				            'desc'     => sprintf( __( 'This CSS block will be injected into all category archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_category/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_category()</code>' ), '</a>' ),
+				            'settings' => [ 'lineWrapping' => true ],
+			            ],
+		            ],
+	            ],
+	            [
+		            'title'  => 'is_tag',
+		            'fields' => [
+			            [
+				            'id'       => 'is_tag',
+				            'type'     => 'code_editor',
+				            'desc'     => sprintf( __( 'This CSS block will be injected into all tag archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_tag/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_tag()</code>' ), '</a>' ),
+				            'settings' => [ 'lineWrapping' => true ],
+			            ],
+		            ],
+	            ],
+	            [
+		            'title'  => 'is_archive',
+		            'fields' => [
+			            [
+				            'id'       => 'is_archive',
+				            'type'     => 'code_editor',
+				            'desc'     => sprintf( __( 'This CSS block will be injected into all archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_archive/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_archive()</code>' ), '</a>' ),
+				            'settings' => [ 'lineWrapping' => true ],
+			            ],
+		            ],
+	            ],
+            ];
+
+            // Check if WooCommerce active or not
+            if (is_plugin_active('woocommerce/woocommerce.php')) {
+                $critical_css_fields[] = [
+	                'title'  => 'is_shop',
+	                'fields' => [
+		                [
+			                'id'       => 'is_shop',
+			                'type'     => 'code_editor',
+			                'desc'     => sprintf( __( 'This CSS block will be injected into all shop pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-4" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_shop()</code>' ), '</a>' ),
+			                'settings' => [ 'lineWrapping' => true ],
+		                ],
+	                ],
+                ];
+                $critical_css_fields[] = [
+	                'title'  => 'is_product',
+	                'fields' => [
+		                [
+			                'id'       => 'is_product',
+			                'type'     => 'code_editor',
+			                'desc'     => sprintf( __( 'This CSS block will be injected into all single product pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-7" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product()</code>' ), '</a>' ),
+			                'settings' => [ 'lineWrapping' => true ],
+		                ],
+	                ],
+                ];
+                $critical_css_fields[] = [
+	                'title'  => 'is_product_category',
+	                'fields' => [
+		                [
+			                'id'       => 'is_product_category',
+			                'type'     => 'code_editor',
+			                'desc'     => sprintf( __( 'This CSS block will be injected into all product category pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-5" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product_category()</code>' ), '</a>' ),
+			                'settings' => [ 'lineWrapping' => true ],
+		                ],
+	                ],
+                ];
+            }
+
 			CSF::createSection(
 				$prefix,
 				[
@@ -554,108 +672,7 @@ class Speed_Booster_Pack_Admin {
 							'type'       => 'accordion',
 							'title'      => '',
 							'sanitize'   => 'sbp_sanitize_strip_tags',
-							'accordions' => [
-								[
-									'title'  => 'is_front_page',
-									'fields' => [
-										[
-											'id'       => 'is_front_page',
-											'type'     => 'code_editor',
-											// Z_TODO: Edit the following description.
-											'desc'     => sprintf( __( 'This CSS block will be injected into the front page of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_front_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_front_page()</code>' ), '</a>' ),
-											'settings' => [ 'lineWrapping' => true ],
-										],
-									],
-								],
-								[
-									'title'  => 'is_home',
-									'fields' => [
-										[
-											'id'       => 'is_home',
-											'type'     => 'code_editor',
-											'desc'     => sprintf( __( 'This CSS block will be injected into the blog homepage of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_home/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_home()</code>' ), '</a>' ),
-											'settings' => [ 'lineWrapping' => true ],
-										],
-									],
-								],
-								[
-									'title'  => 'is_single',
-									'fields' => [
-										[
-											'id'       => 'is_single',
-											'type'     => 'code_editor',
-											'desc'     => sprintf( __( 'This CSS block will be injected into all single posts. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_single/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_single()</code>' ), '</a>' ),
-											'settings' => [ 'lineWrapping' => true ],
-										],
-									],
-								],
-								[
-									'title'  => 'is_page',
-									'fields' => [
-										[
-											'id'       => 'is_page',
-											'type'     => 'code_editor',
-											'desc'     => sprintf( __( 'This CSS block will be injected into all static pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_page()</code>' ), '</a>' ),
-											'settings' => [ 'lineWrapping' => true ],
-										],
-									],
-								],
-								[
-									'title'  => 'is_category',
-									'fields' => [
-										[
-											'id'       => 'is_category',
-											'type'     => 'code_editor',
-											'desc'     => sprintf( __( 'This CSS block will be injected into all category archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_category/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_category()</code>' ), '</a>' ),
-											'settings' => [ 'lineWrapping' => true ],
-										],
-									],
-								],
-								[
-									'title'  => 'is_tag',
-									'fields' => [
-										[
-											'id'       => 'is_tag',
-											'type'     => 'code_editor',
-											'desc'     => sprintf( __( 'This CSS block will be injected into all tag archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_tag/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_tag()</code>' ), '</a>' ),
-											'settings' => [ 'lineWrapping' => true ],
-										],
-									],
-								],
-								[
-									'title'  => 'is_archive',
-									'fields' => [
-										[
-											'id'       => 'is_archive',
-											'type'     => 'code_editor',
-											'desc'     => sprintf( __( 'This CSS block will be injected into all archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_archive/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_archive()</code>' ), '</a>' ),
-											'settings' => [ 'lineWrapping' => true ],
-										],
-									],
-								],
-								[
-									'title'  => 'is_shop',
-									'fields' => [
-										[
-											'id'       => 'is_shop',
-											'type'     => 'code_editor',
-											'desc'     => sprintf( __( 'This CSS block will be injected into all shop pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-4" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_shop()</code>' ), '</a>' ),
-											'settings' => [ 'lineWrapping' => true ],
-										],
-									],
-								],
-								[
-									'title'  => 'is_product',
-									'fields' => [
-										[
-											'id'       => 'is_product',
-											'type'     => 'code_editor',
-											'desc'     => sprintf( __( 'This CSS block will be injected into all single product pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-7" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product()</code>' ), '</a>' ),
-											'settings' => [ 'lineWrapping' => true ],
-										],
-									],
-								],
-							],
+							'accordions' => $critical_css_fields,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 						],
 						[
