@@ -25,7 +25,7 @@ class SBP_Newsletter {
 	function my_admin_print_footer_scripts() {
 		$current_user    = wp_get_current_user();
 		$pointer_content = sprintf( __( '<h3>%s</h3>', 'speed-booster-pack' ), SBP_PLUGIN_NAME );
-		$pointer_content .= sprintf( __( '<p>If you want updates from %s, enter your email and hit the subscribe button!</p>', 'speed-booster-pack' ), SBP_PLUGIN_NAME );
+		$pointer_content .= sprintf( __( '<p>Subscribe to the <i>infrequent</i> newsletter of %s, with <b>tens of thousands of users</b>!</p>', 'speed-booster-pack' ), SBP_PLUGIN_NAME );
 		$pointer_content .= '
 <div id="sbp-subscription-form">
     <div id="revue-embed">
