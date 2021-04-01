@@ -39,6 +39,8 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			'cf_html_minify_enable',
 			'cf_js_minify_enable',
 			'cf_browser_cache_ttl',
+			'cf_apo_enable',
+			'cf_apo_device_type',
 		];
 
 		$has_options_changed = false;
@@ -75,6 +77,14 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 				[
 					'id'    => 'browser_cache_ttl',
 					'value' => (int) $saved_data['cf_browser_cache_ttl'],
+				],
+				[
+					'id' => 'automatic_platform_optimization',
+					'value' => [
+						'enabled' => $saved_data['cf_apo_enable'] ? true : false,
+						'wordpress' => true,
+						'cache_by_device_type' => $saved_data['cf_apo_device_type'] ? true : false,
+					],
 				],
 			]
 		];
@@ -239,6 +249,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 				'development_mode',
 				'minify',
 				'rocket_loader',
+				'automatic_platform_optimization',
 			];
 			$settings          = [];
 

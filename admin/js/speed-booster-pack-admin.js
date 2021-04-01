@@ -137,6 +137,23 @@
                 field: 'cf_browser_cache_ttl',
                 type: 'text',
             },
+            {
+                id: 'automatic_platform_optimization',
+                field: 'cf_apo_enable',
+                type: 'array',
+                matches: [
+                    {
+                        id: 'enable',
+                        field: 'cf_apo_enable',
+                        type: 'switcher',
+                    },
+                    {
+                        id: 'device_type',
+                        field: 'cf_apo_device_type',
+                        type: 'switcher',
+                    },
+                ]
+            },
         ];
 
         $.ajax({
