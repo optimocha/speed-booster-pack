@@ -227,15 +227,25 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$wp_config = file( $wp_config_file );
 
 			if ( $wp_cache ) {
-				$append_line = PHP_EOL . PHP_EOL . "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL;
+				$append_line = PHP_EOL . "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL;
 			} else {
 				$append_line = '';
 			}
 
 			$found_wp_cache = false;
 
-			foreach ( $wp_config as &$line ) {
+			foreach ( $wp_config as $line_number => &$line ) {
 				if ( preg_match( '/^\s*define\s*\(\s*[\'\"]WP_CACHE[\'\"]\s*,.*\)\s*;/', $line ) ) {
+					// Remove blank line before constant
+					if (isset($wp_config[$line_number - 1]) && $wp_config[$line_number - 1] === PHP_EOL) {
+						unset($wp_config[$line_number - 1]);
+					}
+
+					// Remove blank line after constant
+					if (isset($wp_config[$line_number + 1]) && $wp_config[$line_number + 1] === PHP_EOL) {
+						unset($wp_config[$line_number + 1]);
+					}
+
 					$line           = $append_line;
 					$found_wp_cache = true;
 					break;
