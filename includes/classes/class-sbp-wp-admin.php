@@ -239,9 +239,10 @@ class SBP_WP_Admin {
 	public function timed_notifications() {
 		$notices = [
 			'tweet_sbp' => [
-				'show_after' => '+14 days',
+				'show_after' => '+7 days',
 				// B_TODO: Change Text
 				'text' => __( 'Tweet about us', 'speed-booster-pack' ),
+                'depends_on' => 'rate_wp_org',
 			],
 			'rate_wp_org' => [
 				'show_after' => '+7 days',
@@ -255,7 +256,13 @@ class SBP_WP_Admin {
 				$meta_key           = $notice_key . '_notice_display_time';
 				$notice_meta = get_user_meta( get_current_user_id(), $meta_key, true );
 				if ( ! $notice_meta ) {
-					update_user_meta( get_current_user_id(), $meta_key, strtotime( $notice['show_after'] ) );
+				    if (isset($notice['depends_on']) && $notice['depends_on']) {
+				        if (SBP_Notice_Manager::has_dismissed($notice['depends_on'])) {
+                            update_user_meta( get_current_user_id(), $meta_key, strtotime( $notice['show_after'] ) );
+                        }
+                    } else {
+                        update_user_meta( get_current_user_id(), $meta_key, strtotime( $notice['show_after'] ) );
+                    }
 				} else {
 					if ($notice_meta <= time()) {
 						SBP_Notice_Manager::display_notice($notice_key, '<p>' . $notice['text'] . '</p>', 'info');

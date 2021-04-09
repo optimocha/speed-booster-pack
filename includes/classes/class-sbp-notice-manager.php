@@ -93,4 +93,9 @@ class SBP_Notice_Manager {
 	public static function get_notice_count() {
 		return self::$notice_count;
 	}
+
+    public static function has_dismissed( $id ) {
+        $dismissed_notices = self::get_dismissed_notices();
+        return in_array( $id, $dismissed_notices );
+	}
 }

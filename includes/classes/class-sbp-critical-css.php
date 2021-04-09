@@ -40,6 +40,7 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 			'is_archive',
 			'is_shop',
 			'is_product',
+			'is_product_category',
 		];
 
 		foreach ( $conditions as $condition ) {

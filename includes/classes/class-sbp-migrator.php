@@ -253,18 +253,24 @@ ga('send', 'pageview');";
 	 *
 	 */
 	public function update_options() {
+	    $has_changed = false;
+
 		// Javascript Optimize Migration
 		$js_optimize = sbp_get_option( 'js_optimize' );
 		if ( $js_optimize === 'defer' ) {
 			$this->sbp_options['js_optimize'] = 'everything';
+            $has_changed = true;
 		} elseif ( $js_optimize === 'move' ) {
 			$this->sbp_options['js_optimize'] = 'off';
 			$this->sbp_options['move_to_footer'] = 1;
 			$this->sbp_options['move_to_footer_exclude'] = $this->sbp_options['js_exclude'];
 			$this->sbp_options['js_exclude'] = '';
+            $has_changed = true;
 		}
 
-		set_transient( 'sbp_upgraded_notice', 1 );
-		update_option( 'sbp_options', $this->sbp_options );
+		if ($has_changed === true) {
+            set_transient( 'sbp_upgraded_notice', 1 );
+            update_option( 'sbp_options', $this->sbp_options );
+        }
 	}
 }

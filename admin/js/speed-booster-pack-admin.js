@@ -261,6 +261,7 @@
                             '</tr>');
                     });
                 } else {
+                    $table.show();
                     $tableBody.html('<tr><td colspan="2">No database table found.</td></tr>'); // B_TODO: Check text
                 }
             },
