@@ -607,7 +607,7 @@ class Speed_Booster_Pack_Admin {
             ];
 
             // Check if WooCommerce active or not
-            if (is_plugin_active('woocommerce/woocommerce.php')) {
+            if (\SpeedBooster\SBP_Utils::is_plugin_active('woocommerce/woocommerce.php')) {
                 $critical_css_fields[] = [
 	                'title'  => 'is_shop',
 	                'fields' => [
