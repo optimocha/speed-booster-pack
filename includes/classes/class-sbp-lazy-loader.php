@@ -27,8 +27,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	function add_lazy_load_script() {
 		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.3.0', true );
 		$lazy_loader_script = 'window.lazyLoadOptions = {
-					elements_selector: "[loading=lazy]",
-                    use_native: true
+					elements_selector: "[loading=lazy]"
 				};
 				window.addEventListener(
 				"LazyLoad::Initialized",
@@ -86,6 +85,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			'loading="auto"',
 			'loading=\'auto\'',
 			'wp-embedded-content',
+            'images.dmca.com/Badges/',
 		];
 		$lazyload_exclusions         = apply_filters( 'sbp_lazyload_exclusions', array_merge( $lazyload_exclusions, $default_lazyload_exclusions ) );
 		$placeholder                 = 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=';
