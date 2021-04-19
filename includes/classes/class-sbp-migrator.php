@@ -264,7 +264,6 @@ ga('send', 'pageview');";
 			$this->sbp_options['js_optimize'] = 'off';
 			$this->sbp_options['move_to_footer'] = 1;
 			$this->sbp_options['move_to_footer_exclude'] = $this->sbp_options['js_exclude'];
-			$this->sbp_options['js_exclude'] = '';
             $has_changed = true;
 		}
 
