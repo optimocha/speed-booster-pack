@@ -78,7 +78,8 @@ class SBP_Advanced_Cache_Generator {
 		if ($excluded_cookies) {
 			$cookies = SBP_Utils::explode_lines( $excluded_cookies );
 			foreach ( $cookies as $cookie ) {
-				if ($cookie) {
+				if ( $cookie ) {
+				    $cookie = addslashes( $cookie );
 					$arrayString .= "'$cookie', ";
 				}
 			}
