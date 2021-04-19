@@ -123,7 +123,7 @@ class Speed_Booster_Pack_Admin {
 					'framework_class' => 'sbp-settings',
 
 					// menu settings
-					'menu_title'      => 'Speed Booster' . $this->modify_menu_title(),
+					'menu_title'      => 'Speed Booster',
 					'menu_icon'       => SBP_URL . 'admin/images/icon.svg',
 					'menu_slug'       => 'sbp-settings',
 					'menu_type'       => 'menu',
@@ -845,6 +845,7 @@ class Speed_Booster_Pack_Admin {
 					],
 					[
 						'title'      => __( 'Preload assets', 'speed-booster-pack' ),
+						'desc'       => __( '<b>Tip:</b> hebele hübele', 'speed-booster-pack' ),
 						'id'         => 'preboost',
 						'class'      => 'preboost',
 						'type'       => 'fieldset',

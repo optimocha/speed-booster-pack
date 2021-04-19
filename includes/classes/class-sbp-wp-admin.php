@@ -238,16 +238,15 @@ class SBP_WP_Admin {
 
 	public function timed_notifications() {
 		$notices = [
-			'tweet_sbp' => [
+			'sbp_tweet' => [
 				'show_after' => '+7 days',
 				// B_TODO: Change Text
 				'text' => __( 'Tweet about us', 'speed-booster-pack' ),
-                'depends_on' => 'rate_wp_org',
+                'depends_on' => 'sbp_rate_wp_org',
 			],
-			'rate_wp_org' => [
+			'sbp_rate_wp_org' => [
 				'show_after' => '+7 days',
-				// B_TODO: Change Text
-				'text' => __( 'Rate us on <a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" target="_blank">wordpress.org</a>', 'speed-booster-pack' ),
+				'text' => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . __( 'If you liked our plugin, it would mean a lot to us if you <a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">rate us on wordpress.org</a>.', 'speed-booster-pack' ),
 			],
 		];
 
