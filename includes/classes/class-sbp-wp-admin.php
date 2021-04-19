@@ -244,6 +244,7 @@ class SBP_WP_Admin {
 				'text' => __( 'Tweet about us', 'speed-booster-pack' ),
                 'depends_on' => 'sbp_rate_wp_org',
 			],
+            // Z_TODO: Fix translate
 			'sbp_rate_wp_org' => [
 				'show_after' => '+7 days',
 				'text' => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . __( 'If you liked our plugin, it would mean a lot to us if you <a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">rate us on wordpress.org</a>.', 'speed-booster-pack' ),
