@@ -105,6 +105,8 @@ $users = get_users( 'role=administrator' );
 foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_dismissed_notices' );
 	delete_user_meta( $user->ID, 'sbp_dismissed_compat_notices' );
+	delete_user_meta( $user->ID, 'sbp_tweet_notice_display_time' );
+	delete_user_meta( $user->ID, 'sbp_rate_wp_org_notice_display_time' );
 }
 
 $pages = array('posts_per_page' => -1, 'post_type' => 'page');
