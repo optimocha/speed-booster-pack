@@ -265,14 +265,11 @@ class SBP_Cloudflare extends SBP_Abstract_Module
                 'browser_cache_ttl',
                 'development_mode',
                 'minify',
-                'rocket_loader',
-                'automatic_platform_optimization',
+                'rocket_loader'
             ];
             $settings          = [];
 
             $result = self::send_request('settings');
-            var_dump($result);
-            exit;
             if ($result && $result['success']) {
                 foreach ($result['result'] as $setting) {
                     if (in_array($setting['id'], $settings_to_fetch)) {

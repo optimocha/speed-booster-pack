@@ -68,7 +68,7 @@
         let value = '';
         const $field = $('[data-depend-id="' + match.field + '"]');
         if (match.type === 'switcher') {
-            if (parent !== null) {
+            if (parent !== null && response.results[parent] !== undefined) {
                 value = response.results[parent].value[match.id] === 'on' ? '1' : '';
             } else {
                 value = response.results[match.id].value === 'on' ? '1' : '';
@@ -136,24 +136,7 @@
                 id: 'browser_cache_ttl',
                 field: 'cf_browser_cache_ttl',
                 type: 'text',
-            },
-            {
-                id: 'automatic_platform_optimization',
-                field: 'cf_apo_enable',
-                type: 'array',
-                matches: [
-                    {
-                        id: 'enable',
-                        field: 'cf_apo_enable',
-                        type: 'switcher',
-                    },
-                    {
-                        id: 'device_type',
-                        field: 'cf_apo_device_type',
-                        type: 'switcher',
-                    },
-                ]
-            },
+            }
         ];
 
         $.ajax({
@@ -172,11 +155,7 @@
                 } else if (response.status === 'empty_info') {
                     $('.sbp-cloudflare-warning').show();
                 } else {
-                    if (response.status === 'null') {
-                        $('.sbp-cloudflare-connection-issue').show();
-                    } else {
-                        $('.sbp-cloudflare-incorrect').show();
-                    }
+                    $('.sbp-cloudflare-incorrect').show();
                     $('.with-preloader::before, .with-preloader::after').remove();
                 }
             },
