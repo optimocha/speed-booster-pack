@@ -831,7 +831,7 @@ class Speed_Booster_Pack_Admin {
 						'desc'       => __( '', 'speed-booster-pack' ),
 						'type'       => 'switcher',
 						'default'    => '',
-						'dependency' => [ 'module_assets|js_optimize', '==|==', '1|off', '', 'visible|visible|visible' ],
+						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					],
 					[
 						// B_TODO: Change Texts
@@ -841,7 +841,7 @@ class Speed_Booster_Pack_Admin {
 						// B_TODO: Change Texts
 						'desc'       => __( '', 'speed-booster-pack' ),
 						'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-						'dependency' => [ 'module_assets|move_to_footer|js_optimize', '==|==|==', '1|1|off', '', 'visible|visible|visible' ],
+						'dependency' => [ 'module_assets|move_to_footer', '==|==', '1|1', '', 'visible|visible' ],
 					],
 					[
 						'title'      => __( 'Preload assets', 'speed-booster-pack' ),
