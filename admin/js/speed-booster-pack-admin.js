@@ -133,6 +133,22 @@
                 ]
             },
             {
+                id: 'automatic_platform_optimization',
+                type: 'array',
+                matches: [
+                    {
+                        id: 'automatic_platform_optimization',
+                        field: 'cf_apo_enable',
+                        type: 'switcher',
+                    },
+                    {
+                        id: 'cache_by_device_type',
+                        field: 'cf_apo_device_type',
+                        type: 'switcher',
+                    },
+                ]
+            },
+            {
                 id: 'browser_cache_ttl',
                 field: 'cf_browser_cache_ttl',
                 type: 'text',

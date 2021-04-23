@@ -15,7 +15,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module
         'rocket_loader'     => '/settings/rocket_loader',
         'purge_cache'       => '/purge_cache',
         'settings'          => '/settings',
-        'apo'               => '/settings/automatic_platform_optimization',
+        'automatic_platform_optimization'               => '/settings/automatic_platform_optimization',
     ];
 
     public function __construct()
@@ -82,22 +82,18 @@ class SBP_Cloudflare extends SBP_Abstract_Module
                     'id'    => 'browser_cache_ttl',
                     'value' => (int)$saved_data['cf_browser_cache_ttl'],
                 ],
-                [
-                    'id'    => 'automatic_platform_optimization',
-                    'value' => [
-                        'enabled'              => $saved_data['cf_apo_enable'] ? true : false,
-                        'wordpress'            => true,
-                        'cache_by_device_type' => $saved_data['cf_apo_device_type'] ? true : false,
-                    ],
-                ],
             ],
         ];
 
         $response = self::send_request('settings', 'PATCH', $request_data);
 
-//		die('Settings have been changed');
         if ($response['success']) {
-            return true;
+            $response = self::update_apo_settings( $saved_data['cf_apo_enable'], $saved_data['cf_apo_device_type'] );
+            if ($response['success']) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -191,7 +187,6 @@ class SBP_Cloudflare extends SBP_Abstract_Module
             curl_setopt($curl_connection, CURLOPT_SSL_VERIFYHOST, false);
             curl_setopt($curl_connection, CURLOPT_SSL_VERIFYPEER, false);
 
-
             $request_response = curl_exec($curl_connection);
             $result           = json_decode($request_response, true);
             curl_close($curl_connection);
@@ -208,8 +203,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module
         }
     }
 
-    public function clear_cache_request_handler()
-    {
+    public function clear_cache_request_handler() {
         if (isset($_GET['sbp_action']) && $_GET['sbp_action'] == 'sbp_clear_cloudflare_cache' && current_user_can('manage_options') && isset($_GET['sbp_nonce']) && wp_verify_nonce($_GET['sbp_nonce'], 'sbp_clear_cloudflare_cache')) {
             $redirect_url = remove_query_arg(['sbp_action', 'sbp_nonce']);
             $result       = self::clear_cache();
@@ -277,6 +271,17 @@ class SBP_Cloudflare extends SBP_Abstract_Module
                     }
                 }
                 delete_transient('sbp_do_not_update_cloudflare');
+                // Inject APO Settings
+                $apo_settings = $this->get_apo_settings();
+                if ($apo_settings['success']) {
+                    $settings['automatic_platform_optimization'] = [
+                        'id' => 'automatic_platform_optimization',
+                        'value' => [
+                            'automatic_platform_optimization' => $apo_settings['result']['value']['enabled'] ? "on" : "off",
+                            'cache_by_device_type' => $apo_settings['result']['value']['cache_by_device_type'] ? "on" : "off",
+                        ],
+                    ];
+                }
                 echo json_encode(['status' => 'success', 'results' => $settings]);
             } else {
                 set_transient('sbp_do_not_update_cloudflare', 1);
@@ -289,6 +294,20 @@ class SBP_Cloudflare extends SBP_Abstract_Module
             }
             wp_die();
         }
+    }
+
+    private function get_apo_settings() {
+        return self::send_request( 'automatic_platform_optimization');
+    }
+
+    private static function update_apo_settings($apo_enabled, $cache_by_device_type) {
+        return self::send_request( 'automatic_platform_optimization', 'PATCH', [ 'value' => [
+            "enabled" => (bool) $apo_enabled,
+            "cf" => true,
+            "wordpress" => true,
+            "wp_plugin" => true,
+            "cache_by_device_type" => (bool) $cache_by_device_type,
+        ] ] );
     }
 
     public static function is_cloudflare_active()
