@@ -37,37 +37,38 @@ class SBP_Migrator {
 
 		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
 
-		$this->sbp_settings = get_option( 'sbp_settings' );
-		$this->sbp_options = get_option( 'sbp_options' );
-		if ( $this->sbp_settings ) {
-			add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
-		}
-
-		$this->update_options();
+		$current_database_version = get_option('sbp_database_version');
+		if (!$current_database_version || (int) $current_database_version < (int) SBP_DATABASE_VERSION) {
+            $this->migrate_from_legacy();
+            $this->update_js_optimize_options();
+            update_option('sbp_database_version', SBP_DATABASE_VERSION);
+        }
 	}
 
-	// SBP_WP_Config_Injector::generate_wp_config_inject_file();
+	private function migrate_from_legacy() {
+        $this->sbp_settings = get_option( 'sbp_settings' );
+        $this->sbp_options = get_option( 'sbp_options' );
+        if ( $this->sbp_settings ) {
+            add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
+        }
+    }
 
-	public function check_migrate_notice() {
-		if ( get_transient( 'sbp_upgraded_notice' ) && current_user_can( 'manage_options' ) ) {
-			add_action( 'admin_enqueue_scripts',
-				function () {
-					$dismiss_notice_script = 'jQuery(function() {
-						jQuery(".dismiss-migrator-notice").on("click", function() {
-							jQuery.ajax({
-								url: ajaxurl,
-					            type: "POST",
-					            data: {
-					              action: "sbp_dismiss_migrator_notice",
-					            }
-							});
-						});
-					})';
-					wp_add_inline_script( 'jquery', $dismiss_notice_script );
-				} );
-			add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
-		}
-	}
+    public function handle_migrate_request() {
+        $this->migrate_legacy_options();
+        $this->delete_old_options();
+        set_transient( 'sbp_migrated_from_legacy', 1 );
+    }
+
+    private function migrate_legacy_options() {
+        $this->migrate_standard_options();
+        $this->add_tracking_scripts();
+        $this->migrate_declutter_settings();
+        $this->migrate_cdn_settings();
+        $this->migrate_exclude_rules();
+        $this->enable_external_notices();
+        update_option( 'sbp_options', $this->sbp_options );
+        wp_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
+    }
 
 	/**
 	 * This function runs when WordPress completes its upgrade process
@@ -90,23 +91,6 @@ class SBP_Migrator {
 				}
 			}
 		}
-	}
-
-	public function handle_migrate_request() {
-		$this->migrate_options();
-		$this->delete_old_options();
-		set_transient( 'sbp_upgraded_notice', 1 );
-	}
-
-	private function migrate_options() {
-		$this->migrate_standard_options();
-		$this->add_tracking_scripts();
-		$this->migrate_declutter_settings();
-		$this->migrate_cdn_settings();
-		$this->migrate_exclude_rules();
-		$this->enable_external_notices();
-		update_option( 'sbp_options', $this->sbp_options );
-		wp_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
 	}
 
 	public function add_tracking_scripts() {
@@ -226,7 +210,14 @@ ga('send', 'pageview');";
 	}
 
 	public function display_update_notice() {
-		if ( get_transient( 'sbp_upgraded_notice' ) ) {
+		if ( get_transient( 'sbp_upgraded' ) ) {
+		    // B_TODO: Change Text
+			echo '<div class="notice notice-success is-dismissible dismiss-migrator-notice"><p>' . SBP_PLUGIN_NAME . ': ' . __( 'Database migrated.', 'speed-booster-pack' ) . '</p></div>';
+		}
+	}
+
+	public function display_legacy_update_notice() {
+		if ( get_transient( 'sbp_migrated_from_legacy' ) ) {
 			echo '<div class="notice notice-success is-dismissible dismiss-migrator-notice"><p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p></div>';
 		}
 	}
@@ -245,14 +236,14 @@ ga('send', 'pageview');";
 
 	public function dismiss_upgrade_notice() {
 		if ( current_user_can( 'manage_options' ) ) {
-			delete_transient( 'sbp_upgraded_notice' );
+			delete_transient( 'sbp_migrated_from_legacy' );
 		}
 	}
 
 	/**
 	 *
 	 */
-	public function update_options() {
+	public function update_js_optimize_options() {
 	    $has_changed = false;
 
 		// Javascript Optimize Migration
@@ -268,8 +259,40 @@ ga('send', 'pageview');";
 		}
 
 		if ($has_changed === true) {
-            set_transient( 'sbp_upgraded_notice', 1 );
+            set_transient( 'sbp_upgraded', 1 );
             update_option( 'sbp_options', $this->sbp_options );
         }
 	}
+
+    public function check_migrate_notice() {
+        if ( get_transient( 'sbp_migrated_from_legacy' ) && current_user_can( 'manage_options' ) ) {
+            add_action( 'admin_notices', [ $this, 'display_legacy_update_notice' ] );
+            $this->add_dismiss_script();
+            return;
+        }
+
+        if ( get_transient( 'sbp_upgraded' ) && current_user_can( 'manage_options' ) ) {
+            add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
+            $this->add_dismiss_script();
+            return;
+        }
+    }
+
+    private function add_dismiss_script() {
+        add_action( 'admin_enqueue_scripts',
+            function () {
+                $dismiss_notice_script = 'jQuery(function() {
+						jQuery(".dismiss-migrator-notice").on("click", function() {
+							jQuery.ajax({
+								url: ajaxurl,
+					            type: "POST",
+					            data: {
+					              action: "sbp_dismiss_migrator_notice",
+					            }
+							});
+						});
+					})';
+                wp_add_inline_script( 'jquery', $dismiss_notice_script );
+            } );
+    }
 }
