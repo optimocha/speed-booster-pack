@@ -37,11 +37,11 @@ class SBP_Migrator {
 
 		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
 
-		$current_database_version = get_option('sbp_database_version');
-		if (!$current_database_version || (int) $current_database_version < (int) SBP_MIGRATOR_VERSION) {
+		$current_migrator_version = get_option('sbp_migrator_version');
+		if (!$current_migrator_version || (int) $current_migrator_version < (int) SBP_MIGRATOR_VERSION) {
             $this->migrate_from_legacy();
             $this->update_js_optimize_options();
-            update_option('sbp_database_version', SBP_MIGRATOR_VERSION);
+            update_option('sbp_migrator_version', SBP_MIGRATOR_VERSION);
         }
 	}
 

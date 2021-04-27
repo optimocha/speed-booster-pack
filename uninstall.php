@@ -96,6 +96,7 @@ if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
 
 // Remove SBP Announcements
 delete_option( 'sbp_announcements' );
+delete_option( 'sbp_migrator_version' );
 delete_transient( 'sbp_notice_cache' );
 delete_transient( 'sbp_cloudflare_status' );
 delete_transient( 'sbp_upgraded_notice' );
