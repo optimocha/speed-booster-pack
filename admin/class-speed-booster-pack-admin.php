@@ -532,7 +532,6 @@ class Speed_Booster_Pack_Admin {
 			            [
 				            'id'       => 'is_front_page',
 				            'type'     => 'code_editor',
-				            // Z_TODO: Edit the following description.
 				            'desc'     => sprintf( __( 'This CSS block will be injected into the front page of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_front_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_front_page()</code>' ), '</a>' ),
 				            'settings' => [ 'lineWrapping' => true ],
 			            ],
@@ -1307,8 +1306,7 @@ class Speed_Booster_Pack_Admin {
                     'id' => 'sbp_psp_warning',
                     'type' => 'notice',
                     'style' => 'warning',
-                    // Z_TODO: Fix translate
-                    'title' => __(sprintf('Warning: Preloading isn\'t active in <a href="admin.php?page=sbp-settings#tab=assets" target="_blank">%1$s settings.</a>', SBP_PLUGIN_NAME)),
+                    'title' => __(sprintf('Warning: Preloading isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', SBP_PLUGIN_NAME, '</a>')),
                 ];
             }
 
