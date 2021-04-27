@@ -39,17 +39,23 @@ class SBP_Migrator {
 
 		$current_migrator_version = get_option('sbp_migrator_version');
 		if (!$current_migrator_version || (int) $current_migrator_version < (int) SBP_MIGRATOR_VERSION) {
-            $this->migrate_from_legacy();
-            $this->update_js_optimize_options();
-            update_option('sbp_migrator_version', SBP_MIGRATOR_VERSION);
+            add_action( 'init', [ $this, 'migrate_plugin' ] );
         }
+	}
+
+    public function migrate_plugin()
+    {
+        $this->migrate_from_legacy();
+        $this->update_js_optimize_options();
+        update_option('sbp_migrator_version', SBP_MIGRATOR_VERSION);
+        wp_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
 	}
 
 	private function migrate_from_legacy() {
         $this->sbp_settings = get_option( 'sbp_settings' );
         $this->sbp_options = get_option( 'sbp_options' );
         if ( $this->sbp_settings ) {
-            add_action( 'admin_init', [ $this, 'handle_migrate_request' ] );
+            $this->handle_migrate_request();
         }
     }
 
@@ -67,7 +73,6 @@ class SBP_Migrator {
         $this->migrate_exclude_rules();
         $this->enable_external_notices();
         update_option( 'sbp_options', $this->sbp_options );
-        wp_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
     }
 
 	/**
@@ -212,7 +217,11 @@ ga('send', 'pageview');";
 	public function delete_old_options() {
 		delete_option( 'sbp_settings' );
 		delete_option( 'sbp_css_exceptions' );
-		delete_option( 'sbp_js_footer_exceptions' );
+		delete_option( 'sbp_js_exceptions' );
+		delete_option( 'sbp_js_footer_exceptions1' );
+		delete_option( 'sbp_js_footer_exceptions2' );
+		delete_option( 'sbp_js_footer_exceptions3' );
+		delete_option( 'sbp_js_footer_exceptions4' );
 		delete_option( 'sbp_lazyload_exclusions' );
 		delete_option( 'sbp_defer_exceptions1' );
 		delete_option( 'sbp_defer_exceptions2' );
@@ -246,7 +255,6 @@ ga('send', 'pageview');";
 		}
 
 		if ($has_changed === true) {
-            set_transient( 'sbp_upgraded', 1 );
             update_option( 'sbp_options', $this->sbp_options );
         }
 	}
