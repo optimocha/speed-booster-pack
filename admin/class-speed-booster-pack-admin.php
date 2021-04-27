@@ -1324,7 +1324,7 @@ class Speed_Booster_Pack_Admin {
 			?>
 			<script type="text/javascript">
                 jQuery(document).ready(function ($) {
-                    $('#toplevel_page_sbp-settings .wp-menu-name').append('<span class="update-plugins count-<?php echo $count; ?>"><?php echo $count; ?></span>');
+                    $('#toplevel_page_sbp-settings .wp-menu-name').append('&nbsp;<span class="update-plugins count-<?php echo $count; ?>"><?php echo $count; ?></span>');
                 });
 			</script>
 			<?php

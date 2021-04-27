@@ -32,16 +32,16 @@ class SBP_Migrator {
 	];
 
 	public function __construct() {
-		add_action( 'init', [ $this, 'check_migrate_notice' ] );
+		add_action( 'admin_init', [ $this, 'check_migrate_notice' ] );
 		add_action( 'upgrader_process_complete', [ $this, 'sbp_upgrade_completed' ], 10, 2 );
 
 		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
 
 		$current_database_version = get_option('sbp_database_version');
-		if (!$current_database_version || (int) $current_database_version < (int) SBP_DATABASE_VERSION) {
+		if (!$current_database_version || (int) $current_database_version < (int) SBP_MIGRATOR_VERSION) {
             $this->migrate_from_legacy();
             $this->update_js_optimize_options();
-            update_option('sbp_database_version', SBP_DATABASE_VERSION);
+            update_option('sbp_database_version', SBP_MIGRATOR_VERSION);
         }
 	}
 
@@ -209,19 +209,6 @@ ga('send', 'pageview');";
 		}
 	}
 
-	public function display_update_notice() {
-		if ( get_transient( 'sbp_upgraded' ) ) {
-		    // B_TODO: Change Text
-			echo '<div class="notice notice-success is-dismissible dismiss-migrator-notice"><p>' . SBP_PLUGIN_NAME . ': ' . __( 'Database migrated.', 'speed-booster-pack' ) . '</p></div>';
-		}
-	}
-
-	public function display_legacy_update_notice() {
-		if ( get_transient( 'sbp_migrated_from_legacy' ) ) {
-			echo '<div class="notice notice-success is-dismissible dismiss-migrator-notice"><p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p></div>';
-		}
-	}
-
 	public function delete_old_options() {
 		delete_option( 'sbp_settings' );
 		delete_option( 'sbp_css_exceptions' );
@@ -266,33 +253,12 @@ ga('send', 'pageview');";
 
     public function check_migrate_notice() {
         if ( get_transient( 'sbp_migrated_from_legacy' ) && current_user_can( 'manage_options' ) ) {
-            add_action( 'admin_notices', [ $this, 'display_legacy_update_notice' ] );
-            $this->add_dismiss_script();
+            SBP_Notice_Manager::display_notice('sbp_migrated_from_legacy', '<p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p>');
             return;
         }
 
-        if ( get_transient( 'sbp_upgraded' ) && current_user_can( 'manage_options' ) ) {
-            add_action( 'admin_notices', [ $this, 'display_update_notice' ] );
-            $this->add_dismiss_script();
-            return;
+        if ( current_user_can( 'manage_options' ) ) {
+            SBP_Notice_Manager::display_notice('sbp_database_migrated_' . SBP_MIGRATOR_VERSION, '<p>' . SBP_PLUGIN_NAME . ': ' . __( 'Database migrated.', 'speed-booster-pack' ) . '</p>');
         }
-    }
-
-    private function add_dismiss_script() {
-        add_action( 'admin_enqueue_scripts',
-            function () {
-                $dismiss_notice_script = 'jQuery(function() {
-						jQuery(".dismiss-migrator-notice").on("click", function() {
-							jQuery.ajax({
-								url: ajaxurl,
-					            type: "POST",
-					            data: {
-					              action: "sbp_dismiss_migrator_notice",
-					            }
-							});
-						});
-					})';
-                wp_add_inline_script( 'jquery', $dismiss_notice_script );
-            } );
     }
 }

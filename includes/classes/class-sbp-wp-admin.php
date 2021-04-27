@@ -12,7 +12,7 @@ class SBP_WP_Admin {
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 		if ( is_admin() ) {
 			require_once SBP_LIB_PATH . 'announce4wp/announce4wp-client.php';
-			$this->set_notices();
+			add_action( 'admin_init', [$this, 'set_notices'] );
 			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
@@ -235,7 +235,7 @@ class SBP_WP_Admin {
 			}
 		}
 	}
-// https://twitter.com/intent/tweet?hashtags=SpeedBoosterPack&text=I\'ve been using Speed Booster Pack for a couple of weeks and I love it!&tw_p=tweetbutton&url=https://wordpress.org/plugins/speed-booster-pack/
+
 	public function timed_notifications() {
         $tweet_link = "https://twitter.com/intent/tweet?hashtags=SpeedBoosterPack&text=I've been using Speed Booster Pack for a couple of weeks and I love it!&tw_p=tweetbutton&url=https://wordpress.org/plugins/speed-booster-pack/";
 		$notices = [
@@ -264,7 +264,7 @@ class SBP_WP_Admin {
                     }
 				} else {
 					if ($notice_meta <= time()) {
-						SBP_Notice_Manager::display_notice($notice_key, '<p>' . $notice['text'] . '</p>', 'info');
+						SBP_Notice_Manager::display_notice($notice_key, '<p>' . $notice['text'] . '</p>', 'info', true, 'one_time', 'toplevel_page_sbp-settings');
 					}
 				}
 			}

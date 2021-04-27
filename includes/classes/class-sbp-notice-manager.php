@@ -48,20 +48,30 @@ class SBP_Notice_Manager {
 		$text,
 		$type = 'success',
 		$is_dismissible = true,
-		$notice_type = 'one_time'
+		$notice_type = 'one_time',
+        $pages = null
 	) {
-		$action = $notice_type == 'recurrent' ? 'sbp_remove_notice_transient' : 'sbp_dismiss_notice';
-		if ( self::should_display( $id ) || ( $notice_type == 'recurrent' && get_transient( $id ) ) || ( $notice_type == 'flash' && ! get_transient( $id ) ) ) {
-			add_action( 'admin_notices',
-				function () use ( $type, $is_dismissible, $id, $text, $action ) {
-					self::$notice_count ++;
-					echo '<div class="notice sbp-notice notice-' . $type . ' ' . ( $is_dismissible ? 'is-dismissible' : null ) . '" data-notice-action="' . $action . '" data-notice-id="' . $id . '">' . $text . '</div>';
-				} );
+        $action = $notice_type == 'recurrent' ? 'sbp_remove_notice_transient' : 'sbp_dismiss_notice';
+        if ( self::should_display( $id ) || ( $notice_type == 'recurrent' && get_transient( $id ) ) || ( $notice_type == 'flash' && ! get_transient( $id ) ) ) {
+            add_action( 'admin_notices',
+                function () use ( $type, $is_dismissible, $id, $text, $action, $pages, $notice_type ) {
+                    self::$notice_count ++;
 
-			if ( $notice_type == 'flash' ) {
-				delete_transient( $id );
-			}
-		}
+                    if ($pages !== null && !is_array($pages)) {
+                        $pages = [$pages];
+                    }
+
+                    if ($pages !== null && get_current_screen() && !in_array(get_current_screen()->id, $pages)) {
+                        return;
+                    }
+
+                    echo '<div class="notice sbp-notice notice-' . $type . ' ' . ( $is_dismissible ? 'is-dismissible' : null ) . '" data-notice-action="' . $action . '" data-notice-id="' . $id . '">' . $text . '</div>';
+
+                    if ( $notice_type == 'flash' ) {
+                        delete_transient( $id );
+                    }
+                } );
+        }
 	}
 
 	public static function should_display( $id ) {

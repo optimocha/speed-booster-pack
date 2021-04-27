@@ -91,7 +91,7 @@ define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' );
 
 define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
-define( 'SBP_DATABASE_VERSION', '42000' );
+define( 'SBP_MIGRATOR_VERSION', '42000' );
 
 /**
  * Load all plugin options
