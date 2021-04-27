@@ -27,7 +27,7 @@
 
 // If uninstall not called from WordPress, then exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-	die;
+//	die;
 }
 
 if ( ! defined( 'SBP_CACHE_DIR' ) ) {
@@ -107,6 +107,7 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_dismissed_compat_notices' );
 	delete_user_meta( $user->ID, 'sbp_tweet_notice_display_time' );
 	delete_user_meta( $user->ID, 'sbp_rate_wp_org_notice_display_time' );
+	delete_user_meta( $user->ID, 'sbp_hide_newsletter_pointer' );
 }
 
 $pages = array('posts_per_page' => -1, 'post_type' => 'page');

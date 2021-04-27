@@ -34,14 +34,6 @@ class SBP_Newsletter {
                 <label for="member_email">Email address</label>
                 <input class="revue-form-field" placeholder="Your email address..." type="email" name="member[email]" id="member_email" value="' . $current_user->user_email . '">
             </div>
-            <div class="revue-form-group">
-                <label for="member_first_name">First name <span class="optional">(Optional)</span></label>
-                <input class="revue-form-field" placeholder="First name... (Optional)" type="text" name="member[first_name]" id="member_first_name" value="' . $current_user->first_name . '">
-            </div>
-            <div class="revue-form-group">
-                <label for="member_last_name">Last name <span class="optional">(Optional)</span></label>
-                <input class="revue-form-field" placeholder="Last name... (Optional)" type="text" name="member[last_name]" id="member_last_name" value="' . $current_user->last_name . '">
-            </div>
             <div class="revue-form-actions">
                 <input type="submit" value="Subscribe" name="member[subscribe]" id="member_submit">
             </div>
@@ -71,6 +63,9 @@ class SBP_Newsletter {
                     setTimeout(function() {
                         // B_TODO: Change Text
                         $('#sbp-subscription-form').html('<div style="padding: 10px 20px; color: darkgreen;" class="sbp-newsletter-success"><?php _e( 'Thank you for subscribing to our newsletter.', 'speed-booster-pack' ) ?></div>');
+                        $.post(ajaxurl, {
+                            action: 'sbp_hide_newsletter_pointer'
+                        });
                     }, 3000);
                 });
             });
