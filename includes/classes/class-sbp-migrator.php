@@ -256,6 +256,7 @@ ga('send', 'pageview');";
 
 		if ($has_changed === true) {
             update_option( 'sbp_options', $this->sbp_options );
+            set_transient( 'sbp_options_migrated', true );
         }
 	}
 
@@ -265,7 +266,7 @@ ga('send', 'pageview');";
             return;
         }
 
-        if ( current_user_can( 'manage_options' ) ) {
+        if ( get_transient('sbp_options_migrated') && current_user_can( 'manage_options' ) ) {
             SBP_Notice_Manager::display_notice('sbp_database_migrated_' . SBP_MIGRATOR_VERSION, '<p>' . SBP_PLUGIN_NAME . ': ' . __( 'Database migrated.', 'speed-booster-pack' ) . '</p>');
         }
     }
