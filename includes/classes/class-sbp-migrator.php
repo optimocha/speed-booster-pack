@@ -266,7 +266,7 @@ ga('send', 'pageview');";
         }
 
         if ( current_user_can( 'manage_options' ) ) {
-            SBP_Notice_Manager::display_notice('sbp_database_migrated_' . SBP_MIGRATOR_VERSION, '<p>' . SBP_PLUGIN_NAME . ': ' . __( 'Database migrated.', 'speed-booster-pack' ) . '</p>');
+            SBP_Notice_Manager::display_notice('sbp_database_migrated_' . SBP_MIGRATOR_VERSION, '<p>' . SBP_PLUGIN_NAME . ': ' . __( 'With version 4.2.0, we\'ve split the JavaScript optimization feature into two: Defer and move to footer. Check your JS optimization settings to ensure the settings are correct.', 'speed-booster-pack' ) . '</p>');
         }
     }
 }
