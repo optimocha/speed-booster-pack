@@ -27,7 +27,7 @@
 
 // If uninstall not called from WordPress, then exit.
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
-//	die;
+	die;
 }
 
 if ( ! defined( 'SBP_CACHE_DIR' ) ) {
