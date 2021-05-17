@@ -50,7 +50,7 @@ define( 'SBP_OWNER_NAME', 'Optimocha' );
 define( 'SBP_OWNER_HOME', 'https://optimocha.com/' );
 
 /**
- * Plugin Path
+ * Plugin URL
  */
 define( 'SBP_URL', plugin_dir_url( __FILE__ ) );
 
@@ -75,7 +75,7 @@ define( 'SBP_LIB_PATH', SBP_PATH . 'vendor/' );
 define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' );
 
 /**
- * Cache directory url
+ * Cache directory URL
  */
 define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' );
 
@@ -89,8 +89,14 @@ define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
  */
 define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' );
 
+/**
+ * Plugin basename.
+ */
 define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
+/**
+ * Migrator script version.
+ */
 define( 'SBP_MIGRATOR_VERSION', '42000' );
 
 /**

@@ -385,12 +385,13 @@ class Speed_Booster_Pack_Admin {
 				[
 					'title'      => __( 'Automatic Platform Optimization', 'speed-booster-pack' ),
 					'id'         => 'cf_apo_enable',
+					'desc'       => __( 'You need to be a paying Cloudflare user to enable this setting, otherwise it will get disabled again.', 'speed-booster-pack' ),
 					'class'      => 'with-preloader',
 					'type'       => 'switcher',
 					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title'      => __( 'APO Cache By Device Type', 'speed-booster-pack' ),
+					'title'      => __( 'APO: Cache By Device Type', 'speed-booster-pack' ),
 					'id'         => 'cf_apo_device_type',
 					'class'      => 'with-preloader',
 					'type'       => 'switcher',

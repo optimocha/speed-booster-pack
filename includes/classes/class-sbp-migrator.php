@@ -48,7 +48,6 @@ class SBP_Migrator {
         $this->migrate_from_legacy();
         $this->update_js_optimize_options();
         update_option('sbp_migrator_version', SBP_MIGRATOR_VERSION);
-        wp_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
 	}
 
 	private function migrate_from_legacy() {
