@@ -19,7 +19,7 @@ class SBP_WP_Config_Injector {
 	public static function inject_wp_config() {
 		foreach ( self::$options as $option_name => $value ) {
 			if ( sbp_get_option( $option_name ) ) {
-				$filename = SBP_PATH . 'includes/templates/' . $value['filename'];
+				$filename = SBP_PATH . 'templates/wp-config/' . $value['filename'];
 				if ( \file_exists( $filename ) ) {
 					self::$wp_config_inject_content[$option_name] = $filename;
 				}
