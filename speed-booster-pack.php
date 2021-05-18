@@ -118,14 +118,6 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 	}
 }
 
-if ( ! function_exists( 'sbp_get_post_meta' ) ) {
-	function sbp_get_post_meta( $post_id, $option_key, $default = null ) {
-		$post_meta = get_post_meta( $post_id, 'sbp_post_meta', true );
-
-		return ( isset( $post_meta[ $option_key ] ) ) ? $post_meta[ $option_key ] : $default;
-	}
-}
-
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-speed-booster-pack-activator.php
