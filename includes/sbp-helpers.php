@@ -53,17 +53,17 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 	function sbp_get_hosting_restrictions() {
 		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) && $_SERVER['KINSTA_CACHE_ZONE'] ) {
 			return [
-				'name' => 'Kinsta',
+				'name'              => 'Kinsta',
 				'disabled_features' => [ 'caching' ],
-				'error_message' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Kinsta', 'Kinsta' ),
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'Kinsta', 'Kinsta' ),
 			];
 		}
 
 		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) {
 			return [
-				'name' => 'WP Engine',
+				'name'              => 'WP Engine',
 				'disabled_features' => [],
-				'error_message' => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'WP Engine', 'WP Engine' ),
+				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.' ), 'WP Engine', 'WP Engine' ),
 			];
 		}
 
@@ -119,7 +119,7 @@ if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
 		return [
 			'name'              => null,
 			'disabled_features' => [],
-			'error_message'     => ''
+			'error_message'     => '',
 		]; // Return this structure to avoid undefined index errors.
 	}
 }
@@ -139,7 +139,7 @@ if ( ! function_exists( 'sbp_should_disable_feature' ) ) {
 			return [
 				'name'              => 'Permalink',
 				'disabled_features' => [ 'caching' ],
-				'error_message'     => __( 'You should use Permalinks to enable caching module.', 'speed-booster-pack' )
+				'error_message'     => __( 'You should use Permalinks to enable caching module.', 'speed-booster-pack' ),
 			];
 		}
 
@@ -225,13 +225,14 @@ if ( ! function_exists( 'sbp_remove_duplicates_and_empty' ) ) {
 	 * Removes duplicated and empty elements from an array.
 	 *
 	 * @param $value array
-	 * @since 4.2.0
 	 *
 	 * @return array
+	 * @since 4.2.0
+	 *
 	 */
 	function sbp_remove_duplicates_and_empty( $value ) {
-		$value = array_filter($value);
-		$value = array_unique($value);
+		$value = array_filter( $value );
+		$value = array_unique( $value );
 
 		return $value;
 	}
@@ -273,13 +274,13 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 	 */
 	function sbp_sanitize_caching_urls( $urls ) {
 		$urls = SBP_Utils::explode_lines( $urls );
-		$urls = sbp_remove_duplicates_and_empty($urls);
+		$urls = sbp_remove_duplicates_and_empty( $urls );
 		foreach ( $urls as &$url ) {
-            $url = ltrim( $url, 'https://' );
-            $url = ltrim( $url, 'http://' );
-            $url = ltrim( $url, '//' );
-            $url = rtrim( $url, '/' );
-        }
+			$url = ltrim( $url, 'https://' );
+			$url = ltrim( $url, 'http://' );
+			$url = ltrim( $url, '//' );
+			$url = rtrim( $url, '/' );
+		}
 
 		return implode( PHP_EOL, $urls );
 	}
@@ -296,9 +297,9 @@ if ( ! function_exists( 'sbp_sanitize_caching_cookies' ) ) {
 	 *
 	 */
 	function sbp_sanitize_caching_cookies( $urls ) {
-	    $urls = str_replace( ['(', ')', '[', ']', '*', '$', '/'], ['', '', '', '', '', '', ''], $urls );
-        $urls = SBP_Utils::explode_lines( $urls );
-        $urls = sbp_remove_duplicates_and_empty($urls);
+		$urls = str_replace( [ '(', ')', '[', ']', '*', '$', '/' ], [ '', '', '', '', '', '', '' ], $urls );
+		$urls = SBP_Utils::explode_lines( $urls );
+		$urls = sbp_remove_duplicates_and_empty( $urls );
 
 		return implode( PHP_EOL, $urls );
 	}
@@ -316,22 +317,41 @@ if ( ! function_exists( 'sbp_sanitize_caching_included_query_strings' ) ) {
 	 */
 	function sbp_sanitize_caching_included_query_strings( $urls ) {
 		$urls = SBP_Utils::explode_lines( $urls );
-		$urls = sbp_remove_duplicates_and_empty($urls);
+		$urls = sbp_remove_duplicates_and_empty( $urls );
 
 		return implode( PHP_EOL, $urls );
 	}
 }
 
-if ( ! function_exists('sbp_sanitize_special_characters') ) {
-    function sbp_sanitize_special_characters($param) {
-        return filter_var($param, FILTER_SANITIZE_SPECIAL_CHARS);
-    }
+if ( ! function_exists( 'sbp_sanitize_special_characters' ) ) {
+	function sbp_sanitize_special_characters( $param ) {
+		return filter_var( $param, FILTER_SANITIZE_SPECIAL_CHARS );
+	}
 }
 
 if ( ! function_exists( 'sbp_get_post_meta' ) ) {
-    function sbp_get_post_meta( $post_id, $option_key, $default = null ) {
-        $post_meta = get_post_meta( $post_id, 'sbp_post_meta', true );
+	function sbp_get_post_meta( $post_id, $option_key, $default = null ) {
+		$post_meta = get_post_meta( $post_id, 'sbp_post_meta', true );
 
-        return ( isset( $post_meta[ $option_key ] ) ) ? $post_meta[ $option_key ] : $default;
-    }
+		return ( isset( $post_meta[ $option_key ] ) ) ? $post_meta[ $option_key ] : $default;
+	}
+}
+
+if ( ! function_exists( 'sbp_check_file_permissions' ) ) {
+	function sbp_check_file_permissions( $file_path, $check = 'write' ) {
+		if ( 'write' !== $check && 'read' !== $check && 'both' !== $check ) {
+			return null;
+		}
+
+		$wp_filesystem = sbp_get_filesystem();
+
+		switch ($check) {
+			case "write":
+				return $wp_filesystem->is_writable( $file_path );
+			case "read":
+				return $wp_filesystem->is_readable( $file_path );
+			case "both":
+				return $wp_filesystem->is_writable( $file_path ) && $wp_filesystem->is_readable( $file_path );
+		}
+	}
 }
