@@ -193,10 +193,11 @@ class SBP_WP_Admin {
 				'recurrent' );
 		}
 
-		// WP-Config Inject File Error
-		if ( get_transient( 'sbp_wp_config_inject_error' ) ) {
-			SBP_Notice_Manager::display_notice( 'sbp_wp_config_inject_error',
-				'<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Can not write plugins/speed-booster-pack/includes/wp-config-options/wp-config-inject.php file. Some ' . SBP_PLUGIN_NAME . ' features may not work. Please check your file permissions.',
+		// Advanced Cache File Error
+		if ( get_transient( 'sbp_advanced_cache_error' ) ) {
+			// B_TODO: Change Text
+			SBP_Notice_Manager::display_notice( 'sbp_advanced_cache_error',
+				'<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Can not write wp-content/advanced-cache.php file. Some ' . SBP_PLUGIN_NAME . ' features may not work. Please check your file permissions.',
 					'speed-booster-pack' ) . '</p>',
 				'error',
 				true,

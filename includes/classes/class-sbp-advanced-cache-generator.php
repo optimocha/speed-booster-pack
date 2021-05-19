@@ -9,7 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Advanced_Cache_Generator {
 	private static $options = [];
-	private static $advanced_cache_template = SBP_PATH . 'templates/php/cache/advanced-cache.php';
+	private static $advanced_cache_template = SBP_PATH . 'templates/cache/advanced-cache.php';
 	private static $placeholders = [
 		'\'__SEPARATE_MOBILE_CACHING__\';'          => [
 			'option_name' => 'caching_separate_mobile',
@@ -73,17 +73,18 @@ class SBP_Advanced_Cache_Generator {
 	}
 
 	private static function caching_exclude_cookies() {
-		$arrayString = '';
+		$arrayString      = '';
 		$excluded_cookies = self::$options['caching_exclude_cookies'];
-		if ($excluded_cookies) {
+		if ( $excluded_cookies ) {
 			$cookies = SBP_Utils::explode_lines( $excluded_cookies );
 			foreach ( $cookies as $cookie ) {
 				if ( $cookie ) {
-				    $cookie = addslashes( $cookie );
+					$cookie      = addslashes( $cookie );
 					$arrayString .= "'$cookie', ";
 				}
 			}
 		}
+
 		return $arrayString;
 	}
 

@@ -82,11 +82,11 @@ class SBP_Cache extends SBP_Abstract_Module {
 			}
 		}
 
-		if ($this->check_excluded_urls()) {
+		if ( $this->check_excluded_urls() ) {
 			return true;
 		}
 
-		if ($this->check_cookies()) {
+		if ( $this->check_cookies() ) {
 			return true;
 		}
 
@@ -222,7 +222,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
 		}
 
-		if ( file_exists( $wp_config_file ) && is_writable( $wp_config_file ) ) {
+		if ( file_exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file ) ) {
 			// get wp config as array
 			$wp_config = file( $wp_config_file );
 
@@ -237,13 +237,13 @@ class SBP_Cache extends SBP_Abstract_Module {
 			foreach ( $wp_config as $line_number => &$line ) {
 				if ( preg_match( '/^\s*define\s*\(\s*[\'\"]WP_CACHE[\'\"]\s*,.*\)\s*;/', $line ) ) {
 					// Remove blank line before constant
-					if (isset($wp_config[$line_number - 1]) && $wp_config[$line_number - 1] === PHP_EOL) {
-						unset($wp_config[$line_number - 1]);
+					if ( isset( $wp_config[ $line_number - 1 ] ) && $wp_config[ $line_number - 1 ] === PHP_EOL ) {
+						unset( $wp_config[ $line_number - 1 ] );
 					}
 
 					// Remove blank line after constant
-					if (isset($wp_config[$line_number + 1]) && $wp_config[$line_number + 1] === PHP_EOL) {
-						unset($wp_config[$line_number + 1]);
+					if ( isset( $wp_config[ $line_number + 1 ] ) && $wp_config[ $line_number + 1 ] === PHP_EOL ) {
+						unset( $wp_config[ $line_number + 1 ] );
 					}
 
 					$line           = $append_line;
@@ -276,25 +276,33 @@ class SBP_Cache extends SBP_Abstract_Module {
 	public static function options_saved_listener( $saved_data ) {
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
-		if ( sbp_should_disable_feature('caching') === false ) {
+		if ( ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
+			set_transient('sbp_advanced_cache_error', 1);
+			return;
+		}
+
+		if ( sbp_should_disable_feature( 'caching' ) === false ) {
 			// Delete or recreate advanced-cache.php
 			if ( $saved_data['module_caching'] ) {
-				$advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file($saved_data);
-				SBP_Cache::set_wp_cache_constant( true );
+				$advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file( $saved_data );
+				if ($advanced_cache_file_content) {
+					SBP_Cache::set_wp_cache_constant( true );
 
-				file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', $advanced_cache_file_content );
+					file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', $advanced_cache_file_content );
+				}
 			} else {
 				SBP_Cache::set_wp_cache_constant( false );
 				if ( file_exists( $advanced_cache_path ) ) {
 					if ( ! unlink( $advanced_cache_path ) ) {
-						return wp_send_json_error( [
+						wp_send_json_error( [
 							'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ),
-							'errors' => []
+							'errors' => [],
 						] );
 					}
 				}
 			}
 		} else {
+			// Z_TODO: Are we deleting other plugins advanced-cache.php?
 			if ( file_exists( $advanced_cache_path ) ) {
 				@unlink( $advanced_cache_path );
 			}
@@ -620,12 +628,12 @@ AddEncoding gzip              svgz
 		// Check if user logged in
 		if ( ! empty( $_COOKIE ) ) {
 			// Default Cookie Excludes
-			$cookies = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_'];
-			$excluded_cookies = sbp_get_option('caching_exclude_cookies');
-			$excluded_cookies = SBP_Utils::explode_lines($excluded_cookies);
-			$cookies = array_merge($cookies, $excluded_cookies);
+			$cookies          = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_' ];
+			$excluded_cookies = sbp_get_option( 'caching_exclude_cookies' );
+			$excluded_cookies = SBP_Utils::explode_lines( $excluded_cookies );
+			$cookies          = array_merge( $cookies, $excluded_cookies );
 
-			$cookies_regex = '/^(' . implode('|', $cookies) . ')/';
+			$cookies_regex = '/^(' . implode( '|', $cookies ) . ')/';
 
 			foreach ( $_COOKIE as $key => $value ) {
 				if ( preg_match( $cookies_regex, $key ) ) {
@@ -658,7 +666,7 @@ AddEncoding gzip              svgz
 	private function check_excluded_urls() {
 		// Check for exclude URLs
 		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' ) ) {
-			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines($exclude_urls) );
+			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines( $exclude_urls ) );
 			$exclude_urls[] = '/favicon.ico';
 			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
 			if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
