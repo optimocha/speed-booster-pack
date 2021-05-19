@@ -273,6 +273,8 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 	 *
 	 */
 	function sbp_sanitize_caching_urls( $urls ) {
+		$urls = str_replace( [ '<', '>', '\\' ], [ '%3C', '%3E', '%5C' ], $urls );
+		$urls = addslashes($urls);
 		$urls = SBP_Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
 		foreach ( $urls as &$url ) {
@@ -297,7 +299,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_cookies' ) ) {
 	 *
 	 */
 	function sbp_sanitize_caching_cookies( $urls ) {
-		$urls = str_replace( [ '(', ')', '[', ']', '*', '$', '/' ], [ '', '', '', '', '', '', '' ], $urls );
+		$urls = str_replace( [ '(', ')', '[', ']', '*', '$', '/', '<', '>', '\\' ], [ '', '', '', '', '', '', '', '%3C', '%3E', '%5C' ], $urls );
 		$urls = SBP_Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
 
@@ -316,6 +318,8 @@ if ( ! function_exists( 'sbp_sanitize_caching_included_query_strings' ) ) {
 	 *
 	 */
 	function sbp_sanitize_caching_included_query_strings( $urls ) {
+		$urls = str_replace( [ '(', ')', '[', ']', '*', '$', '/', '<', '>', '\\' ], [ '', '', '', '', '', '', '', '%3C', '%3E', '%5C' ], $urls );
+		$urls = addslashes($urls);
 		$urls = SBP_Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
 

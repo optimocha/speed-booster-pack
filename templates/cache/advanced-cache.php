@@ -11,6 +11,7 @@ if ( ! empty( $_COOKIE ) ) {
 	$cookies_regex = '/^(' . implode( '|', $cookies ) . ')/';
 
 	foreach ( $_COOKIE as $key => $value ) {
+		// Z_TODO: Need to decode each key before match
 		if ( preg_match( $cookies_regex, $key ) ) {
 			return false;
 		}

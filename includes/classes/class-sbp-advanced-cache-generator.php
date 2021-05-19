@@ -40,18 +40,22 @@ class SBP_Advanced_Cache_Generator {
 		foreach ( self::$placeholders as $placeholder => $props ) {
 			$method_name = 'SpeedBooster\SBP_Advanced_Cache_Generator::' . $props['method_name'];
 			if ( ! method_exists( SBP_Advanced_Cache_Generator::class, $props['method_name'] ) ) {
+				$file_content = str_replace( "$placeholder", '', $file_content );
 				continue;
 			}
-			$option_value = false;
+
 			if ( self::$options === [] ) {
 				$option_value = sbp_get_option( $props['option_name'], '' );
 			} else {
 				$option_value = isset( self::$options[ $props['option_name'] ] ) ? self::$options[ $props['option_name'] ] : '';
 			}
+
 			$replace_content = '';
+
 			if ( $option_value !== false ) {
 				$replace_content = call_user_func( $method_name );
 			}
+
 			$file_content = str_replace( "$placeholder", $replace_content, $file_content );
 		}
 
