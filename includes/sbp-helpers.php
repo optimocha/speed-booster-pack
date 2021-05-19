@@ -345,7 +345,7 @@ if ( ! function_exists( 'sbp_check_file_permissions' ) ) {
 
 		$wp_filesystem = sbp_get_filesystem();
 
-		switch ($check) {
+		switch ( $check ) {
 			case "write":
 				return $wp_filesystem->is_writable( $file_path );
 			case "read":

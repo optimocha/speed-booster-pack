@@ -277,7 +277,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
 		if ( ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
-			set_transient('sbp_advanced_cache_error', 1);
+			set_transient( 'sbp_advanced_cache_error', 1 );
+
 			return;
 		}
 
@@ -285,7 +286,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			// Delete or recreate advanced-cache.php
 			if ( $saved_data['module_caching'] ) {
 				$advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file( $saved_data );
-				if ($advanced_cache_file_content) {
+				if ( $advanced_cache_file_content ) {
 					SBP_Cache::set_wp_cache_constant( true );
 
 					file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', $advanced_cache_file_content );

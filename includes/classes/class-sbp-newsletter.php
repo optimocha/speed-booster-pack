@@ -41,7 +41,7 @@ class SBP_Newsletter {
         </form>
     </div>
 </div>';
-		$pointer_content = str_replace(PHP_EOL, '', $pointer_content);
+		$pointer_content = str_replace( PHP_EOL, '', $pointer_content );
 		?>
         <script type="text/javascript">
             //<![CDATA[
@@ -59,8 +59,8 @@ class SBP_Newsletter {
                     }
                 }).pointer('open');
 
-                $('#sbp-subscription-form #revue-form').on('submit', function() {
-                    setTimeout(function() {
+                $('#sbp-subscription-form #revue-form').on('submit', function () {
+                    setTimeout(function () {
                         // B_TODO: Change Text
                         $('#sbp-subscription-form').html('<div style="padding: 10px 20px; color: darkgreen;" class="sbp-newsletter-success"><?php _e( 'Thank you for subscribing to our newsletter.', 'speed-booster-pack' ) ?></div>');
                         $.post(ajaxurl, {

@@ -37,42 +37,41 @@ class SBP_Migrator {
 
 		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
 
-		$current_migrator_version = get_option('sbp_migrator_version');
-		if (!$current_migrator_version || (int) $current_migrator_version < (int) SBP_MIGRATOR_VERSION) {
-            add_action( 'init', [ $this, 'migrate_plugin' ] );
-        }
+		$current_migrator_version = get_option( 'sbp_migrator_version' );
+		if ( ! $current_migrator_version || (int) $current_migrator_version < (int) SBP_MIGRATOR_VERSION ) {
+			add_action( 'init', [ $this, 'migrate_plugin' ] );
+		}
 	}
 
-    public function migrate_plugin()
-    {
-        $this->migrate_from_legacy();
-        $this->update_js_optimize_options();
-        update_option('sbp_migrator_version', SBP_MIGRATOR_VERSION);
+	public function migrate_plugin() {
+		$this->migrate_from_legacy();
+		$this->update_js_optimize_options();
+		update_option( 'sbp_migrator_version', SBP_MIGRATOR_VERSION );
 	}
 
 	private function migrate_from_legacy() {
-        $this->sbp_settings = get_option( 'sbp_settings' );
-        $this->sbp_options = get_option( 'sbp_options' );
-        if ( $this->sbp_settings ) {
-            $this->handle_migrate_request();
-        }
-    }
+		$this->sbp_settings = get_option( 'sbp_settings' );
+		$this->sbp_options  = get_option( 'sbp_options' );
+		if ( $this->sbp_settings ) {
+			$this->handle_migrate_request();
+		}
+	}
 
-    public function handle_migrate_request() {
-        $this->migrate_legacy_options();
-        $this->delete_old_options();
-        set_transient( 'sbp_migrated_from_legacy', 1 );
-    }
+	public function handle_migrate_request() {
+		$this->migrate_legacy_options();
+		$this->delete_old_options();
+		set_transient( 'sbp_migrated_from_legacy', 1 );
+	}
 
-    private function migrate_legacy_options() {
-        $this->migrate_standard_options();
-        $this->add_tracking_scripts();
-        $this->migrate_declutter_settings();
-        $this->migrate_cdn_settings();
-        $this->migrate_exclude_rules();
-        $this->enable_external_notices();
-        update_option( 'sbp_options', $this->sbp_options );
-    }
+	private function migrate_legacy_options() {
+		$this->migrate_standard_options();
+		$this->add_tracking_scripts();
+		$this->migrate_declutter_settings();
+		$this->migrate_cdn_settings();
+		$this->migrate_exclude_rules();
+		$this->enable_external_notices();
+		update_option( 'sbp_options', $this->sbp_options );
+	}
 
 	/**
 	 * This function runs when WordPress completes its upgrade process
@@ -239,34 +238,35 @@ ga('send', 'pageview');";
 	 *
 	 */
 	public function update_js_optimize_options() {
-	    $has_changed = false;
+		$has_changed = false;
 
 		// Javascript Optimize Migration
 		$js_optimize = sbp_get_option( 'js_optimize' );
 		if ( $js_optimize === 'defer' ) {
 			$this->sbp_options['js_optimize'] = 'everything';
-            $has_changed = true;
+			$has_changed                      = true;
 		} elseif ( $js_optimize === 'move' ) {
-			$this->sbp_options['js_optimize'] = 'off';
-			$this->sbp_options['move_to_footer'] = 1;
+			$this->sbp_options['js_optimize']            = 'off';
+			$this->sbp_options['move_to_footer']         = 1;
 			$this->sbp_options['move_to_footer_exclude'] = $this->sbp_options['js_exclude'];
-            $has_changed = true;
+			$has_changed                                 = true;
 		}
 
-		if ($has_changed === true) {
-            update_option( 'sbp_options', $this->sbp_options );
-            set_transient( 'sbp_options_migrated', true );
-        }
+		if ( $has_changed === true ) {
+			update_option( 'sbp_options', $this->sbp_options );
+			set_transient( 'sbp_options_migrated', true );
+		}
 	}
 
-    public function check_migrate_notice() {
-        if ( get_transient( 'sbp_migrated_from_legacy' ) && current_user_can( 'manage_options' ) ) {
-            SBP_Notice_Manager::display_notice('sbp_migrated_from_legacy', '<p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p>');
-            return;
-        }
+	public function check_migrate_notice() {
+		if ( get_transient( 'sbp_migrated_from_legacy' ) && current_user_can( 'manage_options' ) ) {
+			SBP_Notice_Manager::display_notice( 'sbp_migrated_from_legacy', '<p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p>' );
 
-        if ( get_transient('sbp_options_migrated') && current_user_can( 'manage_options' ) ) {
-            SBP_Notice_Manager::display_notice('sbp_database_migrated_' . SBP_MIGRATOR_VERSION, '<p>' . SBP_PLUGIN_NAME . ': ' . __( 'With version 4.2.0, we\'ve split the JavaScript optimization feature into two: Defer and move to footer. Check your JS optimization settings to ensure the settings are correct.', 'speed-booster-pack' ) . '</p>');
-        }
-    }
+			return;
+		}
+
+		if ( get_transient( 'sbp_options_migrated' ) && current_user_can( 'manage_options' ) ) {
+			SBP_Notice_Manager::display_notice( 'sbp_database_migrated_' . SBP_MIGRATOR_VERSION, '<p>' . SBP_PLUGIN_NAME . ': ' . __( 'With version 4.2.0, we\'ve split the JavaScript optimization feature into two: Defer and move to footer. Check your JS optimization settings to ensure the settings are correct.', 'speed-booster-pack' ) . '</p>' );
+		}
+	}
 }

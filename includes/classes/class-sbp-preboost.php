@@ -62,7 +62,7 @@ class SBP_Preboost extends SBP_Abstract_Module {
 			$page_specific_preload_urls = sbp_get_post_meta( get_the_ID(), 'sbp_preload' );
 			if ( $page_specific_preload_urls !== null ) {
 				$page_specific_preload_urls_array = SBP_Utils::explode_lines( $page_specific_preload_urls );
-				$urls = array_merge($urls, $page_specific_preload_urls_array);
+				$urls                             = array_merge( $urls, $page_specific_preload_urls_array );
 			}
 		}
 

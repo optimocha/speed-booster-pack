@@ -32,6 +32,7 @@ class SBP_Sucuri extends SBP_Abstract_Module {
 			$response_body = wp_remote_retrieve_body( $request );
 			if ( strpos( $response_body, "OK:" ) === 0 ) {
 				delete_transient( 'sbp_sucuri_error' ); // Just in case
+
 				return true;
 			} else {
 				set_transient( 'sbp_sucuri_error', $response_body );

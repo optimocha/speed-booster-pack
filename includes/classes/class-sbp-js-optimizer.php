@@ -162,9 +162,9 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	 */
 	private $exclude_rules = [];
 
-    /**
-     * @var array $move_to_footer_exclude_rules
-     */
+	/**
+	 * @var array $move_to_footer_exclude_rules
+	 */
 	private $move_to_footer_exclude_rules = [];
 
 	/**
@@ -193,9 +193,9 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 			return;
 		}
 
-        $this->move_to_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'move_to_footer_exclude' ) ), $this->default_excludes );
-        $this->exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
-		$this->include_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
+		$this->move_to_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'move_to_footer_exclude' ) ), $this->default_excludes );
+		$this->exclude_rules                = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
+		$this->include_rules                = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
 
 		add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
 	}
@@ -206,18 +206,18 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		$this->check_script_types();
 
 		if ( $this->move_to_footer ) {
-            $this->remove_footer_excluded_scripts();
-            $this->move_scripts( $html );
-        }
+			$this->remove_footer_excluded_scripts();
+			$this->move_scripts( $html );
+		}
 
-        if ($this->optimize_strategy !== 'off') {
-            $this->remove_excluded_scripts();
-            $this->add_defer_attribute();
-            $this->convert_inline_to_base64();
-            $html = str_replace( $this->included_scripts, $this->changed_scripts, $html );
-        }
+		if ( $this->optimize_strategy !== 'off' ) {
+			$this->remove_excluded_scripts();
+			$this->add_defer_attribute();
+			$this->convert_inline_to_base64();
+			$html = str_replace( $this->included_scripts, $this->changed_scripts, $html );
+		}
 
-        $this->replace_placeholders_with_comments( $html );
+		$this->replace_placeholders_with_comments( $html );
 
 		return $html;
 	}
@@ -273,12 +273,12 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 			preg_match( '/<script[\s\S]*?type=[\'|"](.*?)[\'|"][\s\S]*?>/im', $script, $result );
 			// If type is not exists or type is in SCRIPT_TYPES constant, then add scripts to running scripts
 			if ( count( $result ) == 0 ) {
-				$this->included_scripts[] = $script;
+				$this->included_scripts[]        = $script;
 				$this->footer_included_scripts[] = $script;
 			} else {
 				$type = trim( str_replace( [ '"', "'" ], '', $result[1] ) );
 				if ( in_array( $type, self::SCRIPT_TYPES ) ) {
-					$this->included_scripts[] = $script;
+					$this->included_scripts[]        = $script;
 					$this->footer_included_scripts[] = $script;
 				}
 			}
@@ -293,7 +293,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		for ( $i = 0; $i < $script_count; $i ++ ) {
 			if ( $this->optimize_strategy == 'everything' ) {
 				foreach ( $this->exclude_rules as $rule ) {
-					if (isset($this->included_scripts[ $i ])) {
+					if ( isset( $this->included_scripts[ $i ] ) ) {
 						if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
 							unset( $this->included_scripts[ $i ] );
 						}
@@ -302,7 +302,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 			} elseif ( $this->optimize_strategy == 'custom' ) {
 				$has_found = false;
 				foreach ( $this->include_rules as $rule ) {
-					if (isset($this->included_scripts[ $i ])) {
+					if ( isset( $this->included_scripts[ $i ] ) ) {
 						if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
 							$has_found = true;
 							continue;
@@ -322,13 +322,13 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private function remove_footer_excluded_scripts() {
 		$script_count = count( $this->footer_included_scripts );
 		for ( $i = 0; $i < $script_count; $i ++ ) {
-            foreach ( $this->move_to_footer_exclude_rules as $rule ) {
-                if (isset($this->footer_included_scripts[ $i ])) {
-                    if ( strpos( $this->footer_included_scripts[ $i ], $rule ) !== false ) {
-                        unset( $this->footer_included_scripts[ $i ] );
-                    }
-                }
-            }
+			foreach ( $this->move_to_footer_exclude_rules as $rule ) {
+				if ( isset( $this->footer_included_scripts[ $i ] ) ) {
+					if ( strpos( $this->footer_included_scripts[ $i ], $rule ) !== false ) {
+						unset( $this->footer_included_scripts[ $i ] );
+					}
+				}
+			}
 		}
 	}
 

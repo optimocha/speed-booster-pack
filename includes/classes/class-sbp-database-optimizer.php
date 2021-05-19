@@ -31,49 +31,50 @@ class SBP_Database_Optimizer extends SBP_Abstract_Module {
 
 		$tables = [];
 
-		foreach ($tableStatuses as $table) {
-			if (strtolower($table->Engine) !== "innodb") {
+		foreach ( $tableStatuses as $table ) {
+			if ( strtolower( $table->Engine ) !== "innodb" ) {
 				$tables['tables'][] = [
-					'table_name' => $table->Name,
+					'table_name'     => $table->Name,
 					'storage_engine' => $table->Engine,
 				];
 			}
 		}
 
-		echo wp_json_encode($tables);
+		echo wp_json_encode( $tables );
 		wp_die();
 	}
 
 	/**
 	 * @param $table_name
+	 *
 	 * @since 4.2.0
 	 */
 	private function convert_table_to_innodb( $table_name ) {
 		global $wpdb;
 		$wpdb->hide_errors();
 
-		$result = $wpdb->get_results('ALTER TABLE ' . $table_name . ' ENGINE=INNODB');
-		if ($wpdb->last_error) {
-			echo wp_json_encode([
-				'status' => 'failure',
-				'message' => __('Error occurred while updating. Error details: ' . $wpdb->last_error, 'speed-booster-pack'), // B_TODO: Check text
-			]);
+		$result = $wpdb->get_results( 'ALTER TABLE ' . $table_name . ' ENGINE=INNODB' );
+		if ( $wpdb->last_error ) {
+			echo wp_json_encode( [
+				'status'  => 'failure',
+				'message' => __( 'Error occurred while updating. Error details: ' . $wpdb->last_error, 'speed-booster-pack' ), // B_TODO: Check text
+			] );
 		} else {
-			echo wp_json_encode([
-				'status' => 'success',
-				'message' => __('Table converted successfully.', 'speed-booster-pack'), // B_TODO: Check text
-			]);
+			echo wp_json_encode( [
+				'status'  => 'success',
+				'message' => __( 'Table converted successfully.', 'speed-booster-pack' ), // B_TODO: Check text
+			] );
 		}
 		exit;
 	}
 
 	public function handle_ajax_request() {
 		if ( current_user_can( 'manage_options' ) && isset( $_GET['sbp_action'] ) ) {
-			if ( ! wp_verify_nonce($_GET['nonce'], 'sbp_ajax_nonce') ) {
-				echo wp_json_encode([
-					'status' => 'failure',
+			if ( ! wp_verify_nonce( $_GET['nonce'], 'sbp_ajax_nonce' ) ) {
+				echo wp_json_encode( [
+					'status'  => 'failure',
 					'message' => __( 'Invalid nonce.', 'speed-booster-pack' ),
-				]);
+				] );
 				wp_die();
 			}
 
@@ -83,7 +84,7 @@ class SBP_Database_Optimizer extends SBP_Abstract_Module {
 					break;
 				case "convert_tables":
 					$table_name = $_GET['sbp_convert_table_name'];
-					$this->convert_table_to_innodb($table_name);
+					$this->convert_table_to_innodb( $table_name );
 					break;
 			}
 		}

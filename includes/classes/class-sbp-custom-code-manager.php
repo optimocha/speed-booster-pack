@@ -30,30 +30,31 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 					$hook = 'wp_head';
 				}
 
-				add_action( $hook, function () use ( $script ) {
+				add_action( $hook,
+					function () use ( $script ) {
 
-					$output = '<script type="text/javascript">' . PHP_EOL;
+						$output = '<script type="text/javascript">' . PHP_EOL;
 
-					switch ( $script['custom_codes_method'] ) {
-						case "onload":
-							$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) {' . PHP_EOL;
-							$output .= $script['custom_codes_item'] . PHP_EOL;
-							$output .= '});' . PHP_EOL;
-							break;
-						case "delayed":
-							$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) { setTimeout(function(){' . PHP_EOL;
-							$output .= $script['custom_codes_item'] . PHP_EOL;
-							$output .= '},4000);});' . PHP_EOL;
-							break;
-						default:
-							$output .= $script['custom_codes_item'];
-							break;
-					}
+						switch ( $script['custom_codes_method'] ) {
+							case "onload":
+								$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) {' . PHP_EOL;
+								$output .= $script['custom_codes_item'] . PHP_EOL;
+								$output .= '});' . PHP_EOL;
+								break;
+							case "delayed":
+								$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) { setTimeout(function(){' . PHP_EOL;
+								$output .= $script['custom_codes_item'] . PHP_EOL;
+								$output .= '},4000);});' . PHP_EOL;
+								break;
+							default:
+								$output .= $script['custom_codes_item'];
+								break;
+						}
 
-					$output .= '</script>';
+						$output .= '</script>';
 
-					echo $output;
-				} );
+						echo $output;
+					} );
 			}
 		}
 	}

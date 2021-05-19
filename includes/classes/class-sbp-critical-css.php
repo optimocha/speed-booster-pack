@@ -10,9 +10,9 @@ if ( ! defined( 'WPINC' ) ) {
 use simplehtmldom\HtmlDocument;
 
 class SBP_Critical_CSS extends SBP_Abstract_Module {
-    private $excluded_handles = [
-        'admin-bar-css',
-    ];
+	private $excluded_handles = [
+		'admin-bar-css',
+	];
 
 	public function __construct() {
 		if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'enable_criticalcss' ) ) {
@@ -69,7 +69,7 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 		// Find all links
 		$links = $dom->find( 'link[rel=stylesheet]' );
 		foreach ( $links as $link ) {
-			if ( ( ! isset( $link->media ) || $link->media !== 'print' ) && !in_array( $link->id, $this->excluded_handles ) ) {
+			if ( ( ! isset( $link->media ) || $link->media !== 'print' ) && ! in_array( $link->id, $this->excluded_handles ) ) {
 				$link->media  = 'print';
 				$link->onload = "this.media='all'";
 			}

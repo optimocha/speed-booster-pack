@@ -79,8 +79,8 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 					$this->warmup_process->push_to_queue( [ 'url' => $href ] );
 					if ( sbp_get_option( 'caching_separate_mobile' ) ) {
 						$this->warmup_process->push_to_queue( [
-						    'url'     => $href,
-                            'options' => [ 'user-agent' => 'Mobile' ],
+							'url'     => $href,
+							'options' => [ 'user-agent' => 'Mobile' ],
 						] );
 					}
 				}

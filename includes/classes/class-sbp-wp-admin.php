@@ -12,7 +12,7 @@ class SBP_WP_Admin {
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 		if ( is_admin() ) {
 			require_once SBP_LIB_PATH . 'announce4wp/announce4wp-client.php';
-			add_action( 'admin_init', [$this, 'set_notices'] );
+			add_action( 'admin_init', [ $this, 'set_notices' ] );
 			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
@@ -238,34 +238,34 @@ class SBP_WP_Admin {
 	}
 
 	public function timed_notifications() {
-        $tweet_link = "https://twitter.com/intent/tweet?hashtags=SpeedBoosterPack&text=I've been using Speed Booster Pack for a couple of weeks and I love it!&tw_p=tweetbutton&url=https://wordpress.org/plugins/speed-booster-pack/";
-		$notices = [
-			'sbp_tweet' => [
+		$tweet_link = "https://twitter.com/intent/tweet?hashtags=SpeedBoosterPack&text=I've been using Speed Booster Pack for a couple of weeks and I love it!&tw_p=tweetbutton&url=https://wordpress.org/plugins/speed-booster-pack/";
+		$notices    = [
+			'sbp_tweet'       => [
 				'show_after' => '+7 days',
-				'text' => '<b>' . SBP_PLUGIN_NAME . ':</b>' . sprintf( __( 'If you\'re enjoying using our plugin, can you %1$ssend a tweet to support us%2$s?', 'speed-booster-pack' ), '<a href="' . $tweet_link . '" rel="noopener" target="_blank">', '</a>' ),
-                'depends_on' => 'sbp_rate_wp_org',
+				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b>' . sprintf( __( 'If you\'re enjoying using our plugin, can you %1$ssend a tweet to support us%2$s?', 'speed-booster-pack' ), '<a href="' . $tweet_link . '" rel="noopener" target="_blank">', '</a>' ),
+				'depends_on' => 'sbp_rate_wp_org',
 			],
 			'sbp_rate_wp_org' => [
 				'show_after' => '+7 days',
-				'text' => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you liked our plugin, it would mean a lot to us if you %1$srate us on wordpress.org%2$s.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">', '</a>'),
+				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you liked our plugin, it would mean a lot to us if you %1$srate us on wordpress.org%2$s.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">', '</a>' ),
 			],
 		];
 
-		foreach ($notices as $notice_key => $notice) {
+		foreach ( $notices as $notice_key => $notice ) {
 			if ( current_user_can( 'manage_options' ) ) {
-				$meta_key           = $notice_key . '_notice_display_time';
+				$meta_key    = $notice_key . '_notice_display_time';
 				$notice_meta = get_user_meta( get_current_user_id(), $meta_key, true );
 				if ( ! $notice_meta ) {
-				    if (isset($notice['depends_on']) && $notice['depends_on']) {
-				        if (SBP_Notice_Manager::has_dismissed($notice['depends_on'])) {
-                            update_user_meta( get_current_user_id(), $meta_key, strtotime( $notice['show_after'] ) );
-                        }
-                    } else {
-                        update_user_meta( get_current_user_id(), $meta_key, strtotime( $notice['show_after'] ) );
-                    }
+					if ( isset( $notice['depends_on'] ) && $notice['depends_on'] ) {
+						if ( SBP_Notice_Manager::has_dismissed( $notice['depends_on'] ) ) {
+							update_user_meta( get_current_user_id(), $meta_key, strtotime( $notice['show_after'] ) );
+						}
+					} else {
+						update_user_meta( get_current_user_id(), $meta_key, strtotime( $notice['show_after'] ) );
+					}
 				} else {
-					if ($notice_meta <= time()) {
-						SBP_Notice_Manager::display_notice($notice_key, '<p>' . $notice['text'] . '</p>', 'info', true, 'one_time', 'toplevel_page_sbp-settings');
+					if ( $notice_meta <= time() ) {
+						SBP_Notice_Manager::display_notice( $notice_key, '<p>' . $notice['text'] . '</p>', 'info', true, 'one_time', 'toplevel_page_sbp-settings' );
 					}
 				}
 			}

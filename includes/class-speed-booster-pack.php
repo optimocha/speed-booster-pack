@@ -278,12 +278,12 @@ class Speed_Booster_Pack {
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 9999999 );
 	}
 
-    /**
-     * @since 4.1.2
-     */
-    private function define_public_filters() {
-        add_filter( 'aioseo_flush_output_buffer', '__return_false' );
-    }
+	/**
+	 * @since 4.1.2
+	 */
+	private function define_public_filters() {
+		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
+	}
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
