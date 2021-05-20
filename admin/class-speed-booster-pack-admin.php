@@ -1287,17 +1287,19 @@ class Speed_Booster_Pack_Admin {
 
 			/* BEGIN Metaboxes */
 			$metabox_prefix = 'sbp_post_meta';
+			$post_types = array_keys(get_post_types());
 			CSF::createMetabox( $metabox_prefix,
 				[
 					'title'     => SBP_PLUGIN_NAME,
-					'post_type' => 'page',
-				] );
+					'post_type' => $post_types,
+				]
+            );
 
             $meta_fields = [
                 [
                     'id'    => 'sbp_preload',
                     'type'  => 'code_editor',
-                    'title' => __( 'Page-Specific Preload Rules', 'speed-booster-pack' ),
+                    'title' => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
                     'desc'  => __( 'This one is just some kind of test.', 'speed-booster-pack' ), // B_TODO: Change Text
                 ],
             ];
