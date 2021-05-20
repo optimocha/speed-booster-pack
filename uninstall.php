@@ -111,10 +111,12 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_hide_newsletter_pointer' );
 }
 
-$pages = array('posts_per_page' => -1, 'post_type' => 'page');
-$pages_to_clear = get_posts($pages);
-foreach ($pages_to_clear as $post) {
-	delete_post_meta($post->ID, 'sbp_post_meta');
+$posts = new WP_Query([
+    'post_type' => 'any',
+    'meta_key' => 'sbp_post_meta',
+]);
+foreach ($posts->get_posts() as $post) {
+    delete_post_meta($post->ID, 'sbp_post_meta');
 }
 
 // Delete injected lines from wp-config.php
