@@ -69,11 +69,11 @@ class SBP_Advanced_Cache_Generator {
 	}
 
 	private static function caching_query_string_includes() {
-		return '\'' . self::$options['caching_include_query_strings'] . '\'';
+		return '\'' . addslashes(self::$options['caching_include_query_strings']) . '\'';
 	}
 
 	private static function caching_exclude_urls() {
-		return '\'' . self::$options['caching_exclude_urls'] . '\'';
+		return '\'' . addslashes(self::$options['caching_exclude_urls']) . '\'';
 	}
 
 	private static function caching_exclude_cookies() {
