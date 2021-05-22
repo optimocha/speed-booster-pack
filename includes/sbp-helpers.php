@@ -201,79 +201,80 @@ if ( ! function_exists( 'sbp_clear_cdn_url' ) ) {
 	 *
 	 */
 	function sbp_clear_cdn_url( $url ) {
-	    $url = str_replace( [ '"', "'" ], [ '', '' ], $url );
+		$url = str_replace( [ '"', "'" ], [ '', '' ], $url );
+
 		return preg_replace( "#^[^:/.]*[:/]+#i", "", rtrim( $url, '/' ) );
 	}
 }
 
 if ( ! function_exists( 'sbp_sanitize_url' ) ) {
-    /**
-     * @param $url
-     *
-     * @return mixed|string|void
-     *
-     * Modified version of WordPress's esc_url function
-     */
-    function sbp_sanitize_url( $url ) {
-        $original_url = $url;
+	/**
+	 * @param $url
+	 *
+	 * @return mixed|string|void
+	 *
+	 * Modified version of WordPress's esc_url function
+	 */
+	function sbp_sanitize_url( $url ) {
+		$original_url = $url;
 
-        if ( '' === $url ) {
-            return $url;
-        }
+		if ( '' === $url ) {
+			return $url;
+		}
 
-        $url = str_replace( ' ', '%20', ltrim( $url ) );
-        $url = preg_replace( '|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\[\]\\x80-\\xff]|i', '', $url );
+		$url = str_replace( ' ', '%20', ltrim( $url ) );
+		$url = preg_replace( '|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\[\]\\x80-\\xff]|i', '', $url );
 
-        if ( '' === $url ) {
-            return $url;
-        }
+		if ( '' === $url ) {
+			return $url;
+		}
 
-        if ( 0 !== stripos( $url, 'mailto:' ) ) {
-            $strip = array( '%0d', '%0a', '%0D', '%0A' );
-            $url   = _deep_replace( $strip, $url );
-        }
+		if ( 0 !== stripos( $url, 'mailto:' ) ) {
+			$strip = array( '%0d', '%0a', '%0D', '%0A' );
+			$url   = _deep_replace( $strip, $url );
+		}
 
-        $url = str_replace( ';//', '://', $url );
+		$url = str_replace( ';//', '://', $url );
 
-        if ( ( false !== strpos( $url, '[' ) ) || ( false !== strpos( $url, ']' ) ) ) {
+		if ( ( false !== strpos( $url, '[' ) ) || ( false !== strpos( $url, ']' ) ) ) {
 
-            $parsed = wp_parse_url( $url );
-            $front  = '';
+			$parsed = wp_parse_url( $url );
+			$front  = '';
 
-            if ( isset( $parsed['scheme'] ) ) {
-                $front .= $parsed['scheme'] . '://';
-            } elseif ( '/' === $url[0] ) {
-                $front .= '//';
-            }
+			if ( isset( $parsed['scheme'] ) ) {
+				$front .= $parsed['scheme'] . '://';
+			} elseif ( '/' === $url[0] ) {
+				$front .= '//';
+			}
 
-            if ( isset( $parsed['user'] ) ) {
-                $front .= $parsed['user'];
-            }
+			if ( isset( $parsed['user'] ) ) {
+				$front .= $parsed['user'];
+			}
 
-            if ( isset( $parsed['pass'] ) ) {
-                $front .= ':' . $parsed['pass'];
-            }
+			if ( isset( $parsed['pass'] ) ) {
+				$front .= ':' . $parsed['pass'];
+			}
 
-            if ( isset( $parsed['user'] ) || isset( $parsed['pass'] ) ) {
-                $front .= '@';
-            }
+			if ( isset( $parsed['user'] ) || isset( $parsed['pass'] ) ) {
+				$front .= '@';
+			}
 
-            if ( isset( $parsed['host'] ) ) {
-                $front .= $parsed['host'];
-            }
+			if ( isset( $parsed['host'] ) ) {
+				$front .= $parsed['host'];
+			}
 
-            if ( isset( $parsed['port'] ) ) {
-                $front .= ':' . $parsed['port'];
-            }
+			if ( isset( $parsed['port'] ) ) {
+				$front .= ':' . $parsed['port'];
+			}
 
-            $end_dirty = str_replace( $front, '', $url );
-            $end_clean = str_replace( array( '[', ']' ), array( '%5B', '%5D' ), $end_dirty );
-            $url       = str_replace( $end_dirty, $end_clean, $url );
+			$end_dirty = str_replace( $front, '', $url );
+			$end_clean = str_replace( array( '[', ']' ), array( '%5B', '%5D' ), $end_dirty );
+			$url       = str_replace( $end_dirty, $end_clean, $url );
 
-        }
+		}
 
-        return $url;
-    }
+		return $url;
+	}
 }
 
 if ( ! function_exists( 'sbp_clear_http' ) ) {
@@ -287,7 +288,7 @@ if ( ! function_exists( 'sbp_clear_http' ) ) {
 	 *
 	 */
 	function sbp_clear_http( $url ) {
-		return str_replace( "http://", "//", $url );
+		return strip_tags( str_replace( "http://", "//", $url ) );
 	}
 }
 
@@ -344,6 +345,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 	 *
 	 */
 	function sbp_sanitize_caching_urls( $urls ) {
+		$urls = strip_tags( $urls );
 		$urls = SBP_Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
 		foreach ( $urls as &$url ) {
@@ -351,6 +353,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 			$url = ltrim( $url, 'http://' );
 			$url = ltrim( $url, '//' );
 			$url = rtrim( $url, '/' );
+			$url = sbp_sanitize_url( $url );
 		}
 
 		return implode( PHP_EOL, $urls );
@@ -368,6 +371,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_cookies' ) ) {
 	 *
 	 */
 	function sbp_sanitize_caching_cookies( $urls ) {
+		$urls = strip_tags( $urls );
 		$urls = str_replace( [ '(', ')', '[', ']', '*', '$', '/', '|', '.' ], [ '', '', '', '', '', '', '', '', '\.' ], $urls );
 		$urls = SBP_Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
@@ -387,6 +391,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_included_query_strings' ) ) {
 	 *
 	 */
 	function sbp_sanitize_caching_included_query_strings( $urls ) {
+		$urls = strip_tags( $urls );
 		$urls = SBP_Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
 
@@ -397,6 +402,12 @@ if ( ! function_exists( 'sbp_sanitize_caching_included_query_strings' ) ) {
 if ( ! function_exists( 'sbp_sanitize_special_characters' ) ) {
 	function sbp_sanitize_special_characters( $param ) {
 		return filter_var( $param, FILTER_SANITIZE_SPECIAL_CHARS );
+	}
+}
+
+if ( ! function_exists( 'sbp_sanitize_boolean' ) ) {
+	function sbp_sanitize_boolean($value) {
+		return $value == '1' ? '1' : '0';
 	}
 }
 

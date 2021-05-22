@@ -21,10 +21,10 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 		$scripts = sbp_get_option( 'custom_codes' );
 		if ( $scripts ) {
 			foreach ( $scripts as $script ) {
-				if ( '' === $script['custom_codes_item'] ) {
+				if ( isset( $script['custom_codes_item'] ) && '' === $script['custom_codes_item'] ) {
 					return;
 				}
-				if ( 'footer' === $script['custom_codes_place'] ) {
+				if ( isset( $script['custom_codes_place'] ) && 'footer' === $script['custom_codes_place'] ) {
 					$hook = 'wp_footer';
 				} else {
 					$hook = 'wp_head';
