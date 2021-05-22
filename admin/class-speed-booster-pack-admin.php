@@ -952,13 +952,15 @@ class Speed_Booster_Pack_Admin {
 							'accordion_title_number' => true,
 							'accordion_title_auto'   => false,
 							'sanitize'               => function ( $item ) {
-								foreach ( $item as &$code_item ) {
-									if ( isset( $code_item['custom_codes_item'] ) ) {
-										$code                           = $code_item['custom_codes_item'];
-										$code                           = preg_replace( '#<(textarea)>.*?<\/$1>#s', '', $code );
-										$code_item['custom_codes_item'] = str_replace( '</textarea>', '', $code );
-									}
-								}
+                                if ( $item && is_iterable( $item ) ) {
+	                                foreach ( $item as &$code_item ) {
+		                                if ( isset( $code_item['custom_codes_item'] ) ) {
+			                                $code                           = $code_item['custom_codes_item'];
+			                                $code                           = preg_replace( '#<(textarea)>.*?<\/$1>#s', '', $code );
+			                                $code_item['custom_codes_item'] = str_replace( '</textarea>', '', $code );
+		                                }
+	                                }
+                                }
 
 								return $item;
 							},

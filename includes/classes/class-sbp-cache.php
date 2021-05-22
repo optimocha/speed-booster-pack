@@ -276,7 +276,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	public static function options_saved_listener( $saved_data ) {
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
-		if ( ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
+		if ( ( file_exists( $advanced_cache_path ) && ! sbp_check_file_permissions( $advanced_cache_path ) ) || ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
 			set_transient( 'sbp_advanced_cache_error', 1 );
 
 			return;
