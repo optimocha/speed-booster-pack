@@ -276,7 +276,13 @@ class SBP_Cache extends SBP_Abstract_Module {
 	public static function options_saved_listener( $saved_data ) {
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
-		if ( ( file_exists( $advanced_cache_path ) && ! sbp_check_file_permissions( $advanced_cache_path ) ) || ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
+		if ( ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
+			set_transient( 'sbp_advanced_cache_error', 1 );
+
+			return;
+		}
+
+		if ( file_exists( $advanced_cache_path ) && ! sbp_check_file_permissions( $advanced_cache_path ) ) {
 			set_transient( 'sbp_advanced_cache_error', 1 );
 
 			return;
@@ -289,7 +295,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 				if ( $advanced_cache_file_content ) {
 					SBP_Cache::set_wp_cache_constant( true );
 
-					file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', $advanced_cache_file_content );
+					file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
 				}
 			} else {
 				SBP_Cache::set_wp_cache_constant( false );
