@@ -198,8 +198,8 @@ class SBP_WP_Admin {
 		if ( get_transient( 'sbp_advanced_cache_error' ) ) {
 			// B_TODO: Change Text
 			SBP_Notice_Manager::display_notice( 'sbp_advanced_cache_error',
-				'<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Can not write wp-content/advanced-cache.php file. Some ' . SBP_PLUGIN_NAME . ' features may not work. Please check your file permissions.',
-					'speed-booster-pack' ) . '</p>',
+				'<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' . sprintf( __( 'Can not write %1$s file. Some %2$s features may not work. Please check your file permissions.',
+					'speed-booster-pack' ), 'wp-content/advanced-cache.php', SBP_PLUGIN_NAME ) . '</p>',
 				'error',
 				true,
 				'recurrent' );
@@ -208,8 +208,8 @@ class SBP_WP_Admin {
 		// WP-Config File Error
 		if ( get_transient( 'sbp_wp_config_error' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_wp_config_error',
-				'<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Can not write wp-config.php file. Some ' . SBP_PLUGIN_NAME . ' features may not work. Please check your file permissions.',
-					'speed-booster-pack' ) . '</p>',
+				'<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' . sprintf( __( 'Can not write %1$s file. Some %2$s features may not work. Please check your file permissions.',
+					'speed-booster-pack' ), 'wp-config.php', SBP_PLUGIN_NAME ) . '</p>',
 				'error',
 				true,
 				'recurrent' );
@@ -307,8 +307,8 @@ class SBP_WP_Admin {
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
 		$check_list = [
-			'WordPress Root Directory' => ABSPATH,
-			'wp-content Directory' => WP_CONTENT_DIR,
+			'WordPress root directory' => ABSPATH,
+			'wp-content directory' => WP_CONTENT_DIR,
 			'WordPress uploads directory' => $upload_dir,
 			'SBP uploads directory' => SBP_UPLOADS_DIR,
 			'wp-config.php file' => $wp_config_path,
@@ -328,15 +328,16 @@ class SBP_WP_Admin {
 
 		if ( count($permission_errors) ) {
 			$notice_content = '<p>';
-			$notice_content .= __( sprintf( '%1$s needs write permissions for these files to work.', SBP_PLUGIN_NAME ) );
+			$notice_content .= __( sprintf( '%s needs write permissions for the following files/directories to work properly:', SBP_PLUGIN_NAME ), 'speed-booster' );
 			$notice_content .= '<ul>';
 			foreach ( $permission_errors as $key => $error ) {
 				$notice_content .= '<li>' . $key . ' (' . $error . ')</li>';
 			}
 			$notice_content .= '</ul>';
+			$notice_content .= '<a href="https://www.wpbeginner.com/beginners-guide/how-to-fix-file-and-folder-permissions-error-in-wordpress/" target="_blank">' . __( 'Here\'s a tutorial on how to change file/directory permissions.', 'speed-booster' ) . '</a>';
 			$notice_content .= '</p>';
 
-			SBP_Notice_Manager::display_notice('permission_errors', $notice_content, 'error', false, 'recurrent', 'toplevel_page_sbp-settings');
+			SBP_Notice_Manager::display_notice('permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings');
 		}
 	}
 }

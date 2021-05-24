@@ -51,6 +51,10 @@ class SBP_Notice_Manager {
 		$notice_type = 'one_time',
 		$pages = null
 	) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		$action = $notice_type == 'recurrent' ? 'sbp_remove_notice_transient' : 'sbp_dismiss_notice';
 		if ( self::should_display( $id ) || ( $notice_type == 'recurrent' && get_transient( $id ) ) || ( $notice_type == 'flash' && ! get_transient( $id ) ) ) {
 			add_action( 'admin_notices',
