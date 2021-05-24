@@ -35,6 +35,10 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 
 						$output = '<script type="text/javascript">' . PHP_EOL;
 
+						if ( ! isset( $script['custom_codes_method'] ) ) {
+							$script['custom_codes_method'] = null;
+						}
+
 						switch ( $script['custom_codes_method'] ) {
 							case "onload":
 								$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) {' . PHP_EOL;

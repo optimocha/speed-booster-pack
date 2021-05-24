@@ -16,6 +16,7 @@ class SBP_WP_Admin {
 			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
+			add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 		}
 
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
@@ -286,6 +287,56 @@ class SBP_WP_Admin {
 				"sbp",
 				"https://speedboosterpack.com/wp-json/a4wp/v1/" . SBP_VERSION . "/news.json",
 				"toplevel_page_sbp-settings" );
+		}
+	}
+
+	public function check_required_file_permissions() {
+		if ( get_current_screen()->id !== 'toplevel_page_sbp-settings' ) {
+			return;
+		}
+
+		$permission_errors = [];
+
+		if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
+			$wp_config_path = ABSPATH . 'wp-config.php';
+		} else {
+			$wp_config_path = dirname( ABSPATH ) . '/wp-config.php';
+		}
+
+		$upload_dir = wp_upload_dir()['basedir'];
+		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
+
+		$check_list = [
+			'WordPress Root Directory' => ABSPATH,
+			'wp-content Directory' => WP_CONTENT_DIR,
+			'WordPress uploads directory' => $upload_dir,
+			'SBP uploads directory' => SBP_UPLOADS_DIR,
+			'wp-config.php file' => $wp_config_path,
+			'wp-content/advanced-cache.php file' => $advanced_cache_path,
+		];
+
+		/** @var \WP_Filesystem_Base $wp_filesystem */
+		$wp_filesystem = sbp_get_filesystem();
+
+		foreach ( $check_list as $key => $item ) {
+			if ( $wp_filesystem->exists( $item ) ) {
+				if ( ! sbp_check_file_permissions( $item ) ) {
+					$permission_errors[$key] = $item;
+				}
+			}
+		}
+
+		if ( count($permission_errors) ) {
+			$notice_content = '<p>';
+			$notice_content .= __( sprintf( '%1$s needs write permissions for these files to work.', SBP_PLUGIN_NAME ) );
+			$notice_content .= '<ul>';
+			foreach ( $permission_errors as $key => $error ) {
+				$notice_content .= '<li>' . $key . ' (' . $error . ')</li>';
+			}
+			$notice_content .= '</ul>';
+			$notice_content .= '</p>';
+
+			SBP_Notice_Manager::display_notice('permission_errors', $notice_content, 'error', false, 'recurrent', 'toplevel_page_sbp-settings');
 		}
 	}
 }
