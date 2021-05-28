@@ -222,7 +222,7 @@ if ( ! function_exists( 'sbp_sanitize_url' ) ) {
 			return $url;
 		}
 
-		$url = str_replace( ' ', '%20', ltrim( $url ) );
+		$url = str_replace( [' ', '"', "'"], ['%20', '%22', '%27'], ltrim( $url ) );
 		$url = preg_replace( '|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\[\]\\x80-\\xff]|i', '', $url );
 
 		if ( '' === $url ) {
