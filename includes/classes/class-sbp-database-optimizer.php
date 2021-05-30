@@ -57,12 +57,12 @@ class SBP_Database_Optimizer extends SBP_Abstract_Module {
 		if ( $wpdb->last_error ) {
 			echo wp_json_encode( [
 				'status'  => 'failure',
-				'message' => __( 'Error occurred while updating. Error details: ' . $wpdb->last_error, 'speed-booster-pack' ), // B_TODO: Check text
+				'message' => __( 'Error occurred while converting. Error details: ' . $wpdb->last_error, 'speed-booster-pack' ),
 			] );
 		} else {
 			echo wp_json_encode( [
 				'status'  => 'success',
-				'message' => __( 'Table converted successfully.', 'speed-booster-pack' ), // B_TODO: Check text
+				'message' => __( 'Table converted successfully.', 'speed-booster-pack' ),
 			] );
 		}
 		exit;

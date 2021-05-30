@@ -205,32 +205,6 @@
 
     });
 
-    $(document).on('submit', "#sbp-subscribe-newsletter-form", function (e) {
-        e.preventDefault();
-        var $form = $("#subscribe-newsletter-form");
-        var name = $form.find('input[name="first_name"]').val();
-        var email = $form.find('input[name="email"]').val();
-        var gdpr = $form.find('input[name="gdpr"]').val();
-        $('#sbp-newsletter-subscribe-button').attr('disabled', 'disabled').css('text-shadow', 'none');
-        $.ajax({
-            type: 'POST',
-            url: 'https://sendfox.com/form/104ezx/3o64jv',
-            data: {first_name: name, email: email, gdpr: gdpr},
-            success: function (data, statusText) {
-                $('.sbp-newsletter-success').show();
-                $('.sbp-subscribe-content-wrapper').hide();
-                $('#sbp-subscribe-newsletter-form').parent().parent().find('> p').hide();
-                if (statusText === 'success') {
-                    $.ajax({
-                        type: 'POST',
-                        url: ajaxurl,
-                        data: {action: 'sbp_hide_newsletter_pointer'}
-                    });
-                }
-            }
-        });
-    });
-
     $(document).on('click', '.sbp-scan-database-tables', function() {
         var $button = $(this);
         $button.addClass('sbp-loading-active');
@@ -257,11 +231,11 @@
                     });
                 } else {
                     $table.show();
-                    $tableBody.html('<tr><td colspan="2">No database table found.</td></tr>'); // B_TODO: Check text
+                    $tableBody.html( '<tr><td colspan="2">No database table found using MyISAM.</td></tr>' );
                 }
             },
             error: function(xhr, status) {
-                alert('Error occured while fetching database tables.'); // B_TODO: Check text
+                alert( 'Error occured while fetching database tables.' );
             },
             complete: function() {
                 $button.removeClass('sbp-loading-active');
@@ -288,11 +262,11 @@
                     $button.removeAttr('disabled');
                     alert(response.message);
                 } else {
-                    $button.parent().html('<span style="color: darkgreen;">Converted successfully.</span>'); // B_TODO: Check text
+                    $button.parent().html('<span style="color: darkgreen;">Converted successfully.</span>');
                 }
             },
             error: function(xhr, status) {
-                alert('Error occurred while fetching database tables.'); // B_TODO: Check text
+                alert('Error occurred while fetching database tables.');
             },
             complete: function() {
                 $button.removeClass('sbp-loading-active');

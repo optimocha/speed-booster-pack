@@ -24,24 +24,9 @@ class SBP_Newsletter {
 
 	function my_admin_print_footer_scripts() {
 		$current_user    = wp_get_current_user();
-		$pointer_content = sprintf( __( '<h3>%s</h3>', 'speed-booster-pack' ), SBP_PLUGIN_NAME );
-		$pointer_content .= sprintf( __( '<p>Subscribe to the <i>infrequent</i> newsletter of %s, with <b>tens of thousands of users</b>!</p>', 'speed-booster-pack' ), SBP_PLUGIN_NAME );
-		$pointer_content .= '
-<div id="sbp-subscription-form">
-    <div id="revue-embed">
-        <form action="https://www.getrevue.co/profile/optimocha/add_subscriber" method="post" id="revue-form" name="revue-form"  target="_blank">
-            <div class="revue-form-group">
-                <label for="member_email">Email address</label>
-                <input class="revue-form-field" placeholder="Your email address..." type="email" name="member[email]" id="member_email" value="' . $current_user->user_email . '">
-            </div>
-            <div class="revue-form-actions">
-                <input type="submit" value="Subscribe" name="member[subscribe]" id="member_submit">
-            </div>
-            <div class="revue-form-footer">By subscribing, you agree with Revue’s <a target="_blank" href="https://www.getrevue.co/terms">Terms</a> and <a target="_blank" href="https://www.getrevue.co/privacy">Privacy Policy</a>.</div>
-        </form>
-    </div>
-</div>';
-		$pointer_content = str_replace( PHP_EOL, '', $pointer_content );
+		$pointer_content = '<h3>' . SBP_PLUGIN_NAME . '</h3>';
+		$pointer_content .= '<p>' . __( 'Subscribe to our newsletter with <strong>tens of thousands of users</strong>, and get infrequent email updates from our plugin <em>and</em> more performance tips &amp; tricks!', 'speed-booster-pack' ) . '</p>';
+		$pointer_content .= '<p class="sbp-subscription"><a href="https://speedboosterpack.com/go/subscribe" rel="external noopener" target="_blank" class="sbp-subscribe-button">' . __( 'Visit the subscription page', 'speed-booster-pack' ) . '</a></p>';
 		?>
         <script type="text/javascript">
             //<![CDATA[
@@ -59,14 +44,11 @@ class SBP_Newsletter {
                     }
                 }).pointer('open');
 
-                $('#sbp-subscription-form #revue-form').on('submit', function () {
-                    setTimeout(function () {
-                        // B_TODO: Change Text
-                        $('#sbp-subscription-form').html('<div style="padding: 10px 20px; color: darkgreen;" class="sbp-newsletter-success"><?php _e( 'Thank you for subscribing to our newsletter.', 'speed-booster-pack' ) ?></div>');
-                        $.post(ajaxurl, {
-                            action: 'sbp_hide_newsletter_pointer'
-                        });
-                    }, 3000);
+                $('.sbp-subscribe-button').on('click', function () {
+                    $('.sbp-subscription').html('<div style="padding: 10px 20px; color: darkgreen;" class="sbp-newsletter-success"><?php _e( 'Thank you for subscribing to our newsletter.', 'speed-booster-pack' ) ?></div>');
+                    $.post(ajaxurl, {
+                        action: 'sbp_hide_newsletter_pointer'
+                    });
                 });
             });
             //]]>
