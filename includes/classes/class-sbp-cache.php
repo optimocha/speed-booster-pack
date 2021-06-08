@@ -102,6 +102,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			self::clear_total_cache();
 			set_transient( 'sbp_notice_cache', '1', 60 );
+			// Z_TODO: replace with wp_safe_redirect() and add exit; to the next line
 			wp_redirect( $redirect_url );
 		}
 	}
