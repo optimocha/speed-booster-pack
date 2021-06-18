@@ -38,8 +38,17 @@ class Speed_Booster_Pack_Activator {
 	 * @since    4.0.0
 	 */
 	public static function activate() {
-		SBP_Cache::generate_htaccess();
-		SBP_WP_Config_Injector::inject_wp_config();
+        if (sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' )) {
+            SBP_Cache::clear_total_cache();
+            SBP_Cache::set_wp_cache_constant( true );
+            SBP_Cache::generate_htaccess();
+        }
+        SBP_WP_Config_Injector::inject_wp_config();
+
+        $adv_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
+        if ( file_exists( $adv_cache_file ) ) {
+            unlink( $adv_cache_file );
+        }
 	}
 
 }
