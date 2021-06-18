@@ -827,11 +827,6 @@ class Speed_Booster_Pack_Admin {
 						'type'       => 'button_set',
 						'options'    => [
 							'off'        => __( 'Off', 'speed-booster-pack' ),
-							/* @removal
-							 * 'defer' => __( 'Defer', 'speed-booster-pack' ),
-							 * 'move'  => __( 'Move to footer', 'speed-booster-pack' ),
-							 */
-							 // Z_TODO: bu yorum nedir?
 							'everything' => __( 'Everything', 'speed-booster-pack' ),
 							'custom'     => __( 'Custom', 'speed-booster-pack' ),
 						],
@@ -860,7 +855,6 @@ class Speed_Booster_Pack_Admin {
 					],
 					[
 						'title'      => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
-						// Z_TODO: ayar adını move_to_footer'dan js_footer'a çevirdim (diğerini de js_footer_exclude). bu todo'yu görünce test yapıp çalıştığını teyit et, sonra todo'yu sil.
 						'id'         => 'js_footer',
 						'class'      => 'js-footer',
 						'desc'       => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
