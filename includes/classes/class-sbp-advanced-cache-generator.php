@@ -12,24 +12,29 @@ class SBP_Advanced_Cache_Generator {
 	private static $advanced_cache_template = SBP_PATH . 'templates/cache/advanced-cache.php';
 	private static $placeholders = [
 		'\'__SEPARATE_MOBILE_CACHING__\';'          => [
-			'option_name' => 'caching_separate_mobile',
-			'method_name' => 'separate_mobile_caching',
+			'option_name'   => 'caching_separate_mobile',
+			'method_name'   => 'separate_mobile_caching',
+			'default_value' => "''",
 		],
 		'\'{{__CACHING_QUERY_STRING_INCLUDES__}}\'' => [
-			'option_name' => 'caching_include_query_strings',
-			'method_name' => 'caching_query_string_includes',
+			'option_name'   => 'caching_include_query_strings',
+			'method_name'   => 'caching_query_string_includes',
+			'default_value' => "''",
 		],
 		'\'{{__CACHING_EXPIRY__}}\''                => [
-			'option_name' => 'caching_expiry',
-			'method_name' => 'caching_expiry',
+			'option_name'   => 'caching_expiry',
+			'method_name'   => 'caching_expiry',
+			'default_value' => '1',
 		],
 		'\'{{__CACHING_EXCLUDE_URLS__}}\''          => [
-			'option_name' => 'caching_exclude_urls',
-			'method_name' => 'caching_exclude_urls',
+			'option_name'   => 'caching_exclude_urls',
+			'method_name'   => 'caching_exclude_urls',
+			'default_value' => "''",
 		],
 		'\'{{__CACHING_EXCLUDE_COOKIES__}}\''       => [
-			'option_name' => 'caching_exclude_cookies',
-			'method_name' => 'caching_exclude_cookies',
+			'option_name'   => 'caching_exclude_cookies',
+			'method_name'   => 'caching_exclude_cookies',
+			'default_value' => "''",
 		],
 	];
 
@@ -45,12 +50,13 @@ class SBP_Advanced_Cache_Generator {
 			}
 
 			if ( self::$options === [] ) {
-				$option_value = sbp_get_option( $props['option_name'], '' );
+				$option_value = sbp_get_option( $props['option_name'], $props['default_value'] );
+				self::$options[$props['option_name']] = $option_value;
 			} else {
-				$option_value = isset( self::$options[ $props['option_name'] ] ) ? self::$options[ $props['option_name'] ] : '';
+				$option_value = isset( self::$options[ $props['option_name'] ] ) ? self::$options[ $props['option_name'] ] : false;
 			}
 
-			$replace_content = '';
+			$replace_content = $props['default_value'];
 
 			if ( $option_value !== false ) {
 				$replace_content = call_user_func( $method_name );
@@ -69,11 +75,11 @@ class SBP_Advanced_Cache_Generator {
 	}
 
 	private static function caching_query_string_includes() {
-		return '\'' . addslashes(self::$options['caching_include_query_strings']) . '\'';
+		return '\'' . addslashes( self::$options['caching_include_query_strings'] ) . '\'';
 	}
 
 	private static function caching_exclude_urls() {
-		return '\'' . addslashes(self::$options['caching_exclude_urls']) . '\'';
+		return '\'' . addslashes( self::$options['caching_exclude_urls'] ) . '\'';
 	}
 
 	private static function caching_exclude_cookies() {

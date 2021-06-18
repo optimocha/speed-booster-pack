@@ -39,9 +39,9 @@ class Speed_Booster_Pack_Deactivator {
 	 */
 	public static function deactivate() {
 		SBP_Cache::clear_total_cache();
+		SBP_WP_Config_Injector::remove_wp_config_lines();
 		SBP_Cache::set_wp_cache_constant( false );
 		SBP_Cache::clean_htaccess();
-		SBP_WP_Config_Injector::remove_wp_config_lines();
 
 		$adv_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
 		if ( file_exists( $adv_cache_file ) ) {
