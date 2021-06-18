@@ -48,6 +48,7 @@ class SBP_Sucuri extends SBP_Abstract_Module {
 			$result       = self::clear_cache();
 			$notice_value = $result == true ? '1' : '2';
 			set_transient( 'sbp_clear_sucuri_cache', $notice_value, 60 );
+			// Z_TODO: replace with wp_safe_redirect() and add exit; to the next line
 			wp_redirect( $redirect_url );
 		}
 	}

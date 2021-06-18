@@ -196,7 +196,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. opening tag for the newsletter hyperlink 2. closing tag for the hyperlink  */
-							'content' => sprintf( __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/static/newsletter.php?KeepThis=true&TB_iframe=true&height=500&width=400" class="thickbox">', '</a>' ),
+							'content' => sprintf( __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/go/subscribe">', '</a>' ),
 						],
 						[
 							'type'    => 'subheading',
@@ -823,8 +823,7 @@ class Speed_Booster_Pack_Admin {
 					[
 						'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
 						'id'         => 'js_optimize',
-						// B_TODO: Change description text
-						'desc'       => __( 'Loads JavaScript better, avoiding render blocking issues. Moving all tags to the footer (before the &lt;/body&gt; tag) causes less issues but if you know what you\'re doing, deferring JS tags makes your website work faster. Use the exclusions list to keep certain scripts from breaking your site!', 'speed-booster-pack' ),
+						'desc'       => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
 						'type'       => 'button_set',
 						'options'    => [
 							'off'        => __( 'Off', 'speed-booster-pack' ),
@@ -832,6 +831,7 @@ class Speed_Booster_Pack_Admin {
 							 * 'defer' => __( 'Defer', 'speed-booster-pack' ),
 							 * 'move'  => __( 'Move to footer', 'speed-booster-pack' ),
 							 */
+							 // Z_TODO: bu yorum nedir?
 							'everything' => __( 'Everything', 'speed-booster-pack' ),
 							'custom'     => __( 'Custom', 'speed-booster-pack' ),
 						],
@@ -839,51 +839,48 @@ class Speed_Booster_Pack_Admin {
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					],
 					[
-						'title'      => __( 'JavaScript exclusions', 'speed-booster-pack' ),
+						'title'      => __( 'JavaScript to exclude from deferring', 'speed-booster-pack' ),
 						'id'         => 'js_exclude',
 						'class'      => 'js-exclude',
 						'type'       => 'code_editor',
-						'desc'       => __( 'If you encounter JavaScript errors on your error console, you can exclude JS file URLs or parts of inline JS here. One rule per line. Since each line will be taken as separate exclude rules, don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
+						'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from deferring.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 						'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
 						'dependency' => [ 'module_assets|js_optimize', '==|==', '1|everything', '', 'visible|visible' ],
 						'sanitize'   => 'sbp_sanitize_strip_tags',
 					],
 					[
-						'title'      => __( 'JavaScript inclusions', 'speed-booster-pack' ),
+						'title'      => __( 'JavaScript to defer', 'speed-booster-pack' ),
 						'id'         => 'js_include',
 						'class'      => 'js-include',
 						'type'       => 'code_editor',
-						// B_TODO: Add description text
-						'desc'       => __( '', 'speed-booster-pack' ),
+						'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to defer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 						'default'    => '',
 						'dependency' => [ 'module_assets|js_optimize', '==|==', '1|custom', '', 'visible|visible' ],
 						'sanitize'   => 'sbp_sanitize_strip_tags',
 					],
 					[
-						// B_TODO: Change Texts
-						'title'      => __( 'Move JavaScript To Footer', 'speed-booster-pack' ),
-						'id'         => 'move_to_footer',
-						// B_TODO: Change description text
-						'desc'       => __( '', 'speed-booster-pack' ),
+						'title'      => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
+						// Z_TODO: ayar adını move_to_footer'dan js_footer'a çevirdim (diğerini de js_footer_exclude). bu todo'yu görünce test yapıp çalıştığını teyit et, sonra todo'yu sil.
+						'id'         => 'js_footer',
+						'class'      => 'js-footer',
+						'desc'       => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
 						'type'       => 'switcher',
 						'default'    => '',
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 						'sanitize'   => 'sbp_sanitize_boolean',
 					],
 					[
-						// B_TODO: Change Texts
-						'title'      => __( 'Move To Footer exclusions', 'speed-booster-pack' ),
-						'id'         => 'move_to_footer_exclude',
+						'title'      => __( 'JavaScript to exclude from moving to footer', 'speed-booster-pack' ),
+						'id'         => 'js_footer_exclude',
+						'class'         => 'js-footer-exclude',
 						'type'       => 'code_editor',
-						// B_TODO: Change Texts
-						'desc'       => __( '', 'speed-booster-pack' ),
+						'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from moving to footer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 						'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-						'dependency' => [ 'module_assets|move_to_footer', '==|==', '1|1', '', 'visible|visible' ],
+						'dependency' => [ 'module_assets|js_footer', '==|==', '1|1', '', 'visible|visible' ],
 						'sanitize'   => 'sbp_sanitize_strip_tags',
 					],
 					[
 						'title'      => __( 'Preload assets', 'speed-booster-pack' ),
-						'desc'       => __( '<b>Tip:</b> hebele hübele', 'speed-booster-pack' ),
 						'id'         => 'preboost',
 						'class'      => 'preboost',
 						'type'       => 'fieldset',
@@ -1120,6 +1117,16 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
 						[
+							/* translators: %s: <code>comment-reply.js</code>  */
+							'title'      => sprintf( __( 'Dequeue %s', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
+							/* translators: %s: <code>comment-reply.js</code>  */
+							'desc'       => sprintf( __( 'Disables the %s script.', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
+							'id'         => 'dequeue_comment_reply_script',
+							'type'       => 'switcher',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
 							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
 							'id'         => 'dequeue_dashicons',
 							'type'       => 'switcher',
@@ -1175,14 +1182,6 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_posabs',
 							'default'    => '1',
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Dequeue Comment Reply Script', 'speed-booster-pack' ), // B_TODO: Translations
-							'desc'       => __( 'Disables comment reply script.', 'speed-booster-pack' ), // B_TODO: Translations
-							'id'         => 'dequeue_comment_reply_script',
-							'type'       => 'switcher',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
 						],
 						[
 							/* translators: %s = <head>  */
@@ -1255,25 +1254,26 @@ class Speed_Booster_Pack_Admin {
 			CSF::createSection(
 				$prefix,
 				[
-					'title'  => 'Database Optimization',
+					'title'  => __( 'Database Optimization', 'speed-booster-pack' ),
 					'id'     => 'database_optimization',
 					'icon'   => 'fa fa-database',
 					'fields' => [
 						[
 							'type'  => 'subheading',
-							'title' => 'Convert Database Tables to InnoDB',
+							'title'  => __( 'Database Engine Converter', 'speed-booster-pack' ),
 						],
 						[
 							'id'      => 'button',
 							'title'   => '',
 							'type'    => 'content',
 							'content' => '
-								<button class="button button-primary sbp-scan-database-tables sbp-button-loading"><span>Scan Database Tables</span> <i class="dashicons dashicons-image-rotate"></i></button>
+								<p>' . __( 'This handy little tool converts your database tables from MyISAM to InnoDB. Click the button below to scan your tables. Tables with the MyISAM engine will then be listed so you can convert them one by one.', 'speed-booster-pack' ) . '</p>
+								<button class="button button-primary sbp-scan-database-tables sbp-button-loading"><span>' . __( 'Scan database tables', 'speed-booster-pack' ) . '</span> <i class="dashicons dashicons-image-rotate"></i></button>
 								<table class="widefat fixed sbp-database-tables" cellspacing="0" style="margin-top: 20px; display: none;">
 									<thead>
 										<tr>
-											<th>Table Name</th>
-											<th>Actions</th>
+											<th>' . __( 'Table name', 'speed-booster-pack' ) . '</th>
+											<th>' . __( 'Actions', 'speed-booster-pack' ) . '</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -1376,7 +1376,7 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'sbp_preload',
 					'type'  => 'code_editor',
 					'title' => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
-					'desc'  => __( 'This one is just some kind of test.', 'speed-booster-pack' ), // B_TODO: Change Text
+					'desc'  => __( 'Enter full URLs of files to preload only for this page.', 'speed-booster-pack' ),
 				],
 			];
 

@@ -26,6 +26,7 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_warmup_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_warmup_cache' ) ) {
 			$this->start_process();
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
+			// Z_TODO: replace with wp_safe_redirect() and add exit; to the next line
 			wp_redirect( $redirect_url );
 		}
 	}

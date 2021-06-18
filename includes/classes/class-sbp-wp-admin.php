@@ -165,30 +165,25 @@ class SBP_WP_Admin {
 		// Set Localizer Cache Clear Notice
 		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_notice_tracker_localizer',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.',
-					'speed-booster-pack' ) . '</p>',
+				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>',
 				'success',
 				true,
 				'flash' );
 		}
 
-		// Warmup Notice
+		// Warmup Start Notice
 		if ( get_transient( 'sbp_warmup_started' ) ) {
-//			 BEYNTODO: Add translator note
 			SBP_Notice_Manager::display_notice( 'sbp_warmup_started',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup started.',
-					'speed-booster-pack' ) . '</p>',
+				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup started.', 'speed-booster-pack' ) . '</p>',
 				'success',
 				true,
 				'recurrent' );
 		}
 
-		// Warmup Notice
+		// Warmup Complete Notice
 		if ( get_transient( 'sbp_warmup_complete' ) ) {
-			// BEYNTODO: Add translator note
 			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Static cache files created.',
-					'speed-booster-pack' ) . '</p>',
+				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup complete.', 'speed-booster-pack' ) . '</p>',
 				'success',
 				true,
 				'recurrent' );
@@ -196,10 +191,9 @@ class SBP_WP_Admin {
 
 		// Advanced Cache File Error
 		if ( get_transient( 'sbp_advanced_cache_error' ) ) {
-			// B_TODO: Change Text
 			SBP_Notice_Manager::display_notice( 'sbp_advanced_cache_error',
-				'<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' . sprintf( __( 'Can not write %1$s file. Some %2$s features may not work. Please check your file permissions.',
-					'speed-booster-pack' ), 'wp-content/advanced-cache.php', SBP_PLUGIN_NAME ) . '</p>',
+				/* translators: %s: wp-content/advanced-cache.php */
+				'<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' . sprintf( __( '%s is not writable. Please check your file permissions, or some features might not work.', 'speed-booster-pack' ), '<code>wp-content/advanced-cache.php</code>' ) . '</p>',
 				'error',
 				true,
 				'recurrent' );
@@ -208,8 +202,8 @@ class SBP_WP_Admin {
 		// WP-Config File Error
 		if ( get_transient( 'sbp_wp_config_error' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_wp_config_error',
-				'<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' . sprintf( __( 'Can not write %1$s file. Some %2$s features may not work. Please check your file permissions.',
-					'speed-booster-pack' ), 'wp-config.php', SBP_PLUGIN_NAME ) . '</p>',
+				/* translators: %s: wp-config.php */
+				'<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' . sprintf( __( '%s is not writable. Please check your file permissions, or some features might not work.', 'speed-booster-pack' ), '<code>wp-config.php</code>' ) . '</p>',
 				'error',
 				true,
 				'recurrent' );
@@ -229,7 +223,7 @@ class SBP_WP_Admin {
 							$extras ) . '</a></li>';
 				}
 				SBP_Notice_Manager::display_notice( 'sbp_warmup_errors',
-					'<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Cache warmup completed but following pages may not be cached. Please check this pages are available. (Hover this notice to see all errors)',
+					'<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Cache warmup completed but following pages may not be cached. Please check this pages are available. (Hover over this notice to see all errors)',
 						'speed-booster-pack' ) . '</p><ul class="warmup-cache-error-list">' . $list . '</ul>',
 					'error',
 					true,
@@ -243,12 +237,12 @@ class SBP_WP_Admin {
 		$notices    = [
 			'sbp_tweet'       => [
 				'show_after' => '+7 days',
-				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b>' . sprintf( __( 'If you\'re enjoying using our plugin, can you %1$ssend a tweet to support us%2$s?', 'speed-booster-pack' ), '<a href="' . $tweet_link . '" rel="noopener" target="_blank">', '</a>' ),
+				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you\'re enjoying using our plugin, can you %1$ssend a tweet to support us%2$s?', 'speed-booster-pack' ), '<a href="' . $tweet_link . '" rel="noopener" target="_blank">', '</a>' ),
 				'depends_on' => 'sbp_rate_wp_org',
 			],
 			'sbp_rate_wp_org' => [
 				'show_after' => '+7 days',
-				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you liked our plugin, it would mean a lot to us if you %1$srate us on wordpress.org%2$s.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">', '</a>' ),
+				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you like our plugin, we would be so grateful if you could %1$sgive us a fair rating on wordpress.org%2$s.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">', '</a>' ),
 			],
 		];
 

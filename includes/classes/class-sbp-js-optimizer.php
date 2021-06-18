@@ -163,9 +163,9 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private $exclude_rules = [];
 
 	/**
-	 * @var array $move_to_footer_exclude_rules
+	 * @var array $js_footer_exclude_rules
 	 */
-	private $move_to_footer_exclude_rules = [];
+	private $js_footer_exclude_rules = [];
 
 	/**
 	 * JavaScript inclusion rules
@@ -183,17 +183,17 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	/**
 	 * @var mixed|null
 	 */
-	private $move_to_footer = false;
+	private $js_footer = false;
 
 	public function __construct() {
 		$this->optimize_strategy = sbp_get_option( 'js_optimize', 'off' );
-		$this->move_to_footer    = sbp_get_option( 'move_to_footer' );
+		$this->js_footer    = sbp_get_option( 'js_footer' );
 
-		if ( ! sbp_get_option( 'module_assets' ) || ( $this->optimize_strategy == 'off' && ! $this->move_to_footer ) ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ( $this->optimize_strategy == 'off' && ! $this->js_footer ) ) {
 			return;
 		}
 
-		$this->move_to_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'move_to_footer_exclude' ) ), $this->default_excludes );
+		$this->js_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_footer_exclude' ) ), $this->default_excludes );
 		$this->exclude_rules                = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
 		$this->include_rules                = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
 
@@ -205,7 +205,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		$this->find_scripts_without_defer( $html );
 		$this->check_script_types();
 
-		if ( $this->move_to_footer ) {
+		if ( $this->js_footer ) {
 			$this->remove_footer_excluded_scripts();
 			$this->move_scripts( $html );
 		}
@@ -322,7 +322,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private function remove_footer_excluded_scripts() {
 		$script_count = count( $this->footer_included_scripts );
 		for ( $i = 0; $i < $script_count; $i ++ ) {
-			foreach ( $this->move_to_footer_exclude_rules as $rule ) {
+			foreach ( $this->js_footer_exclude_rules as $rule ) {
 				if ( isset( $this->footer_included_scripts[ $i ] ) ) {
 					if ( strpos( $this->footer_included_scripts[ $i ], $rule ) !== false ) {
 						unset( $this->footer_included_scripts[ $i ] );
