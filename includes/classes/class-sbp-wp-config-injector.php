@@ -40,7 +40,7 @@ class SBP_WP_Config_Injector {
 
 		if ( $wp_filesystem->exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file ) ) {
 			$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
-			$modified_content  = preg_replace( '/' . PHP_EOL . PHP_EOL . '\/\/ BEGIN SBP_WP_Config/si', '// BEGIN SBP_WP_Config', $wp_config_content ); // Remove blank lines
+			$modified_content  = preg_replace( '/<\?php' . PHP_EOL . PHP_EOL . '\/\/ BEGIN SBP_WP_Config/si', '<?php' . PHP_EOL . '// BEGIN SBP_WP_Config', $wp_config_content ); // Remove blank lines
 			$modified_content  = preg_replace( '/\/\/ END SBP_WP_Config' . PHP_EOL . '/si', '// END SBP_WP_Config', $modified_content ); // Remove blank lines
 			$modified_content  = preg_replace( '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', '', $modified_content );
 			$wp_filesystem->put_contents( $wp_config_file, $modified_content );
@@ -61,7 +61,7 @@ class SBP_WP_Config_Injector {
 			if ( ! preg_match( '/\/\/ BEGIN SBP_WP_Config -' . SBP_VERSION . '-(.*?)\/\/ END SBP_WP_Config/si', $wp_config_content ) ) {
 				$wp_config_content = preg_replace( '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', '', $wp_config_content );
 				foreach ( self::$wp_config_inject_content as $option_name => $include_file_path ) {
-					$modified_content = str_replace( '<?php', '<?php' . PHP_EOL . PHP_EOL . '// BEGIN SBP_WP_Config -' . SBP_VERSION . '- ' . $option_name . ' -' . PHP_EOL . 'include_once "' . $include_file_path . '";' . PHP_EOL . '// END SBP_WP_Config' . PHP_EOL, $wp_config_content );
+					$modified_content = str_replace( '<?php', '<?php' . PHP_EOL . PHP_EOL . '// BEGIN SBP_WP_Config -' . SBP_VERSION . '- ' . $option_name . ' -' . PHP_EOL . 'include_once "' . $include_file_path . '";' . PHP_EOL . '// END SBP_WP_Config', $wp_config_content );
 					$wp_filesystem->put_contents( $wp_config_file, $modified_content );
 				}
 			}
