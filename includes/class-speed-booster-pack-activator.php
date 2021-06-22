@@ -44,15 +44,7 @@ class Speed_Booster_Pack_Activator {
             SBP_Cache::set_wp_cache_constant( true );
             SBP_Cache::generate_htaccess();
 
-            $cache_settings = [
-				'caching_separate_mobile' => sbp_get_option('caching_separate_mobile'),
-				'caching_include_query_strings' => sbp_get_option('caching_include_query_strings'),
-				'caching_expiry' => sbp_get_option('caching_expiry'),
-				'caching_exclude_urls' => sbp_get_option('caching_exclude_urls'),
-				'caching_exclude_cookies' => sbp_get_option('caching_exclude_cookies'),
-            ];
-
-            $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file($cache_settings);
+            $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file();
             $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
             if ( $advanced_cache_file_content ) {
                 file_put_contents( $advanced_cache_path, $advanced_cache_file_content );

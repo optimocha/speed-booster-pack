@@ -39,6 +39,16 @@ class SBP_Advanced_Cache_Generator {
 	];
 
 	public static function generate_advanced_cache_file( $options = [] ) {
+		if ($options === []) {
+			$options = [
+				'caching_separate_mobile' => sbp_get_option('caching_separate_mobile'),
+				'caching_include_query_strings' => sbp_get_option('caching_include_query_strings'),
+				'caching_expiry' => sbp_get_option('caching_expiry'),
+				'caching_exclude_urls' => sbp_get_option('caching_exclude_urls'),
+				'caching_exclude_cookies' => sbp_get_option('caching_exclude_cookies'),
+			];
+		}
+
 		self::$options = $options;
 		$wp_filesystem = sbp_get_filesystem();
 		$file_content  = $wp_filesystem->get_contents( self::$advanced_cache_template );
@@ -49,12 +59,7 @@ class SBP_Advanced_Cache_Generator {
 				continue;
 			}
 
-			if ( self::$options === [] ) {
-				$option_value = sbp_get_option( $props['option_name'], $props['default_value'] );
-				self::$options[$props['option_name']] = $option_value;
-			} else {
-				$option_value = isset( self::$options[ $props['option_name'] ] ) ? self::$options[ $props['option_name'] ] : false;
-			}
+			$option_value = isset( self::$options[ $props['option_name'] ] ) ? self::$options[ $props['option_name'] ] : false;
 
 			$replace_content = $props['default_value'];
 
