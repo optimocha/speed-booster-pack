@@ -67,7 +67,7 @@ class SBP_Advanced_Cache_Generator {
 				$replace_content = call_user_func( $method_name );
 			}
 
-			$file_content = str_replace( "$placeholder", $replace_content, $file_content );
+			$file_content = str_replace( $placeholder, $replace_content, $file_content );
 		}
 
 		return $file_content;

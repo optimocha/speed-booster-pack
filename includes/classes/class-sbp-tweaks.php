@@ -262,7 +262,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		wp_deregister_script( 'heartbeat' );
 	}
 
-	public function heartbeat_settings_handle() {
+	public function heartbeat_settings_handle( $settings ) {
 		$settings['interval'] = sbp_get_option( 'heartbeat_frequency' );
 
 		return $settings;
