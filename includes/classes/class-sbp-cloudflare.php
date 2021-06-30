@@ -108,14 +108,6 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		return false;
 	}
 
-	public static function reset_transient( $saved_data = [] ) {
-		if ( sbp_get_option( 'cloudflare_zone' ) != $saved_data['cloudflare_zone'] ||
-		     sbp_get_option( 'cloudflare_email' ) != $saved_data['cloudflare_email'] ||
-		     sbp_get_option( 'cloudflare_api' ) != $saved_data['cloudflare_api'] ) {
-			delete_transient( 'sbp_cloudflare_status' );
-		}
-	}
-
 	public static function check_credentials( $override_credentials = [] ) {
 		$result = self::send_request( 'check_credentials', 'GET', [], $override_credentials );
 

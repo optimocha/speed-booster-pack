@@ -62,8 +62,6 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
-		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::reset_transient' );
-
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );
@@ -74,11 +72,11 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_WP_Config_Injector::inject_wp_config' );
 
-		$this->create_settings_page();
-
 		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
 
 		add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
+
+		$this->create_settings_page();
 	}
 
 	/**
@@ -87,7 +85,7 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', array(), $this->version );
 	}
 
 	/**
@@ -96,7 +94,7 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', array( 'jquery' ), $this->version );
 		wp_localize_script( $this->plugin_name,
 			'sbp_ajax_vars',
 			[
@@ -454,20 +452,6 @@ class Speed_Booster_Pack_Admin {
 				  ',
 				],
 			];
-			$cloudflare_transient = get_transient( 'sbp_cloudflare_status' );
-
-			if ( '0' === $cloudflare_transient ) {
-				array_splice( $cloudflare_fields,
-					1,
-					0,
-					[
-						[
-							'type'    => 'submessage',
-							'style'   => 'danger',
-							'content' => __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ),
-						],
-					] );
-			}
 			/* End Of Cloudflare Fields */
 
 			/* Begin Of Sucuri Fields */

@@ -19,6 +19,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 	public function __construct() {
 		global $sbp_cache_already_bypassed;
+
 		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) ) {
 			return;
 		}
@@ -91,7 +92,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -99,9 +99,9 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 */
 	public function clear_cache_request() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_total_cache' ) ) {
-			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			self::clear_total_cache();
 			set_transient( 'sbp_notice_cache', '1', 60 );
+			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			wp_safe_redirect( $redirect_url );
 			exit;
 		}

@@ -145,10 +145,10 @@ ga('send', 'pageview');";
 		if ( isset( $this->sbp_settings['sbp_cdn_url'] ) && $this->sbp_settings['sbp_cdn_url'] ) {
 			$old_cdn_url = $this->sbp_settings['sbp_cdn_url'];
 			// Remove protocol and trailing slash
-			$new_cdn_url                  = ltrim( $old_cdn_url, 'https://' );
-			$new_cdn_url                  = ltrim( $new_cdn_url, 'http://' );
-			$new_cdn_url                  = ltrim( $new_cdn_url, '//' );
-			$new_cdn_url                  = rtrim( $new_cdn_url, '/' );
+			$new_cdn_url                  = sbp_remove_leading_string( $old_cdn_url, 'https://' );
+			$new_cdn_url                  = sbp_remove_leading_string( $new_cdn_url, 'http://' );
+			$new_cdn_url                  = sbp_remove_leading_string( $new_cdn_url, '//' );
+			$new_cdn_url                  = sbp_remove_leading_string( $new_cdn_url, '/' );
 			$this->sbp_options['cdn_url'] = $new_cdn_url;
 		}
 	}

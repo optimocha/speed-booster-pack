@@ -221,7 +221,7 @@ if ( ! function_exists( 'sbp_sanitize_url' ) ) {
 			return $url;
 		}
 
-		$url = str_replace( [' ', '"', "'"], ['%20', '%22', '%27'], ltrim( $url ) );
+		$url = str_replace( [ ' ', '"', "'" ], [ '%20', '%22', '%27' ], ltrim( $url ) );
 		$url = preg_replace( '|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\[\]\\x80-\\xff]|i', '', $url );
 
 		if ( '' === $url ) {
@@ -303,9 +303,8 @@ if ( ! function_exists( 'sbp_remove_duplicates_and_empty' ) ) {
 	 */
 	function sbp_remove_duplicates_and_empty( $value ) {
 		$value = array_filter( $value );
-		$value = array_unique( $value );
 
-		return $value;
+		return array_unique( $value );
 	}
 }
 
@@ -333,6 +332,16 @@ if ( ! function_exists( 'sbp_sanitize_strip_tags' ) ) {
 	}
 }
 
+if ( ! function_exists( 'sbp_remove_leading_string' ) ) {
+	function sbp_remove_leading_string( $string, $remove ) {
+		if ( substr( $string, 0, strlen( $remove ) ) == $remove ) {
+			$string = substr( $string, strlen( $remove ) );
+		}
+
+		return $string;
+	}
+}
+
 if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 	/**
 	 * Sanitizes excluded URLs for caching
@@ -348,9 +357,9 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 		$urls = SBP_Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
 		foreach ( $urls as &$url ) {
-			$url = ltrim( $url, 'https://' );
-			$url = ltrim( $url, 'http://' );
-			$url = ltrim( $url, '//' );
+			$url = sbp_remove_leading_string( $url, 'https://' );
+			$url = sbp_remove_leading_string( $url, 'http://' );
+			$url = sbp_remove_leading_string( $url, '//' );
 			$url = rtrim( $url, '/' );
 			$url = sbp_sanitize_url( $url );
 		}
@@ -405,7 +414,7 @@ if ( ! function_exists( 'sbp_sanitize_special_characters' ) ) {
 }
 
 if ( ! function_exists( 'sbp_sanitize_boolean' ) ) {
-	function sbp_sanitize_boolean($value) {
+	function sbp_sanitize_boolean( $value ) {
 		return $value == '1' ? '1' : '0';
 	}
 }
