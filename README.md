@@ -3,9 +3,9 @@ Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
 Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 4.2.0-beta
+Stable tag: 4.2.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,6 +103,28 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.2.0 =
+
+*Release Date: 01 July 2021*
+
+* **NEW - Database Engine Converter Tool**: Lets you convert database table engines from MyISAM to InnoDB.
+* **NEW - Content-specific preloads**: Allows you to set `<link rel="preload" ... />` rules for each post, page or other custom post types.
+* **NEW - `Dequeue comment-reply.js`**: Dequeues the comment reply script.
+* **Improved**: More Cloudflare settings, included their brand new Automatic Platform Optimization (APO)!
+* **Improved**: Notifications of Speed Booster Pack are less annoying now, mostly moved to the Speed Booster Pack settings page.
+* **Improved**: JS optimization settings are improved by splitting "Move JS to footer" and "Defer JavaScript" features into two different settings. Make sure your JS optimization settings are still working after this update!
+* **Improved**: The CSS optimization PHP class is rewritten. User feedback welcome after this update! :)
+* **Improved**: Caching feature is greatly improved, both in terms of performance and code quality. We even squashed a few tiny bugs!
+* **Improved**: You can now exclude cookies from caching.
+* **Improved**: CriticalCSS options are extended to include conditional tags for WooCommerce products (`is_product()`) and product categories (`is_product_category()`). Also now the admin bar CSS is always excluded from being deferred.
+* **Improved**: Lazy loader is greatly improved.
+* **Fixed**: Minor security flaws ("minor" because only administrators are able to break things in previous 4.x versions).
+* **Fixed**: A conflict between SBP and All in One SEO Pack is fixed.
+* **Fixed**: A conflict between SBP and Elementor is fixed.
+* **Fixed**: A tiny bug is fixed in the autosave setting.
+* **Updated**: The library of the options framework is updated.
+
 
 = 4.1.3 =
 
