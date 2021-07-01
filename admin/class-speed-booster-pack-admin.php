@@ -77,6 +77,7 @@ class Speed_Booster_Pack_Admin {
 		add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
 
 		$this->create_settings_page();
+		$this->create_metaboxes();
 	}
 
 	/**
@@ -1338,40 +1339,42 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: About */
-
-			/* BEGIN Metaboxes */
-			$metabox_prefix = 'sbp_post_meta';
-			$post_types     = array_keys( get_post_types() );
-			CSF::createMetabox( $metabox_prefix,
-				[
-					'title'     => SBP_PLUGIN_NAME,
-					'post_type' => $post_types,
-				]
-			);
-
-			$meta_fields = [
-				[
-					'id'    => 'sbp_preload',
-					'type'  => 'code_editor',
-					'title' => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
-					'desc'  => __( 'Enter full URLs of files to preload only for this page.', 'speed-booster-pack' ),
-				],
-			];
-
-			if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'preboost' ) || ( sbp_get_option( 'preboost' ) && ! sbp_get_option( 'preboost' )['preboost_enable'] && ! sbp_get_option( 'preboost' )['preboost_enable'] ) ) {
-				$meta_fields[] = [
-					'id'    => 'sbp_psp_warning',
-					'type'  => 'notice',
-					'style' => 'warning',
-					'title' => __( sprintf( 'Warning: Preloading isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
-				];
-			}
-
-			CSF::createSection( $metabox_prefix,
-				array(
-					'fields' => $meta_fields,
-				) );
 		}
+	}
+
+	public function create_metaboxes() {
+		/* BEGIN Metaboxes */
+		$metabox_prefix = 'sbp_post_meta';
+		$post_types     = ['post', 'page', 'product'];
+		CSF::createMetabox( $metabox_prefix,
+			[
+				'title'     => SBP_PLUGIN_NAME,
+                'post_type' => $post_types,
+			]
+		);
+
+		$meta_fields = [
+			[
+				'id'    => 'sbp_preload',
+				'type'  => 'code_editor',
+				'title' => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
+				'desc'  => __( 'Enter full URLs of files to preload only for this page.', 'speed-booster-pack' ),
+			],
+		];
+
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'preboost' ) || ( sbp_get_option( 'preboost' ) && ! sbp_get_option( 'preboost' )['preboost_enable'] && ! sbp_get_option( 'preboost' )['preboost_enable'] ) ) {
+			$meta_fields[] = [
+				'id'    => 'sbp_psp_warning',
+				'type'  => 'notice',
+				'style' => 'warning',
+				'title' => __( sprintf( 'Warning: Preloading isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
+			];
+		}
+
+		CSF::createSection( $metabox_prefix,
+			array(
+				'fields' => $meta_fields,
+			) );
 	}
 
 	public function modify_menu_title() {
