@@ -445,3 +445,13 @@ if ( ! function_exists( 'sbp_check_file_permissions' ) ) {
 		}
 	}
 }
+
+if ( ! function_exists( 'sbp_sanitize_titles_in_array' ) ) {
+	function sbp_sanitize_titles_in_array( $array ) {
+		if ( is_array( $array ) ) {
+			return array_map( 'sanitize_title', $array );
+		}
+
+		return $array;
+	}
+}

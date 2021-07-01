@@ -876,10 +876,22 @@ class Speed_Booster_Pack_Admin {
 								'type'       => 'code_editor',
 								'desc'       => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
 								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
+								'settings' => [ 'lineWrapping' => true ],
 							],
 						],
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					],
+                    [
+                        /** B_TODO: Change text */
+                        'title' => __( 'Content Specific Preload Post Types', 'speed-booster-pack' ),
+                        'id' => 'csp_post_types',
+	                    /** B_TODO: Change text */
+                        'desc' => __( 'Description text', 'speed-booster-pack' ),
+                        'type' => 'checkbox',
+                        'options' => 'post_types',
+                        'sanitize' => 'sbp_sanitize_titles_in_array',
+                        'inline' => true,
+                    ]
 				] );
 
 			CSF::createSection(
@@ -1345,36 +1357,39 @@ class Speed_Booster_Pack_Admin {
 	public function create_metaboxes() {
 		/* BEGIN Metaboxes */
 		$metabox_prefix = 'sbp_post_meta';
-		$post_types     = ['post', 'page', 'product'];
-		CSF::createMetabox( $metabox_prefix,
-			[
-				'title'     => SBP_PLUGIN_NAME,
-                'post_type' => $post_types,
-			]
-		);
+		$csp_post_types     = sbp_get_option( 'csp_post_types' );
+		if ( is_array( $csp_post_types ) ) {
+			CSF::createMetabox( $metabox_prefix,
+				[
+					'title'     => SBP_PLUGIN_NAME,
+					'post_type' => $csp_post_types,
+				]
+			);
 
-		$meta_fields = [
-			[
-				'id'    => 'sbp_preload',
-				'type'  => 'code_editor',
-				'title' => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
-				'desc'  => __( 'Enter full URLs of files to preload only for this page.', 'speed-booster-pack' ),
-			],
-		];
-
-		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'preboost' ) || ( sbp_get_option( 'preboost' ) && ! sbp_get_option( 'preboost' )['preboost_enable'] && ! sbp_get_option( 'preboost' )['preboost_enable'] ) ) {
-			$meta_fields[] = [
-				'id'    => 'sbp_psp_warning',
-				'type'  => 'notice',
-				'style' => 'warning',
-				'title' => __( sprintf( 'Warning: Preloading isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
+			$meta_fields = [
+				[
+					'id'    => 'sbp_preload',
+					'type'  => 'code_editor',
+					'title' => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
+					'desc'  => __( 'Enter full URLs of files to preload only for this page.', 'speed-booster-pack' ),
+					'settings' => [ 'lineWrapping' => true ],
+				],
 			];
-		}
 
-		CSF::createSection( $metabox_prefix,
-			array(
-				'fields' => $meta_fields,
-			) );
+			if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'preboost' ) || ( sbp_get_option( 'preboost' ) && ! sbp_get_option( 'preboost' )['preboost_enable'] && ! sbp_get_option( 'preboost' )['preboost_enable'] ) ) {
+				$meta_fields[] = [
+					'id'    => 'sbp_csp_warning',
+					'type'  => 'notice',
+					'style' => 'warning',
+					'title' => __( sprintf( 'Warning: Preloading isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
+				];
+			}
+
+			CSF::createSection( $metabox_prefix,
+				array(
+					'fields' => $meta_fields,
+				) );
+        }
 	}
 
 	public function modify_menu_title() {
