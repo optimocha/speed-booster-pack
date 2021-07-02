@@ -106,7 +106,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.2.0 =
 
-*Release Date: 01 July 2021*
+*Release Date: 02 July 2021*
 
 * **NEW - Database Engine Converter Tool**: Lets you convert database table engines from MyISAM to InnoDB.
 * **NEW - Content-specific preloads**: Allows you to set `<link rel="preload" ... />` rules for each post, page or other custom post types.

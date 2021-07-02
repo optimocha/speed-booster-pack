@@ -45,7 +45,7 @@ class SBP_Newsletter {
                 }).pointer('open');
 
                 $('.sbp-subscribe-button').on('click', function () {
-                    $('.sbp-subscription').html('<div style="padding: 10px 20px; color: darkgreen;" class="sbp-newsletter-success"><?php _e( 'Thank you for subscribing to our newsletter.', 'speed-booster-pack' ) ?></div>');
+                    $('.sbp-subscription').html('<div style="padding: 10px 20px; color: darkgreen;" class="sbp-newsletter-success"><?php _e( 'Thank you! ❤', 'speed-booster-pack' ) ?></div>');
                     $.post(ajaxurl, {
                         action: 'sbp_hide_newsletter_pointer'
                     });
