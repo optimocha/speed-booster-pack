@@ -885,8 +885,6 @@ class Speed_Booster_Pack_Admin {
                         /** B_TODO: Change text */
                         'title' => __( 'Content Specific Preload Post Types', 'speed-booster-pack' ),
                         'id' => 'csp_post_types',
-	                    /** B_TODO: Change text */
-                        'desc' => __( 'Description text', 'speed-booster-pack' ),
                         'type' => 'checkbox',
                         'options' => 'post_types',
                         'sanitize' => 'sbp_sanitize_titles_in_array',

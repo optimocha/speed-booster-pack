@@ -38,7 +38,7 @@ class SBP_WP_Config_Injector {
 			$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
 		}
 
-		if ( $wp_filesystem->exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file ) ) {
+		if ( $wp_filesystem->exists( $wp_config_file ) && $wp_filesystem->is_writable( $wp_config_file ) ) {
 			$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
 			$modified_content  = preg_replace( '/<\?php' . PHP_EOL . PHP_EOL . '\/\/ BEGIN SBP_WP_Config/si', '<?php' . PHP_EOL . '// BEGIN SBP_WP_Config', $wp_config_content ); // Remove blank lines
 			$modified_content  = preg_replace( '/\/\/ END SBP_WP_Config' . PHP_EOL . '/si', '// END SBP_WP_Config', $modified_content ); // Remove blank lines
