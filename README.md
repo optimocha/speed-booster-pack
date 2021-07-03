@@ -104,6 +104,12 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
+= 4.2.1 =
+
+*Release Date: 03 July 2021*
+
+* **Fixed**: Tiny hotfix for a bug that causes an error during the plugin update (but completely harmless).
+
 = 4.2.0 =
 
 *Release Date: 02 July 2021*
@@ -124,7 +130,6 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Fixed**: A conflict between SBP and Elementor is fixed.
 * **Fixed**: A tiny bug is fixed in the autosave setting.
 * **Updated**: The library of the options framework is updated.
-
 
 = 4.1.3 =
 
