@@ -26,7 +26,8 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_warmup_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_warmup_cache' ) ) {
 			$this->start_process();
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
-			wp_redirect( $redirect_url );
+			wp_safe_redirect( $redirect_url );
+			exit;
 		}
 	}
 
@@ -79,8 +80,8 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 					$this->warmup_process->push_to_queue( [ 'url' => $href ] );
 					if ( sbp_get_option( 'caching_separate_mobile' ) ) {
 						$this->warmup_process->push_to_queue( [
-						    'url'     => $href,
-                            'options' => [ 'user-agent' => 'Mobile' ],
+							'url'     => $href,
+							'options' => [ 'user-agent' => 'Mobile' ],
 						] );
 					}
 				}

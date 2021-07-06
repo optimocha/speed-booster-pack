@@ -28,7 +28,7 @@
      * Although scripts in the WordPress core, Plugins and Themes may be
      * practising this, we should strive to set a better example in our own work.
      */
-    $(window).on('load', function() {
+    $(window).on('load', function () {
         $('span .sbp-cloudflare-test').attr('disabled', 'disabled').css('opacity', '0.6');
     });
 
@@ -68,7 +68,7 @@
         let value = '';
         const $field = $('[data-depend-id="' + match.field + '"]');
         if (match.type === 'switcher') {
-            if (parent !== null) {
+            if (parent !== null && response.results[parent] !== undefined) {
                 value = response.results[parent].value[match.id] === 'on' ? '1' : '';
             } else {
                 value = response.results[match.id].value === 'on' ? '1' : '';
@@ -133,10 +133,26 @@
                 ]
             },
             {
+                id: 'automatic_platform_optimization',
+                type: 'array',
+                matches: [
+                    {
+                        id: 'automatic_platform_optimization',
+                        field: 'cf_apo_enable',
+                        type: 'switcher',
+                    },
+                    {
+                        id: 'cache_by_device_type',
+                        field: 'cf_apo_device_type',
+                        type: 'switcher',
+                    },
+                ]
+            },
+            {
                 id: 'browser_cache_ttl',
                 field: 'cf_browser_cache_ttl',
                 type: 'text',
-            },
+            }
         ];
 
         $.ajax({
@@ -155,12 +171,11 @@
                 } else if (response.status === 'empty_info') {
                     $('.sbp-cloudflare-warning').show();
                 } else {
-
                     $('.sbp-cloudflare-incorrect').show();
                     $('.with-preloader::before, .with-preloader::after').remove();
                 }
             },
-            complete: function() {
+            complete: function () {
                 $('.sbp-cloudflare-test .sbp-cloudflare-spinner').hide();
                 $('.sbp-cloudflare-test').removeAttr('disabled').css('opacity', 1);
                 $('.sbp-cloudflare-fetching').remove();
@@ -188,6 +203,76 @@
             }
         }
 
+    });
+
+    $(document).on('click', '.sbp-scan-database-tables', function() {
+        var $button = $(this);
+        $button.addClass('sbp-loading-active');
+        $button.attr('disabled', 'disabled');
+
+        $.ajax({
+            type: 'GET',
+            url: ajaxurl,
+            data: {'action': 'sbp_database_action', 'sbp_action': 'fetch_non_innodb_tables', 'nonce': sbp_ajax_vars.nonce},
+            success: function(response) {
+                response = JSON.parse(response);
+                var $table = $('.sbp-database-tables');
+                var $tableBody = $('.sbp-database-tables tbody');
+                $tableBody.html('');
+                if (response.tables && response.tables.length > 0) {
+                    $table.show();
+                    response.tables.map(table => {
+                        $tableBody.append('<tr>' +
+                            '<td style="vertical-align: middle;">' + table.table_name + '</td>\n' +
+                            '<td>' +
+                            '<button type="button" class="button button-primary sbp-convert-table sbp-button-loading" data-table-name="' + table.table_name + '"><span>Convert To InnoDB</span> <i class="dashicons dashicons-image-rotate"></i></button>' +
+                            '</td>' +
+                            '</tr>');
+                    });
+                } else {
+                    $table.show();
+                    $tableBody.html( '<tr><td colspan="2">No database table found using MyISAM.</td></tr>' );
+                }
+            },
+            error: function(xhr, status) {
+                alert( 'Error occured while fetching database tables.' );
+            },
+            complete: function() {
+                $button.removeClass('sbp-loading-active');
+                $button.removeAttr('disabled');
+            }
+        });
+    });
+
+    $(document).on('click', '.sbp-convert-table', function() {
+        var $button = $(this);
+        var table_name = $button.data('table-name');
+
+        $button.addClass('sbp-loading-active');
+        $button.attr('disabled', 'disabled');
+
+        $.ajax({
+            type: 'GET',
+            url: ajaxurl,
+            data: {'action': 'sbp_database_action', 'sbp_action': 'convert_tables', 'sbp_convert_table_name': table_name, 'nonce': sbp_ajax_vars.nonce},
+            success: function(response) {
+                response = JSON.parse(response);
+                if (response.status === 'failure') {
+                    $button.removeClass('sbp-loading-active');
+                    $button.removeAttr('disabled');
+                    alert(response.message);
+                } else {
+                    $button.parent().html('<span style="color: darkgreen;">Converted successfully.</span>');
+                }
+            },
+            error: function(xhr, status) {
+                alert('Error occurred while fetching database tables.');
+            },
+            complete: function() {
+                $button.removeClass('sbp-loading-active');
+                $button.removeAttr('disabled');
+            }
+        });
     });
 
 })(jQuery);

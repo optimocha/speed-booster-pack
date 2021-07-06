@@ -191,7 +191,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 
 	private function autosave_interval() {
 		if ( ! empty( sbp_get_option( 'autosave_interval' ) ) && ! defined( 'AUTOSAVE_INTERVAL' ) ) {
-			define( 'AUTOSAVE_INTERVAL', sbp_get_option( 'autosave_interval' ) );
+			define( 'AUTOSAVE_INTERVAL', sbp_get_option( 'autosave_interval' ) * 60 );
 		}
 	}
 
@@ -262,7 +262,7 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 		wp_deregister_script( 'heartbeat' );
 	}
 
-	public function heartbeat_settings_handle() {
+	public function heartbeat_settings_handle( $settings ) {
 		$settings['interval'] = sbp_get_option( 'heartbeat_frequency' );
 
 		return $settings;

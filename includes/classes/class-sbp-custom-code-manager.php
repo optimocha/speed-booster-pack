@@ -21,39 +21,44 @@ class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 		$scripts = sbp_get_option( 'custom_codes' );
 		if ( $scripts ) {
 			foreach ( $scripts as $script ) {
-				if ( '' === $script['custom_codes_item'] ) {
+				if ( isset( $script['custom_codes_item'] ) && '' === $script['custom_codes_item'] ) {
 					return;
 				}
-				if ( 'footer' === $script['custom_codes_place'] ) {
+				if ( isset( $script['custom_codes_place'] ) && 'footer' === $script['custom_codes_place'] ) {
 					$hook = 'wp_footer';
 				} else {
 					$hook = 'wp_head';
 				}
 
-				add_action( $hook, function () use ( $script ) {
+				add_action( $hook,
+					function () use ( $script ) {
 
-					$output = '<script type="text/javascript">' . PHP_EOL;
+						$output = '<script type="text/javascript">' . PHP_EOL;
 
-					switch ( $script['custom_codes_method'] ) {
-						case "onload":
-							$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) {' . PHP_EOL;
-							$output .= $script['custom_codes_item'] . PHP_EOL;
-							$output .= '});' . PHP_EOL;
-							break;
-						case "delayed":
-							$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) { setTimeout(function(){' . PHP_EOL;
-							$output .= $script['custom_codes_item'] . PHP_EOL;
-							$output .= '},4000);});' . PHP_EOL;
-							break;
-						default:
-							$output .= $script['custom_codes_item'];
-							break;
-					}
+						if ( ! isset( $script['custom_codes_method'] ) ) {
+							$script['custom_codes_method'] = null;
+						}
 
-					$output .= '</script>';
+						switch ( $script['custom_codes_method'] ) {
+							case "onload":
+								$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) {' . PHP_EOL;
+								$output .= $script['custom_codes_item'] . PHP_EOL;
+								$output .= '});' . PHP_EOL;
+								break;
+							case "delayed":
+								$output .= 'window.addEventListener( \'DOMContentLoaded\', function(e) { setTimeout(function(){' . PHP_EOL;
+								$output .= $script['custom_codes_item'] . PHP_EOL;
+								$output .= '},4000);});' . PHP_EOL;
+								break;
+							default:
+								$output .= $script['custom_codes_item'];
+								break;
+						}
 
-					echo $output;
-				} );
+						$output .= '</script>';
+
+						echo $output;
+					} );
 			}
 		}
 	}

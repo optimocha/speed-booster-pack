@@ -86,10 +86,10 @@ class SBP_CSS_Minifier extends SBP_Abstract_Module {
 			$base_url = '//' . $cdn_url;
 		}
 
-		$url      = ltrim( $url, 'https:' );
-		$url      = ltrim( $url, 'http:' );
-		$base_url = ltrim( $base_url, 'https:' );
-		$base_url = ltrim( $base_url, 'http:' );
+		$url      = sbp_remove_leading_string( $url, 'https:' );
+		$url      = sbp_remove_leading_string( $url, 'http:' );
+		$base_url = sbp_remove_leading_string( $base_url, 'https:' );
+		$base_url = sbp_remove_leading_string( $base_url, 'http:' );
 
 		if ( strpos( $url, $base_url ) !== 0 ) {
 			return false;

@@ -32,6 +32,7 @@ class SBP_Sucuri extends SBP_Abstract_Module {
 			$response_body = wp_remote_retrieve_body( $request );
 			if ( strpos( $response_body, "OK:" ) === 0 ) {
 				delete_transient( 'sbp_sucuri_error' ); // Just in case
+
 				return true;
 			} else {
 				set_transient( 'sbp_sucuri_error', $response_body );
@@ -47,7 +48,8 @@ class SBP_Sucuri extends SBP_Abstract_Module {
 			$result       = self::clear_cache();
 			$notice_value = $result == true ? '1' : '2';
 			set_transient( 'sbp_clear_sucuri_cache', $notice_value, 60 );
-			wp_redirect( $redirect_url );
+			wp_safe_redirect( $redirect_url );
+			exit;
 		}
 	}
 }

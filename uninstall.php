@@ -96,6 +96,7 @@ if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
 
 // Remove SBP Announcements
 delete_option( 'sbp_announcements' );
+delete_option( 'sbp_migrator_version' );
 delete_transient( 'sbp_notice_cache' );
 delete_transient( 'sbp_cloudflare_status' );
 delete_transient( 'sbp_upgraded_notice' );
@@ -105,7 +106,19 @@ $users = get_users( 'role=administrator' );
 foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_dismissed_notices' );
 	delete_user_meta( $user->ID, 'sbp_dismissed_compat_notices' );
+	delete_user_meta( $user->ID, 'sbp_tweet_notice_display_time' );
+	delete_user_meta( $user->ID, 'sbp_rate_wp_org_notice_display_time' );
+	delete_user_meta( $user->ID, 'sbp_hide_newsletter_pointer' );
 }
+
+// Z_TODO: let's make a tool called "Cleanup SBP metadata" in a future version
+// $posts = new WP_Query([
+//     'post_type' => 'any',
+//     'meta_key' => 'sbp_post_meta',
+// ]);
+// foreach ($posts->get_posts() as $post) {
+//     delete_post_meta($post->ID, 'sbp_post_meta');
+// }
 
 // Delete injected lines from wp-config.php
 if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {

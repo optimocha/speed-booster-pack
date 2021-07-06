@@ -10,10 +10,11 @@ if ( ! defined( 'WPINC' ) ) {
 class SBP_Cloudflare extends SBP_Abstract_Module {
 	private static $api_url = 'https://api.cloudflare.com/client/v4/zones/';
 	private static $action_paths = [
-		'check_credentials' => '',
-		'rocket_loader'     => '/settings/rocket_loader',
-		'purge_cache'       => '/purge_cache',
-		'settings'          => '/settings',
+		'check_credentials'               => '',
+		'rocket_loader'                   => '/settings/rocket_loader',
+		'purge_cache'                     => '/purge_cache',
+		'settings'                        => '/settings',
+		'automatic_platform_optimization' => '/settings/automatic_platform_optimization',
 	];
 
 	public function __construct() {
@@ -39,6 +40,8 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			'cf_html_minify_enable',
 			'cf_js_minify_enable',
 			'cf_browser_cache_ttl',
+			'cf_apo_enable',
+			'cf_apo_device_type',
 		];
 
 		$has_options_changed = false;
@@ -76,14 +79,18 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 					'id'    => 'browser_cache_ttl',
 					'value' => (int) $saved_data['cf_browser_cache_ttl'],
 				],
-			]
+			],
 		];
 
 		$response = self::send_request( 'settings', 'PATCH', $request_data );
 
-//		die('Settings have been changed');
 		if ( $response['success'] ) {
-			return true;
+			$response = self::update_apo_settings( $saved_data['cf_apo_enable'], $saved_data['cf_apo_device_type'] );
+			if ( $response['success'] ) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -101,14 +108,6 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		return false;
 	}
 
-	public static function reset_transient( $saved_data = [] ) {
-		if ( sbp_get_option( 'cloudflare_zone' ) != $saved_data['cloudflare_zone'] ||
-		     sbp_get_option( 'cloudflare_email' ) != $saved_data['cloudflare_email'] ||
-		     sbp_get_option( 'cloudflare_api' ) != $saved_data['cloudflare_api'] ) {
-			delete_transient( 'sbp_cloudflare_status' );
-		}
-	}
-
 	public static function check_credentials( $override_credentials = [] ) {
 		$result = self::send_request( 'check_credentials', 'GET', [], $override_credentials );
 
@@ -116,7 +115,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			return true;
 		}
 
-		if ( !$result ) {
+		if ( ! $result ) {
 			return null;
 		}
 
@@ -141,7 +140,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		if ( ! isset( self::$action_paths[ $action ] ) ) {
 			return [
 				'success' => false,
-				'errors'  => [ __( 'Invalid action.', 'speed-booster-pack' ) ]
+				'errors'  => [ __( 'Invalid action.', 'speed-booster-pack' ) ],
 			];
 		}
 
@@ -155,7 +154,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			if ( ! function_exists( 'curl_init' ) ) {
 				return [
 					'success' => false,
-					'errors'  => [ __( 'Curl is not enabled in your hosting.', 'speed-booster-pack' ) ]
+					'errors'  => [ __( 'Curl is not enabled in your hosting.', 'speed-booster-pack' ) ],
 				];
 			}
 
@@ -172,7 +171,6 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			curl_setopt( $curl_connection, CURLOPT_USERAGENT, '"User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.87 Safari/537.36"' );
 			curl_setopt( $curl_connection, CURLOPT_SSL_VERIFYHOST, false );
 			curl_setopt( $curl_connection, CURLOPT_SSL_VERIFYPEER, false );
-
 
 			$request_response = curl_exec( $curl_connection );
 			$result           = json_decode( $request_response, true );
@@ -196,29 +194,34 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$result       = self::clear_cache();
 			$notice_value = $result == true ? '1' : '2';
 			set_transient( 'sbp_notice_cloudflare', $notice_value, 60 );
-			wp_redirect( $redirect_url );
+			wp_safe_redirect( $redirect_url );
+			exit;
 		}
 	}
 
 	public function check_credentials_ajax_handler() {
 		if ( isset( $_POST['action'] ) && $_POST['action'] == 'sbp_check_cloudflare' && current_user_can( 'manage_options' ) ) {
-			$status = self::check_credentials( [
-				'email'   => $_POST['email'],
-				'api_key' => $_POST['api_key'],
-				'zone'    => $_POST['zone_id'],
-			] );
+			$status = self::check_credentials(
+				[
+					'email'   => $_POST['email'],
+					'api_key' => $_POST['api_key'],
+					'zone'    => $_POST['zone_id'],
+				]
+			);
 
-			if ($status === true) {
+			if ( $status === true ) {
 				$return_value = 'true';
-			} else if ($status === null) {
+			} elseif ( $status === null ) {
 				$return_value = 'null';
 			} else {
 				$return_value = 'false';
 			}
 
-			echo json_encode( [
-				'status' => $return_value,
-			] );
+			echo json_encode(
+				[
+					'status' => $return_value,
+				]
+			);
 			wp_die();
 		}
 	}
@@ -227,10 +230,12 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 		if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_get_cloudflare_settings' && current_user_can( 'manage_options' ) ) {
 			// Check if empty
 			if ( ! sbp_get_option( 'cloudflare_email' ) || ! sbp_get_option( 'cloudflare_api' ) || ! sbp_get_option( 'cloudflare_zone' ) ) {
-				echo json_encode( [
-					'status'  => 'empty_info',
-					'message' => __( 'You did not provide any CloudFlare credentials.', 'speed-booster-pack' )
-				] );
+				echo json_encode(
+					[
+						'status'  => 'empty_info',
+						'message' => __( 'You did not provide any CloudFlare credentials.', 'speed-booster-pack' ),
+					]
+				);
 				wp_die();
 			}
 
@@ -250,16 +255,47 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 					}
 				}
 				delete_transient( 'sbp_do_not_update_cloudflare' );
+				// Inject APO Settings
+				$apo_settings = $this->get_apo_settings();
+				if ( $apo_settings['success'] ) {
+					$settings['automatic_platform_optimization'] = [
+						'id'    => 'automatic_platform_optimization',
+						'value' => [
+							'automatic_platform_optimization' => $apo_settings['result']['value']['enabled'] ? "on" : "off",
+							'cache_by_device_type'            => $apo_settings['result']['value']['cache_by_device_type'] ? "on" : "off",
+						],
+					];
+				}
 				echo json_encode( [ 'status' => 'success', 'results' => $settings ] );
 			} else {
 				set_transient( 'sbp_do_not_update_cloudflare', 1 );
-				echo json_encode( [
-					'status'  => 'failure',
-					'message' => 'Error occurred while fetching CloudFlare settings. Your changes will not affect your CloudFlare settings until CloudFlare connection provided successfully.'
-				] );
+				echo json_encode(
+					[
+						'status'  => 'failure',
+						'message' => 'Error occurred while fetching CloudFlare settings. Your changes will not affect your CloudFlare settings until CloudFlare connection provided successfully.',
+					]
+				);
 			}
 			wp_die();
 		}
+	}
+
+	private function get_apo_settings() {
+		return self::send_request( 'automatic_platform_optimization' );
+	}
+
+	private static function update_apo_settings( $apo_enabled, $cache_by_device_type ) {
+		return self::send_request( 'automatic_platform_optimization',
+			'PATCH',
+			[
+				'value' => [
+					"enabled"              => (bool) $apo_enabled,
+					"cf"                   => true,
+					"wordpress"            => true,
+					"wp_plugin"            => true,
+					"cache_by_device_type" => (bool) $cache_by_device_type,
+				],
+			] );
 	}
 
 	public static function is_cloudflare_active() {

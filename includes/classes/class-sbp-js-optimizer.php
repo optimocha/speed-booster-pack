@@ -114,6 +114,11 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	];
 
 	/**
+	 * @var array $default_includes
+	 */
+	private $default_includes = [];
+
+	/**
 	 * Comment lines
 	 *
 	 * @var array $comments
@@ -131,6 +136,12 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	 * @var array $included_scripts
 	 */
 	private $included_scripts = [];
+
+	/**
+	 * This array will keep all the scripts that's not in the move to footer exclusion list
+	 * @var array $footer_included_scripts
+	 */
+	private $footer_included_scripts = [];
 
 	/**
 	 * This array will keep changed versions of $included_scripts
@@ -152,20 +163,39 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private $exclude_rules = [];
 
 	/**
-	 * Property to decide if scripts will be deferred ro moved to footer (default is off, which means no optimization)
+	 * @var array $js_footer_exclude_rules
+	 */
+	private $js_footer_exclude_rules = [];
+
+	/**
+	 * JavaScript inclusion rules
+	 *
+	 * @var array $include_rules
+	 */
+	private $include_rules = [];
+
+	/**
 	 *
 	 * @var mixed|null $optimize_strategy
 	 */
 	private $optimize_strategy = 'off';
 
-	public function __construct() {
-		$this->optimize_strategy = sbp_get_option( 'js_optimize' );
+	/**
+	 * @var mixed|null
+	 */
+	private $js_footer = false;
 
-		if ( ! sbp_get_option( 'module_assets' ) || $this->optimize_strategy == 'off' ) {
+	public function __construct() {
+		$this->optimize_strategy = sbp_get_option( 'js_optimize', 'off' );
+		$this->js_footer    = sbp_get_option( 'js_footer' );
+
+		if ( ! sbp_get_option( 'module_assets' ) || ( $this->optimize_strategy == 'off' && ! $this->js_footer ) ) {
 			return;
 		}
 
-		$this->exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
+		$this->js_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_footer_exclude' ) ), $this->default_excludes );
+		$this->exclude_rules                = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
+		$this->include_rules                = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
 
 		add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
 	}
@@ -174,11 +204,14 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		$this->replace_comments_with_placeholders( $html );
 		$this->find_scripts_without_defer( $html );
 		$this->check_script_types();
-		$this->remove_excluded_scripts();
 
-		if ( $this->optimize_strategy == 'move' ) {
+		if ( $this->js_footer ) {
+			$this->remove_footer_excluded_scripts();
 			$this->move_scripts( $html );
-		} elseif ( $this->optimize_strategy == 'defer' ) {
+		}
+
+		if ( $this->optimize_strategy !== 'off' ) {
+			$this->remove_excluded_scripts();
 			$this->add_defer_attribute();
 			$this->convert_inline_to_base64();
 			$html = str_replace( $this->included_scripts, $this->changed_scripts, $html );
@@ -201,7 +234,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 
 			foreach ( $comments as $comment ) {
 				$this->comments[] = $comment;
-				$html			 = str_replace( $comment, $this->comment_placeholder, $html );
+				$html             = str_replace( $comment, $this->comment_placeholder, $html );
 			}
 		}
 	}
@@ -240,11 +273,13 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 			preg_match( '/<script[\s\S]*?type=[\'|"](.*?)[\'|"][\s\S]*?>/im', $script, $result );
 			// If type is not exists or type is in SCRIPT_TYPES constant, then add scripts to running scripts
 			if ( count( $result ) == 0 ) {
-				$this->included_scripts[] = $script;
+				$this->included_scripts[]        = $script;
+				$this->footer_included_scripts[] = $script;
 			} else {
 				$type = trim( str_replace( [ '"', "'" ], '', $result[1] ) );
 				if ( in_array( $type, self::SCRIPT_TYPES ) ) {
-					$this->included_scripts[] = $script;
+					$this->included_scripts[]        = $script;
+					$this->footer_included_scripts[] = $script;
 				}
 			}
 		}
@@ -256,9 +291,42 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private function remove_excluded_scripts() {
 		$script_count = count( $this->included_scripts );
 		for ( $i = 0; $i < $script_count; $i ++ ) {
-			foreach ( $this->exclude_rules as $rule ) {
-				if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
+			if ( $this->optimize_strategy == 'everything' ) {
+				foreach ( $this->exclude_rules as $rule ) {
+					if ( isset( $this->included_scripts[ $i ] ) ) {
+						if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
+							unset( $this->included_scripts[ $i ] );
+						}
+					}
+				}
+			} elseif ( $this->optimize_strategy == 'custom' ) {
+				$has_found = false;
+				foreach ( $this->include_rules as $rule ) {
+					if ( isset( $this->included_scripts[ $i ] ) ) {
+						if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
+							$has_found = true;
+							continue;
+						}
+					}
+				}
+				if ( $has_found === false ) {
 					unset( $this->included_scripts[ $i ] );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Removes excluded script tags from included_scripts array
+	 */
+	private function remove_footer_excluded_scripts() {
+		$script_count = count( $this->footer_included_scripts );
+		for ( $i = 0; $i < $script_count; $i ++ ) {
+			foreach ( $this->js_footer_exclude_rules as $rule ) {
+				if ( isset( $this->footer_included_scripts[ $i ] ) ) {
+					if ( strpos( $this->footer_included_scripts[ $i ], $rule ) !== false ) {
+						unset( $this->footer_included_scripts[ $i ] );
+					}
 				}
 			}
 		}
@@ -270,19 +338,19 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	 * @param $html
 	 */
 	private function move_scripts( &$html ) {
-		foreach ( $this->included_scripts as $script ) {
+		foreach ( $this->footer_included_scripts as $script ) {
 			$html = str_ireplace( $script, '', $html );
 		}
 
-		$html = str_ireplace( '</body>', implode( PHP_EOL, $this->included_scripts ) . PHP_EOL . '</body>', $html );
+		$html = str_ireplace( '</body>', implode( PHP_EOL, $this->footer_included_scripts ) . PHP_EOL . '</body>', $html );
 	}
 
 	private function add_defer_attribute() {
 		foreach ( $this->included_scripts as $script ) {
 			if ( str_ireplace( array( ' async', ' defer', 'data-noptimize="1"', 'data-cfasync="false"', 'data-pagespeed-no-defer' ), '', $script ) === $script ) {
-					$this->changed_scripts[] = str_ireplace( '<script', '<script defer', $script );
+				$this->changed_scripts[] = str_ireplace( '<script', '<script defer', $script );
 			} else {
-					$this->changed_scripts[] = $script;
+				$this->changed_scripts[] = $script;
 			}
 		}
 	}
@@ -293,8 +361,8 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 			if ( isset( $matches[2] ) && str_replace( array( 'data-noptimize="1"', 'data-cfasync="false"', 'data-pagespeed-no-defer' ), '', $matches[0] ) === $matches[0] ) {
 				$script_content = $matches[2];
 				$base64_script  = base64_encode( $script_content );
-				$script = str_replace( $script_content, '', $script );
-				$script = str_replace( '<script defer', '<script defer src="data:text/javascript;base64,' . $base64_script . '"', $script );
+				$script         = str_replace( $script_content, '', $script );
+				$script         = str_replace( '<script defer', '<script defer src="data:text/javascript;base64,' . $base64_script . '"', $script );
 			}
 		}
 	}

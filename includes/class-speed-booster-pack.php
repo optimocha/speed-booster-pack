@@ -24,12 +24,15 @@ use SpeedBooster\SBP_Compatibility_Checker;
 use SpeedBooster\SBP_Critical_CSS;
 use SpeedBooster\SBP_CSS_Minifier;
 use SpeedBooster\SBP_Custom_Code_Manager;
+use SpeedBooster\SBP_Database_Optimizer;
+use SpeedBooster\SBP_WP_Admin;
 use SpeedBooster\SBP_Font_Optimizer;
 use SpeedBooster\SBP_HTML_Minifier;
 use SpeedBooster\SBP_JS_Optimizer;
 use SpeedBooster\SBP_Lazy_Loader;
 use SpeedBooster\SBP_Localize_Tracker;
 use SpeedBooster\SBP_Migrator;
+use SpeedBooster\SBP_Newsletter;
 use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Preboost;
 use SpeedBooster\SBP_Special;
@@ -103,6 +106,7 @@ class Speed_Booster_Pack {
 		$this->init_modules();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		$this->define_public_filters();
 	}
 
 	private function should_plugin_run() {
@@ -153,6 +157,9 @@ class Speed_Booster_Pack {
 		if ( ! $this->should_plugin_run() ) {
 			return false;
 		}
+		new SBP_WP_Admin();
+		new SBP_Database_Optimizer();
+		new SBP_Newsletter();
 		new SBP_Migrator();
 		new SBP_JS_Optimizer();
 		new SBP_Tweaks();
@@ -269,6 +276,13 @@ class Speed_Booster_Pack {
 		$plugin_public = new Speed_Booster_Pack_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 9999999 );
+	}
+
+	/**
+	 * @since 4.1.2
+	 */
+	private function define_public_filters() {
+		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
 	}
 
 	/**

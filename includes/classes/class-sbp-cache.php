@@ -2,6 +2,8 @@
 
 namespace SpeedBooster;
 
+use SpeedBooster\SBP_Advanced_Cache_Generator;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -16,6 +18,8 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private $file_name = 'index.html';
 
 	public function __construct() {
+		global $sbp_cache_already_bypassed;
+
 		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) ) {
 			return;
 		}
@@ -35,7 +39,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @return bool
 	 */
 	private function should_bypass_cache() {
-
 		// Do not cache for logged in users
 		if ( is_user_logged_in() ) {
 			return true;
@@ -80,18 +83,15 @@ class SBP_Cache extends SBP_Abstract_Module {
 			}
 		}
 
-		// Check for exclude URLs
-		if ( sbp_get_option( 'caching_exclude_urls' ) ) {
-			$exclude_urls   = array_map( 'trim', explode( PHP_EOL, sbp_get_option( 'caching_exclude_urls' ) ) );
-			$exclude_urls[] = '/favicon.ico';
-			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
-			if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
-				return true;
-			}
+		if ( $this->check_excluded_urls() ) {
+			return true;
+		}
+
+		if ( $this->check_cookies() ) {
+			return true;
 		}
 
 		return false;
-
 	}
 
 	/**
@@ -99,20 +99,20 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 */
 	public function clear_cache_request() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_total_cache' ) ) {
-			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			self::clear_total_cache();
 			set_transient( 'sbp_notice_cache', '1', 60 );
-			wp_redirect( $redirect_url );
+			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
+			wp_safe_redirect( $redirect_url );
+			exit;
 		}
 	}
 
 	/**
-	 * Clears all cache files and regenerates settings.json file
+	 * Clears all cache files
 	 */
 	public static function clear_total_cache() {
 		do_action( 'sbp_before_cache_clear' );
 		sbp_delete_dir_recursively( SBP_CACHE_DIR );
-		self::create_settings_json();
 		if ( sbp_get_option( 'caching_warmup_after_clear' ) && sbp_get_option( 'module_caching' ) ) {
 			$warmup = new SBP_Cache_Warmup();
 			$warmup->start_process();
@@ -140,27 +140,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 		$wp_filesystem = sbp_get_filesystem();
 
-		if ( ! $wp_filesystem->exists( SBP_CACHE_DIR . 'settings.json' ) ) {
-			self::create_settings_json();
-		}
-
-		// Check for query strings
-		if ( ! empty( $_GET ) ) {
-			// Get included rules
-			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
-
-			$query_string_file_name = '';
-			// Order get parameters alphabetically (to get same filename for every order of query parameters)
-			ksort( $_GET );
-			foreach ( $_GET as $key => $value ) {
-				if ( in_array( $key, $include_query_strings ) ) {
-					$query_string_file_name .= "$key-$value-";
-				}
-			}
-			if ( '' !== $query_string_file_name ) {
-				$this->file_name        = md5( $query_string_file_name ) . '.html';
-			}
-		}
+		$this->check_query_strings();
 
 		// Read cache file
 		$cache_file_path = $this->get_cache_file_path() . $this->file_name;
@@ -243,20 +223,30 @@ class SBP_Cache extends SBP_Abstract_Module {
 			$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
 		}
 
-		if ( file_exists( $wp_config_file ) && is_writable( $wp_config_file ) ) {
+		if ( file_exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file ) ) {
 			// get wp config as array
 			$wp_config = file( $wp_config_file );
 
 			if ( $wp_cache ) {
-				$append_line = PHP_EOL . PHP_EOL . "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL;
+				$append_line = PHP_EOL . "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL;
 			} else {
 				$append_line = '';
 			}
 
 			$found_wp_cache = false;
 
-			foreach ( $wp_config as &$line ) {
+			foreach ( $wp_config as $line_number => &$line ) {
 				if ( preg_match( '/^\s*define\s*\(\s*[\'\"]WP_CACHE[\'\"]\s*,.*\)\s*;/', $line ) ) {
+					// Remove blank line before constant
+					if ( isset( $wp_config[ $line_number - 1 ] ) && $wp_config[ $line_number - 1 ] === PHP_EOL ) {
+						unset( $wp_config[ $line_number - 1 ] );
+					}
+
+					// Remove blank line after constant
+					if ( isset( $wp_config[ $line_number + 1 ] ) && $wp_config[ $line_number + 1 ] === PHP_EOL ) {
+						unset( $wp_config[ $line_number + 1 ] );
+					}
+
 					$line           = $append_line;
 					$found_wp_cache = true;
 					break;
@@ -280,64 +270,51 @@ class SBP_Cache extends SBP_Abstract_Module {
 	}
 
 	/**
-	 * Generates advanced-cache.php and settings.json on CSF options save.
+	 * Generates advanced-cache.php
 	 *
 	 * @param $saved_data
 	 */
 	public static function options_saved_listener( $saved_data ) {
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
-		if ( ! isset( $_SERVER['KINSTA_CACHE_ZONE'] ) && ( ! defined( 'IS_PRESSABLE' ) || ! IS_PRESSABLE ) ) {
+		if ( ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
+			set_transient( 'sbp_advanced_cache_error', 1 );
 
-			if ( sbp_get_option( 'module_caching' ) !== $saved_data['module_caching'] ) {
+			return;
+		}
 
-				// Delete or recreate advanced-cache.php
-				if ( $saved_data['module_caching'] ) {
-					$sbp_advanced_cache = SBP_PATH . '/advanced-cache.php';
+		if ( file_exists( $advanced_cache_path ) && ! sbp_check_file_permissions( $advanced_cache_path ) ) {
+			set_transient( 'sbp_advanced_cache_error', 1 );
 
+			return;
+		}
+
+		if ( sbp_should_disable_feature( 'caching' ) === false ) {
+			// Delete or recreate advanced-cache.php
+			if ( $saved_data['module_caching'] ) {
+				$advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file( $saved_data );
+				if ( $advanced_cache_file_content ) {
 					SBP_Cache::set_wp_cache_constant( true );
 
-					file_put_contents( WP_CONTENT_DIR . '/advanced-cache.php', file_get_contents( $sbp_advanced_cache ) );
-
-					self::create_settings_json( $saved_data );
-				} else {
-					SBP_Cache::set_wp_cache_constant( false );
-					if ( file_exists( $advanced_cache_path ) ) {
-						if ( ! unlink( $advanced_cache_path ) ) {
-							return wp_send_json_error( [
-								'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ),
-								'errors' => []
-							] );
-						}
+					file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
+				}
+			} else {
+				SBP_Cache::set_wp_cache_constant( false );
+				if ( file_exists( $advanced_cache_path ) ) {
+					if ( ! unlink( $advanced_cache_path ) ) {
+						wp_send_json_error( [
+							'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ),
+							'errors' => [],
+						] );
 					}
 				}
 			}
 		} else {
+			// Z_TODO: Are we deleting other plugins advanced-cache.php?
 			if ( file_exists( $advanced_cache_path ) ) {
 				@unlink( $advanced_cache_path );
 			}
 		}
-	}
-
-	/**
-	 * Generates settings.json file from current options
-	 *
-	 * @param null $saved_data
-	 */
-	public static function create_settings_json( $options = null ) {
-		global $wp_filesystem;
-		require_once( ABSPATH . '/wp-admin/includes/file.php' );
-		WP_Filesystem();
-
-		wp_mkdir_p( WP_CONTENT_DIR . '/cache/speed-booster' );
-		$settings = [
-			'caching_include_query_strings' => $options !== null ? $options['caching_include_query_strings'] : sbp_get_option( 'caching_include_query_strings' ),
-			'caching_expiry'                => $options !== null ? $options['caching_expiry'] : sbp_get_option( 'caching_expiry' ),
-			'caching_exclude_urls'          => $options !== null ? $options['caching_exclude_urls'] : sbp_get_option( 'caching_exclude_urls' ),
-			'caching_separate_mobile'       => $options !== null ? $options['caching_separate_mobile'] : sbp_get_option( 'caching_separate_mobile' ),
-		];
-
-		$wp_filesystem->put_contents( WP_CONTENT_DIR . '/cache/speed-booster/settings.json', json_encode( $settings ) );
 	}
 
 	public function clear_homepage_cache() {
@@ -651,6 +628,57 @@ AddEncoding gzip              svgz
 			if ( $item['variation_id'] > 0 ) {
 				$variation_id = $item['variation_id'];
 				self::clear_post_by_id( $variation_id );
+			}
+		}
+	}
+
+	private function check_cookies() {
+		// Check if user logged in
+		if ( ! empty( $_COOKIE ) ) {
+			// Default Cookie Excludes
+			$cookies          = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_' ];
+			$excluded_cookies = sbp_get_option( 'caching_exclude_cookies' );
+			$excluded_cookies = SBP_Utils::explode_lines( $excluded_cookies );
+			$cookies          = array_merge( $cookies, $excluded_cookies );
+
+			$cookies_regex = '/^(' . implode( '|', $cookies ) . ')/';
+
+			foreach ( $_COOKIE as $key => $value ) {
+				if ( preg_match( $cookies_regex, $key ) ) {
+					return true;
+				}
+			}
+		}
+	}
+
+	private function check_query_strings() {
+		// Check for query strings
+		if ( ! empty( $_GET ) ) {
+			// Get included rules
+			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
+
+			$query_string_file_name = '';
+			// Order get parameters alphabetically (to get same filename for every order of query parameters)
+			ksort( $_GET );
+			foreach ( $_GET as $key => $value ) {
+				if ( in_array( $key, $include_query_strings ) ) {
+					$query_string_file_name .= "$key-$value-";
+				}
+			}
+			if ( '' !== $query_string_file_name ) {
+				$this->file_name = md5( $query_string_file_name ) . '.html';
+			}
+		}
+	}
+
+	private function check_excluded_urls() {
+		// Check for exclude URLs
+		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' ) ) {
+			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines( $exclude_urls ) );
+			$exclude_urls[] = '/favicon.ico';
+			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
+			if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
+				return true;
 			}
 		}
 	}

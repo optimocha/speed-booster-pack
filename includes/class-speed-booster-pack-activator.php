@@ -10,6 +10,7 @@
  * @subpackage Speed_Booster_Pack/includes
  */
 
+use SpeedBooster\SBP_Advanced_Cache_Generator;
 use SpeedBooster\SBP_Cache;
 use SpeedBooster\SBP_WP_Config_Injector;
 
@@ -38,8 +39,18 @@ class Speed_Booster_Pack_Activator {
 	 * @since    4.0.0
 	 */
 	public static function activate() {
-		SBP_Cache::generate_htaccess();
-		SBP_WP_Config_Injector::inject_wp_config();
+        if (sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' )) {
+            SBP_Cache::clear_total_cache();
+            SBP_Cache::set_wp_cache_constant( true );
+            SBP_Cache::generate_htaccess();
+
+            $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file();
+            $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
+            if ( $advanced_cache_file_content ) {
+                file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
+            }
+        }
+        SBP_WP_Config_Injector::inject_wp_config();
 	}
 
 }

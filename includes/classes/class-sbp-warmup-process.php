@@ -23,7 +23,8 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 			'compress'            => true,
 			'httpversion'         => '1.1',
 			'limit_response_size' => 100,
-		], $options );
+		],
+			$options );
 
 		wp_remote_get( $item['url'], $args );
 

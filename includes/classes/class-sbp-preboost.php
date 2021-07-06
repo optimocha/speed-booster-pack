@@ -54,8 +54,20 @@ class SBP_Preboost extends SBP_Abstract_Module {
 	}
 
 	private function prepare_preload_tags() {
-		if( isset( sbp_get_option( 'preboost' )['preboost_include'] ) ) {
+		$urls = [];
+		if ( isset( sbp_get_option( 'preboost' )['preboost_include'] ) ) {
 			$urls = SBP_Utils::explode_lines( sbp_get_option( 'preboost' )['preboost_include'] );
+		}
+
+		if ( is_singular() ) {
+			$csp_enabled_post_types = sbp_get_option( 'csp_post_types' );
+			if ( is_array( $csp_enabled_post_types ) && in_array( get_post_type(), $csp_enabled_post_types ) ) {
+				$content_specific_preload_rules = sbp_get_post_meta( get_the_ID(), 'sbp_preload' );
+				if ( $content_specific_preload_rules !== null ) {
+					$content_specific_preload_rules_array = SBP_Utils::explode_lines( $content_specific_preload_rules );
+					$urls                                 = array_merge( $urls, $content_specific_preload_rules_array );
+				}
+			}
 		}
 
 		if ( isset( $urls ) && count( $urls ) ) {

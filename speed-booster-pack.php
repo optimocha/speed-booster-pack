@@ -6,7 +6,7 @@
  * Plugin Name:       Speed Booster Pack
  * Plugin URI:        https://speedboosterpack.com
  * Description:       PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize & cache your site with this smart plugin!
- * Version:           4.1.3
+ * Version:           4.2.2
  * Author:            Optimocha
  * Author URI:        https://optimocha.com
  * License:           GPLv3 or later
@@ -32,7 +32,7 @@ define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' );
 /**
  * Current plugin version.
  */
-define( 'SBP_VERSION', '4.1.3' );
+define( 'SBP_VERSION', '4.2.2' );
 
 /**
  * Plugin website URL.
@@ -50,7 +50,7 @@ define( 'SBP_OWNER_NAME', 'Optimocha' );
 define( 'SBP_OWNER_HOME', 'https://optimocha.com/' );
 
 /**
- * Plugin Path
+ * Plugin URL
  */
 define( 'SBP_URL', plugin_dir_url( __FILE__ ) );
 
@@ -75,7 +75,7 @@ define( 'SBP_LIB_PATH', SBP_PATH . 'vendor/' );
 define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' );
 
 /**
- * Cache directory url
+ * Cache directory URL
  */
 define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' );
 
@@ -88,6 +88,16 @@ define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
  * URL for localized script files.
  */
 define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' );
+
+/**
+ * Plugin basename.
+ */
+define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+
+/**
+ * Migrator script version.
+ */
+define( 'SBP_MIGRATOR_VERSION', '42000' );
 
 /**
  * Load all plugin options
@@ -107,7 +117,6 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 		return ( isset( $sbp_options[ $option ] ) ) ? $sbp_options[ $option ] : $default;
 	}
 }
-
 
 /**
  * The code that runs during plugin activation.
@@ -139,9 +148,10 @@ require SBP_INC_PATH . 'class-speed-booster-pack.php';
 /**
  * Autoload classes which has SpeedBooster namespace
  *
+ * @param $class_name
+ *
  * @since 4.0.0
  *
- * @param $class_name
  */
 spl_autoload_register( 'sbp_autoloader' );
 function sbp_autoloader( $class_name ) {
@@ -165,7 +175,9 @@ function sbp_autoloader( $class_name ) {
  * @since    4.0.0
  */
 function run_speed_booster_pack() {
-	if( preg_match( '/(\.txt|\.pdf|\.xml|\.ico|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {return;}
+	if ( preg_match( '/(\.txt|\.pdf|\.xml|\.svg|\.ico|wp-json|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
+		return;
+	}
 
 	$plugin = new Speed_Booster_Pack();
 	$plugin->run();

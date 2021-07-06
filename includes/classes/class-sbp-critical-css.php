@@ -10,6 +10,10 @@ if ( ! defined( 'WPINC' ) ) {
 use simplehtmldom\HtmlDocument;
 
 class SBP_Critical_CSS extends SBP_Abstract_Module {
+	private $excluded_handles = [
+		'admin-bar-css',
+	];
+
 	public function __construct() {
 		if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'enable_criticalcss' ) ) {
 			return;
@@ -23,7 +27,6 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 			return $html;
 		}
 
-
 		// Find Default Critical CSS Code if exists
 		$criticalcss_code = sbp_get_option( 'criticalcss_default' );
 
@@ -35,10 +38,13 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 			'is_category',
 			'is_tag',
 			'is_archive',
+			'is_shop',
+			'is_product',
+			'is_product_category',
 		];
 
 		foreach ( $conditions as $condition ) {
-			if ( call_user_func( $condition ) ) {
+			if ( function_exists( $condition ) && call_user_func( $condition ) ) {
 				$criticalcss_codes = sbp_get_option( 'criticalcss_codes' );
 				if ( isset( $criticalcss_codes[ $condition ] ) && $criticalcss_codes[ $condition ] ) {
 					$criticalcss_code = $criticalcss_codes[ $condition ];
@@ -63,7 +69,7 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 		// Find all links
 		$links = $dom->find( 'link[rel=stylesheet]' );
 		foreach ( $links as $link ) {
-			if ( ! isset( $link->media ) || $link->media !== 'print' ) {
+			if ( ( ! isset( $link->media ) || $link->media !== 'print' ) && ! in_array( $link->id, $this->excluded_handles ) ) {
 				$link->media  = 'print';
 				$link->onload = "this.media='all'";
 			}

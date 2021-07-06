@@ -139,9 +139,9 @@ class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 
 	public function dismiss_notice() {
 		if ( current_user_can( 'manage_options' ) && isset( $_POST['notice_id'] ) && isset( $_POST['action'] ) && $_POST['action'] == 'sbp_dismiss_compat_notice' ) {
-			$id              = $_POST['notice_id'];
-			$dismiss_options = get_user_meta( get_current_user_id(), 'sbp_dismissed_compat_notices', true );
-			$dismiss_options = $dismiss_options == '' ? [] : $dismiss_options;
+			$id                = $_POST['notice_id'];
+			$dismiss_options   = get_user_meta( get_current_user_id(), 'sbp_dismissed_compat_notices', true );
+			$dismiss_options   = $dismiss_options == '' ? [] : $dismiss_options;
 			$dismiss_options[] = $id;
 			$dismiss_options   = array_unique( $dismiss_options );
 			update_user_meta( get_current_user_id(), 'sbp_dismissed_compat_notices', $dismiss_options );
