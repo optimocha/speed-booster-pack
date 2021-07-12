@@ -224,6 +224,44 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Dashboard */
 
+            /* BEGIN Section: Speed Advisor */
+            CSF::createSection(
+                $prefix,
+                [
+	                'title'  => __( 'Advisor', 'speed-booster-pack' ),
+	                'id'     => 'dashboard',
+	                'class'  => 'dashboard',
+	                'icon'   => 'fa fa-graduation-cap',
+	                'fields' => [
+                        [
+                            'id' => 'advisor_heading',
+                            'type' => 'subheading',
+	                        // B_TODO: Change heading
+                            'content' => __( 'Recommendations For You', 'speed-booster-pack' ),
+                        ],
+                        [
+                            'id' => 'advisor_introduction',
+                            'type' => 'content',
+                            // B_TODO: Change introduction paragraph
+                            'content' => __( 'This is the introduction paragraph. Lorem ipsum dolor sit amet, conectetur adipiscing elit. Lorem ipsum dolor sit amet, conectetur adipiscing elit. Lorem ipsum dolor sit amet, conectetur adipiscing elit.', 'speed-booster-pack' ),
+                        ],
+                        [
+                            'type' => 'content',
+                            'content' => '<div class="notice notice-warning is-dismissible sbp-advice">
+                                <p>Kullandığınız PHP sürümü (5.6.0) eski görünüyor. Bunun yerine en son stabil sürüm olan PHP 7.3\'ü indirebilirsiniz.</p>
+                            </div>',
+                        ],
+                        [
+                            'type' => 'content',
+                            'content' => '<div class="notice notice-warning is-dismissible sbp-advice">
+                                <p>Bu da başka bir uyarı. Biraz daha uzun bir metin gelecek buraya.</p>
+                            </div>',
+                        ],
+                    ]
+                ]
+            );
+            /* END Section: Speed Advisor */
+
 			/* BEGIN Section: Caching */
 			$cache_fields = [
 				[
