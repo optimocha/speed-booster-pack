@@ -275,4 +275,18 @@
         });
     });
 
+    $(document).on('click', '.sbp-advice .notice-dismiss', function() {
+        var message_id = $(this).parent().data('message-id');
+
+        $.ajax({
+            type: 'GET',
+            url: ajaxurl,
+            data: {'action': 'sbp_dismiss_advisor_message', 'sbp_action': 'sbp_dismiss_advisor_message', 'nonce': sbp_ajax_vars.nonce, 'sbp_dismiss_message_id': message_id},
+            success: function(response) {
+            },
+            error: function(xhr, status) {
+            },
+        });
+    });
+
 })(jQuery);

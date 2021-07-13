@@ -77,7 +77,9 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
 
-		$this->create_settings_page();
+		add_action('plugins_loaded', [$this, 'create_settings_page']);
+
+//		$this->create_settings_page();
 		$this->create_metaboxes();
 	}
 
@@ -226,7 +228,6 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: Dashboard */
 
             $advisor = new SBP_Advisor();
-            $message_fields = [];
             $advisor_messages = $advisor->get_messages();
             $advisor_fields = [
 	            [
@@ -243,13 +244,21 @@ class Speed_Booster_Pack_Admin {
 	            ],
             ];
 
-            foreach ($advisor_messages as $message) {
-                $dismissible = $message['type'] == 'dismissible' ? 'is-dismissible' : null;
-                $advisor_fields[] = [
-	                'type' => 'content',
-	                'content' => '<div class="notice notice-' . $message['style'] . ' ' . $dismissible . ' sbp-advice">
+            if ( $advisor_messages ) {
+	            foreach ($advisor_messages as $message_id => $message) {
+		            $dismissible = $message['type'] == 'dismissible' ? 'is-dismissible' : null;
+		            $advisor_fields[] = [
+			            'type' => 'content',
+			            'content' => '<div class="notice notice-' . $message['style'] . ' ' . $dismissible . ' sbp-advice" data-message-id="' . $message_id . '">
                         <p>' . $message['content'] . '</p>
                     </div>',
+		            ];
+	            }
+            } else {
+                $advisor_fields[] = [
+                    'type' => 'submessage',
+                    'style' => 'success',
+                    'content' => '<p>' . __( 'There is no any recommendation for now.', 'speed-booster-pack' ) . '</p>',
                 ];
             }
 

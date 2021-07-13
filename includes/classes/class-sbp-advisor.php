@@ -7,13 +7,16 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class SBP_Advisor extends SBP_Abstract_Module {
+class SBP_Advisor {
 	private $messages = [];
 	private $dismissed_messages = [];
+	private $user_meta_key = 'sbp_dismissed_messages';
 
 	public function __construct() {
-		add_action( 'admin_init', [ $this, 'get_dismissed_messages' ] );
-		add_action( 'admin_init', [ $this, 'set_messages' ] );
+		$this->get_dismissed_messages();
+		$this->set_messages();
+
+		add_action( 'wp_ajax_sbp_dismiss_advisor_message', [ $this, 'dismiss_advisor_message' ] );
 	}
 
 	public function set_messages() {
@@ -24,7 +27,7 @@ class SBP_Advisor extends SBP_Abstract_Module {
 	}
 
 	public function get_dismissed_messages() {
-		$dismissed_messages = get_user_meta( get_current_user_id(), 'sbp_dismissed_messages', true );
+		$dismissed_messages = get_user_meta( get_current_user_id(), $this->user_meta_key, true );
 
 		if ( ! is_array( $dismissed_messages ) ) {
 			$this->dismissed_messages = [];
@@ -59,5 +62,17 @@ class SBP_Advisor extends SBP_Abstract_Module {
 
 	public function get_messages() {
 		return $this->messages;
+	}
+
+	public function dismiss_advisor_message() {
+		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_dismiss_advisor_message' && current_user_can( 'manage_options' ) && isset( $_GET['nonce'] ) && wp_verify_nonce( $_GET['nonce'], 'sbp_ajax_nonce' ) ) {
+			$message_id = $_GET['sbp_dismiss_message_id'];
+			$this->get_dismissed_messages();
+			$dismissed_messages = $this->dismissed_messages;
+			$dismissed_messages[] = $message_id;
+			$dismissed_messages = array_unique($dismissed_messages);
+			update_user_meta( get_current_user_id(), $this->user_meta_key, $dismissed_messages );
+			wp_die();
+		}
 	}
 }
