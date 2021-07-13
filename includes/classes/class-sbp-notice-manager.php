@@ -8,7 +8,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class SBP_Notice_Manager {
-	private static $notice_count = 0;
+	public static $notice_count = 0;
 
 	public function __construct() {
 		add_action( 'wp_ajax_sbp_dismiss_notice', [ $this, 'dismiss_notice' ] );
