@@ -974,6 +974,14 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
 						[
+                            // B_TODO: Change Text
+                            'title' => __( 'Specify Image Dimensions', 'speed-booster-pack' ),
+                            'id' => 'missing_image_dimensions',
+                            'type' => 'switcher',
+                            // B_TODO: Change Text
+                            'desc' => __( 'Specify missing image dimensions to prevent cumulative layout shift.', 'speed-booster-pack' ),
+                        ],
+						[
 							'title'      => __( 'Localize Google Analytics & Google Tag Manager', 'speed-booster-pack' ),
 							'id'         => 'localize_tracking_scripts',
 							'type'       => 'switcher',
