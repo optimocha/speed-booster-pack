@@ -109,6 +109,7 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_tweet_notice_display_time' );
 	delete_user_meta( $user->ID, 'sbp_rate_wp_org_notice_display_time' );
 	delete_user_meta( $user->ID, 'sbp_hide_newsletter_pointer' );
+	delete_user_meta( $user->ID, 'sbp_dismissed_messages' );
 }
 
 // Z_TODO: let's make a tool called "Cleanup SBP metadata" in a future version

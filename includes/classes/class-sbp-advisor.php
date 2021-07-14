@@ -39,10 +39,15 @@ class SBP_Advisor {
 	private function check_http_protocol_version() {
 		$message_id = 'update_http_protocol';
 
+		if ( isset( $_SERVER['SERVER_PROTOCOL'] ) && $_SERVER['SERVER_PROTOCOL'] !== 'HTTP/1.1' ) {
+			return;
+		}
+
 		if ( ! in_array( $message_id, $this->dismissed_messages ) ) {
 			$this->messages[ $message_id ] = [
 				'style'   => 'warning',
 				'type'    => 'dismissible',
+				// B_TODO: Change text
 				'content' => __( 'We detected that you\'re using HTTP/1.1. For best performance, you need to update to HTTP/2 or HTTP/3', 'speed-booster-pack' ),
 			];
 		}
@@ -51,10 +56,15 @@ class SBP_Advisor {
 	private function check_php_version() {
 		$message_id = 'update_php';
 
+		if ( version_compare( phpversion(), '7.3' ) !== -1 ) {
+			return;
+		}
+
 		if ( ! in_array( $message_id, $this->dismissed_messages ) ) {
 			$this->messages[ $message_id ] = [
 				'style'   => 'warning',
 				'type'    => 'dismissible',
+				// B_TODO: Change text
 				'content' => __( 'We detected that you\'re using and old version of PHP. For best performance, you recommend you to upgrade to PHP 7.3', 'speed-booster-pack' ),
 			];
 		}
