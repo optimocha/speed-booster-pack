@@ -50,7 +50,7 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 
 		$html     = preg_replace( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/i", '', $html );
 		$link_tag = $this->create_tag();
-		$html     = str_replace( '</head>', '<link rel="dns-prefetch" href="//fonts.googleapis.com" />' . PHP_EOL . '<link rel="dns-prefetch" href="//fonts.gstatic.com" />' . PHP_EOL . $link_tag . PHP_EOL . '</head>', $html );
+		$html     = str_replace( '</title>', '<link rel="preconnect" href="https://fonts.googleapis.com" />' . PHP_EOL . '<link rel="preconnect" href="https://fonts.gstatic.com" />' . PHP_EOL . $link_tag . PHP_EOL . '</title>', $html );
 
 		return $html;
 	}
