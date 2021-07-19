@@ -11,6 +11,8 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 	private $families;
 	private $subsets;
 
+	private $css2_families;
+
 	public function __construct() {
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'optimize_gfonts' ) ) {
 			return;
@@ -28,6 +30,19 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 	}
 
 	public function process_google_fonts( $html ) {
+		// Process old Google Fonts API
+		$html = $this->process_google_fonts_api( $html );
+		$html = $this->process_new_google_fonts_api( $html );
+
+		$html     = preg_replace( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/i", '', $html );
+		$link_tag = $this->create_tag();
+		$html     = str_replace( '</title>', '</title>' . PHP_EOL . '<link rel="preconnect" href="https://fonts.googleapis.com" />' . PHP_EOL . '<link rel="preconnect" href="https://fonts.gstatic.com" />' . PHP_EOL . $link_tag, $html );
+
+		return $html;
+	}
+
+	// B_TODO: Maybe rename the methods
+	public function process_google_fonts_api( $html ) {
 		preg_match_all( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/is", $html, $matches );
 		if ( ! isset( $matches[1] ) || empty( $matches[1] ) ) {
 			return $html;
@@ -48,11 +63,109 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 			}
 		}
 
-		$html     = preg_replace( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/i", '', $html );
-		$link_tag = $this->create_tag();
-		$html     = str_replace( '</head>', '<link rel="dns-prefetch" href="//fonts.googleapis.com" />' . PHP_EOL . '<link rel="dns-prefetch" href="//fonts.gstatic.com" />' . PHP_EOL . $link_tag . PHP_EOL . '</head>', $html );
+		return $html;
+	}
+
+	public function process_new_google_fonts_api( $html ) {
+		preg_match_all( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css2\?(.*?))['\"?].*?>/is", $html, $matches );
+		if ( ! isset( $matches[1] ) || empty( $matches[1] ) ) {
+			return $html;
+		}
+
+		$urls  = $matches[1];
+		$fonts = [];
+
+		// Process each url
+		foreach ( $urls as $url ) {
+			$fonts[] = $this->parse_css2_attributes( $url );
+		}
+
+		$list = [];
+		foreach ( $fonts as $font ) {
+			if ( is_array( $font['family'] ) ) {
+				foreach ( $font['family'] as $font ) {
+					$this->append_css2_fonts_list( $font );
+					$list[] = $font;
+				}
+			} else {
+				$this->append_css2_fonts_list( $font['family'] );
+				$list[] = $font['family'];
+			}
+		}
+
+		$link_tag = $this->generate_css2_link_tag();
+
+		$html     = preg_replace( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css2\?(.*?))['\"?].*?>/i", '', $html );
+		$html     = str_replace( '</title>', '</title>' . PHP_EOL . $link_tag, $html );
 
 		return $html;
+	}
+
+	private function append_css2_fonts_list( $font ) {
+		$font_array  = explode( ':', $font );
+		$font_family = $font_array[0];
+
+		if ( isset( $font_array[1] ) ) {
+			$font_attributes = explode( '@', $font_array[1] );
+
+			if ( isset( $font_attributes[1] ) ) {
+				$weights = explode( ';', $font_attributes[1] );
+
+				if ( ! isset( $this->css2_families[ $font_family ]['weights'] ) ) {
+					$this->css2_families[ $font_family ]['weights'] = [];
+				}
+
+				$this->css2_families[ $font_family ]['weights'] = array_merge( $this->css2_families[ $font_family ]['weights'], $weights );
+			}
+
+			$styles = explode( ',', $font_attributes[0] );
+
+			if ( $styles ) {
+				foreach ( $styles as $style ) {
+					$this->css2_families[ $font_family ]['styles'][] = $style;
+				}
+			}
+		} else {
+			if ( ! isset( $this->css2_families[ $font_family ] ) ) {
+				$this->css2_families[ $font_family ] = [];
+			}
+		}
+	}
+
+	private function generate_css2_link_tag() {
+		$query_strings = [];
+
+		// Sort and clear arrays first
+		$this->css2_families = array_map(function($item) {
+			$item['styles'] = array_unique($item['styles']);
+			sort($item['styles']);
+			$item['weights'] = array_unique($item['weights']);
+			sort($item['weights']);
+
+			return $item;
+		}, $this->css2_families);
+
+		if ( $this->css2_families ) {
+			foreach ( $this->css2_families as $family_name => $attributes ) {
+				$query_string = 'family=' . $family_name;
+
+				if ( isset( $attributes['styles'] ) && $attributes['styles'] ) {
+					$query_string .= ':' . implode( ',', $attributes['styles'] );
+				}
+
+				if ( isset( $attributes['weights'] ) && $attributes['weights'] ) {
+					$query_string .= '@' . implode( ';', $attributes['weights'] );
+				}
+
+				$query_strings[] = $query_string;
+			}
+		}
+
+		return '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?' . implode( '&', $query_strings ) . '" />';
+	}
+
+	private function parse_css2_attributes( $url ) {
+		return sbp_proper_parse_str( parse_url( $url )['query'] );
 	}
 
 	private function parse_attributes( $url ) {
