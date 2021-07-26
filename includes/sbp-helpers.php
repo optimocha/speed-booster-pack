@@ -487,3 +487,9 @@ if ( ! function_exists( 'sbp_proper_parse_str' ) ) {
 		return $arr;
 	}
 }
+
+if ( ! function_exists( 'sbp_get_public_post_types' ) ) {
+	function sbp_get_public_post_types() {
+		return get_post_types( [ 'public' => true ] );
+	}
+}

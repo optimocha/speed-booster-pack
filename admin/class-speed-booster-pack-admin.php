@@ -932,15 +932,6 @@ class Speed_Booster_Pack_Admin {
 						],
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					],
-                    [
-                        /** B_TODO: Change text */
-                        'title' => __( 'Content Specific Preload Post Types', 'speed-booster-pack' ),
-                        'id' => 'csp_post_types',
-                        'type' => 'checkbox',
-                        'options' => 'post_types',
-                        'sanitize' => 'sbp_sanitize_titles_in_array',
-                        'inline' => true,
-                    ]
 				] );
 
 			CSF::createSection(
@@ -1414,12 +1405,12 @@ class Speed_Booster_Pack_Admin {
 	public function create_metaboxes() {
 		/* BEGIN Metaboxes */
 		$metabox_prefix = 'sbp_post_meta';
-		$csp_post_types     = sbp_get_option( 'csp_post_types' );
-		if ( is_array( $csp_post_types ) ) {
+		$public_post_types = get_option( 'sbp_public_post_types' );
+		if ( is_array( $public_post_types ) ) {
 			CSF::createMetabox( $metabox_prefix,
 				[
 					'title'     => SBP_PLUGIN_NAME,
-					'post_type' => $csp_post_types,
+					'post_type' => $public_post_types,
 				]
 			);
 

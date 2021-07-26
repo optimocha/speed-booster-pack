@@ -104,6 +104,7 @@ class Speed_Booster_Pack {
 		$this->plugin_name = 'speed-booster-pack';
 
 		$this->load_dependencies();
+		$this->save_post_types();
 		$this->set_locale();
 		$this->init_modules();
 		$this->define_admin_hooks();
@@ -287,6 +288,17 @@ class Speed_Booster_Pack {
 	 */
 	private function define_public_filters() {
 		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
+	}
+
+	private function save_post_types() {
+		add_action('admin_init', function() {
+			$post_types = array_keys( get_post_types( [ 'public' => true ] ) );
+			$saved_post_types = get_option( 'sbp_public_post_types' );
+
+			if ( ! $saved_post_types || $saved_post_types != $post_types ) {
+				update_option( 'sbp_public_post_types', $post_types );
+			}
+		});
 	}
 
 	/**
