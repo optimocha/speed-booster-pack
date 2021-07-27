@@ -187,20 +187,34 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 
 	public function __construct() {
 		$this->optimize_strategy = sbp_get_option( 'js_optimize', 'off' );
-		$this->js_footer    = sbp_get_option( 'js_footer' );
+		$this->js_footer         = sbp_get_option( 'js_footer' );
 
 		if ( ! sbp_get_option( 'module_assets' ) || ( $this->optimize_strategy == 'off' && ! $this->js_footer ) ) {
 			return;
 		}
 
-		$this->js_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_footer_exclude' ) ), $this->default_excludes );
-		$this->exclude_rules                = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
-		$this->include_rules                = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
-
 		add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
 	}
 
 	public function optimize_scripts( $html ) {
+		$this->js_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_footer_exclude' ) ), $this->default_excludes );
+		$this->exclude_rules           = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
+		$this->include_rules           = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
+
+		if ( is_singular() ) {
+			$js_optimization_status = sbp_get_post_meta( get_the_ID(), 'js_optimization_status', 'default' );
+
+			if ( $js_optimization_status == 'off' ) {
+				return $html;
+			} elseif ( $js_optimization_status == 'custom' ) {
+				$this->js_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_footer_exclude' ) ), $this->default_excludes );
+				$this->exclude_rules           = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_exclude' ) ), $this->default_excludes );
+				$this->include_rules           = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_include' ) ), $this->default_includes );
+				$this->optimize_strategy       = sbp_get_post_meta( get_the_ID(), 'js_optimize' );
+				$this->js_footer               = sbp_get_post_meta( get_the_ID(), 'js_footer' );
+			}
+		}
+
 		$this->replace_comments_with_placeholders( $html );
 		$this->find_scripts_without_defer( $html );
 		$this->check_script_types();

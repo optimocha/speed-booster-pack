@@ -77,7 +77,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
 
-		add_action('plugins_loaded', [$this, 'create_settings_page']);
+		add_action( 'plugins_loaded', [ $this, 'create_settings_page' ] );
 
 //		$this->create_settings_page();
 		$this->create_metaboxes();
@@ -227,64 +227,64 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Dashboard */
 
-            $advisor = new SBP_Advisor();
-            $advisor_messages = $advisor->get_messages();
-            $advisor_fields = [
-	            [
-		            'id' => 'advisor_heading',
-		            'type' => 'subheading',
-		            // B_TODO: Change heading
-		            'content' => __( 'Recommendations For You', 'speed-booster-pack' ),
-	            ],
-	            [
-		            'id' => 'advisor_introduction',
-		            'type' => 'content',
-		            // B_TODO: Change introduction paragraph
-		            'content' => __( 'This is the introduction paragraph. Lorem ipsum dolor sit amet, conectetur adipiscing elit. Lorem ipsum dolor sit amet, conectetur adipiscing elit. Lorem ipsum dolor sit amet, conectetur adipiscing elit.', 'speed-booster-pack' ),
-	            ],
-            ];
+			$advisor          = new SBP_Advisor();
+			$advisor_messages = $advisor->get_messages();
+			$advisor_fields   = [
+				[
+					'id'      => 'advisor_heading',
+					'type'    => 'subheading',
+					// B_TODO: Change heading
+					'content' => __( 'Recommendations For You', 'speed-booster-pack' ),
+				],
+				[
+					'id'      => 'advisor_introduction',
+					'type'    => 'content',
+					// B_TODO: Change introduction paragraph
+					'content' => __( 'This is the introduction paragraph. Lorem ipsum dolor sit amet, conectetur adipiscing elit. Lorem ipsum dolor sit amet, conectetur adipiscing elit. Lorem ipsum dolor sit amet, conectetur adipiscing elit.', 'speed-booster-pack' ),
+				],
+			];
 
-            if ( $advisor_messages ) {
-	            foreach ($advisor_messages as $message_id => $message) {
-		            $dismissible = $message['type'] == 'dismissible' ? 'is-dismissible' : null;
-		            $advisor_fields[] = [
-			            'type' => 'content',
-			            'content' => '<div class="notice notice-' . $message['style'] . ' ' . $dismissible . ' sbp-advice" data-message-id="' . $message_id . '">
+			if ( $advisor_messages ) {
+				foreach ( $advisor_messages as $message_id => $message ) {
+					$dismissible      = $message['type'] == 'dismissible' ? 'is-dismissible' : null;
+					$advisor_fields[] = [
+						'type'    => 'content',
+						'content' => '<div class="notice notice-' . $message['style'] . ' ' . $dismissible . ' sbp-advice" data-message-id="' . $message_id . '">
                         <p>' . $message['content'] . '</p>
                     </div>',
-		            ];
-	            }
-            } else {
-                $advisor_fields[] = [
-                    'type' => 'submessage',
-                    'style' => 'success',
-                    'content' => '<p>' . __( 'There is no any recommendation for now.', 'speed-booster-pack' ) . '</p>',
-                ];
-            }
+					];
+				}
+			} else {
+				$advisor_fields[] = [
+					'type'    => 'submessage',
+					'style'   => 'success',
+					'content' => '<p>' . __( 'There is no any recommendation for now.', 'speed-booster-pack' ) . '</p>',
+				];
+			}
 
-            /* BEGIN Section: Speed Advisor */
-            CSF::createSection(
-                $prefix,
-                [
-	                'title'  => __( 'Advisor', 'speed-booster-pack' ),
-	                'id'     => 'dashboard',
-	                'class'  => 'dashboard',
-	                'icon'   => 'fa fa-graduation-cap',
-	                'fields' => $advisor_fields,
-                ]
-            );
-            /* END Section: Speed Advisor */
+			/* BEGIN Section: Speed Advisor */
+			CSF::createSection(
+				$prefix,
+				[
+					'title'  => __( 'Advisor', 'speed-booster-pack' ),
+					'id'     => 'dashboard',
+					'class'  => 'dashboard',
+					'icon'   => 'fa fa-graduation-cap',
+					'fields' => $advisor_fields,
+				]
+			);
+			/* END Section: Speed Advisor */
 
 			/* BEGIN Section: Caching */
 			$cache_fields = [
 				[
-					'id'    => 'module_caching',
-					'class' => 'module-caching',
-					'type'  => 'switcher',
+					'id'       => 'module_caching',
+					'class'    => 'module-caching',
+					'type'     => 'switcher',
 					/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-					'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
-					'label' => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-					'sanitize'   => 'sbp_sanitize_boolean',
+					'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
+					'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
 					'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
@@ -372,16 +372,16 @@ class Speed_Booster_Pack_Admin {
 
 			/* BEGIN Section: CDN & Proxy */
 			/* Begin Of Cloudflare Fields */
-			$cloudflare_fields    = [
+			$cloudflare_fields = [
 				[
 					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
 					'type'  => 'subheading',
 				],
 				[
-					'title' => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
-					'id'    => 'cloudflare_enable',
-					'type'  => 'switcher',
-					'sanitize'   => 'sbp_sanitize_boolean',
+					'title'    => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
+					'id'       => 'cloudflare_enable',
+					'type'     => 'switcher',
+					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
 					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
@@ -513,11 +513,11 @@ class Speed_Booster_Pack_Admin {
 					'type'  => 'subheading',
 				],
 				[
-					'title' => __( 'Connect to Sucuri', 'speed-booster-pack' ),
-					'id'    => 'sucuri_enable',
-					'type'  => 'switcher',
-					'desc'  => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s Cache\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-					'sanitize'   => 'sbp_sanitize_boolean',
+					'title'    => __( 'Connect to Sucuri', 'speed-booster-pack' ),
+					'id'       => 'sucuri_enable',
+					'type'     => 'switcher',
+					'desc'     => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s Cache\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
 					'title' => __( 'Sucuri API key', 'speed-booster-pack' ),
@@ -713,13 +713,13 @@ class Speed_Booster_Pack_Admin {
 
 						[
 							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Optimize CSS', 'speed-booster-pack' ),
-							'id'      => 'module_css',
-							'class'   => 'module-css',
-							'type'    => 'switcher',
-							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default' => true,
-							'sanitize'   => 'sbp_sanitize_boolean',
+							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Optimize CSS', 'speed-booster-pack' ),
+							'id'       => 'module_css',
+							'class'    => 'module-css',
+							'type'     => 'switcher',
+							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default'  => true,
+							'sanitize' => 'sbp_sanitize_boolean',
 						],
 						[
 							'type'  => 'subheading',
@@ -798,12 +798,12 @@ class Speed_Booster_Pack_Admin {
 			$asset_fields = [
 				[
 					/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-					'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
-					'id'      => 'module_assets',
-					'type'    => 'switcher',
-					'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-					'default' => true,
-					'sanitize'   => 'sbp_sanitize_boolean',
+					'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Assets', 'speed-booster-pack' ),
+					'id'       => 'module_assets',
+					'type'     => 'switcher',
+					'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+					'default'  => true,
+					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
 					'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
@@ -902,7 +902,7 @@ class Speed_Booster_Pack_Admin {
 					[
 						'title'      => __( 'JavaScript to exclude from moving to footer', 'speed-booster-pack' ),
 						'id'         => 'js_footer_exclude',
-						'class'         => 'js-footer-exclude',
+						'class'      => 'js-footer-exclude',
 						'type'       => 'code_editor',
 						'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from moving to footer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 						'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
@@ -917,17 +917,17 @@ class Speed_Booster_Pack_Admin {
 						'sanitize'   => 'sbp_sanitize_strip_tags',
 						'fields'     => [
 							[
-								'id'    => 'preboost_enable',
-								'type'  => 'switcher',
-								'label' => __( 'Enable preloading of the assets specified below.', 'speed-booster-pack' ),
-								'sanitize'   => 'sbp_sanitize_boolean',
+								'id'       => 'preboost_enable',
+								'type'     => 'switcher',
+								'label'    => __( 'Enable preloading of the assets specified below.', 'speed-booster-pack' ),
+								'sanitize' => 'sbp_sanitize_boolean',
 							],
 							[
 								'id'         => 'preboost_include',
 								'type'       => 'code_editor',
 								'desc'       => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
 								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
-								'settings' => [ 'lineWrapping' => true ],
+								'settings'   => [ 'lineWrapping' => true ],
 							],
 						],
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
@@ -956,22 +956,22 @@ class Speed_Booster_Pack_Admin {
 
 						[
 							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Special', 'speed-booster-pack' ),
-							'id'      => 'module_special',
-							'class'   => 'module-special',
-							'type'    => 'switcher',
-							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default' => true,
-							'sanitize'   => 'sbp_sanitize_boolean',
+							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Special', 'speed-booster-pack' ),
+							'id'       => 'module_special',
+							'class'    => 'module-special',
+							'type'     => 'switcher',
+							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default'  => true,
+							'sanitize' => 'sbp_sanitize_boolean',
 						],
 						[
-                            // B_TODO: Change Text
-                            'title' => __( 'Specify Image Dimensions', 'speed-booster-pack' ),
-                            'id' => 'missing_image_dimensions',
-                            'type' => 'switcher',
-                            // B_TODO: Change Text
-                            'desc' => __( 'Specify missing image dimensions to prevent cumulative layout shift.', 'speed-booster-pack' ),
-                        ],
+							// B_TODO: Change Text
+							'title' => __( 'Specify Image Dimensions', 'speed-booster-pack' ),
+							'id'    => 'missing_image_dimensions',
+							'type'  => 'switcher',
+							// B_TODO: Change Text
+							'desc'  => __( 'Specify missing image dimensions to prevent cumulative layout shift.', 'speed-booster-pack' ),
+						],
 						[
 							'title'      => __( 'Localize Google Analytics & Google Tag Manager', 'speed-booster-pack' ),
 							'id'         => 'localize_tracking_scripts',
@@ -988,15 +988,15 @@ class Speed_Booster_Pack_Admin {
 							'accordion_title_number' => true,
 							'accordion_title_auto'   => false,
 							'sanitize'               => function ( $item ) {
-                                if ( $item && is_iterable( $item ) ) {
-	                                foreach ( $item as &$code_item ) {
-		                                if ( isset( $code_item['custom_codes_item'] ) ) {
-			                                $code                           = $code_item['custom_codes_item'];
-			                                $code                           = preg_replace( '#<(textarea)>.*?<\/$1>#s', '', $code );
-			                                $code_item['custom_codes_item'] = str_replace( '</textarea>', '', $code );
-		                                }
-	                                }
-                                }
+								if ( $item && is_iterable( $item ) ) {
+									foreach ( $item as &$code_item ) {
+										if ( isset( $code_item['custom_codes_item'] ) ) {
+											$code                           = $code_item['custom_codes_item'];
+											$code                           = preg_replace( '#<(textarea)>.*?<\/$1>#s', '', $code );
+											$code_item['custom_codes_item'] = str_replace( '</textarea>', '', $code );
+										}
+									}
+								}
 
 								return $item;
 							},
@@ -1082,10 +1082,10 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							/* translators: %s = PageSpeed Tricker  */
-							'title' => sprintf( __( 'Enable %s', 'speed-booster-pack' ), 'PageSpeed Tricker' ),
-							'id'    => 'pagespeed_tricker',
-							'type'  => 'switcher',
-							'sanitize'   => 'sbp_sanitize_boolean',
+							'title'    => sprintf( __( 'Enable %s', 'speed-booster-pack' ), 'PageSpeed Tricker' ),
+							'id'       => 'pagespeed_tricker',
+							'type'     => 'switcher',
+							'sanitize' => 'sbp_sanitize_boolean',
 						],
 					],
 				]
@@ -1104,13 +1104,13 @@ class Speed_Booster_Pack_Admin {
 
 						[
 							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'   => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
-							'id'      => 'module_tweaks',
-							'class'   => 'module-tweaks',
-							'type'    => 'switcher',
-							'label'   => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default' => true,
-							'sanitize'   => 'sbp_sanitize_boolean',
+							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
+							'id'       => 'module_tweaks',
+							'class'    => 'module-tweaks',
+							'type'     => 'switcher',
+							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default'  => true,
+							'sanitize' => 'sbp_sanitize_boolean',
 						],
 						[
 							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
@@ -1232,53 +1232,53 @@ class Speed_Booster_Pack_Admin {
 							'fields'     => [
 
 								[
-									'title' => __( 'Shortlinks', 'speed-booster-pack' ),
-									'id'    => 'declutter_shortlinks',
-									'type'  => 'switcher',
-									'label' => '<link rel=\'shortlink\' href=\'...\' />',
-									'sanitize'   => 'sbp_sanitize_boolean',
+									'title'    => __( 'Shortlinks', 'speed-booster-pack' ),
+									'id'       => 'declutter_shortlinks',
+									'type'     => 'switcher',
+									'label'    => '<link rel=\'shortlink\' href=\'...\' />',
+									'sanitize' => 'sbp_sanitize_boolean',
 								],
 								[
-									'title' => __( 'Next/previous posts links', 'speed-booster-pack' ),
-									'id'    => 'declutter_adjacent_posts_links',
-									'type'  => 'switcher',
-									'label' => "<link rel='next (or prev)' title='...' href='...' />",
-									'sanitize'   => 'sbp_sanitize_boolean',
+									'title'    => __( 'Next/previous posts links', 'speed-booster-pack' ),
+									'id'       => 'declutter_adjacent_posts_links',
+									'type'     => 'switcher',
+									'label'    => "<link rel='next (or prev)' title='...' href='...' />",
+									'sanitize' => 'sbp_sanitize_boolean',
 								],
 								[
-									'title' => __( 'WLW Manifest link', 'speed-booster-pack' ),
-									'id'    => 'declutter_wlw',
-									'type'  => 'switcher',
-									'label' => '<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="..." />',
-									'sanitize'   => 'sbp_sanitize_boolean',
+									'title'    => __( 'WLW Manifest link', 'speed-booster-pack' ),
+									'id'       => 'declutter_wlw',
+									'type'     => 'switcher',
+									'label'    => '<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="..." />',
+									'sanitize' => 'sbp_sanitize_boolean',
 								],
 								[
-									'title' => __( 'Really Simple Discovery (RSD) link', 'speed-booster-pack' ),
-									'id'    => 'declutter_rsd',
-									'type'  => 'switcher',
-									'label' => '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="..." />',
-									'sanitize'   => 'sbp_sanitize_boolean',
+									'title'    => __( 'Really Simple Discovery (RSD) link', 'speed-booster-pack' ),
+									'id'       => 'declutter_rsd',
+									'type'     => 'switcher',
+									'label'    => '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="..." />',
+									'sanitize' => 'sbp_sanitize_boolean',
 								],
 								[
-									'title' => __( 'REST API links', 'speed-booster-pack' ),
-									'id'    => 'declutter_rest_api_links',
-									'type'  => 'switcher',
-									'label' => "<link rel='https://api.w.org/' href='...' />",
-									'sanitize'   => 'sbp_sanitize_boolean',
+									'title'    => __( 'REST API links', 'speed-booster-pack' ),
+									'id'       => 'declutter_rest_api_links',
+									'type'     => 'switcher',
+									'label'    => "<link rel='https://api.w.org/' href='...' />",
+									'sanitize' => 'sbp_sanitize_boolean',
 								],
 								[
-									'title' => __( 'RSS feed links', 'speed-booster-pack' ),
-									'id'    => 'declutter_feed_links',
-									'type'  => 'switcher',
-									'label' => '<link rel="alternate" type="application/rss+xml" title="..." href="..." />',
-									'sanitize'   => 'sbp_sanitize_boolean',
+									'title'    => __( 'RSS feed links', 'speed-booster-pack' ),
+									'id'       => 'declutter_feed_links',
+									'type'     => 'switcher',
+									'label'    => '<link rel="alternate" type="application/rss+xml" title="..." href="..." />',
+									'sanitize' => 'sbp_sanitize_boolean',
 								],
 								[
-									'title' => __( 'WordPress version', 'speed-booster-pack' ),
-									'id'    => 'declutter_wp_version',
-									'type'  => 'switcher',
-									'label' => '<meta name="generator" content="WordPress X.X" />',
-									'sanitize'   => 'sbp_sanitize_boolean',
+									'title'    => __( 'WordPress version', 'speed-booster-pack' ),
+									'id'       => 'declutter_wp_version',
+									'type'     => 'switcher',
+									'label'    => '<meta name="generator" content="WordPress X.X" />',
+									'sanitize' => 'sbp_sanitize_boolean',
 								],
 							],
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
@@ -1299,7 +1299,7 @@ class Speed_Booster_Pack_Admin {
 					'fields' => [
 						[
 							'type'  => 'subheading',
-							'title'  => __( 'Database Engine Converter', 'speed-booster-pack' ),
+							'title' => __( 'Database Engine Converter', 'speed-booster-pack' ),
 						],
 						[
 							'id'      => 'button',
@@ -1386,14 +1386,14 @@ class Speed_Booster_Pack_Admin {
 										 </ul>',
 						],
 						[
-							'title'   => __( 'Allow external notices', 'speed-booster-pack' ),
-							'id'      => 'enable_external_notices',
-							'type'    => 'switcher',
-							'label'   => __( '', 'speed-booster-pack' ),
+							'title'    => __( 'Allow external notices', 'speed-booster-pack' ),
+							'id'       => 'enable_external_notices',
+							'type'     => 'switcher',
+							'label'    => __( '', 'speed-booster-pack' ),
 							/* translators: %s = hyperlink to speedboosterpack.com  */
-							'desc'    => sprintf( __( 'Fetches notices from %s, and shows them in a non-obtrusive manner. We intend to send essential notices only, and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener" target="_blank">speedboosterpack.com</a>' ),
-							'default' => true,
-							'sanitize'   => 'sbp_sanitize_boolean',
+							'desc'     => sprintf( __( 'Fetches notices from %s, and shows them in a non-obtrusive manner. We intend to send essential notices only, and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener" target="_blank">speedboosterpack.com</a>' ),
+							'default'  => true,
+							'sanitize' => 'sbp_sanitize_boolean',
 						],
 					],
 				]
@@ -1404,7 +1404,7 @@ class Speed_Booster_Pack_Admin {
 
 	public function create_metaboxes() {
 		/* BEGIN Metaboxes */
-		$metabox_prefix = 'sbp_post_meta';
+		$metabox_prefix    = 'sbp_post_meta';
 		$public_post_types = get_option( 'sbp_public_post_types' );
 		if ( is_array( $public_post_types ) ) {
 			CSF::createMetabox( $metabox_prefix,
@@ -1417,10 +1417,10 @@ class Speed_Booster_Pack_Admin {
 			// BEGIN CONTENT SPECIFIC PRELOAD
 			$meta_fields = [
 				[
-					'id'    => 'sbp_preload',
-					'type'  => 'code_editor',
-					'title' => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
-					'desc'  => __( 'Enter full URLs of files to preload only for this page.', 'speed-booster-pack' ),
+					'id'       => 'sbp_preload',
+					'type'     => 'code_editor',
+					'title'    => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
+					'desc'     => __( 'Enter full URLs of files to preload only for this page.', 'speed-booster-pack' ),
 					'settings' => [ 'lineWrapping' => true ],
 				],
 			];
@@ -1437,25 +1437,25 @@ class Speed_Booster_Pack_Admin {
 
 			// BEGIN CONTENT SPECIFIC CRITICALCSS
 			$meta_fields[] = [
-				'id'    => 'sbp_criticalcss_status',
-				'type'       => 'button_set',
-				'title' => __( 'Content-Specific Critical CSS', 'speed-booster-pack' ),
-				'options'    => array(
+				'id'      => 'sbp_criticalcss_status',
+				'type'    => 'button_set',
+				'title'   => __( 'Content-Specific Critical CSS', 'speed-booster-pack' ),
+				'options' => array(
 					'default' => 'Default',
-					'off'  => 'Off',
+					'off'     => 'Off',
 					'custom'  => 'Custom',
 				),
-				'default'    => 'default',
-				'class' => 'sbp-gap-top',
+				'default' => 'default',
+				'class'   => 'sbp-gap-top',
 			];
 
-            $meta_fields[] = [
-                'id'    => 'sbp_criticalcss',
-                'type'  => 'code_editor',
-                // B_TODO: Description text
-                'desc'  => __( '', 'speed-booster-pack' ),
-                'settings' => [ 'lineWrapping' => true ],
-                'dependency' => [ 'sbp_criticalcss_status', '==', 'custom', '', 'visible' ],
+			$meta_fields[] = [
+				'id'         => 'sbp_criticalcss',
+				'type'       => 'code_editor',
+				// B_TODO: Description text
+				'desc'       => __( '', 'speed-booster-pack' ),
+				'settings'   => [ 'lineWrapping' => true ],
+				'dependency' => [ 'sbp_criticalcss_status', '==', 'custom', '', 'visible' ],
 			];
 
 			if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'enable_criticalcss' ) ) {
@@ -1468,11 +1468,92 @@ class Speed_Booster_Pack_Admin {
 			}
 			// END CONTENT SPECIFIC CRITICALCSS
 
+			// BEGIN CONTENT SPECIFIC JS OPTIMIZATION
+			$meta_fields[] = [
+				'title'      => __( 'Content Specific JavaScript Optimization', 'speed-booster-pack' ),
+				'id'         => 'js_optimization_status',
+				'type'       => 'button_set',
+				'options'    => [
+					'default' => __( 'Default', 'speed-booster-pack' ),
+					'off'        => __( 'Off', 'speed-booster-pack' ),
+					'custom'     => __( 'Custom', 'speed-booster-pack' ),
+				],
+				'default'    => 'default',
+			];
+
+			$meta_fields[] = [
+				'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
+				'id'         => 'js_optimize',
+				'desc'       => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
+				'type'       => 'button_set',
+				'options'    => [
+					'off'        => __( 'Off', 'speed-booster-pack' ),
+					'everything' => __( 'Everything', 'speed-booster-pack' ),
+					'custom'     => __( 'Custom', 'speed-booster-pack' ),
+				],
+				'default'    => 'off',
+				'dependency' => [ 'js_optimization_status', '==', 'custom', '', 'visible' ],
+			];
+
+			$meta_fields[] = [
+				'title'      => __( 'JavaScript to exclude from deferring', 'speed-booster-pack' ),
+				'id'         => 'js_exclude',
+				'class'      => 'js-exclude',
+				'type'       => 'code_editor',
+				'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from deferring.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
+				'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
+				'dependency' => [ 'js_optimize|js_optimization_status', '==|==', 'everything|custom', '', 'visible|visible' ],
+				'sanitize'   => 'sbp_sanitize_strip_tags',
+			];
+
+			$meta_fields[] = [
+				'title'      => __( 'JavaScript to defer', 'speed-booster-pack' ),
+				'id'         => 'js_include',
+				'class'      => 'js-include',
+				'type'       => 'code_editor',
+				'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to defer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
+				'default'    => '',
+				'dependency' => [ 'js_optimize|js_optimization_status', '==|==', 'custom|custom', '', 'visible|visible' ],
+				'sanitize'   => 'sbp_sanitize_strip_tags',
+			];
+
+			$meta_fields[] = [
+				'title'      => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
+				'id'         => 'js_footer',
+				'class'      => 'js-footer',
+				'desc'       => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
+				'type'       => 'switcher',
+				'default'    => '',
+				'sanitize'   => 'sbp_sanitize_boolean',
+				'dependency' => [ 'js_optimization_status', '==', 'custom', '', 'visible' ],
+			];
+
+			$meta_fields[] = [
+				'title'      => __( 'JavaScript to exclude from moving to footer', 'speed-booster-pack' ),
+				'id'         => 'js_footer_exclude',
+				'class'      => 'js-footer-exclude',
+				'type'       => 'code_editor',
+				'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from moving to footer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
+				'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
+				'dependency' => [ 'js_footer|js_optimization_status', '==|==', '1|custom', '', 'visible|visible' ],
+				'sanitize'   => 'sbp_sanitize_strip_tags',
+			];
+
+			if ( ! sbp_get_option( 'module_assets' ) ) {
+				$meta_fields[] = [
+					'id'    => 'sbp_js_optimization_warning',
+					'type'  => 'notice',
+					'style' => 'warning',
+					'title' => __( sprintf( 'Warning: JS Optimization isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
+				];
+			}
+			// END CONTENT SPECIFIC JS OPTIMIZATION
+
 			CSF::createSection( $metabox_prefix,
 				array(
 					'fields' => $meta_fields,
 				) );
-        }
+		}
 	}
 
 	public function modify_menu_title() {
