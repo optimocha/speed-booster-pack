@@ -490,6 +490,7 @@ if ( ! function_exists( 'sbp_proper_parse_str' ) ) {
 
 if ( ! function_exists( 'sbp_get_public_post_types' ) ) {
 	function sbp_get_public_post_types() {
-		return get_post_types( [ 'public' => true ] );
+		$post_types = get_option( 'sbp_public_post_types' );
+		return is_array( $post_types ) ? $post_types : [];
 	}
 }

@@ -1414,6 +1414,7 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 
+			// BEGIN CONTENT SPECIFIC PRELOAD
 			$meta_fields = [
 				[
 					'id'    => 'sbp_preload',
@@ -1432,6 +1433,40 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( sprintf( 'Warning: Preloading isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
 				];
 			}
+			// END CONTENT SPECIFIC PRELOAD
+
+			// BEGIN CONTENT SPECIFIC CRITICALCSS
+			$meta_fields[] = [
+				'id'    => 'sbp_criticalcss_status',
+				'type'       => 'button_set',
+				'title' => __( 'Content-Specific Critical CSS', 'speed-booster-pack' ),
+				'options'    => array(
+					'default' => 'Default',
+					'off'  => 'Off',
+					'custom'  => 'Custom',
+				),
+				'default'    => 'default',
+				'class' => 'sbp-gap-top',
+			];
+
+            $meta_fields[] = [
+                'id'    => 'sbp_criticalcss',
+                'type'  => 'code_editor',
+                // B_TODO: Description text
+                'desc'  => __( '', 'speed-booster-pack' ),
+                'settings' => [ 'lineWrapping' => true ],
+                'dependency' => [ 'sbp_criticalcss_status', '==', 'custom', '', 'visible' ],
+			];
+
+			if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'enable_criticalcss' ) ) {
+				$meta_fields[] = [
+					'id'    => 'sbp_criticalcss_warning',
+					'type'  => 'notice',
+					'style' => 'warning',
+					'title' => __( sprintf( 'Warning: Critical CSS isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=optimize-css" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
+				];
+			}
+			// END CONTENT SPECIFIC CRITICALCSS
 
 			CSF::createSection( $metabox_prefix,
 				array(

@@ -27,28 +27,51 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 			return $html;
 		}
 
+		$run_default = false;
+
+		// Content Specific Option
+		if ( is_singular() ) {
+			$content_specific_criticalcss_status = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss_status', 'default' );
+
+			if ( $content_specific_criticalcss_status == 'off' ) {
+				return $html;
+			} else if ( $content_specific_criticalcss_status == 'custom' ) {
+				$content_specific_criticalcss = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss' );
+			} else {
+				$run_default = true;
+			}
+		} else {
+			$run_default = true;
+		}
+
 		// Find Default Critical CSS Code if exists
-		$criticalcss_code = sbp_get_option( 'criticalcss_default' );
+		if ( $run_default ) {
+			$criticalcss_code = sbp_get_option( 'criticalcss_default' );
+		} else {
+			$criticalcss_code = $content_specific_criticalcss;
+		}
 
-		$conditions = [
-			'is_front_page',
-			'is_home',
-			'is_single',
-			'is_page',
-			'is_category',
-			'is_tag',
-			'is_archive',
-			'is_shop',
-			'is_product',
-			'is_product_category',
-		];
+		if ( $run_default ) {
+			$conditions = [
+				'is_front_page',
+				'is_home',
+				'is_single',
+				'is_page',
+				'is_category',
+				'is_tag',
+				'is_archive',
+				'is_shop',
+				'is_product',
+				'is_product_category',
+			];
 
-		foreach ( $conditions as $condition ) {
-			if ( function_exists( $condition ) && call_user_func( $condition ) ) {
-				$criticalcss_codes = sbp_get_option( 'criticalcss_codes' );
-				if ( isset( $criticalcss_codes[ $condition ] ) && $criticalcss_codes[ $condition ] ) {
-					$criticalcss_code = $criticalcss_codes[ $condition ];
-					break;
+			foreach ( $conditions as $condition ) {
+				if ( function_exists( $condition ) && call_user_func( $condition ) ) {
+					$criticalcss_codes = sbp_get_option( 'criticalcss_codes' );
+					if ( isset( $criticalcss_codes[ $condition ] ) && $criticalcss_codes[ $condition ] ) {
+						$criticalcss_code = $criticalcss_codes[ $condition ];
+						break;
+					}
 				}
 			}
 		}
