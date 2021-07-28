@@ -91,6 +91,7 @@ class SBP_Migrator {
 					SBP_WP_Config_Injector::inject_wp_config();
 					SBP_Cache::generate_htaccess();
 					SBP_Cache::set_wp_cache_constant();
+					// Z_TODO: Maybe we can move this block to database version change control block
 				}
 			}
 		}

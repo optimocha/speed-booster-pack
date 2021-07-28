@@ -16,6 +16,7 @@ class SBP_WP_Admin {
 			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
+			add_action( 'admin_init', [ $this, 'check_pagespeed_tricker' ] );
 			add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 		}
 
@@ -332,6 +333,12 @@ class SBP_WP_Admin {
 			$notice_content .= '</p>';
 
 			SBP_Notice_Manager::display_notice('permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings');
+		}
+	}
+
+	public function check_pagespeed_tricker() {
+		if ( sbp_get_option( 'pagespeed_tricker' ) ) {
+			SBP_Notice_Manager::display_notice( 'pagespeed_tricker_active', '<p>' . sprintf( __( '%1$s\'s experimental feature, %2$s, is enabled. You will get 100% PageSpeed Insights scores in all PageSpeed tests, but SEO rankings are calculated by Real User Monitoring (RUM) in all search engines. %2$s only proves that it\'s easy to manipulate PageSpeed Insights and nothing else. Please don\'t keep this feature enabled on production websites!', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, 'PageSpeed Tricker' ), 'info', false );
 		}
 	}
 }

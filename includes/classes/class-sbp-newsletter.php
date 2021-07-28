@@ -15,11 +15,18 @@ class SBP_Newsletter {
 	}
 
 	function my_admin_enqueue_scripts() {
-		if ( current_user_can( 'manage_options' ) && ! get_user_meta( get_current_user_id(), 'sbp_hide_newsletter_pointer', true ) ) {
-			wp_enqueue_style( 'wp-pointer' );
-			wp_enqueue_script( 'wp-pointer' );
-			add_action( 'admin_print_footer_scripts', [ $this, 'my_admin_print_footer_scripts' ] );
-		}
+	    // Check timestamp
+        $display_time = get_user_meta( get_current_user_id(), 'sbp_newsletter_display_time', true );
+        if ( ! $display_time ) {
+            $display_time = strtotime('+1 day');
+            update_user_meta( get_current_user_id(), 'sbp_newsletter_display_time', $display_time );
+        }
+
+        if ( time() > $display_time && current_user_can( 'manage_options' ) && ! get_user_meta( get_current_user_id(), 'sbp_hide_newsletter_pointer', true ) ) {
+            wp_enqueue_style( 'wp-pointer' );
+            wp_enqueue_script( 'wp-pointer' );
+            add_action( 'admin_print_footer_scripts', [ $this, 'my_admin_print_footer_scripts' ] );
+        }
 	}
 
 	function my_admin_print_footer_scripts() {
