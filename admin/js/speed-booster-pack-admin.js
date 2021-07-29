@@ -34,14 +34,20 @@
 
     $(document).on('click', '.sbp-cloudflare-test', function (e) {
         e.preventDefault();
+
+        const api_key = $.trim($('[data-depend-id="cloudflare_api"]').val());
+        const email = $.trim($('[data-depend-id="cloudflare_email"]').val());
+        const zone_id = $.trim($('[data-depend-id="cloudflare_zone"]').val());
+
+        if ( ! api_key || ! email || ! zone_id ) {
+            alert('Global API key, email address and zone id fields are required.');
+            return;
+        }
+
         $('.sbp-cloudflare-info-text').hide();
         $('.sbp-cloudflare-test .sbp-cloudflare-spinner').show();
         $(e.target).attr('disabled', 'disabled').css('opacity', '0.6');
         $('.sbp-cloudflare-incorrect, .sbp-cloudflare-correct').hide();
-
-        const api_key = $('[data-depend-id="cloudflare_api"]').val();
-        const email = $('[data-depend-id="cloudflare_email"]').val();
-        const zone_id = $('[data-depend-id="cloudflare_zone"]').val();
 
         $.ajax({
             url: ajaxurl,
