@@ -29,7 +29,6 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 		wp_remote_get( $item['url'], $args );
 
 		if ( $this->begun === false ) {
-			set_transient( 'sbp_warmup_started', 1 );
 			$this->begun = true;
 		}
 
@@ -37,8 +36,8 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 	}
 
 	protected function complete() {
-		set_transient( 'sbp_warmup_complete', true );
 		delete_transient( 'sbp_warmup_started' );
+		set_transient( 'sbp_warmup_completed', 1 );
 		parent::complete();
 	}
 }

@@ -155,13 +155,11 @@ class SBP_WP_Admin {
 		}
 
 		// Set Cache Clear Notice
-		if ( get_transient( 'sbp_notice_cache' ) ) {
-			SBP_Notice_Manager::display_notice( 'sbp_notice_cache',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>',
-				'success',
-				true,
-				'flash' );
-		}
+		SBP_Notice_Manager::display_notice( 'sbp_notice_cache',
+			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>',
+			'success',
+			true,
+			'recurrent' );
 
 		// Set Localizer Cache Clear Notice
 		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
@@ -170,24 +168,6 @@ class SBP_WP_Admin {
 				'success',
 				true,
 				'flash' );
-		}
-
-		// Warmup Start Notice
-		if ( get_transient( 'sbp_warmup_started' ) ) {
-			SBP_Notice_Manager::display_notice( 'sbp_warmup_started',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup started.', 'speed-booster-pack' ) . '</p>',
-				'success',
-				true,
-				'recurrent' );
-		}
-
-		// Warmup Complete Notice
-		if ( get_transient( 'sbp_warmup_complete' ) ) {
-			SBP_Notice_Manager::display_notice( 'sbp_warmup_complete',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup complete.', 'speed-booster-pack' ) . '</p>',
-				'success',
-				true,
-				'recurrent' );
 		}
 
 		// Advanced Cache File Error
@@ -209,6 +189,20 @@ class SBP_WP_Admin {
 				true,
 				'recurrent' );
 		}
+
+		// Warmup Started Notice
+		SBP_Notice_Manager::display_notice( 'sbp_warmup_started',
+			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup started.', 'speed-booster-pack' ) . '</p>',
+			'info',
+			true,
+			'recurrent' );
+
+		// Warmup Completed Notice
+		SBP_Notice_Manager::display_notice( 'sbp_warmup_completed',
+			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup completed.', 'speed-booster-pack' ) . '</p>',
+			'success',
+			true,
+			'recurrent' );
 
 		// WP-Config File Error
 		if ( get_transient( 'sbp_warmup_errors' ) ) {
