@@ -225,7 +225,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 		if ( file_exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file ) ) {
 			// get wp config as array
-			$wp_config = file( $wp_config_file );
+			$wp_config_file_content = file_get_contents( $wp_config_file );
 
 			if ( $wp_cache ) {
 				$append_line = PHP_EOL . "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL;
@@ -233,39 +233,15 @@ class SBP_Cache extends SBP_Abstract_Module {
 				$append_line = '';
 			}
 
-			$found_wp_cache = false;
+			$wp_config_file_content = preg_replace( '/^.*define\s*\(\s*[\'\"]WP_CACHE[\'\"]\s*,.*\);.*$' . PHP_EOL . '(?:\r\n|\n)?/m', "", $wp_config_file_content );
 
-			foreach ( $wp_config as $line_number => &$line ) {
-				if ( preg_match( '/^\s*define\s*\(\s*[\'\"]WP_CACHE[\'\"]\s*,.*\)\s*;/', $line ) ) {
-					// Remove blank line before constant
-					if ( isset( $wp_config[ $line_number - 1 ] ) && $wp_config[ $line_number - 1 ] === PHP_EOL ) {
-						unset( $wp_config[ $line_number - 1 ] );
-					}
-
-					// Remove blank line after constant
-					if ( isset( $wp_config[ $line_number + 1 ] ) && $wp_config[ $line_number + 1 ] === PHP_EOL ) {
-						unset( $wp_config[ $line_number + 1 ] );
-					}
-
-					$line           = $append_line;
-					$found_wp_cache = true;
-					break;
-				}
+			if ( strpos( $wp_config_file_content, '<?php' ) === false && strpos( $wp_config_file_content, '<?' ) === false ) {
+				$wp_config_file_content = '<?php' . PHP_EOL . $wp_config_file_content;
 			}
 
-			// append wp cache constant if not found yet
-			if ( ! $found_wp_cache && $wp_cache ) {
-				array_shift( $wp_config );
-				array_unshift( $wp_config, "<?php", $append_line );
-			}
+			$wp_config_file_content = str_replace( '<?php', '<?php' . $append_line, $wp_config_file_content );
 
-			// write wp-config.php file
-			$fh = @fopen( $wp_config_file, 'w' );
-			foreach ( $wp_config as $ln ) {
-				@fwrite( $fh, $ln );
-			}
-
-			@fclose( $fh );
+			file_put_contents( $wp_config_file, $wp_config_file_content );
 		}
 	}
 
