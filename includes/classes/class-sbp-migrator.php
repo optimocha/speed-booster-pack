@@ -33,7 +33,6 @@ class SBP_Migrator {
 
 	public function __construct() {
 		add_action( 'admin_init', [ $this, 'check_migrate_notice' ] );
-		add_action( 'upgrader_process_complete', [ $this, 'sbp_upgrade_completed' ], 10, 2 );
 
 		add_action( 'wp_ajax_sbp_dismiss_migrator_notice', [ $this, 'dismiss_upgrade_notice' ] );
 
@@ -46,6 +45,7 @@ class SBP_Migrator {
 	public function migrate_plugin() {
 		$this->migrate_from_legacy();
 		$this->update_js_optimize_options();
+		$this->apply_cache_settings();
 		update_option( 'sbp_migrator_version', SBP_MIGRATOR_VERSION );
 	}
 
@@ -71,30 +71,6 @@ class SBP_Migrator {
 		$this->migrate_exclude_rules();
 		$this->enable_external_notices();
 		update_option( 'sbp_options', $this->sbp_options );
-	}
-
-	/**
-	 * This function runs when WordPress completes its upgrade process
-	 * It iterates through each plugin updated to see if ours is included
-	 *
-	 * @param $upgrader_object Array
-	 * @param $options Array
-	 */
-	public function sbp_upgrade_completed( $upgrader_object, $options ) {
-		// The path to our plugin's main file
-		$our_plugin = 'speed-booster-pack/speed-booster-pack.php';
-		// If an update has taken place and the updated type is plugins and the plugins element exists
-		if ( $options['action'] == 'update' && $options['type'] == 'plugin' && isset( $options['plugins'] ) ) {
-			// Iterate through the plugins being updated and check if ours is there
-			foreach ( $options['plugins'] as $plugin ) {
-				if ( $plugin == $our_plugin ) {
-					SBP_WP_Config_Injector::inject_wp_config();
-					SBP_Cache::generate_htaccess();
-					SBP_Cache::set_wp_cache_constant();
-					// Z_TODO: Maybe we can move this block to database version change control block
-				}
-			}
-		}
 	}
 
 	public function add_tracking_scripts() {
@@ -134,6 +110,12 @@ ga('send', 'pageview');";
 				$this->sbp_settings['sbp_ga_tracking_id'] = '';
 			}
 		}
+	}
+
+	private function apply_cache_settings() {
+		SBP_WP_Config_Injector::inject_wp_config();
+		SBP_Cache::generate_htaccess();
+		SBP_Cache::set_wp_cache_constant();
 	}
 
 	private function migrate_standard_options() {
