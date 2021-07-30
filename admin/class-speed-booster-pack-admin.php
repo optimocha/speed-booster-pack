@@ -735,9 +735,20 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
 						[
+							'id'         => 'criticalcss_excludes',
+							'type'       => 'code_editor',
+							// B_TODO: Change text
+							'title'     => __( 'Critical CSS Exclude Rules', 'speed-booster-pack' ),
+							'sanitize'   => 'sbp_sanitize_strip_tags',
+							// B_TODO: Change description
+							'desc'       => __( 'Enter CSS filenames/URLs to exclude from critical css.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
+							'settings'   => [ 'lineWrapping' => true ],
+						],
+						[
 							'id'         => 'criticalcss_default',
 							'type'       => 'code_editor',
-							'before'     => __( '<h3>Default Critical CSS</h3>', 'speed-booster-pack' ),
+							'before'     => '<h3>' . __( 'Default Critical CSS', 'speed-booster-pack' ) . '</h3>',
 							'sanitize'   => 'sbp_sanitize_strip_tags',
 							'desc'       => sprintf( __( 'This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. %1$sLearn more about the template hierarchy of WordPress.%2$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/themes/basics/template-hierarchy/" rel="external noopener" target="_blank">', '</a>' ),
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],

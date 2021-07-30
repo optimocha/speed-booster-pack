@@ -9,7 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Utils extends SBP_Abstract_Module {
 	public static function explode_lines( $text, $unique = true ) {
-		if ( '' === $text ) {
+		if ( ! $text ) {
 			return [];
 		}
 

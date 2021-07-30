@@ -121,7 +121,7 @@ function get_cache_file_path()
 
 function sbp_explode_lines($text)
 {
-    if ($text === '') {
+    if ( ! $text ) {
         return [];
     }
 

@@ -35,7 +35,7 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 
 			if ( $content_specific_criticalcss_status == 'off' ) {
 				return $html;
-			} else if ( $content_specific_criticalcss_status == 'custom' ) {
+			} elseif ( $content_specific_criticalcss_status == 'custom' ) {
 				$content_specific_criticalcss = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss' );
 			} else {
 				$run_default = true;
@@ -89,9 +89,18 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 		$dom = new HtmlDocument();
 		$dom->load( $html, true, false );
 
+		// Get excluded urls
+		$excluded_urls = SBP_Utils::explode_lines( sbp_get_option( 'criticalcss_excludes' ) );
+
 		// Find all links
 		$links = $dom->find( 'link[rel=stylesheet]' );
 		foreach ( $links as $link ) {
+			foreach ( $excluded_urls as $url ) {
+				if ( strpos( $link, $url ) !== false ) {
+					continue 2;
+				}
+			}
+
 			if ( ( ! isset( $link->media ) || $link->media !== 'print' ) && ! in_array( $link->id, $this->excluded_handles ) ) {
 				$link->media  = 'print';
 				$link->onload = "this.media='all'";
