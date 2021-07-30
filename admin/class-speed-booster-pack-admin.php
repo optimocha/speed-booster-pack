@@ -738,7 +738,7 @@ class Speed_Booster_Pack_Admin {
 							'id'         => 'criticalcss_excludes',
 							'type'       => 'code_editor',
 							// B_TODO: Change text
-							'title'     => __( 'Critical CSS Exclude Rules', 'speed-booster-pack' ),
+							'title'      => __( 'Critical CSS Exclude Rules', 'speed-booster-pack' ),
 							'sanitize'   => 'sbp_sanitize_strip_tags',
 							// B_TODO: Change description
 							'desc'       => __( 'Enter CSS filenames/URLs to exclude from critical css.', 'speed-booster-pack' ),
@@ -939,6 +939,7 @@ class Speed_Booster_Pack_Admin {
 								'desc'       => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
 								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
 								'settings'   => [ 'lineWrapping' => true ],
+								'sanitize'   => 'sbp_sanitize_strip_tags',
 							],
 						],
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
@@ -1433,6 +1434,7 @@ class Speed_Booster_Pack_Admin {
 					'title'    => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
 					'desc'     => __( 'Enter full URLs of files to preload only for this page.', 'speed-booster-pack' ),
 					'settings' => [ 'lineWrapping' => true ],
+					'sanitize' => 'sbp_sanitize_strip_tags',
 				],
 			];
 
@@ -1448,16 +1450,16 @@ class Speed_Booster_Pack_Admin {
 
 			// BEGIN CONTENT SPECIFIC CRITICALCSS
 			$meta_fields[] = [
-				'id'      => 'sbp_criticalcss_status',
-				'type'    => 'button_set',
-				'title'   => __( 'Content-Specific Critical CSS', 'speed-booster-pack' ),
-				'options' => array(
+				'id'       => 'sbp_criticalcss_status',
+				'type'     => 'button_set',
+				'title'    => __( 'Content-Specific Critical CSS', 'speed-booster-pack' ),
+				'options'  => array(
 					'default' => 'Default',
 					'off'     => 'Off',
 					'custom'  => 'Custom',
 				),
-				'default' => 'default',
-				'class'   => 'sbp-gap-top',
+				'default'  => 'default',
+				'class'    => 'sbp-gap-top',
 			];
 
 			$meta_fields[] = [
@@ -1481,15 +1483,15 @@ class Speed_Booster_Pack_Admin {
 
 			// BEGIN CONTENT SPECIFIC JS OPTIMIZATION
 			$meta_fields[] = [
-				'title'      => __( 'Content Specific JavaScript Optimization', 'speed-booster-pack' ),
-				'id'         => 'js_optimization_status',
-				'type'       => 'button_set',
-				'options'    => [
+				'title'   => __( 'Content Specific JavaScript Optimization', 'speed-booster-pack' ),
+				'id'      => 'js_optimization_status',
+				'type'    => 'button_set',
+				'options' => [
 					'default' => __( 'Default', 'speed-booster-pack' ),
-					'off'        => __( 'Off', 'speed-booster-pack' ),
-					'custom'     => __( 'Custom', 'speed-booster-pack' ),
+					'off'     => __( 'Off', 'speed-booster-pack' ),
+					'custom'  => __( 'Custom', 'speed-booster-pack' ),
 				],
-				'default'    => 'default',
+				'default' => 'default',
 			];
 
 			$meta_fields[] = [
@@ -1528,15 +1530,19 @@ class Speed_Booster_Pack_Admin {
 				'sanitize'   => 'sbp_sanitize_strip_tags',
 			];
 
+			// BEGIN CONTENT SPECIFIC JS OPTIMIZATION
 			$meta_fields[] = [
-				'title'      => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
-				'id'         => 'js_footer',
+				'title'   => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
+				'id'      => 'js_footer_status',
 				'class'      => 'js-footer',
-				'desc'       => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
-				'type'       => 'switcher',
-				'default'    => '',
-				'sanitize'   => 'sbp_sanitize_boolean',
-				'dependency' => [ 'js_optimization_status', '==', 'custom', '', 'visible' ],
+				'type'    => 'button_set',
+				'options' => [
+					'default' => __( 'Default', 'speed-booster-pack' ),
+					'off'     => __( 'Off', 'speed-booster-pack' ),
+					'custom'  => __( 'Custom', 'speed-booster-pack' ),
+				],
+                'desc'       => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
+				'default' => 'default',
 			];
 
 			$meta_fields[] = [
@@ -1546,7 +1552,7 @@ class Speed_Booster_Pack_Admin {
 				'type'       => 'code_editor',
 				'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from moving to footer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 				'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-				'dependency' => [ 'js_footer|js_optimization_status', '==|==', '1|custom', '', 'visible|visible' ],
+				'dependency' => [ 'js_footer_status', '==', 'custom', '', 'visible' ],
 				'sanitize'   => 'sbp_sanitize_strip_tags',
 			];
 
