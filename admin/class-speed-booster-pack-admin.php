@@ -832,7 +832,7 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Specify image dimensions', 'speed-booster-pack' ),
 					'id'    => 'missing_image_dimensions',
 					'type'  => 'switcher',
-					'desc'  => __( 'Automatically sets missing image widths and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
+					'desc'  => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
 				],
 			];
 

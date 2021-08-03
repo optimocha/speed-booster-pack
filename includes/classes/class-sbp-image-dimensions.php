@@ -22,7 +22,7 @@ class SBP_Image_Dimensions extends SBP_Abstract_Module {
 		if ( $images ) {
 			foreach ( $images as &$image ) {
 				if ( ! isset( $image->width ) || ! isset( $image->height ) ) {
-					$src = $image->src;
+					$src = $image->hasAttribute('data-src') ? $image->getAttribute('data-src') : $image->getAttribute('src');
 					$path = sbp_remove_leading_string( $src, $site_url );
 					$image_path = ABSPATH . $path;
 					if ( file_exists( $image_path ) ) {
