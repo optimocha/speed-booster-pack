@@ -47,8 +47,7 @@ class SBP_Advisor {
 			$this->messages[ $message_id ] = [
 				'style'   => 'warning',
 				'type'    => 'dismissible',
-				// B_TODO: Change text
-				'content' => __( 'We detected that you\'re using HTTP/1.1. For best performance, you need to update to HTTP/2 or HTTP/3', 'speed-booster-pack' ),
+				'content' => __( 'You\'re using HTTP/1.1. For best performance, you should upgrade to HTTP/2 or, if possible, HTTP/3.', 'speed-booster-pack' ),
 			];
 		}
 	}
@@ -64,8 +63,7 @@ class SBP_Advisor {
 			$this->messages[ $message_id ] = [
 				'style'   => 'warning',
 				'type'    => 'dismissible',
-				// B_TODO: Change text
-				'content' => __( 'We detected that you\'re using and old version of PHP. For best performance, you recommend you to upgrade to PHP 7.3', 'speed-booster-pack' ),
+				'content' => __( 'You\'re using and old version of PHP. For best performance, you should upgrade PHP to version 7.3 or above.', 'speed-booster-pack' ),
 			];
 		}
 	}

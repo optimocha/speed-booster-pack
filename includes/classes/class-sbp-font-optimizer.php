@@ -41,7 +41,6 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 		return $html;
 	}
 
-	// B_TODO: Maybe rename the methods
 	public function process_google_fonts_api( $html ) {
 		preg_match_all( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/is", $html, $matches );
 		if ( ! isset( $matches[1] ) || empty( $matches[1] ) ) {

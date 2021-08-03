@@ -233,14 +233,12 @@ class Speed_Booster_Pack_Admin {
 				[
 					'id'      => 'advisor_heading',
 					'type'    => 'subheading',
-					// B_TODO: Change heading
-					'content' => __( 'Recommendations For You', 'speed-booster-pack' ),
+					'content' => __( 'Recommendations to Improve Performance', 'speed-booster-pack' ),
 				],
 				[
 					'id'      => 'advisor_introduction',
 					'type'    => 'content',
-					// B_TODO: Change introduction paragraph
-					'content' => __( 'This is the introduction paragraph. Lorem ipsum dolor sit amet, conectetur adipiscing elit. Lorem ipsum dolor sit amet, conectetur adipiscing elit. Lorem ipsum dolor sit amet, conectetur adipiscing elit.', 'speed-booster-pack' ),
+					'content' => __( 'All the notices below include optional, yet recommended changes to your website or your server, which will improve performance.', 'speed-booster-pack' ),
 				],
 			];
 
@@ -727,7 +725,7 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							'id'         => 'enable_criticalcss',
-							'title'      => __( 'Enable', 'speed-booster-pack' ) . ' ' . __( ' Critical CSS', 'speed-booster-pack' ),
+							'title'      => __( 'Enable', 'speed-booster-pack' ) . ' ' . __( 'Critical CSS', 'speed-booster-pack' ),
 							'type'       => 'switcher',
 							'default'    => false,
 							'desc'       => sprintf( __( 'Critical CSS is a method to optimize CSS delivery, %1$srecommended by Google%2$s. It allows you to defer all your CSS files and inline the styles of your content above the fold. You can generate critical CSS needed for your website %3$susing a tool like this%4$s and paste them below.', 'speed-booster-pack' ), '<a href="https://web.dev/extract-critical-css/" rel="external noopener" target="_blank">', '</a>', '<a href="https://www.sitelocity.com/critical-path-css-generator" rel="external noopener" target="_blank">', '</a>' ),
@@ -737,11 +735,9 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'         => 'criticalcss_excludes',
 							'type'       => 'code_editor',
-							// B_TODO: Change text
-							'title'      => __( 'Critical CSS Exclude Rules', 'speed-booster-pack' ),
+							'title'      => __( 'Critical CSS exclude rules', 'speed-booster-pack' ),
 							'sanitize'   => 'sbp_sanitize_strip_tags',
-							// B_TODO: Change description
-							'desc'       => __( 'Enter CSS filenames/URLs to exclude from critical css.', 'speed-booster-pack' ),
+							'desc'       => __( 'Enter CSS file names or URLs to exclude from critical CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'settings'   => [ 'lineWrapping' => true ],
 						],
@@ -831,6 +827,12 @@ class Speed_Booster_Pack_Admin {
 					'desc'       => __( 'Combines all Google Fonts URLs into a single URL and optimizes loading of that URL.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title' => __( 'Specify image dimensions', 'speed-booster-pack' ),
+					'id'    => 'missing_image_dimensions',
+					'type'  => 'switcher',
+					'desc'  => __( 'Automatically sets missing image widths and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
 				],
 			];
 
@@ -975,14 +977,6 @@ class Speed_Booster_Pack_Admin {
 							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 							'default'  => true,
 							'sanitize' => 'sbp_sanitize_boolean',
-						],
-						[
-							// B_TODO: Change Text
-							'title' => __( 'Specify Image Dimensions', 'speed-booster-pack' ),
-							'id'    => 'missing_image_dimensions',
-							'type'  => 'switcher',
-							// B_TODO: Change Text
-							'desc'  => __( 'Specify missing image dimensions to prevent cumulative layout shift.', 'speed-booster-pack' ),
 						],
 						[
 							'title'      => __( 'Localize Google Analytics & Google Tag Manager', 'speed-booster-pack' ),
@@ -1465,8 +1459,7 @@ class Speed_Booster_Pack_Admin {
 			$meta_fields[] = [
 				'id'         => 'sbp_criticalcss',
 				'type'       => 'code_editor',
-				// B_TODO: Description text
-				'desc'       => __( '', 'speed-booster-pack' ),
+				'desc'       => __( 'Paste the critical CSS rules generated for this exact URL.', 'speed-booster-pack' ),
 				'settings'   => [ 'lineWrapping' => true ],
 				'dependency' => [ 'sbp_criticalcss_status', '==', 'custom', '', 'visible' ],
 			];

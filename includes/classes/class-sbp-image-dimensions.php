@@ -6,7 +6,7 @@ use simplehtmldom\HtmlDocument;
 
 class SBP_Image_Dimensions extends SBP_Abstract_Module {
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'missing_image_dimensions' ) ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'missing_image_dimensions' ) ) {
 			return;
 		}
 
