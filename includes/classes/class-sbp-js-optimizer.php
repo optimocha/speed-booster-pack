@@ -176,9 +176,9 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 
 	/**
 	 *
-	 * @var mixed|null $optimize_strategy
+	 * @var mixed|null $js_optimize_strategy
 	 */
-	private $optimize_strategy = 'off';
+	private $js_optimize_strategy = 'off';
 
 	/**
 	 * @var mixed|null
@@ -186,14 +186,14 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private $js_footer = false;
 
 	public function __construct() {
-		$this->optimize_strategy = sbp_get_option( 'js_optimize', 'off' );
+		$this->js_optimize_strategy = sbp_get_option( 'js_optimize', 'off' );
 		$this->js_footer         = sbp_get_option( 'js_footer' );
 
 		add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
 	}
 
 	public function optimize_scripts( $html ) {
-		if ( ( ! sbp_get_option( 'module_assets' ) || ( $this->optimize_strategy == 'off' && ! $this->js_footer ) ) && ! is_singular() ) {
+		if ( ( ! sbp_get_option( 'module_assets' ) || ( $this->js_optimize_strategy == 'off' && ! $this->js_footer ) ) && ! is_singular() ) {
 			return $html;
 		}
 
@@ -206,11 +206,11 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 			$js_footer_status = sbp_get_post_meta( get_the_ID(), 'js_footer_status', 'default' );
 
 			if ( $js_optimization_status == 'off' ) {
-				$this->optimize_strategy = 'off';
+				$this->js_optimize_strategy = 'off';
 			} elseif ( $js_optimization_status == 'custom' ) {
 				$this->exclude_rules           = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_exclude' ) ), $this->default_excludes );
 				$this->include_rules           = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_include' ) ), $this->default_includes );
-				$this->optimize_strategy       = sbp_get_post_meta( get_the_ID(), 'js_optimize' );
+				$this->js_optimize_strategy       = sbp_get_post_meta( get_the_ID(), 'js_optimize' );
 			}
 
 			if ( $js_footer_status == 'off' ) {
@@ -230,7 +230,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 			$this->move_scripts( $html );
 		}
 
-		if ( $this->optimize_strategy !== 'off' ) {
+		if ( $this->js_optimize_strategy !== 'off' ) {
 			$this->remove_excluded_scripts();
 			$this->add_defer_attribute();
 			$this->convert_inline_to_base64();
@@ -311,7 +311,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private function remove_excluded_scripts() {
 		$script_count = count( $this->included_scripts );
 		for ( $i = 0; $i < $script_count; $i ++ ) {
-			if ( $this->optimize_strategy == 'everything' ) {
+			if ( $this->js_optimize_strategy == 'everything' ) {
 				foreach ( $this->exclude_rules as $rule ) {
 					if ( isset( $this->included_scripts[ $i ] ) ) {
 						if ( strpos( $this->included_scripts[ $i ], $rule ) !== false ) {
@@ -319,7 +319,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 						}
 					}
 				}
-			} elseif ( $this->optimize_strategy == 'custom' ) {
+			} elseif ( $this->js_optimize_strategy == 'custom' ) {
 				$has_found = false;
 				foreach ( $this->include_rules as $rule ) {
 					if ( isset( $this->included_scripts[ $i ] ) ) {
