@@ -733,15 +733,6 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
 						[
-							'id'         => 'criticalcss_excludes',
-							'type'       => 'code_editor',
-							'title'      => __( 'Critical CSS exclude rules', 'speed-booster-pack' ),
-							'sanitize'   => 'sbp_sanitize_strip_tags',
-							'desc'       => __( 'Enter CSS file names or URLs to exclude from critical CSS.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
-							'settings'   => [ 'lineWrapping' => true ],
-						],
-						[
 							'id'         => 'criticalcss_default',
 							'type'       => 'code_editor',
 							'before'     => '<h3>' . __( 'Default Critical CSS', 'speed-booster-pack' ) . '</h3>',
@@ -766,6 +757,15 @@ class Speed_Booster_Pack_Admin {
 							'default'    => true,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'id'         => 'criticalcss_excludes',
+							'type'       => 'code_editor',
+							'title'      => __( 'Critical CSS exclude rules', 'speed-booster-pack' ),
+							'sanitize'   => 'sbp_sanitize_strip_tags',
+							'desc'       => __( 'Enter CSS file names or URLs to exclude from critical CSS.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
+							'settings'   => [ 'lineWrapping' => true ],
 						],
 						[
 							'type'  => 'subheading',
