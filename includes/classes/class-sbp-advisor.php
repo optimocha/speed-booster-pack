@@ -55,7 +55,7 @@ class SBP_Advisor {
 	private function check_php_version() {
 		$message_id = 'update_php';
 
-		if ( version_compare( phpversion(), '7.3' ) !== -1 ) {
+		if ( version_compare( PHP_VERSION, '7.3' ) !== -1 ) {
 			return;
 		}
 
