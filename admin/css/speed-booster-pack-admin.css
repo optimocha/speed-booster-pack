@@ -200,3 +200,7 @@
 .sbp-advice p {
     margin-bottom: 0;
 }
+
+.meta_box_critical_css_excludes.csf-depend-on {
+    display: none!important;
+}

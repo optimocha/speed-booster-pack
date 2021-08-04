@@ -833,6 +833,7 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'missing_image_dimensions',
 					'type'  => 'switcher',
 					'desc'  => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 				],
 			];
 
@@ -1425,8 +1426,8 @@ class Speed_Booster_Pack_Admin {
 				[
 					'id'       => 'sbp_preload',
 					'type'     => 'code_editor',
-					'title'    => __( 'Content-Specific Preload Rules', 'speed-booster-pack' ),
-					'desc'     => __( 'Enter full URLs of files to preload only for this page.', 'speed-booster-pack' ),
+					'title'    => __( 'Preload Rules for this content', 'speed-booster-pack' ),
+					'desc'     => __( 'Enter full URLs of files to preload only for this content.', 'speed-booster-pack' ),
 					'settings' => [ 'lineWrapping' => true ],
 					'sanitize' => 'sbp_sanitize_strip_tags',
 				],
@@ -1444,16 +1445,16 @@ class Speed_Booster_Pack_Admin {
 
 			// BEGIN CONTENT SPECIFIC CRITICALCSS
 			$meta_fields[] = [
-				'id'       => 'sbp_criticalcss_status',
-				'type'     => 'button_set',
-				'title'    => __( 'Content-Specific Critical CSS', 'speed-booster-pack' ),
-				'options'  => array(
+				'id'      => 'sbp_criticalcss_status',
+				'type'    => 'button_set',
+				'title'   => __( 'Critical CSS for this content', 'speed-booster-pack' ),
+				'options' => array(
 					'default' => 'Default',
 					'off'     => 'Off',
 					'custom'  => 'Custom',
 				),
-				'default'  => 'default',
-				'class'    => 'sbp-gap-top',
+				'default' => 'default',
+				'class'   => 'sbp-gap-top',
 			];
 
 			$meta_fields[] = [
@@ -1462,6 +1463,7 @@ class Speed_Booster_Pack_Admin {
 				'desc'       => __( 'Paste the critical CSS rules generated for this exact URL.', 'speed-booster-pack' ),
 				'settings'   => [ 'lineWrapping' => true ],
 				'dependency' => [ 'sbp_criticalcss_status', '==', 'custom', '', 'visible' ],
+				'class'      => 'meta_box_critical_css_excludes',
 			];
 
 			if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'enable_criticalcss' ) ) {
@@ -1476,29 +1478,17 @@ class Speed_Booster_Pack_Admin {
 
 			// BEGIN CONTENT SPECIFIC JS OPTIMIZATION
 			$meta_fields[] = [
-				'title'   => __( 'Content Specific JavaScript Optimization', 'speed-booster-pack' ),
-				'id'      => 'js_optimization_status',
+				'title'   => __( 'Optimize JS for this content', 'speed-booster-pack' ),
+				'id'      => 'js_optimize',
+				'desc'    => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
 				'type'    => 'button_set',
 				'options' => [
-					'default' => __( 'Default', 'speed-booster-pack' ),
-					'off'     => __( 'Off', 'speed-booster-pack' ),
-					'custom'  => __( 'Custom', 'speed-booster-pack' ),
-				],
-				'default' => 'default',
-			];
-
-			$meta_fields[] = [
-				'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
-				'id'         => 'js_optimize',
-				'desc'       => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
-				'type'       => 'button_set',
-				'options'    => [
+					'default'    => __( 'Default', 'speed-booster-pack' ),
 					'off'        => __( 'Off', 'speed-booster-pack' ),
 					'everything' => __( 'Everything', 'speed-booster-pack' ),
 					'custom'     => __( 'Custom', 'speed-booster-pack' ),
 				],
-				'default'    => 'off',
-				'dependency' => [ 'js_optimization_status', '==', 'custom', '', 'visible' ],
+				'default' => 'off',
 			];
 
 			$meta_fields[] = [
@@ -1508,7 +1498,7 @@ class Speed_Booster_Pack_Admin {
 				'type'       => 'code_editor',
 				'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from deferring.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 				'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-				'dependency' => [ 'js_optimize|js_optimization_status', '==|==', 'everything|custom', '', 'visible|visible' ],
+				'dependency' => [ 'js_optimize', '==', 'everything', '', 'visible' ],
 				'sanitize'   => 'sbp_sanitize_strip_tags',
 			];
 
@@ -1519,22 +1509,22 @@ class Speed_Booster_Pack_Admin {
 				'type'       => 'code_editor',
 				'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to defer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 				'default'    => '',
-				'dependency' => [ 'js_optimize|js_optimization_status', '==|==', 'custom|custom', '', 'visible|visible' ],
+				'dependency' => [ 'js_optimize', '==', 'custom', '', 'visible' ],
 				'sanitize'   => 'sbp_sanitize_strip_tags',
 			];
 
 			// BEGIN CONTENT SPECIFIC JS OPTIMIZATION
 			$meta_fields[] = [
-				'title'   => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
+				'title'   => __( 'Move JS to footer for this content', 'speed-booster-pack' ),
 				'id'      => 'js_footer_status',
-				'class'      => 'js-footer',
+				'class'   => 'js-footer',
 				'type'    => 'button_set',
 				'options' => [
 					'default' => __( 'Default', 'speed-booster-pack' ),
 					'off'     => __( 'Off', 'speed-booster-pack' ),
-					'custom'  => __( 'Custom', 'speed-booster-pack' ),
+					'on'      => __( 'On', 'speed-booster-pack' ),
 				],
-                'desc'       => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
+				'desc'    => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
 				'default' => 'default',
 			];
 
@@ -1545,18 +1535,9 @@ class Speed_Booster_Pack_Admin {
 				'type'       => 'code_editor',
 				'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from moving to footer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
 				'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-				'dependency' => [ 'js_footer_status', '==', 'custom', '', 'visible' ],
+				'dependency' => [ 'js_footer_status', '==', 'on', '', 'visible' ],
 				'sanitize'   => 'sbp_sanitize_strip_tags',
 			];
-
-			if ( ! sbp_get_option( 'module_assets' ) ) {
-				$meta_fields[] = [
-					'id'    => 'sbp_js_optimization_warning',
-					'type'  => 'notice',
-					'style' => 'warning',
-					'title' => __( sprintf( 'Warning: JS Optimization isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
-				];
-			}
 			// END CONTENT SPECIFIC JS OPTIMIZATION
 
 			CSF::createSection( $metabox_prefix,
