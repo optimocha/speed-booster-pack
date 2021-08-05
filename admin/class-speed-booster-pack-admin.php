@@ -1476,7 +1476,7 @@ class Speed_Booster_Pack_Admin {
 			}
 			// END CONTENT SPECIFIC CRITICALCSS
 
-			// BEGIN CONTENT SPECIFIC JS OPTIMIZATION
+			// BEGIN CONTENT SPECIFIC JS DEFER
 			$meta_fields[] = [
 				'title'   => __( 'Optimize JS for this content', 'speed-booster-pack' ),
 				'id'      => 'js_optimize',
@@ -1488,7 +1488,7 @@ class Speed_Booster_Pack_Admin {
 					'everything' => __( 'Everything', 'speed-booster-pack' ),
 					'custom'     => __( 'Custom', 'speed-booster-pack' ),
 				],
-				'default' => 'off',
+				'default' => 'default',
 			];
 
 			$meta_fields[] = [
@@ -1512,8 +1512,9 @@ class Speed_Booster_Pack_Admin {
 				'dependency' => [ 'js_optimize', '==', 'custom', '', 'visible' ],
 				'sanitize'   => 'sbp_sanitize_strip_tags',
 			];
+			// END CONTENT SPECIFIC JS DEFER
 
-			// BEGIN CONTENT SPECIFIC JS OPTIMIZATION
+			// BEGIN CONTENT SPECIFIC JS MOVE TO FOOTER
 			$meta_fields[] = [
 				'title'   => __( 'Move JS to footer for this content', 'speed-booster-pack' ),
 				'id'      => 'js_footer_status',
@@ -1538,7 +1539,7 @@ class Speed_Booster_Pack_Admin {
 				'dependency' => [ 'js_footer_status', '==', 'on', '', 'visible' ],
 				'sanitize'   => 'sbp_sanitize_strip_tags',
 			];
-			// END CONTENT SPECIFIC JS OPTIMIZATION
+			// END CONTENT SPECIFIC JS MOVE TO FOOTER
 
 			CSF::createSection( $metabox_prefix,
 				array(
