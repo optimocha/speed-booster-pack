@@ -256,7 +256,7 @@ class Speed_Booster_Pack_Admin {
 				$advisor_fields[] = [
 					'type'    => 'submessage',
 					'style'   => 'success',
-					'content' => '<p>' . __( 'There is no any recommendation for now.', 'speed-booster-pack' ) . '</p>',
+					'content' => '<p>' . __( 'No recommendations for now.', 'speed-booster-pack' ) . '</p>',
 				];
 			}
 
