@@ -1483,12 +1483,12 @@ class Speed_Booster_Pack_Admin {
 				'desc'    => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
 				'type'    => 'button_set',
 				'options' => [
-					'default'    => __( 'Default', 'speed-booster-pack' ),
+					'main_setting'    => __( 'Main setting', 'speed-booster-pack' ),
 					'off'        => __( 'Off', 'speed-booster-pack' ),
 					'everything' => __( 'Everything', 'speed-booster-pack' ),
 					'custom'     => __( 'Custom', 'speed-booster-pack' ),
 				],
-				'default' => 'default',
+				'default' => 'main_setting',
 			];
 
 			$meta_fields[] = [
@@ -1521,12 +1521,12 @@ class Speed_Booster_Pack_Admin {
 				'class'   => 'js-footer',
 				'type'    => 'button_set',
 				'options' => [
-					'default' => __( 'Default', 'speed-booster-pack' ),
+					'main_setting' => __( 'Main setting', 'speed-booster-pack' ),
 					'off'     => __( 'Off', 'speed-booster-pack' ),
 					'on'      => __( 'On', 'speed-booster-pack' ),
 				],
 				'desc'    => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
-				'default' => 'default',
+				'default' => 'main_setting',
 			];
 
 			$meta_fields[] = [

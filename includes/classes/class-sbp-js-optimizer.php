@@ -202,18 +202,18 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		$this->include_rules           = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
 
 		if ( is_singular() ) {
-			$js_optimization_status = sbp_get_post_meta( get_the_ID(), 'js_optimize', 'default' );
-			$js_footer_status       = sbp_get_post_meta( get_the_ID(), 'js_footer_status', 'default' );
+			$js_optimization_status = sbp_get_post_meta( get_the_ID(), 'js_optimize', 'main_setting' );
+			$js_footer_status       = sbp_get_post_meta( get_the_ID(), 'js_footer_status', 'main_setting' );
 
-			if ( $js_optimization_status == 'off' || ( ! sbp_get_option( 'module_assets' ) && $js_optimization_status == 'default' ) ) {
+			if ( $js_optimization_status == 'off' || ( ! sbp_get_option( 'module_assets' ) && $js_optimization_status == 'main_setting' ) ) {
 				$this->js_optimize_strategy = 'off';
-			} elseif ( $js_optimization_status != 'default' ) {
+			} elseif ( $js_optimization_status != 'main_setting' ) {
 				$this->exclude_rules        = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_exclude' ) ), $this->default_excludes );
 				$this->include_rules        = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_include' ) ), $this->default_includes );
 				$this->js_optimize_strategy = sbp_get_post_meta( get_the_ID(), 'js_optimize' );
 			}
 
-			if ( $js_footer_status == 'off' || ( ! sbp_get_option( 'module_assets' ) && $js_footer_status == 'default' ) ) {
+			if ( $js_footer_status == 'off' || ( ! sbp_get_option( 'module_assets' ) && $js_footer_status == 'main_setting' ) ) {
 				$this->js_footer = false;
 			} elseif ( $js_footer_status == 'on' ) {
 				$this->js_footer               = true;
