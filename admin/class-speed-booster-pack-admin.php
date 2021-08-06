@@ -1449,11 +1449,11 @@ class Speed_Booster_Pack_Admin {
 				'type'    => 'button_set',
 				'title'   => __( 'Critical CSS for this content', 'speed-booster-pack' ),
 				'options' => array(
-					'default' => 'Default',
+					'main_setting' => 'Main setting',
 					'off'     => 'Off',
 					'custom'  => 'Custom',
 				),
-				'default' => 'default',
+				'default' => 'main_setting',
 				'class'   => 'sbp-gap-top',
 			];
 

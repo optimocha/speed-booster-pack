@@ -27,31 +27,31 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 			return $html;
 		}
 
-		$run_default = false;
+		$run_main_setting = false;
 
 		// Content Specific Option
 		if ( is_singular() ) {
-			$content_specific_criticalcss_status = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss_status', 'default' );
+			$content_specific_criticalcss_status = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss_status', 'main_setting' );
 
 			if ( $content_specific_criticalcss_status == 'off' ) {
 				return $html;
 			} elseif ( $content_specific_criticalcss_status == 'custom' ) {
 				$content_specific_criticalcss = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss' );
 			} else {
-				$run_default = true;
+				$run_main_setting = true;
 			}
 		} else {
-			$run_default = true;
+			$run_main_setting = true;
 		}
 
-		// Find Default Critical CSS Code if exists
-		if ( $run_default ) {
+		// Find main_setting Critical CSS Code if exists
+		if ( $run_main_setting ) {
 			$criticalcss_code = sbp_get_option( 'criticalcss_default' );
 		} else {
 			$criticalcss_code = $content_specific_criticalcss;
 		}
 
-		if ( $run_default ) {
+		if ( $run_main_setting ) {
 			$conditions = [
 				'is_front_page',
 				'is_home',
