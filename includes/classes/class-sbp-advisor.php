@@ -22,8 +22,6 @@ class SBP_Advisor {
 	public function set_messages() {
 		$this->check_php_version();
 		$this->check_http_protocol_version();
-		$total_message_count = count( $this->messages );
-		SBP_Notice_Manager::$notice_count += $total_message_count;
 	}
 
 	public function get_dismissed_messages() {
