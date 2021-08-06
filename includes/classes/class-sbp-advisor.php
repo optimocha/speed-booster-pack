@@ -46,7 +46,7 @@ class SBP_Advisor {
 		if ( ! in_array( $message_id, $this->dismissed_messages ) ) {
 			$this->messages[ $message_id ] = [
 				'style'   => 'warning',
-				'type'    => 'dismissible',
+				'type'    => 'non-dismissible',
 				'content' => __( 'You\'re using HTTP/1.1. For best performance, you should upgrade to HTTP/2 or, if possible, HTTP/3.', 'speed-booster-pack' ),
 			];
 		}
@@ -62,7 +62,7 @@ class SBP_Advisor {
 		if ( ! in_array( $message_id, $this->dismissed_messages ) ) {
 			$this->messages[ $message_id ] = [
 				'style'   => 'warning',
-				'type'    => 'dismissible',
+				'type'    => 'non-dismissible',
 				'content' => __( 'You\'re using and old version of PHP. For best performance, you should upgrade PHP to version 7.3 or above.', 'speed-booster-pack' ),
 			];
 		}
