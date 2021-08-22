@@ -829,11 +829,12 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title' => __( 'Specify image dimensions', 'speed-booster-pack' ),
+					'title' => __( 'Set missing image dimensions', 'speed-booster-pack' ),
 					'id'    => 'missing_image_dimensions',
 					'type'  => 'switcher',
 					'desc'  => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 			];
 

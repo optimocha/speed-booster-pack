@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 4.2.2
+Stable tag: 4.3.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,6 +103,22 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.3.0 =
+
+*Release Date: 23 August 2021*
+
+* **NEW - Advisor**: This new feature will recommend things like upgrading your PHP version, HTTP protocol and more, in the future.
+* **NEW - Set missing image dimensions**: SBP can now set missing `width` and `height` parameters for `<img>` tags automatically.
+* **NEW - Content-specific Critical CSS**: Allows you to set critical CSS rules for each post, page or other custom post types.
+* **NEW - Content-specific Optimize JS**: Allows you to set JS optimization rules for each post, page or other custom post types.
+* **Improved**: Google Fonts optimizer now supports /css2 URLs!
+* **Improved**: Better handling of the wp-config.php file.
+* **Improved**: Better handling of Cloudflare credentials.
+* **Improved**: You can now exclude CSS files from being deferred while critical CSS is enabled.
+* **Fixed**: An immutable notice shows that the PageSpeed Tricker feature is enabled.
+* **Fixed**: Email newsletter nag shows one day after SBP is installed, instead of immediately on first install.
+* **Fixed**: Fixed a harmless error in the cache warmup process.
 
 = 4.2.1 & 4.2.2 =
 
