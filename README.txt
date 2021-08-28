@@ -104,6 +104,15 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
+= 4.3.1 =
+
+*Release Date: ?? September 2021*
+
+* **NEW**: 
+* **Improved**: 
+* **Fixed**: 
+* **Removed**: "Dequeue Jetpack's devicepx script" is gone.
+
 = 4.3.0 =
 
 *Release Date: 29 August 2021*
