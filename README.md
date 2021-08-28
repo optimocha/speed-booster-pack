@@ -106,7 +106,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.3.0 =
 
-*Release Date: 23 August 2021*
+*Release Date: 29 August 2021*
 
 * **NEW - Advisor**: This new feature will recommend things like upgrading your PHP version, HTTP protocol and more, in the future.
 * **NEW - Set missing image dimensions**: SBP can now set missing `width` and `height` parameters for `<img>` tags automatically.
