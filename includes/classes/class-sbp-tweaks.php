@@ -184,8 +184,11 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	}
 
 	private function post_revisions() {
-		if ( ! empty( sbp_get_option( 'post_revisions' ) ) && ! defined( 'WP_POST_REVISIONS' ) ) {
-			define( 'WP_POST_REVISIONS', sbp_get_option( 'post_revisions' ) );
+		$post_revisions = sbp_get_option( 'post_revisions' );
+		if ( ! empty( $post_revisions ) && (int) $post_revisions ) {
+			add_filter( 'wp_revisions_to_keep', function( $num, $post ) use ( $post_revisions ) {
+				return $post_revisions;
+			}, 2, 2 );
 		}
 	}
 
