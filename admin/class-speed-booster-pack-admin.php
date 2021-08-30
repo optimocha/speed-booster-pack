@@ -1306,7 +1306,8 @@ class Speed_Booster_Pack_Admin {
 							'type'    => 'content',
 							'content' => '
 								<p>' . __( 'This handy little tool converts your database tables from MyISAM to InnoDB. Click the button below to scan your tables. Tables with the MyISAM engine will then be listed so you can convert them one by one.', 'speed-booster-pack' ) . '</p>
-								<button class="button button-primary sbp-scan-database-tables sbp-button-loading"><span>' . __( 'Scan database tables', 'speed-booster-pack' ) . '</span> <i class="dashicons dashicons-image-rotate"></i></button>
+								<!-- <button class="button button-primary sbp-scan-database-tables sbp-button-loading"><span>' . __( 'Scan database tables', 'speed-booster-pack' ) . '</span> <i class="dashicons dashicons-image-rotate"></i></button> -->
+								<i class="database-tables-loading dashicons dashicons-image-rotate"></i>
 								<table class="widefat fixed sbp-database-tables" cellspacing="0" style="margin-top: 20px; display: none;">
 									<thead>
 										<tr>

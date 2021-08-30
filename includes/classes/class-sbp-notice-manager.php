@@ -56,7 +56,7 @@ class SBP_Notice_Manager {
 		}
 
 		$action = $notice_type == 'recurrent' ? 'sbp_remove_notice_transient' : 'sbp_dismiss_notice';
-		if ( ( $notice_type == 'one_time' && self::should_display( $id ) ) || ( $notice_type == 'recurrent' && get_transient( $id ) ) || ( $notice_type == 'flash' && ! get_transient( $id ) ) ) {
+		if ( ( $notice_type == 'one_time' && self::should_display( $id ) ) || ( $notice_type == 'recurrent' && get_transient( $id ) ) || ( $notice_type == 'flash' && get_transient( $id ) ) ) {
 			add_action( 'admin_notices',
 				function () use ( $type, $is_dismissible, $id, $text, $action, $pages, $notice_type ) {
 					self::$notice_count ++;

@@ -191,17 +191,10 @@
 
     let hasCloudflareChecked = false;
 
-    // $(document).on('change', '[data-depend-id="cloudflare_enable"]', function () {
-    //     $.checkCloudflareSettings();
-    //
-    //     hasCloudflareChecked = true;
-    // });
-
     $(window).on('hashchange csf.hashchange', function () {
+        var hash = window.location.hash.replace('#tab=', '');
 
         if (hasCloudflareChecked === false) {
-            var hash = window.location.hash.replace('#tab=', '');
-
             if (hash === 'cdn-proxy') {
                 $.checkCloudflareSettings();
 
@@ -209,12 +202,16 @@
             }
         }
 
+        if (hash === 'database-optimization') {
+            $.scanDatabaseTables();
+        }
     });
 
-    $(document).on('click', '.sbp-scan-database-tables', function() {
+    $.scanDatabaseTables = function() {
         var $button = $(this);
         $button.addClass('sbp-loading-active');
         $button.attr('disabled', 'disabled');
+        $('.database-tables-loading').stop().show();
 
         $.ajax({
             type: 'GET',
@@ -226,6 +223,7 @@
                 var $tableBody = $('.sbp-database-tables tbody');
                 $tableBody.html('');
                 if (response.tables && response.tables.length > 0) {
+                    $('.database-tables-loading').hide();
                     $table.show();
                     response.tables.map(table => {
                         $tableBody.append('<tr>' +
@@ -244,11 +242,12 @@
                 alert( 'Error occured while fetching database tables.' );
             },
             complete: function() {
+                $('.database-tables-loading').stop().hide();
                 $button.removeClass('sbp-loading-active');
                 $button.removeAttr('disabled');
             }
         });
-    });
+    };
 
     $(document).on('click', '.sbp-convert-table', function() {
         var $button = $(this);

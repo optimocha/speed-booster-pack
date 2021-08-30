@@ -142,17 +142,22 @@ class SBP_WP_Admin {
 		}
 
 		// Set Cloudflare Notice
-		if ( $transient_value = get_transient( 'sbp_notice_cloudflare' ) ) {
-			$notice_message = $transient_value == '1' ? __( 'Cloudflare cache cleared.',
-				'speed-booster-pack' ) : __( 'Error occured while clearing Cloudflare cache. Possible reason: Credentials invalid.',
-				'speed-booster-pack' );
-			$notice_type    = $transient_value == '1' ? 'success' : 'error';
-			SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>',
-				$notice_type,
-				true,
-				'flash' );
+		$cf_transient_value = get_transient( 'sbp_notice_cloudflare' );
+		if ($cf_transient_value == 1) {
+			$notice_message = __( 'Cloudflare cache cleared.', 'speed-booster-pack' );
+			$notice_type    = 'success';
+		} else if ($cf_transient_value == 2) {
+			$notice_message = __( 'Error occured while clearing Cloudflare cache. Possible reason: Credentials invalid.', 'speed-booster-pack' );
+			$notice_type    = 'error';
+		} else {
+			$notice_message = '';
+			$notice_type    = '';
 		}
+		SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare',
+			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>',
+			$notice_type,
+			true,
+			'flash' );
 
 		// Set Cache Clear Notice
 		SBP_Notice_Manager::display_notice( 'sbp_notice_cache',
