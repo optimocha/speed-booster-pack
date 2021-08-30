@@ -1092,10 +1092,19 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: Special */
 
 			/* BEGIN Section: Tweaks */
+            $user_roles = [];
+            $editable_roles = sbp_get_editable_roles();
+
+            if ( $editable_roles ) {
+	            foreach ( $editable_roles as $role_key => $role ) {
+		            $user_roles[ $role_key ] = $role['name'];
+	            }
+            }
+
 			CSF::createSection(
 				$prefix,
 				[
-					'title'  => __( 'Tweaks', 'speed-booster-pack' ),
+					'title'  => __( 'General', 'speed-booster-pack' ),
 					'id'     => 'tweaks',
 					'icon'   => 'fa fa-sliders-h',
 					'fields' => [
@@ -1282,7 +1291,15 @@ class Speed_Booster_Pack_Admin {
 							],
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
-
+                        [
+	                        'id'          => 'roles_to_disable_sbp',
+	                        'type'        => 'select',
+	                        'title'       => sprintf( __( 'Roles to disable %s features', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+	                        'chosen'      => true,
+	                        'multiple'    => true,
+	                        'placeholder' => 'Select user role',
+	                        'options'     => $user_roles,
+                        ],
 					],
 				]
 			);
