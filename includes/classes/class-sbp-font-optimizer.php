@@ -18,19 +18,15 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 			return;
 		}
 
-		add_action( 'init', [ $this, 'run' ] );
-	}
-
-	public function run() {
-		if ( is_embed() ) {
-			return;
-		}
-
 		add_filter( 'sbp_output_buffer', [ $this, 'process_google_fonts' ], 10 );
 	}
 
 	public function process_google_fonts( $html ) {
-		// Process old Google Fonts API
+
+		if ( is_embed() ) {
+			return;
+		}
+
 		$html = $this->process_google_fonts_api( $html );
 		$html = $this->process_new_google_fonts_api( $html );
 
