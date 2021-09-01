@@ -24,7 +24,7 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 	public function process_google_fonts( $html ) {
 
 		if ( is_embed() ) {
-			return;
+			return $html;
 		}
 
 		$html = $this->process_google_fonts_api( $html );
