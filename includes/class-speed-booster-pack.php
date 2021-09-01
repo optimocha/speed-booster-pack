@@ -140,21 +140,6 @@ class Speed_Booster_Pack {
 			}
 		}
 
-		// Check for roles
-		add_action('init', function() {
-			if ( $user = wp_get_current_user() ) {
-				$sbp_disabled_roles = sbp_get_option( 'roles_to_disable_sbp', [] );
-				$roles = $user->roles;
-				if ( $roles && $sbp_disabled_roles ) {
-					foreach ( $roles as $role ) {
-						if ( in_array( $role, $sbp_disabled_roles ) ) {
-							// Disable SBP, but how?
-						}
-					}
-				}
-			}
-		});
-
 		// Brizy Editor
 		if (
 			class_exists( 'Brizy_Editor' )

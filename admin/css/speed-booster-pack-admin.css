@@ -183,11 +183,6 @@
     display: none!important;
 }
 
-.database-tables-loading {
-    font-size: 14px;
-    animation: loading 2s linear infinite;
-}
-
 @-webkit-keyframes loading {
     0% {
         -webkit-transform: rotate(0deg);

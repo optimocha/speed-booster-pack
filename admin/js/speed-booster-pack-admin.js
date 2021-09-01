@@ -208,10 +208,9 @@
     });
 
     $.scanDatabaseTables = function() {
-        var $button = $(this);
+        var $button = $('.sbp-scan-database-tables');
         $button.addClass('sbp-loading-active');
         $button.attr('disabled', 'disabled');
-        $('.database-tables-loading').stop().show();
 
         $.ajax({
             type: 'GET',
@@ -223,7 +222,6 @@
                 var $tableBody = $('.sbp-database-tables tbody');
                 $tableBody.html('');
                 if (response.tables && response.tables.length > 0) {
-                    $('.database-tables-loading').hide();
                     $table.show();
                     response.tables.map(table => {
                         $tableBody.append('<tr>' +
@@ -248,6 +246,10 @@
             }
         });
     };
+
+    $(document).on('click', '.sbp-scan-database-tables', function() {
+        $.scanDatabaseTables();
+    });
 
     $(document).on('click', '.sbp-convert-table', function() {
         var $button = $(this);
