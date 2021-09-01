@@ -1112,7 +1112,7 @@ class Speed_Booster_Pack_Admin {
 
 						[
 							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
+							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'General', 'speed-booster-pack' ),
 							'id'       => 'module_tweaks',
 							'class'    => 'module-tweaks',
 							'type'     => 'switcher',
