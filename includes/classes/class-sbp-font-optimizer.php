@@ -8,7 +8,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class SBP_Font_Optimizer extends SBP_Abstract_Module {
-	private $families;
+	private $families = [];
 	private $subsets;
 
 	private $css2_families;
