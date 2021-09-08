@@ -9,9 +9,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Font_Optimizer extends SBP_Abstract_Module {
 	private $families = [];
-	private $subsets;
+	private $subsets = [];
 
-	private $css2_families;
+	private $css2_families = [];
 
 	public function __construct() {
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'optimize_gfonts' ) ) {
