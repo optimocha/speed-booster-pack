@@ -104,6 +104,17 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
+= 4.3.1 =
+
+*Release Date: 11 September 2021*
+
+* **Improved**: Better handling of notices.
+* **Improved**: Database engine converter works slightly better now.
+* **Fixed**: Small bug in Google font optimizer.
+* **Fixed**: Post revisions setting wasn't working in some cases.
+* **Updated**: Codestar options framework is updated to its latest version.
+* **Removed**: "Dequeue Jetpack's devicepx script" is gone.
+
 = 4.3.0 =
 
 *Release Date: 29 August 2021*
