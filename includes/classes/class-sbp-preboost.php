@@ -36,11 +36,19 @@ class SBP_Preboost extends SBP_Abstract_Module {
 	private $appending_script = "";
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( is_array( sbp_get_option( 'preboost' ) ) && ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'preboost' )['preboost_enable'] ) ) {
 			return;
 		}
 
-		add_action( 'wp_head', [ $this, 'add_preload_tags' ] );
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
+
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			add_action( 'wp_head', [ $this, 'add_preload_tags' ] );
+		}
 	}
 
 	public function add_preload_tags() {

@@ -11,13 +11,21 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Special extends SBP_Abstract_Module {
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_special' ) ) {
 			return;
 		}
 
-		$this->woocommerce_disable_cart_fragments();
-		$this->optimize_nonwc_pages();
-		$this->remove_wc_password_strength_meter();
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
+
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			$this->woocommerce_disable_cart_fragments();
+			$this->optimize_nonwc_pages();
+			$this->remove_wc_password_strength_meter();
+		}
 	}
 
 	/**

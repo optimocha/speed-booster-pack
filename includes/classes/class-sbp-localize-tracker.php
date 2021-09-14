@@ -17,13 +17,21 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	private $transient_name = '';
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'localize_tracking_scripts' ) ) {
 			return;
 		}
 
-		add_action( 'admin_init', [ $this, 'refresh_analytics_dir' ] );
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
 
-		add_filter( 'sbp_output_buffer', [ $this, 'replace_url' ] );
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			add_action( 'admin_init', [ $this, 'refresh_analytics_dir' ] );
+
+			add_filter( 'sbp_output_buffer', [ $this, 'replace_url' ] );
+		}
 	}
 
 	public function replace_url( $html ) {

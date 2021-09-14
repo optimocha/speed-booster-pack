@@ -32,11 +32,19 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	];
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_tweaks' ) ) {
 			return;
 		}
 
-		$this->call_option_methods( $this->tweak_settings );
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
+
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			$this->call_option_methods( $this->tweak_settings );
+		}
 	}
 
 	private function call_option_methods( $settings, $parent = null ) {
