@@ -11,7 +11,6 @@
  */
 
 // If this file is called directly, abort.
-use SpeedBooster\SBP_Advisor;
 use SpeedBooster\SBP_Notice_Manager;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -226,9 +225,6 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Dashboard */
-
-			$advisor          = new SBP_Advisor();
-			$advisor_messages = $advisor->get_messages();
 			$advisor_fields   = [
 				[
 					'id'      => 'advisor_heading',
@@ -242,23 +238,10 @@ class Speed_Booster_Pack_Admin {
 				],
 			];
 
-			if ( $advisor_messages ) {
-				foreach ( $advisor_messages as $message_id => $message ) {
-					$dismissible      = $message['type'] == 'dismissible' ? 'is-dismissible' : null;
-					$advisor_fields[] = [
-						'type'    => 'content',
-						'content' => '<div class="notice notice-' . $message['style'] . ' ' . $dismissible . ' sbp-advice" data-message-id="' . $message_id . '">
-                        <p>' . $message['content'] . '</p>
-                    </div>',
-					];
-				}
-			} else {
-				$advisor_fields[] = [
-					'type'    => 'submessage',
-					'style'   => 'success',
-					'content' => '<p>' . __( 'No recommendations for now.', 'speed-booster-pack' ) . '</p>',
-				];
-			}
+			$advisor_fields[] = [
+				'type'    => 'content',
+				'content' => '<div id="advisor-content"></div>',
+			];
 
 			/* BEGIN Section: Speed Advisor */
 			CSF::createSection(

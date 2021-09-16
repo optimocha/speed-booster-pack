@@ -205,6 +205,10 @@
         if (hash === 'database-optimization') {
             $.scanDatabaseTables();
         }
+
+        if (hash === 'advisor') {
+            $.getAdvisorMessages();
+        }
     });
 
     $.scanDatabaseTables = function() {
@@ -244,6 +248,19 @@
                 $button.removeClass('sbp-loading-active');
                 $button.removeAttr('disabled');
             }
+        });
+    };
+
+    $.getAdvisorMessages = function() {
+        $.ajax({
+            type: 'GET',
+            url: ajaxurl,
+            data: {'action': 'sbp_get_advisor_messages', 'sbp_action': 'sbp_get_advisor_messages', 'nonce': sbp_ajax_vars.nonce},
+            success: function(response) {
+                $('#advisor-content').html(response);
+            },
+            error: function(xhr, status) {
+            },
         });
     };
 

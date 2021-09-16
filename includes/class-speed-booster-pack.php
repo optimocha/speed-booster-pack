@@ -180,7 +180,7 @@ class Speed_Booster_Pack {
 		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
 		new SBP_Notice_Manager();
-//		new SBP_Advisor();
+		new SBP_Advisor();
 		new SBP_Sucuri();
 		new SBP_Cache_Warmup();
 		new SBP_Cache();
