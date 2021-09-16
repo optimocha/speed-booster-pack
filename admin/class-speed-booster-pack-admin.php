@@ -928,6 +928,13 @@ class Speed_Booster_Pack_Admin {
 								'settings'   => [ 'lineWrapping' => true ],
 								'sanitize'   => 'sbp_sanitize_strip_tags',
 							],
+							[
+								'id'       => 'preboost_thumbnail',
+								'type'     => 'switcher',
+                                /** B_TODO: Check text **/
+								'label'    => __( 'Enable preloading of the thumbnail.', 'speed-booster-pack' ),
+								'sanitize' => 'sbp_sanitize_boolean',
+							],
 						],
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					],

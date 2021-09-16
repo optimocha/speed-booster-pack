@@ -20,11 +20,11 @@ class SBP_Advisor {
 	}
 
 	private function check_http_protocol_version() {
-		$checked = false;
+		$checked    = false;
 		$message_id = 'update_http_protocol';
 
 		$response = wp_safe_remote_get( get_home_url() );
-		if ( $response instanceof \WP_Error) {
+		if ( $response instanceof \WP_Error ) {
 			return;
 		}
 
@@ -42,10 +42,10 @@ class SBP_Advisor {
 	}
 
 	private function check_php_version() {
-		$checked = false;
+		$checked    = false;
 		$message_id = 'update_php';
 
-		if ( version_compare( PHP_VERSION, '7.3' ) !== -1 ) {
+		if ( version_compare( PHP_VERSION, '7.3' ) !== - 1 ) {
 			$checked = true;
 		}
 
@@ -61,15 +61,15 @@ class SBP_Advisor {
 
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_get_advisor_messages' && current_user_can( 'manage_options' ) && isset( $_GET['nonce'] ) && wp_verify_nonce( $_GET['nonce'], 'sbp_ajax_nonce' ) ) {
 
-			usort($this->messages, function($a, $b) {
-				if ($a['checked'] > $b['checked']) {
+			usort( $this->messages, function ( $a, $b ) {
+				if ( $a['checked'] > $b['checked'] ) {
 					return 1;
-				} else if ($a['checked'] == $b['checked']) {
+				} elseif ( $a['checked'] == $b['checked'] ) {
 					return 0;
 				} else {
-					return -1;
+					return - 1;
 				}
-			});
+			} );
 			$advisor_messages_content = '';
 			foreach ( $this->messages as $message_id => $message ) {
 				$advisor_messages_content .= '<div class="sbp-advice" data-message-id="' . $message_id . '">

@@ -38,7 +38,7 @@ class SBP_Preboost extends SBP_Abstract_Module {
 	public function __construct() {
 		parent::__construct();
 
-		if ( is_array( sbp_get_option( 'preboost' ) ) && ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'preboost' )['preboost_enable'] ) ) {
+		if ( is_array( sbp_get_option( 'preboost' ) ) && ( ! sbp_get_option( 'module_assets' ) ) ) {
 			return;
 		}
 
@@ -47,7 +47,24 @@ class SBP_Preboost extends SBP_Abstract_Module {
 
 	public function run_class() {
 		if ( $this->should_sbp_run ) {
-			add_action( 'wp_head', [ $this, 'add_preload_tags' ] );
+			$preboost = sbp_get_option( 'preboost' );
+
+			if ( isset( $preboost['preboost_enable'] ) && $preboost['preboost_enable'] ) {
+				add_action( 'wp_head', [ $this, 'add_preload_tags' ] );
+			}
+
+			if ( isset( $preboost['preboost_thumbnail'] ) && $preboost['preboost_thumbnail'] ) {
+				add_action( 'wp_head', [ $this, 'add_thumbnail_url' ] );
+			}
+		}
+	}
+
+	public function add_thumbnail_url() {
+		if ( is_singular() ) {
+			$thumbnail = get_the_post_thumbnail_url();
+			if ( $thumbnail ) {
+				echo '<link rel="preload" href="' . $thumbnail . '" as="image" />' . PHP_EOL;
+			}
 		}
 	}
 

@@ -127,7 +127,7 @@
     animation: rotating 2s linear infinite;
 }
 
-.js-include.csf-depend-on, .js-exclude.csf-depend-on, .js-footer-exclude.csf-depend-on {
+.js-include.csf-depend-on, .js-exclude.csf-depend-on, .js-footer-exclude.csf-depend-on, .csf-depend-on[data-controller="preboost_enable"] {
     display: none;
 }
 
