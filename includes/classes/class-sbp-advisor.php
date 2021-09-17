@@ -23,22 +23,27 @@ class SBP_Advisor {
 		$checked    = false;
 		$message_id = 'update_http_protocol';
 
-		$response = wp_safe_remote_get( get_home_url() );
-		if ( $response instanceof \WP_Error ) {
-			return;
+		if ( function_exists( 'curl_version' ) and defined( 'CURL_HTTP_VERSION_2_0' ) ) {
+			$ch = curl_init();
+			curl_setopt_array( $ch, [
+				CURLOPT_URL            => get_home_url(),
+				CURLOPT_HEADER         => true,
+				CURLOPT_NOBODY         => true,
+				CURLOPT_RETURNTRANSFER => true,
+				CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_2_0,
+			] );
+			$response = curl_exec( $ch );
+
+			if ( substr( $response, 0, 6 ) === 'HTTP/2' ) {
+				$checked = true;
+			}
+
+			$this->messages[ $message_id ] = [
+				'type'    => 'non-dismissible',
+				'content' => __( 'You\'re using HTTP/1.1. For best performance, you should upgrade to HTTP/2 or, if possible, HTTP/3.', 'speed-booster-pack' ),
+				'checked' => $checked,
+			];
 		}
-
-		$protocol_version = $response['http_response']->get_response_object()->protocol_version;
-
-		if ( version_compare( $protocol_version, 1.1 ) === 1 ) {
-			$checked = true;
-		}
-
-		$this->messages[ $message_id ] = [
-			'type'    => 'non-dismissible',
-			'content' => __( 'You\'re using HTTP/1.1. For best performance, you should upgrade to HTTP/2 or, if possible, HTTP/3.', 'speed-booster-pack' ),
-			'checked' => $checked,
-		];
 	}
 
 	private function check_php_version() {
