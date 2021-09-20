@@ -23,27 +23,39 @@ class SBP_Advisor {
 		$checked    = false;
 		$message_id = 'update_http_protocol';
 
-		if ( function_exists( 'curl_version' ) and defined( 'CURL_HTTP_VERSION_2_0' ) ) {
-			$ch = curl_init();
-			curl_setopt_array( $ch, [
-				CURLOPT_URL            => get_home_url(),
-				CURLOPT_HEADER         => true,
-				CURLOPT_NOBODY         => true,
-				CURLOPT_RETURNTRANSFER => true,
-				CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_2_0,
-			] );
-			$response = curl_exec( $ch );
+		if ( isset( $_SERVER['SERVER_PROTOCOL'] ) && in_array( $_SERVER['SERVER_PROTOCOL'], [ 'HTTP/2', 'HTTP/3' ] ) ) {
+			$checked = true;
+		} else if ( isset( $_SERVER['SERVER_PROTOCOL'] ) && in_array( $_SERVER['SERVER_PROTOCOL'], [ 'HTTP/1.0', 'HTTP/1.1' ] ) ) {
+			if ( function_exists( 'curl_version' ) and defined( 'CURL_HTTP_VERSION_2_0' ) ) {
+				$ch = curl_init();
+				curl_setopt_array( $ch, [
+					CURLOPT_URL            => get_home_url(),
+					CURLOPT_HEADER         => true,
+					CURLOPT_NOBODY         => true,
+					CURLOPT_RETURNTRANSFER => true,
+					CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_2_0,
+				] );
+				$response = curl_exec( $ch );
 
-			if ( substr( $response, 0, 6 ) === 'HTTP/2' ) {
-				$checked = true;
+				if ( substr( $response, 0, 6 ) === 'HTTP/2' ) {
+					$checked = true;
+				}
+			} else {
+				$this->messages[ $message_id ] = [
+					'type'    => 'non-dismissible',
+					/** B_TODO: Need a text for curl disabled websites. "Use http2.pro bla bla bla" */
+					'content' => __( 'Curl is not active', 'speed-booster-pack' ),
+					'checked' => false,
+				];
+				return;
 			}
-
-			$this->messages[ $message_id ] = [
-				'type'    => 'non-dismissible',
-				'content' => __( 'You\'re using HTTP/1.1. For best performance, you should upgrade to HTTP/2 or, if possible, HTTP/3.', 'speed-booster-pack' ),
-				'checked' => $checked,
-			];
 		}
+
+		$this->messages[ $message_id ] = [
+			'type'    => 'non-dismissible',
+			'content' => __( 'You\'re using HTTP/1.1. For best performance, you should upgrade to HTTP/2 or, if possible, HTTP/3.', 'speed-booster-pack' ),
+			'checked' => $checked,
+		];
 	}
 
 	private function check_php_version() {
