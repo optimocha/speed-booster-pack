@@ -53,13 +53,13 @@ class SBP_Preboost extends SBP_Abstract_Module {
 				add_action( 'wp_head', [ $this, 'add_preload_tags' ] );
 			}
 
-			if ( isset( $preboost['preboost_thumbnail'] ) && $preboost['preboost_thumbnail'] ) {
-				add_action( 'wp_head', [ $this, 'add_thumbnail_url' ] );
+			if ( isset( $preboost['preboost_featured_image'] ) && $preboost['preboost_featured_image'] ) {
+				add_action( 'wp_head', [ $this, 'add_featured_image_preload_tag' ] );
 			}
 		}
 	}
 
-	public function add_thumbnail_url() {
+	public function add_featured_image_preload_tag() {
 		if ( is_singular() ) {
 			$thumbnail = get_the_post_thumbnail_url();
 			if ( $thumbnail ) {

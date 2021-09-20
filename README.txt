@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 4.3.1
+Stable tag: 4.3.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,6 +103,14 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.3.2 =
+
+*Release Date: XX September 2021*
+
+* **NEW**: You can now disable Speed Booster Pack for certain user roles.
+* **NEW**: You can now add `<link rel="preload">` tags for featured images.
+* **Improved**: Advisor works better now!
 
 = 4.3.1 =
 

@@ -929,10 +929,11 @@ class Speed_Booster_Pack_Admin {
 								'sanitize'   => 'sbp_sanitize_strip_tags',
 							],
 							[
-								'id'       => 'preboost_thumbnail',
+								'id'       => 'preboost_featured_image',
 								'type'     => 'switcher',
-                                /** B_TODO: Check text **/
-								'label'    => __( 'Enable preloading of the thumbnail.', 'speed-booster-pack' ),
+								'label'    => __( 'Preload featured images.', 'speed-booster-pack' ),
+								'desc'       => __( 'Enable this if you want featured images to be preloaded.', 'speed-booster-pack' ),
+								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
 								'sanitize' => 'sbp_sanitize_boolean',
 							],
 						],
