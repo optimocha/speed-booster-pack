@@ -25,6 +25,7 @@ class SBP_Advisor {
 
 		if ( isset( $_SERVER['SERVER_PROTOCOL'] ) && in_array( $_SERVER['SERVER_PROTOCOL'], [ 'HTTP/2', 'HTTP/3' ] ) ) {
 			$checked = true;
+			// Z_TODO: Use version compare instead string comparison
 		} else if ( isset( $_SERVER['SERVER_PROTOCOL'] ) && in_array( $_SERVER['SERVER_PROTOCOL'], [ 'HTTP/1.0', 'HTTP/1.1' ] ) ) {
 			if ( function_exists( 'curl_version' ) and defined( 'CURL_HTTP_VERSION_2_0' ) ) {
 				$ch = curl_init();
