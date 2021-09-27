@@ -1289,7 +1289,7 @@ class Speed_Booster_Pack_Admin {
 	                        'chosen'      => true,
 	                        'multiple'    => true,
 	                        'placeholder' => 'Select user role',
-	                        'options'     => $user_roles,
+	                        'options'     => 'roles',
                         ],
 					],
 				]
