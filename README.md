@@ -106,7 +106,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.3.2 =
 
-*Release Date: XX September 2021*
+*Release Date: 01 October 2021*
 
 * **NEW**: You can now disable Speed Booster Pack for certain user roles.
 * **NEW**: You can now add `<link rel="preload">` tags for featured images.
