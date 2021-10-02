@@ -256,6 +256,209 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Speed Advisor */
 
+			/* BEGIN Section: General */
+			CSF::createSection(
+				$prefix,
+				[
+					'title'  => __( 'General', 'speed-booster-pack' ),
+					'id'     => 'tweaks',
+					'icon'   => 'fa fa-sliders-h',
+					'fields' => [
+						[
+							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
+							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'General', 'speed-booster-pack' ),
+							'id'       => 'module_tweaks',
+							'class'    => 'module-tweaks',
+							'type'     => 'switcher',
+							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default'  => true,
+							'sanitize' => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
+							'id'         => 'instant_page',
+							'type'       => 'switcher',
+							/* translators: %s = hyperlink to the instant.page website  */
+							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a>' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Trim query strings', 'speed-booster-pack' ),
+							'id'         => 'trim_query_strings',
+							'type'       => 'switcher',
+							'desc'       => __( 'Removes the query strings (characters that come after the question mark) at the end of enqueued asset URLs.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Disable self pingbacks', 'speed-booster-pack' ),
+							'id'         => 'disable_self_pingbacks',
+							'type'       => 'switcher',
+							'desc'       => __( 'Disabling this will prevent pinging this website to ping itself (its other posts etc.) during publishing, which will improve the speed of publishing posts or pages.', 'speed-booster-pack' ),
+							'default'    => true,
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Dequeue emoji scripts', 'speed-booster-pack' ),
+							'id'         => 'dequeue_emoji_scripts',
+							'type'       => 'switcher',
+							'desc'       => __( 'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, don\'t worry.', 'speed-booster-pack' ),
+							'default'    => true,
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Dequeue the post embed script', 'speed-booster-pack' ),
+							'id'         => 'disable_post_embeds',
+							'type'       => 'switcher',
+							'desc'       => __( 'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							/* translators: %s: <code>comment-reply.js</code>  */
+							'title'      => sprintf( __( 'Dequeue %s', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
+							/* translators: %s: <code>comment-reply.js</code>  */
+							'desc'       => sprintf( __( 'Disables the %s script.', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
+							'id'         => 'dequeue_comment_reply_script',
+							'type'       => 'switcher',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
+							'id'         => 'dequeue_dashicons',
+							'type'       => 'switcher',
+							/* translators: 1. <strong> 2. </strong>  */
+							'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Dequeue Gutenberg CSS', 'speed-booster-pack' ),
+							'id'         => 'dequeue_block_library',
+							'type'       => 'switcher',
+							'desc'       => __( 'If you\'re not using the block editor (Gutenberg) in your posts/pages, this is a safe setting to enable.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
+							'id'         => 'heartbeat_settings',
+							/* translators: 1. opening tag for the hyperlink to the Heartbeat API 2. closing tag for the hyperlink  */
+							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external noopener" target="_blank">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
+							'type'       => 'button_set',
+							'options'    => [
+								'enabled'   => __( 'Enabled', 'speed-booster-pack' ),
+								'optimized' => __( 'Optimized', 'speed-booster-pack' ),
+								'disabled'  => __( 'Disabled', 'speed-booster-pack' ),
+							],
+							'default'    => 'enabled',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Limit post revisions', 'speed-booster-pack' ),
+							'id'         => 'post_revisions',
+							'type'       => 'spinner',
+							'unit'       => __( 'revisions', 'speed-booster-pack' ),
+							/* translators: 1. opening tag for the hyperlink to the support article for revisions 2. closing tag for the hyperlink  */
+							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external noopener" target="_blank">', '</a>' ) . '<br />'
+							                /* translators: 1. WP_POST_REVISIONS 2. wp-config.php  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>wp-config.php</code>' ),
+							'sanitize'   => 'absint',
+							'default'    => '99',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Autosave interval', 'speed-booster-pack' ),
+							'id'         => 'autosave_interval',
+							'type'       => 'spinner',
+							'min'        => '1',
+							'unit'       => __( 'minutes', 'speed-booster-pack' ),
+							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
+							                /* translators: 1. AUTOSAVE_INTERVAL 2. wp-config.php  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>wp-config.php</code>' ),
+							'sanitize'   => 'sbp_posabs',
+							'default'    => '1',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							/* translators: %s = <head>  */
+							'title'      => sprintf( __( 'Declutter %s', 'speed-booster-pack' ), '<code>&lt;head&gt;</code>' ),
+							'id'         => 'declutter_head',
+							'class'      => 'declutter-head',
+							'type'       => 'fieldset',
+							'before'     => '<p>' . __( 'Enabling these options removes corresponding elements from your HTML source code. If you don\'t know what they are, it\'s probably safer for you to keep them disabled.', 'speed-booster-pack' ) . '</p>',
+							'fields'     => [
+
+								[
+									'title'    => __( 'Shortlinks', 'speed-booster-pack' ),
+									'id'       => 'declutter_shortlinks',
+									'type'     => 'switcher',
+									'label'    => '<link rel=\'shortlink\' href=\'...\' />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'Next/previous posts links', 'speed-booster-pack' ),
+									'id'       => 'declutter_adjacent_posts_links',
+									'type'     => 'switcher',
+									'label'    => "<link rel='next (or prev)' title='...' href='...' />",
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'WLW Manifest link', 'speed-booster-pack' ),
+									'id'       => 'declutter_wlw',
+									'type'     => 'switcher',
+									'label'    => '<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="..." />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'Really Simple Discovery (RSD) link', 'speed-booster-pack' ),
+									'id'       => 'declutter_rsd',
+									'type'     => 'switcher',
+									'label'    => '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="..." />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'REST API links', 'speed-booster-pack' ),
+									'id'       => 'declutter_rest_api_links',
+									'type'     => 'switcher',
+									'label'    => "<link rel='https://api.w.org/' href='...' />",
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'RSS feed links', 'speed-booster-pack' ),
+									'id'       => 'declutter_feed_links',
+									'type'     => 'switcher',
+									'label'    => '<link rel="alternate" type="application/rss+xml" title="..." href="..." />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'WordPress version', 'speed-booster-pack' ),
+									'id'       => 'declutter_wp_version',
+									'type'     => 'switcher',
+									'label'    => '<meta name="generator" content="WordPress X.X" />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+							],
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'id'          => 'roles_to_disable_sbp',
+							'type'        => 'select',
+							'title'       => sprintf( __( 'Roles to disable %s features', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'chosen'      => true,
+							'multiple'    => true,
+							'placeholder' => 'Select user role',
+							'options'     => 'roles',
+						],
+					],
+				]
+			);
+			/* END Section: General */
+
 			/* BEGIN Section: Caching */
 			$cache_fields = [
 				[
@@ -1081,220 +1284,6 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Special */
-
-			/* BEGIN Section: Tweaks */
-            $user_roles = [];
-            $editable_roles = sbp_get_editable_roles();
-
-            if ( $editable_roles ) {
-	            foreach ( $editable_roles as $role_key => $role ) {
-		            $user_roles[ $role_key ] = $role['name'];
-	            }
-            }
-
-			CSF::createSection(
-				$prefix,
-				[
-					'title'  => __( 'General', 'speed-booster-pack' ),
-					'id'     => 'tweaks',
-					'icon'   => 'fa fa-sliders-h',
-					'fields' => [
-
-
-						[
-							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'General', 'speed-booster-pack' ),
-							'id'       => 'module_tweaks',
-							'class'    => 'module-tweaks',
-							'type'     => 'switcher',
-							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default'  => true,
-							'sanitize' => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
-							'id'         => 'instant_page',
-							'type'       => 'switcher',
-							/* translators: %s = hyperlink to the instant.page website  */
-							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a>' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Trim query strings', 'speed-booster-pack' ),
-							'id'         => 'trim_query_strings',
-							'type'       => 'switcher',
-							'desc'       => __( 'Removes the query strings (characters that come after the question mark) at the end of enqueued asset URLs.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Disable self pingbacks', 'speed-booster-pack' ),
-							'id'         => 'disable_self_pingbacks',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disabling this will prevent pinging this website to ping itself (its other posts etc.) during publishing, which will improve the speed of publishing posts or pages.', 'speed-booster-pack' ),
-							'default'    => true,
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue emoji scripts', 'speed-booster-pack' ),
-							'id'         => 'dequeue_emoji_scripts',
-							'type'       => 'switcher',
-							'desc'       => __( 'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, don\'t worry.', 'speed-booster-pack' ),
-							'default'    => true,
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue the post embed script', 'speed-booster-pack' ),
-							'id'         => 'disable_post_embeds',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							/* translators: %s: <code>comment-reply.js</code>  */
-							'title'      => sprintf( __( 'Dequeue %s', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
-							/* translators: %s: <code>comment-reply.js</code>  */
-							'desc'       => sprintf( __( 'Disables the %s script.', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
-							'id'         => 'dequeue_comment_reply_script',
-							'type'       => 'switcher',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
-							'id'         => 'dequeue_dashicons',
-							'type'       => 'switcher',
-							/* translators: 1. <strong> 2. </strong>  */
-							'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue Gutenberg CSS', 'speed-booster-pack' ),
-							'id'         => 'dequeue_block_library',
-							'type'       => 'switcher',
-							'desc'       => __( 'If you\'re not using the block editor (Gutenberg) in your posts/pages, this is a safe setting to enable.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
-							'id'         => 'heartbeat_settings',
-							/* translators: 1. opening tag for the hyperlink to the Heartbeat API 2. closing tag for the hyperlink  */
-							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external noopener" target="_blank">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
-							'type'       => 'button_set',
-							'options'    => [
-								'enabled'   => __( 'Enabled', 'speed-booster-pack' ),
-								'optimized' => __( 'Optimized', 'speed-booster-pack' ),
-								'disabled'  => __( 'Disabled', 'speed-booster-pack' ),
-							],
-							'default'    => 'enabled',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Limit post revisions', 'speed-booster-pack' ),
-							'id'         => 'post_revisions',
-							'type'       => 'spinner',
-							'unit'       => __( 'revisions', 'speed-booster-pack' ),
-							/* translators: 1. opening tag for the hyperlink to the support article for revisions 2. closing tag for the hyperlink  */
-							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external noopener" target="_blank">', '</a>' ) . '<br />'
-							                /* translators: 1. WP_POST_REVISIONS 2. wp-config.php  */
-							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>wp-config.php</code>' ),
-							'sanitize'   => 'absint',
-							'default'    => '99',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Autosave interval', 'speed-booster-pack' ),
-							'id'         => 'autosave_interval',
-							'type'       => 'spinner',
-							'min'        => '1',
-							'unit'       => __( 'minutes', 'speed-booster-pack' ),
-							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
-							                /* translators: 1. AUTOSAVE_INTERVAL 2. wp-config.php  */
-							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>wp-config.php</code>' ),
-							'sanitize'   => 'sbp_posabs',
-							'default'    => '1',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							/* translators: %s = <head>  */
-							'title'      => sprintf( __( 'Declutter %s', 'speed-booster-pack' ), '<code>&lt;head&gt;</code>' ),
-							'id'         => 'declutter_head',
-							'class'      => 'declutter-head',
-							'type'       => 'fieldset',
-							'before'     => '<p>' . __( 'Enabling these options removes corresponding elements from your HTML source code. If you don\'t know what they are, it\'s probably safer for you to keep them disabled.', 'speed-booster-pack' ) . '</p>',
-							'fields'     => [
-
-								[
-									'title'    => __( 'Shortlinks', 'speed-booster-pack' ),
-									'id'       => 'declutter_shortlinks',
-									'type'     => 'switcher',
-									'label'    => '<link rel=\'shortlink\' href=\'...\' />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'Next/previous posts links', 'speed-booster-pack' ),
-									'id'       => 'declutter_adjacent_posts_links',
-									'type'     => 'switcher',
-									'label'    => "<link rel='next (or prev)' title='...' href='...' />",
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'WLW Manifest link', 'speed-booster-pack' ),
-									'id'       => 'declutter_wlw',
-									'type'     => 'switcher',
-									'label'    => '<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="..." />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'Really Simple Discovery (RSD) link', 'speed-booster-pack' ),
-									'id'       => 'declutter_rsd',
-									'type'     => 'switcher',
-									'label'    => '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="..." />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'REST API links', 'speed-booster-pack' ),
-									'id'       => 'declutter_rest_api_links',
-									'type'     => 'switcher',
-									'label'    => "<link rel='https://api.w.org/' href='...' />",
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'RSS feed links', 'speed-booster-pack' ),
-									'id'       => 'declutter_feed_links',
-									'type'     => 'switcher',
-									'label'    => '<link rel="alternate" type="application/rss+xml" title="..." href="..." />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'WordPress version', 'speed-booster-pack' ),
-									'id'       => 'declutter_wp_version',
-									'type'     => 'switcher',
-									'label'    => '<meta name="generator" content="WordPress X.X" />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-							],
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-                        [
-	                        'id'          => 'roles_to_disable_sbp',
-	                        'type'        => 'select',
-	                        'title'       => sprintf( __( 'Roles to disable %s features', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-	                        'chosen'      => true,
-	                        'multiple'    => true,
-	                        'placeholder' => 'Select user role',
-	                        'options'     => 'roles',
-                        ],
-					],
-				]
-			);
-			/* END Section: Tweaks */
 
 			/** BEGIN Section: Database Optimization */
 			CSF::createSection(
