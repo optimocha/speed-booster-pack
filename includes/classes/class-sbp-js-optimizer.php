@@ -111,6 +111,8 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		'<!--',
 		'JS_Optimizer_Comment_Placeholder',
 		'window.lazyLoadOptions',
+		'data-noptimize',
+		'data-sbp-skip',
 	];
 
 	/**
