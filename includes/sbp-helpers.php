@@ -494,17 +494,3 @@ if ( ! function_exists( 'sbp_get_public_post_types' ) ) {
 		return is_array( $post_types ) ? $post_types : [];
 	}
 }
-
-if ( ! function_exists( 'sbp_get_editable_roles' ) ) {
-	function sbp_get_editable_roles() {
-		global $wp_roles;
-
-		if ($wp_roles) {
-			$all_roles = $wp_roles->roles;
-
-			return apply_filters('editable_roles', $all_roles);
-		}
-
-		return [];
-	}
-}
