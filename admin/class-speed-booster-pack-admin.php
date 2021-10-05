@@ -78,8 +78,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'plugins_loaded', [ $this, 'create_settings_page' ] );
 
-//		$this->create_settings_page();
-		$this->create_metaboxes();
+		add_action( 'plugins_loaded', [ $this, 'create_metaboxes' ] );
 	}
 
 	/**
@@ -225,7 +224,7 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Dashboard */
-			$advisor_fields   = [
+			$advisor_fields = [
 				[
 					'id'      => 'advisor_heading',
 					'type'    => 'subheading',
@@ -812,10 +811,10 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title' => __( 'Set missing image dimensions', 'speed-booster-pack' ),
-					'id'    => 'missing_image_dimensions',
-					'type'  => 'switcher',
-					'desc'  => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
+					'title'      => __( 'Set missing image dimensions', 'speed-booster-pack' ),
+					'id'         => 'missing_image_dimensions',
+					'type'       => 'switcher',
+					'desc'       => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
@@ -929,12 +928,12 @@ class Speed_Booster_Pack_Admin {
 								'sanitize'   => 'sbp_sanitize_strip_tags',
 							],
 							[
-								'id'       => 'preboost_featured_image',
-								'type'     => 'switcher',
-								'label'    => __( 'Preload featured images.', 'speed-booster-pack' ),
+								'id'         => 'preboost_featured_image',
+								'type'       => 'switcher',
+								'label'      => __( 'Preload featured images.', 'speed-booster-pack' ),
 								'desc'       => __( 'Enable this if you want featured images to be preloaded.', 'speed-booster-pack' ),
 								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
-								'sanitize' => 'sbp_sanitize_boolean',
+								'sanitize'   => 'sbp_sanitize_boolean',
 							],
 						],
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
@@ -1083,14 +1082,14 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: Special */
 
 			/* BEGIN Section: Tweaks */
-            $user_roles = [];
-            $editable_roles = sbp_get_editable_roles();
+			$user_roles     = [];
+			$editable_roles = sbp_get_editable_roles();
 
-            if ( $editable_roles ) {
-	            foreach ( $editable_roles as $role_key => $role ) {
-		            $user_roles[ $role_key ] = $role['name'];
-	            }
-            }
+			if ( $editable_roles ) {
+				foreach ( $editable_roles as $role_key => $role ) {
+					$user_roles[ $role_key ] = $role['name'];
+				}
+			}
 
 			CSF::createSection(
 				$prefix,
@@ -1282,15 +1281,15 @@ class Speed_Booster_Pack_Admin {
 							],
 							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
 						],
-                        [
-	                        'id'          => 'roles_to_disable_sbp',
-	                        'type'        => 'select',
-	                        'title'       => sprintf( __( 'Roles to disable %s features', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-	                        'chosen'      => true,
-	                        'multiple'    => true,
-	                        'placeholder' => 'Select user role',
-	                        'options'     => 'roles',
-                        ],
+						[
+							'id'          => 'roles_to_disable_sbp',
+							'type'        => 'select',
+							'title'       => sprintf( __( 'Roles to disable %s features', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'chosen'      => true,
+							'multiple'    => true,
+							'placeholder' => 'Select user role',
+							'options'     => 'roles',
+						],
 					],
 				]
 			);
@@ -1410,6 +1409,12 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	public function create_metaboxes() {
+		if ( function_exists( 'current_user_can' ) ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
+		}
+
 		/* BEGIN Metaboxes */
 		$metabox_prefix    = 'sbp_post_meta';
 		$public_post_types = get_option( 'sbp_public_post_types' );
@@ -1450,8 +1455,8 @@ class Speed_Booster_Pack_Admin {
 				'title'   => __( 'Critical CSS for this content', 'speed-booster-pack' ),
 				'options' => array(
 					'main_setting' => 'Main setting',
-					'off'     => 'Off',
-					'custom'  => 'Custom',
+					'off'          => 'Off',
+					'custom'       => 'Custom',
 				),
 				'default' => 'main_setting',
 				'class'   => 'sbp-gap-top',
@@ -1483,10 +1488,10 @@ class Speed_Booster_Pack_Admin {
 				'desc'    => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
 				'type'    => 'button_set',
 				'options' => [
-					'main_setting'    => __( 'Main setting', 'speed-booster-pack' ),
-					'off'        => __( 'Off', 'speed-booster-pack' ),
-					'everything' => __( 'Everything', 'speed-booster-pack' ),
-					'custom'     => __( 'Custom', 'speed-booster-pack' ),
+					'main_setting' => __( 'Main setting', 'speed-booster-pack' ),
+					'off'          => __( 'Off', 'speed-booster-pack' ),
+					'everything'   => __( 'Everything', 'speed-booster-pack' ),
+					'custom'       => __( 'Custom', 'speed-booster-pack' ),
 				],
 				'default' => 'main_setting',
 			];
@@ -1522,8 +1527,8 @@ class Speed_Booster_Pack_Admin {
 				'type'    => 'button_set',
 				'options' => [
 					'main_setting' => __( 'Main setting', 'speed-booster-pack' ),
-					'off'     => __( 'Off', 'speed-booster-pack' ),
-					'on'      => __( 'On', 'speed-booster-pack' ),
+					'off'          => __( 'Off', 'speed-booster-pack' ),
+					'on'           => __( 'On', 'speed-booster-pack' ),
 				],
 				'desc'    => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
 				'default' => 'main_setting',
