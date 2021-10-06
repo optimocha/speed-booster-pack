@@ -571,18 +571,21 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'cloudflare_api',
 					'type'  => 'text',
 					'desc'  => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
 					'id'    => 'cloudflare_email',
 					'type'  => 'text',
 					'desc'  => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
 					'id'    => 'cloudflare_zone',
 					'type'  => 'text',
 					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title'      => __( 'Rocket Loader', 'speed-booster-pack' ),
@@ -685,6 +688,7 @@ class Speed_Booster_Pack_Admin {
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> ' . __( 'Your Cloudflare credentials are correct.', 'speed-booster-pack' ) . '</span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-warning" style="color:orange; vertical-align: middle;"><i class="fa fa-exclamation-circle"></i> ' . __( 'Enter your Cloudflare credentials and save settings to see CloudFlare options.', 'speed-booster-pack' ) . '</span>
 				  ',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 			];
 			/* End Of Cloudflare Fields */
@@ -706,11 +710,13 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Sucuri API key', 'speed-booster-pack' ),
 					'id'    => 'sucuri_api',
 					'type'  => 'text',
+					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Sucuri API Secret', 'speed-booster-pack' ),
 					'id'    => 'sucuri_secret',
 					'type'  => 'text',
+					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
 				],
 			];
 			/* End Of Sucuri Fields */
@@ -721,7 +727,7 @@ class Speed_Booster_Pack_Admin {
 					'type'  => 'subheading',
 				],
 				[
-					'title'    => __( 'Enable CDN', 'speed-booster-pack' ),
+					'title'    => __( 'CDN domain', 'speed-booster-pack' ),
 					'id'       => 'cdn_url',
 					'class'    => 'cdn-url',
 					'type'     => 'text',
@@ -736,6 +742,7 @@ class Speed_Booster_Pack_Admin {
 					'type'     => 'code_editor',
 					'desc'     => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_strip_tags',
+					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
 				],
 				[
 					'title'    => __( 'Excluded Extensions', 'speed-booster-pack' ),
@@ -743,6 +750,7 @@ class Speed_Booster_Pack_Admin {
 					'type'     => 'code_editor',
 					'desc'     => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_strip_tags',
+					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
 				],
 			],
 				$cloudflare_fields,
@@ -925,6 +933,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => sprintf( __( 'This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. %1$sLearn more about the template hierarchy of WordPress.%2$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/themes/basics/template-hierarchy/" rel="external noopener" target="_blank">', '</a>' ),
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'settings'   => [ 'lineWrapping' => true ],
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'id'         => 'criticalcss_codes',
@@ -933,6 +942,7 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_sanitize_strip_tags',
 							'accordions' => $critical_css_fields,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'title'      => __( 'Remove critical CSS after onload', 'speed-booster-pack' ),
@@ -942,6 +952,7 @@ class Speed_Booster_Pack_Admin {
 							'default'    => true,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'id'         => 'criticalcss_excludes',
@@ -951,6 +962,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Enter CSS file names or URLs to exclude from critical CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'settings'   => [ 'lineWrapping' => true ],
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'type'  => 'subheading',
@@ -963,6 +975,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Inlines all CSS files into the HTML output. Useful for lightweight designs but might be harmful for websites with over 500KB of total CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'title'      => __( 'Minify all inlined CSS', 'speed-booster-pack' ),
@@ -971,6 +984,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Minifies the already inlined CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'title'      => __( 'CSS exclusions', 'speed-booster-pack' ),
@@ -980,6 +994,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'If your design breaks after enabling the CSS options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_strip_tags',
+							'class'      => 'hide-if-disabled',
 						],
 					],
 				]
@@ -1271,7 +1286,7 @@ class Speed_Booster_Pack_Admin {
 			CSF::createSection(
 				$prefix,
 				[
-					'title'  => __( 'Database Optimization', 'speed-booster-pack' ),
+					'title'  => __( 'Database', 'speed-booster-pack' ),
 					'id'     => 'database_optimization',
 					'icon'   => 'fa fa-database',
 					'fields' => [

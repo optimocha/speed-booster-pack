@@ -127,7 +127,17 @@
     animation: rotating 2s linear infinite;
 }
 
-.js-include.csf-depend-on, .js-exclude.csf-depend-on, .js-footer-exclude.csf-depend-on, .csf-depend-on[data-controller="preboost_enable"] {
+.js-include.csf-depend-on,
+.js-exclude.csf-depend-on,
+.js-footer-exclude.csf-depend-on,
+.csf-depend-on[data-controller="preboost_enable"],
+[data-section-id="cdn-proxy"] .csf-depend-on,
+.lazyload-exclude.csf-depend-on,
+.caching-exclude-urls.csf-depend-on,
+.caching-exclude-cookies.csf-depend-on,
+.caching-include-query-strings.csf-depend-on,
+.hide-if-disabled.csf-depend-on
+{
     display: none;
 }
 

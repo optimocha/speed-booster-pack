@@ -202,7 +202,7 @@
             }
         }
 
-        if (hash === 'database-optimization') {
+        if (hash === 'database') {
             $.scanDatabaseTables();
         }
 
