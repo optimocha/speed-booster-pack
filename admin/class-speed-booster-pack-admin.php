@@ -1262,23 +1262,6 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
-						[
-							'type'  => 'subheading',
-							'title' => __( 'PageSpeed Tricker', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'submessage',
-							'style'   => 'warning',
-							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'This experimental feature is here to show you how easy it is to get top scores with Google PageSpeed (or Lighthouse to be exact), and how meaningless it is to obsess over these metrics. Google doesn\'t have a guideline about any penalties for websites manipulating Lighthouse metrics, but that doesn\'t mean they won\'t. Thus, take this feature as a joke and use only to experiment. By activating the feature, you acknowledge that you have sole responsibility for any kind of effects on your website.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-						],
-						[
-							/* translators: %s = PageSpeed Tricker  */
-							'title'    => sprintf( __( 'Enable %s', 'speed-booster-pack' ), 'PageSpeed Tricker' ),
-							'id'       => 'pagespeed_tricker',
-							'type'     => 'switcher',
-							'sanitize' => 'sbp_sanitize_boolean',
-						],
 					],
 				]
 			);

@@ -8,11 +8,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class SBP_WP_Config_Injector {
-	private static $options = [
-		'pagespeed_tricker' => [
-			'filename' => 'pagespeed-tricker.php',
-		],
-	];
+	private static $options = [];
 
 	private static $wp_config_inject_content = [];
 
