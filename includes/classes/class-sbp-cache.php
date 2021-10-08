@@ -265,30 +265,27 @@ class SBP_Cache extends SBP_Abstract_Module {
 			return;
 		}
 
-		if ( sbp_should_disable_feature( 'caching' ) === false ) {
-			// Delete or recreate advanced-cache.php
-			if ( $saved_data['module_caching'] ) {
-				$advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file( $saved_data );
-				if ( $advanced_cache_file_content ) {
-					SBP_Cache::set_wp_cache_constant( true );
+		if ( sbp_should_disable_feature( 'caching' ) != false ) {
+			return;
+		}
 
-					file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
-				}
-			} else {
-				SBP_Cache::set_wp_cache_constant( false );
-				if ( file_exists( $advanced_cache_path ) ) {
-					if ( ! unlink( $advanced_cache_path ) ) {
-						wp_send_json_error( [
-							'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ),
-							'errors' => [],
-						] );
-					}
-				}
+		// Delete or recreate advanced-cache.php
+		if ( $saved_data['module_caching'] ) {
+			$advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file( $saved_data );
+			if ( $advanced_cache_file_content ) {
+				SBP_Cache::set_wp_cache_constant( true );
+
+				file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
 			}
-		} else {
-			// Z_TODO: Are we deleting other plugins advanced-cache.php?
+		} elseif ( sbp_get_option( 'module_caching' ) ) {
+			SBP_Cache::set_wp_cache_constant( false );
 			if ( file_exists( $advanced_cache_path ) ) {
-				@unlink( $advanced_cache_path );
+				if ( ! unlink( $advanced_cache_path ) ) {
+					wp_send_json_error( [
+						'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ),
+						'errors' => [],
+					] );
+				}
 			}
 		}
 	}
