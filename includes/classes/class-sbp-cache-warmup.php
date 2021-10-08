@@ -93,3 +93,17 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 		return false;
 	}
 }
+
+/*
+
+Z_TODO (4.3.4):
+
+- a>href'leri bulmak için SimpleHTMLDOM yerine preg_match() fonksiyonunu kullanalım.
+- Çektiği URL'ler arasında mükerrer olanları temizlediğini teyit et, temizlemiyorsa temizleyelim.
+- class-sbp-warmup-process.php dosyasında wp_remote_get() yerine wp_remote_head() kullanabilir miyiz?
+- 75. satırdaki relative URL kontrolünde çift slash'lı URL'ler de takılıyor. Çözüm önerisi: https://www.google.com/search?q=regex+relative+url+match
+- wp mobile theme eklentisi kurup, mobile cache warmup fonksiyonu mobil temayı cache'liyor mu diye kontrol edelim.
+- 50. satırdaki timeout değerini 5 saniyeye çekelim.
+- 81. satırda desktop warmup işlemleri için user-agent vermiyoruz.
+
+*/
