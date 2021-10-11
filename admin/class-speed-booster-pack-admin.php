@@ -62,6 +62,8 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
+		add_filter('csf_sbp_options_save', '\SpeedBooster\SBP_Cache::options_saved_filter');
+
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );

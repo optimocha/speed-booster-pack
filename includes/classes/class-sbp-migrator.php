@@ -256,7 +256,7 @@ ga('send', 'pageview');";
 	}
 
 	public function update_pagespeed_tricker() {
-		if ( sbp_get_option( 'pagespeed_tricker' ) ) {
+		if ( sbp_get_option( 'pagespeed_tricker' ) && current_user_can( 'manage_options' ) ) {
 			$this->sbp_options  = get_option( 'sbp_options' );
 			$this->sbp_options['pagespeed_tricker'] = 0;
 			update_option('sbp_options', $this->sbp_options);
