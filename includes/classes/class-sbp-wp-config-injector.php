@@ -22,8 +22,10 @@ class SBP_WP_Config_Injector {
 			}
 		}
 
-		self::remove_wp_config_lines();
-		self::add_wp_config_lines();
+		$removeLines = self::remove_wp_config_lines();
+		$addLines    = self::add_wp_config_lines();
+
+		return $removeLines && $addLines;
 	}
 
 	public static function remove_wp_config_lines() {
@@ -40,7 +42,11 @@ class SBP_WP_Config_Injector {
 			$modified_content  = preg_replace( '/\/\/ END SBP_WP_Config' . PHP_EOL . '/si', '// END SBP_WP_Config', $modified_content ); // Remove blank lines
 			$modified_content  = preg_replace( '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', '', $modified_content );
 			$wp_filesystem->put_contents( $wp_config_file, $modified_content );
+
+			return true;
 		}
+
+		return false;
 	}
 
 	private static function add_wp_config_lines() {
@@ -62,8 +68,12 @@ class SBP_WP_Config_Injector {
 				}
 			}
 			delete_transient( 'sbp_wp_config_error' );
+
+			return true;
 		} else {
 			set_transient( 'sbp_wp_config_error', 1 );
 		}
+
+		return false;
 	}
 }

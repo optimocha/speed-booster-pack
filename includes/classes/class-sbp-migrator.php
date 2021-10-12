@@ -234,7 +234,7 @@ ga('send', 'pageview');";
 			$this->sbp_options['js_optimize']       = 'off';
 			$this->sbp_options['js_footer']         = 1;
 			$this->sbp_options['js_footer_exclude'] = $this->sbp_options['js_exclude'];
-			$has_changed                                 = true;
+			$has_changed                            = true;
 		}
 
 		if ( $has_changed === true ) {
@@ -257,10 +257,13 @@ ga('send', 'pageview');";
 
 	public function update_pagespeed_tricker() {
 		if ( sbp_get_option( 'pagespeed_tricker' ) && current_user_can( 'manage_options' ) ) {
-			$this->sbp_options  = get_option( 'sbp_options' );
-			$this->sbp_options['pagespeed_tricker'] = 0;
-			update_option('sbp_options', $this->sbp_options);
-			SBP_WP_Config_Injector::inject_wp_config();
+			$inject = SBP_WP_Config_Injector::inject_wp_config();
+
+			if ( $inject ) {
+				$this->sbp_options                      = get_option( 'sbp_options' );
+				$this->sbp_options['pagespeed_tricker'] = 0;
+				update_option( 'sbp_options', $this->sbp_options );
+			}
 		}
 	}
 }
