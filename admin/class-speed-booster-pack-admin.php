@@ -543,6 +543,15 @@ class Speed_Booster_Pack_Admin {
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
 			}
 
+
+			if ( sbp_get_option( 'module_caching' ) && ! defined( 'SBP_ADVANCED_CACHE' ) ) {
+                $cache_fields = array_merge( [ [
+	                'type'    => 'submessage',
+	                'style'   => 'danger',
+	                'content' => sprintf( __( '%1$s cache is enabled but advanced-cache.php file is created by another plugin. If you want to continue using %1$s cache, please disable the other one.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+                ] ], $cache_fields );
+			}
+
 			CSF::createSection(
 				$prefix,
 				[
