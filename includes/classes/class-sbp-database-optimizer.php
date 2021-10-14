@@ -53,7 +53,7 @@ class SBP_Database_Optimizer extends SBP_Abstract_Module {
 		global $wpdb;
 		$wpdb->hide_errors();
 
-		$wpdb->query( $wpdb->prepare('ALTER TABLE `' . $table_name . '` ENGINE=INNODB' ) );
+		$wpdb->query( $wpdb->prepare('ALTER TABLE %1$s ENGINE=INNODB', $table_name ) );
 		if ( $wpdb->last_error ) {
 			echo wp_json_encode( [
 				'status'  => 'failure',
