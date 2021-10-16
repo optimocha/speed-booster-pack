@@ -548,7 +548,7 @@ class Speed_Booster_Pack_Admin {
                 $cache_fields = array_merge( [ [
 	                'type'    => 'submessage',
 	                'style'   => 'danger',
-	                'content' => sprintf( __( '%1$s cache is enabled but advanced-cache.php file is created by another plugin. If you want to continue using %1$s cache, please disable the other one.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+	                'content' => sprintf( __( '%1$s cache is enabled but the advanced-cache.php file is created by another plugin. Saving your settings now will overwrite %1$s\'s advanced-cache.php file. To fix this, you can either disable the other plugin\'s caching feature or ours.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
                 ] ], $cache_fields );
 			}
 
