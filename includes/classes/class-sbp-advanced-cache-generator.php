@@ -14,27 +14,27 @@ class SBP_Advanced_Cache_Generator {
 		'\'__SEPARATE_MOBILE_CACHING__\';'          => [
 			'option_name'   => 'caching_separate_mobile',
 			'method_name'   => 'separate_mobile_caching',
-			'default_value' => "''",
+			'default_value' => "",
 		],
-		'\'{{__CACHING_QUERY_STRING_INCLUDES__}}\'' => [
+		'{{__CACHING_QUERY_STRING_INCLUDES__}}' => [
 			'option_name'   => 'caching_include_query_strings',
 			'method_name'   => 'caching_query_string_includes',
-			'default_value' => "''",
+			'default_value' => "",
 		],
 		'\'{{__CACHING_EXPIRY__}}\''                => [
 			'option_name'   => 'caching_expiry',
 			'method_name'   => 'caching_expiry',
 			'default_value' => '1',
 		],
-		'\'{{__CACHING_EXCLUDE_URLS__}}\''          => [
+		'{{__CACHING_EXCLUDE_URLS__}}'          => [
 			'option_name'   => 'caching_exclude_urls',
 			'method_name'   => 'caching_exclude_urls',
-			'default_value' => "''",
+			'default_value' => "",
 		],
-		'\'{{__CACHING_EXCLUDE_COOKIES__}}\''       => [
+		'{{__CACHING_EXCLUDE_COOKIES__}}'       => [
 			'option_name'   => 'caching_exclude_cookies',
 			'method_name'   => 'caching_exclude_cookies',
-			'default_value' => "''",
+			'default_value' => "",
 		],
 	];
 
@@ -63,7 +63,7 @@ class SBP_Advanced_Cache_Generator {
 
 			$replace_content = $props['default_value'];
 
-			if ( $option_value !== false ) {
+			if ( $option_value != false ) {
 				$replace_content = call_user_func( $method_name );
 			}
 
