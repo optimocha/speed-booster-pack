@@ -191,17 +191,10 @@
 
     let hasCloudflareChecked = false;
 
-    // $(document).on('change', '[data-depend-id="cloudflare_enable"]', function () {
-    //     $.checkCloudflareSettings();
-    //
-    //     hasCloudflareChecked = true;
-    // });
-
     $(window).on('hashchange csf.hashchange', function () {
+        var hash = window.location.hash.replace('#tab=', '');
 
         if (hasCloudflareChecked === false) {
-            var hash = window.location.hash.replace('#tab=', '');
-
             if (hash === 'cdn-proxy') {
                 $.checkCloudflareSettings();
 
@@ -209,10 +202,17 @@
             }
         }
 
+        if (hash === 'database') {
+            $.scanDatabaseTables();
+        }
+
+        if (hash === 'advisor') {
+            $.getAdvisorMessages();
+        }
     });
 
-    $(document).on('click', '.sbp-scan-database-tables', function() {
-        var $button = $(this);
+    $.scanDatabaseTables = function() {
+        var $button = $('.sbp-scan-database-tables');
         $button.addClass('sbp-loading-active');
         $button.attr('disabled', 'disabled');
 
@@ -244,10 +244,28 @@
                 alert( 'Error occured while fetching database tables.' );
             },
             complete: function() {
+                $('.database-tables-loading').stop().hide();
                 $button.removeClass('sbp-loading-active');
                 $button.removeAttr('disabled');
             }
         });
+    };
+
+    $.getAdvisorMessages = function() {
+        $.ajax({
+            type: 'GET',
+            url: ajaxurl,
+            data: {'action': 'sbp_get_advisor_messages', 'sbp_action': 'sbp_get_advisor_messages', 'nonce': sbp_ajax_vars.nonce},
+            success: function(response) {
+                $('#advisor-content').html(response);
+            },
+            error: function(xhr, status) {
+            },
+        });
+    };
+
+    $(document).on('click', '.sbp-scan-database-tables', function() {
+        $.scanDatabaseTables();
     });
 
     $(document).on('click', '.sbp-convert-table', function() {

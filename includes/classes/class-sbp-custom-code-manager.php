@@ -10,11 +10,19 @@ if ( ! defined( 'WPINC' ) ) {
 class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_special' ) ) {
 			return;
 		}
 
-		$this->add_script_tags();
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
+
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			$this->add_script_tags();
+		}
 	}
 
 	private function add_script_tags() {

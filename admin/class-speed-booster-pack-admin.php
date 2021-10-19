@@ -11,7 +11,6 @@
  */
 
 // If this file is called directly, abort.
-use SpeedBooster\SBP_Advisor;
 use SpeedBooster\SBP_Notice_Manager;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -63,6 +62,8 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
+		add_filter('csf_sbp_options_save', '\SpeedBooster\SBP_Cache::options_saved_filter');
+
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );
@@ -79,8 +80,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'plugins_loaded', [ $this, 'create_settings_page' ] );
 
-//		$this->create_settings_page();
-		$this->create_metaboxes();
+		add_action( 'plugins_loaded', [ $this, 'create_metaboxes' ] );
 	}
 
 	/**
@@ -226,10 +226,7 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Dashboard */
-
-			$advisor          = new SBP_Advisor();
-			$advisor_messages = $advisor->get_messages();
-			$advisor_fields   = [
+			$advisor_fields = [
 				[
 					'id'      => 'advisor_heading',
 					'type'    => 'subheading',
@@ -242,23 +239,10 @@ class Speed_Booster_Pack_Admin {
 				],
 			];
 
-			if ( $advisor_messages ) {
-				foreach ( $advisor_messages as $message_id => $message ) {
-					$dismissible      = $message['type'] == 'dismissible' ? 'is-dismissible' : null;
-					$advisor_fields[] = [
-						'type'    => 'content',
-						'content' => '<div class="notice notice-' . $message['style'] . ' ' . $dismissible . ' sbp-advice" data-message-id="' . $message_id . '">
-                        <p>' . $message['content'] . '</p>
-                    </div>',
-					];
-				}
-			} else {
-				$advisor_fields[] = [
-					'type'    => 'submessage',
-					'style'   => 'success',
-					'content' => '<p>' . __( 'No recommendations for now.', 'speed-booster-pack' ) . '</p>',
-				];
-			}
+			$advisor_fields[] = [
+				'type'    => 'content',
+				'content' => '<div id="advisor-content"></div>',
+			];
 
 			/* BEGIN Section: Speed Advisor */
 			CSF::createSection(
@@ -272,6 +256,209 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Speed Advisor */
+
+			/* BEGIN Section: General */
+			CSF::createSection(
+				$prefix,
+				[
+					'title'  => __( 'General', 'speed-booster-pack' ),
+					'id'     => 'tweaks',
+					'icon'   => 'fa fa-sliders-h',
+					'fields' => [
+						[
+							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
+							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'General', 'speed-booster-pack' ),
+							'id'       => 'module_tweaks',
+							'class'    => 'module-tweaks',
+							'type'     => 'switcher',
+							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+							'default'  => true,
+							'sanitize' => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
+							'id'         => 'instant_page',
+							'type'       => 'switcher',
+							/* translators: %s = hyperlink to the instant.page website  */
+							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a>' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Trim query strings', 'speed-booster-pack' ),
+							'id'         => 'trim_query_strings',
+							'type'       => 'switcher',
+							'desc'       => __( 'Removes the query strings (characters that come after the question mark) at the end of enqueued asset URLs.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Disable self pingbacks', 'speed-booster-pack' ),
+							'id'         => 'disable_self_pingbacks',
+							'type'       => 'switcher',
+							'desc'       => __( 'Disabling this will prevent pinging this website to ping itself (its other posts etc.) during publishing, which will improve the speed of publishing posts or pages.', 'speed-booster-pack' ),
+							'default'    => true,
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Dequeue emoji scripts', 'speed-booster-pack' ),
+							'id'         => 'dequeue_emoji_scripts',
+							'type'       => 'switcher',
+							'desc'       => __( 'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, don\'t worry.', 'speed-booster-pack' ),
+							'default'    => true,
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Dequeue the post embed script', 'speed-booster-pack' ),
+							'id'         => 'disable_post_embeds',
+							'type'       => 'switcher',
+							'desc'       => __( 'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							/* translators: %s: <code>comment-reply.js</code>  */
+							'title'      => sprintf( __( 'Dequeue %s', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
+							/* translators: %s: <code>comment-reply.js</code>  */
+							'desc'       => sprintf( __( 'Disables the %s script.', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
+							'id'         => 'dequeue_comment_reply_script',
+							'type'       => 'switcher',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
+							'id'         => 'dequeue_dashicons',
+							'type'       => 'switcher',
+							/* translators: 1. <strong> 2. </strong>  */
+							'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Dequeue Gutenberg CSS', 'speed-booster-pack' ),
+							'id'         => 'dequeue_block_library',
+							'type'       => 'switcher',
+							'desc'       => __( 'If you\'re not using the block editor (Gutenberg) in your posts/pages, this is a safe setting to enable.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
+							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
+							'id'         => 'heartbeat_settings',
+							/* translators: 1. opening tag for the hyperlink to the Heartbeat API 2. closing tag for the hyperlink  */
+							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external noopener" target="_blank">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
+							'type'       => 'button_set',
+							'options'    => [
+								'enabled'   => __( 'Enabled', 'speed-booster-pack' ),
+								'optimized' => __( 'Optimized', 'speed-booster-pack' ),
+								'disabled'  => __( 'Disabled', 'speed-booster-pack' ),
+							],
+							'default'    => 'enabled',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Limit post revisions', 'speed-booster-pack' ),
+							'id'         => 'post_revisions',
+							'type'       => 'spinner',
+							'unit'       => __( 'revisions', 'speed-booster-pack' ),
+							/* translators: 1. opening tag for the hyperlink to the support article for revisions 2. closing tag for the hyperlink  */
+							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external noopener" target="_blank">', '</a>' ) . '<br />'
+							                /* translators: 1. WP_POST_REVISIONS 2. wp-config.php  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>wp-config.php</code>' ),
+							'sanitize'   => 'absint',
+							'default'    => '99',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'title'      => __( 'Autosave interval', 'speed-booster-pack' ),
+							'id'         => 'autosave_interval',
+							'type'       => 'spinner',
+							'min'        => '1',
+							'unit'       => __( 'minutes', 'speed-booster-pack' ),
+							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
+							                /* translators: 1. AUTOSAVE_INTERVAL 2. wp-config.php  */
+							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>wp-config.php</code>' ),
+							'sanitize'   => 'sbp_posabs',
+							'default'    => '1',
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							/* translators: %s = <head>  */
+							'title'      => sprintf( __( 'Declutter %s', 'speed-booster-pack' ), '<code>&lt;head&gt;</code>' ),
+							'id'         => 'declutter_head',
+							'class'      => 'declutter-head',
+							'type'       => 'fieldset',
+							'before'     => '<p>' . __( 'Enabling these options removes corresponding elements from your HTML source code. If you don\'t know what they are, it\'s probably safer for you to keep them disabled.', 'speed-booster-pack' ) . '</p>',
+							'fields'     => [
+
+								[
+									'title'    => __( 'Shortlinks', 'speed-booster-pack' ),
+									'id'       => 'declutter_shortlinks',
+									'type'     => 'switcher',
+									'label'    => '<link rel=\'shortlink\' href=\'...\' />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'Next/previous posts links', 'speed-booster-pack' ),
+									'id'       => 'declutter_adjacent_posts_links',
+									'type'     => 'switcher',
+									'label'    => "<link rel='next (or prev)' title='...' href='...' />",
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'WLW Manifest link', 'speed-booster-pack' ),
+									'id'       => 'declutter_wlw',
+									'type'     => 'switcher',
+									'label'    => '<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="..." />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'Really Simple Discovery (RSD) link', 'speed-booster-pack' ),
+									'id'       => 'declutter_rsd',
+									'type'     => 'switcher',
+									'label'    => '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="..." />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'REST API links', 'speed-booster-pack' ),
+									'id'       => 'declutter_rest_api_links',
+									'type'     => 'switcher',
+									'label'    => "<link rel='https://api.w.org/' href='...' />",
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'RSS feed links', 'speed-booster-pack' ),
+									'id'       => 'declutter_feed_links',
+									'type'     => 'switcher',
+									'label'    => '<link rel="alternate" type="application/rss+xml" title="..." href="..." />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+								[
+									'title'    => __( 'WordPress version', 'speed-booster-pack' ),
+									'id'       => 'declutter_wp_version',
+									'type'     => 'switcher',
+									'label'    => '<meta name="generator" content="WordPress X.X" />',
+									'sanitize' => 'sbp_sanitize_boolean',
+								],
+							],
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+						],
+						[
+							'id'          => 'roles_to_disable_sbp',
+							'type'        => 'select',
+							'title'       => sprintf( __( 'Roles to disable %s features', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'chosen'      => true,
+							'multiple'    => true,
+							'placeholder' => 'Select user role',
+							'options'     => 'roles',
+						],
+					],
+				]
+			);
+			/* END Section: General */
 
 			/* BEGIN Section: Caching */
 			$cache_fields = [
@@ -356,6 +543,15 @@ class Speed_Booster_Pack_Admin {
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
 			}
 
+
+			if ( sbp_get_option( 'module_caching' ) && ! defined( 'SBP_ADVANCED_CACHE' ) ) {
+                $cache_fields = array_merge( [ [
+	                'type'    => 'submessage',
+	                'style'   => 'danger',
+	                'content' => sprintf( __( '%1$s cache is enabled but the advanced-cache.php file is created by another plugin. Saving your settings now will overwrite %1$s\'s advanced-cache.php file. To fix this, you can either disable the other plugin\'s caching feature or ours.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+                ] ], $cache_fields );
+			}
+
 			CSF::createSection(
 				$prefix,
 				[
@@ -386,18 +582,21 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'cloudflare_api',
 					'type'  => 'text',
 					'desc'  => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
 					'id'    => 'cloudflare_email',
 					'type'  => 'text',
 					'desc'  => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
 					'id'    => 'cloudflare_zone',
 					'type'  => 'text',
 					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title'      => __( 'Rocket Loader', 'speed-booster-pack' ),
@@ -500,6 +699,7 @@ class Speed_Booster_Pack_Admin {
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> ' . __( 'Your Cloudflare credentials are correct.', 'speed-booster-pack' ) . '</span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-warning" style="color:orange; vertical-align: middle;"><i class="fa fa-exclamation-circle"></i> ' . __( 'Enter your Cloudflare credentials and save settings to see CloudFlare options.', 'speed-booster-pack' ) . '</span>
 				  ',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 			];
 			/* End Of Cloudflare Fields */
@@ -521,11 +721,13 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Sucuri API key', 'speed-booster-pack' ),
 					'id'    => 'sucuri_api',
 					'type'  => 'text',
+					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Sucuri API Secret', 'speed-booster-pack' ),
 					'id'    => 'sucuri_secret',
 					'type'  => 'text',
+					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
 				],
 			];
 			/* End Of Sucuri Fields */
@@ -536,7 +738,7 @@ class Speed_Booster_Pack_Admin {
 					'type'  => 'subheading',
 				],
 				[
-					'title'    => __( 'Enable CDN', 'speed-booster-pack' ),
+					'title'    => __( 'CDN domain', 'speed-booster-pack' ),
 					'id'       => 'cdn_url',
 					'class'    => 'cdn-url',
 					'type'     => 'text',
@@ -551,6 +753,7 @@ class Speed_Booster_Pack_Admin {
 					'type'     => 'code_editor',
 					'desc'     => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_strip_tags',
+					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
 				],
 				[
 					'title'    => __( 'Excluded Extensions', 'speed-booster-pack' ),
@@ -558,6 +761,7 @@ class Speed_Booster_Pack_Admin {
 					'type'     => 'code_editor',
 					'desc'     => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_strip_tags',
+					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
 				],
 			],
 				$cloudflare_fields,
@@ -740,6 +944,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => sprintf( __( 'This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. %1$sLearn more about the template hierarchy of WordPress.%2$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/themes/basics/template-hierarchy/" rel="external noopener" target="_blank">', '</a>' ),
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'settings'   => [ 'lineWrapping' => true ],
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'id'         => 'criticalcss_codes',
@@ -748,6 +953,7 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_sanitize_strip_tags',
 							'accordions' => $critical_css_fields,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'title'      => __( 'Remove critical CSS after onload', 'speed-booster-pack' ),
@@ -757,6 +963,7 @@ class Speed_Booster_Pack_Admin {
 							'default'    => true,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'id'         => 'criticalcss_excludes',
@@ -766,6 +973,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Enter CSS file names or URLs to exclude from critical CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'settings'   => [ 'lineWrapping' => true ],
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'type'  => 'subheading',
@@ -778,6 +986,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Inlines all CSS files into the HTML output. Useful for lightweight designs but might be harmful for websites with over 500KB of total CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'title'      => __( 'Minify all inlined CSS', 'speed-booster-pack' ),
@@ -786,6 +995,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Minifies the already inlined CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'title'      => __( 'CSS exclusions', 'speed-booster-pack' ),
@@ -795,6 +1005,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'If your design breaks after enabling the CSS options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_strip_tags',
+							'class'      => 'hide-if-disabled',
 						],
 					],
 				]
@@ -829,10 +1040,10 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title' => __( 'Set missing image dimensions', 'speed-booster-pack' ),
-					'id'    => 'missing_image_dimensions',
-					'type'  => 'switcher',
-					'desc'  => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
+					'title'      => __( 'Set missing image dimensions', 'speed-booster-pack' ),
+					'id'         => 'missing_image_dimensions',
+					'type'       => 'switcher',
+					'desc'       => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
@@ -945,6 +1156,14 @@ class Speed_Booster_Pack_Admin {
 								'settings'   => [ 'lineWrapping' => true ],
 								'sanitize'   => 'sbp_sanitize_strip_tags',
 							],
+							[
+								'id'         => 'preboost_featured_image',
+								'type'       => 'switcher',
+								'label'      => __( 'Preload featured images.', 'speed-booster-pack' ),
+								'desc'       => __( 'Enable this if you want featured images to be preloaded.', 'speed-booster-pack' ),
+								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
+								'sanitize'   => 'sbp_sanitize_boolean',
+							],
 						],
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					],
@@ -1045,15 +1264,6 @@ class Speed_Booster_Pack_Admin {
 							'dependency'             => [ 'module_special', '==', '1', '', 'visible' ],
 						],
 						[
-							'title'      => 'Jetpack: ' . __( 'Dequeue the devicepx script', 'speed-booster-pack' ),
-							'id'         => 'jetpack_dequeue_devicepx',
-							'type'       => 'switcher',
-							/* translators: %s = devicepx-jetpack.js  */
-							'desc'       => sprintf( __( 'The %s file replaces images served via Jetpack\'s Photon CDN with their higher-quality equivalents. If you don\'t need this feature, you can dequeue the file and save an extra HTTP request and an extra DNS connection.', 'speed-booster-pack' ), '<code>devicepx-jetpack.js</code>' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
 							'title'      => 'WooCommerce: ' . __( 'Disable cart fragments', 'speed-booster-pack' ),
 							'id'         => 'woocommerce_disable_cart_fragments',
 							'type'       => 'switcher',
@@ -1078,230 +1288,16 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
-						[
-							'type'  => 'subheading',
-							'title' => __( 'PageSpeed Tricker', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'submessage',
-							'style'   => 'warning',
-							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'This experimental feature is here to show you how easy it is to get top scores with Google PageSpeed (or Lighthouse to be exact), and how meaningless it is to obsess over these metrics. Google doesn\'t have a guideline about any penalties for websites manipulating Lighthouse metrics, but that doesn\'t mean they won\'t. Thus, take this feature as a joke and use only to experiment. By activating the feature, you acknowledge that you have sole responsibility for any kind of effects on your website.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-						],
-						[
-							/* translators: %s = PageSpeed Tricker  */
-							'title'    => sprintf( __( 'Enable %s', 'speed-booster-pack' ), 'PageSpeed Tricker' ),
-							'id'       => 'pagespeed_tricker',
-							'type'     => 'switcher',
-							'sanitize' => 'sbp_sanitize_boolean',
-						],
 					],
 				]
 			);
 			/* END Section: Special */
 
-			/* BEGIN Section: Tweaks */
-			CSF::createSection(
-				$prefix,
-				[
-					'title'  => __( 'Tweaks', 'speed-booster-pack' ),
-					'id'     => 'tweaks',
-					'icon'   => 'fa fa-sliders-h',
-					'fields' => [
-
-
-						[
-							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Tweaks', 'speed-booster-pack' ),
-							'id'       => 'module_tweaks',
-							'class'    => 'module-tweaks',
-							'type'     => 'switcher',
-							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default'  => true,
-							'sanitize' => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
-							'id'         => 'instant_page',
-							'type'       => 'switcher',
-							/* translators: %s = hyperlink to the instant.page website  */
-							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a>' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Trim query strings', 'speed-booster-pack' ),
-							'id'         => 'trim_query_strings',
-							'type'       => 'switcher',
-							'desc'       => __( 'Removes the query strings (characters that come after the question mark) at the end of enqueued asset URLs.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Disable self pingbacks', 'speed-booster-pack' ),
-							'id'         => 'disable_self_pingbacks',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disabling this will prevent pinging this website to ping itself (its other posts etc.) during publishing, which will improve the speed of publishing posts or pages.', 'speed-booster-pack' ),
-							'default'    => true,
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue emoji scripts', 'speed-booster-pack' ),
-							'id'         => 'dequeue_emoji_scripts',
-							'type'       => 'switcher',
-							'desc'       => __( 'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, don\'t worry.', 'speed-booster-pack' ),
-							'default'    => true,
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue the post embed script', 'speed-booster-pack' ),
-							'id'         => 'disable_post_embeds',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							/* translators: %s: <code>comment-reply.js</code>  */
-							'title'      => sprintf( __( 'Dequeue %s', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
-							/* translators: %s: <code>comment-reply.js</code>  */
-							'desc'       => sprintf( __( 'Disables the %s script.', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
-							'id'         => 'dequeue_comment_reply_script',
-							'type'       => 'switcher',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
-							'id'         => 'dequeue_dashicons',
-							'type'       => 'switcher',
-							/* translators: 1. <strong> 2. </strong>  */
-							'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue Gutenberg CSS', 'speed-booster-pack' ),
-							'id'         => 'dequeue_block_library',
-							'type'       => 'switcher',
-							'desc'       => __( 'If you\'re not using the block editor (Gutenberg) in your posts/pages, this is a safe setting to enable.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
-							'id'         => 'heartbeat_settings',
-							/* translators: 1. opening tag for the hyperlink to the Heartbeat API 2. closing tag for the hyperlink  */
-							'desc'       => sprintf( __( 'Controls the %1$sHeartbeat API%2$s, which checks if the user is still logged-in or not every 15 to 60 seconds.', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/plugins/javascript/heartbeat-api/" rel="external noopener" target="_blank">', '</a>' ) . '<br />' . __( '"Enabled" lets it run like usual, "Optimized" sets both intervals to 120 seconds, and "Disabled" disables the Heartbeat API completely.', 'speed-booster-pack' ),
-							'type'       => 'button_set',
-							'options'    => [
-								'enabled'   => __( 'Enabled', 'speed-booster-pack' ),
-								'optimized' => __( 'Optimized', 'speed-booster-pack' ),
-								'disabled'  => __( 'Disabled', 'speed-booster-pack' ),
-							],
-							'default'    => 'enabled',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Limit post revisions', 'speed-booster-pack' ),
-							'id'         => 'post_revisions',
-							'type'       => 'spinner',
-							'unit'       => __( 'revisions', 'speed-booster-pack' ),
-							/* translators: 1. opening tag for the hyperlink to the support article for revisions 2. closing tag for the hyperlink  */
-							'desc'       => sprintf( __( 'Limits the number of %1$spost revisions%2$s saved for each post. Keeping 3 or 5 revisions for each post should be enough for most sites. Set it to 0 to disable post revisions completely.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/article/revisions/" rel="external noopener" target="_blank">', '</a>' ) . '<br />'
-							                /* translators: 1. WP_POST_REVISIONS 2. wp-config.php  */
-							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>WP_POST_REVISIONS</code>', '<code>wp-config.php</code>' ),
-							'sanitize'   => 'absint',
-							'default'    => '99',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							'title'      => __( 'Autosave interval', 'speed-booster-pack' ),
-							'id'         => 'autosave_interval',
-							'type'       => 'spinner',
-							'min'        => '1',
-							'unit'       => __( 'minutes', 'speed-booster-pack' ),
-							'desc'       => __( 'Sets how frequent the content is saved automatically while editing. WordPress sets it to 1 minute by default, and you can\'t set it to a shorter interval.', 'speed-booster-pack' ) . '<br />'
-							                /* translators: 1. AUTOSAVE_INTERVAL 2. wp-config.php  */
-							                . sprintf( __( 'Note: If the %1$s constant is set in your %2$s file, it will override this setting.', 'speed-booster-pack' ), '<code>AUTOSAVE_INTERVAL</code>', '<code>wp-config.php</code>' ),
-							'sanitize'   => 'sbp_posabs',
-							'default'    => '1',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-						[
-							/* translators: %s = <head>  */
-							'title'      => sprintf( __( 'Declutter %s', 'speed-booster-pack' ), '<code>&lt;head&gt;</code>' ),
-							'id'         => 'declutter_head',
-							'class'      => 'declutter-head',
-							'type'       => 'fieldset',
-							'before'     => '<p>' . __( 'Enabling these options removes corresponding elements from your HTML source code. If you don\'t know what they are, it\'s probably safer for you to keep them disabled.', 'speed-booster-pack' ) . '</p>',
-							'fields'     => [
-
-								[
-									'title'    => __( 'Shortlinks', 'speed-booster-pack' ),
-									'id'       => 'declutter_shortlinks',
-									'type'     => 'switcher',
-									'label'    => '<link rel=\'shortlink\' href=\'...\' />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'Next/previous posts links', 'speed-booster-pack' ),
-									'id'       => 'declutter_adjacent_posts_links',
-									'type'     => 'switcher',
-									'label'    => "<link rel='next (or prev)' title='...' href='...' />",
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'WLW Manifest link', 'speed-booster-pack' ),
-									'id'       => 'declutter_wlw',
-									'type'     => 'switcher',
-									'label'    => '<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="..." />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'Really Simple Discovery (RSD) link', 'speed-booster-pack' ),
-									'id'       => 'declutter_rsd',
-									'type'     => 'switcher',
-									'label'    => '<link rel="EditURI" type="application/rsd+xml" title="RSD" href="..." />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'REST API links', 'speed-booster-pack' ),
-									'id'       => 'declutter_rest_api_links',
-									'type'     => 'switcher',
-									'label'    => "<link rel='https://api.w.org/' href='...' />",
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'RSS feed links', 'speed-booster-pack' ),
-									'id'       => 'declutter_feed_links',
-									'type'     => 'switcher',
-									'label'    => '<link rel="alternate" type="application/rss+xml" title="..." href="..." />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-								[
-									'title'    => __( 'WordPress version', 'speed-booster-pack' ),
-									'id'       => 'declutter_wp_version',
-									'type'     => 'switcher',
-									'label'    => '<meta name="generator" content="WordPress X.X" />',
-									'sanitize' => 'sbp_sanitize_boolean',
-								],
-							],
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-						],
-
-					],
-				]
-			);
-			/* END Section: Tweaks */
-
 			/** BEGIN Section: Database Optimization */
 			CSF::createSection(
 				$prefix,
 				[
-					'title'  => __( 'Database Optimization', 'speed-booster-pack' ),
+					'title'  => __( 'Database', 'speed-booster-pack' ),
 					'id'     => 'database_optimization',
 					'icon'   => 'fa fa-database',
 					'fields' => [
@@ -1411,6 +1407,12 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	public function create_metaboxes() {
+		if ( function_exists( 'current_user_can' ) ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
+		}
+
 		/* BEGIN Metaboxes */
 		$metabox_prefix    = 'sbp_post_meta';
 		$public_post_types = get_option( 'sbp_public_post_types' );
@@ -1451,8 +1453,8 @@ class Speed_Booster_Pack_Admin {
 				'title'   => __( 'Critical CSS for this content', 'speed-booster-pack' ),
 				'options' => array(
 					'main_setting' => 'Main setting',
-					'off'     => 'Off',
-					'custom'  => 'Custom',
+					'off'          => 'Off',
+					'custom'       => 'Custom',
 				),
 				'default' => 'main_setting',
 				'class'   => 'sbp-gap-top',
@@ -1484,10 +1486,10 @@ class Speed_Booster_Pack_Admin {
 				'desc'    => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
 				'type'    => 'button_set',
 				'options' => [
-					'main_setting'    => __( 'Main setting', 'speed-booster-pack' ),
-					'off'        => __( 'Off', 'speed-booster-pack' ),
-					'everything' => __( 'Everything', 'speed-booster-pack' ),
-					'custom'     => __( 'Custom', 'speed-booster-pack' ),
+					'main_setting' => __( 'Main setting', 'speed-booster-pack' ),
+					'off'          => __( 'Off', 'speed-booster-pack' ),
+					'everything'   => __( 'Everything', 'speed-booster-pack' ),
+					'custom'       => __( 'Custom', 'speed-booster-pack' ),
 				],
 				'default' => 'main_setting',
 			];
@@ -1523,8 +1525,8 @@ class Speed_Booster_Pack_Admin {
 				'type'    => 'button_set',
 				'options' => [
 					'main_setting' => __( 'Main setting', 'speed-booster-pack' ),
-					'off'     => __( 'Off', 'speed-booster-pack' ),
-					'on'      => __( 'On', 'speed-booster-pack' ),
+					'off'          => __( 'Off', 'speed-booster-pack' ),
+					'on'           => __( 'On', 'speed-booster-pack' ),
 				],
 				'desc'    => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
 				'default' => 'main_setting',

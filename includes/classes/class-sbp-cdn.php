@@ -16,15 +16,23 @@ class SBP_CDN extends SBP_Abstract_Module {
 	private $site_url = null;
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'cdn_url' ) ) {
 			return;
 		}
 
-		$this->site_url = get_site_url( get_current_blog_id() ); // For Multisite
-		$this->set_included_dirs();
-		$this->set_excluded_extensions();
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
 
-		add_filter( 'sbp_output_buffer', [ $this, 'run_rewriter' ] );
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			$this->site_url = get_site_url( get_current_blog_id() ); // For Multisite
+			$this->set_included_dirs();
+			$this->set_excluded_extensions();
+
+			add_filter( 'sbp_output_buffer', [ $this, 'run_rewriter' ] );
+		}
 	}
 
 	public function run_rewriter( $html ) {

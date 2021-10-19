@@ -15,11 +15,19 @@ class SBP_HTML_Minifier extends SBP_Abstract_Module {
 	private $html;
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'minify_html' ) ) {
 			return;
 		}
 
-		add_filter( 'sbp_output_buffer', [ $this, 'handle_html_minify' ], 11 );
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
+
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			add_filter( 'sbp_output_buffer', [ $this, 'handle_html_minify' ], 11 );
+		}
 	}
 
 	public function handle_html_minify( $html ) {

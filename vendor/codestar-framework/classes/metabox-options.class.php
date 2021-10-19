@@ -47,13 +47,13 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
       $this->page_templates = ( is_array( $this->args['page_templates'] ) ) ? $this->args['page_templates'] : array_filter( (array) $this->args['page_templates'] );
       $this->pre_fields     = $this->pre_fields( $this->sections );
 
-      add_action( 'add_meta_boxes', array( &$this, 'add_meta_box' ) );
-      add_action( 'save_post', array( &$this, 'save_meta_box' ) );
-      add_action( 'edit_attachment', array( &$this, 'save_meta_box' ) );
+      add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+      add_action( 'save_post', array( $this, 'save_meta_box' ) );
+      add_action( 'edit_attachment', array( $this, 'save_meta_box' ) );
 
       if ( ! empty( $this->page_templates ) || ! empty( $this->post_formats ) || ! empty( $this->args['class'] ) ) {
         foreach ( $this->post_type as $post_type ) {
-          add_filter( 'postbox_classes_'. $post_type .'_'. $this->unique, array( &$this, 'add_metabox_classes' ) );
+          add_filter( 'postbox_classes_'. $post_type .'_'. $this->unique, array( $this, 'add_metabox_classes' ) );
         }
       }
 
@@ -141,7 +141,7 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
     public function add_meta_box( $post_type ) {
 
       if ( ! in_array( $post_type, $this->args['exclude_post_types'] ) ) {
-        add_meta_box( $this->unique, $this->args['title'], array( &$this, 'add_meta_box_content' ), $this->post_type, $this->args['context'], $this->args['priority'], $this->args );
+        add_meta_box( $this->unique, $this->args['title'], array( $this, 'add_meta_box_content' ), $this->post_type, $this->args['context'], $this->args['priority'], $this->args );
       }
 
     }
@@ -254,6 +254,7 @@ if ( ! class_exists( 'CSF_Metabox' ) ) {
               echo '<div class="csf-section hidden'. esc_attr( $section_onload . $section_class ) .'">';
 
               echo ( $section_title || $section_icon ) ? '<div class="csf-section-title"><h3>'. $section_icon . $section_title .'</h3></div>' : '';
+              echo ( ! empty( $section['description'] ) ) ? '<div class="csf-field csf-section-description">'. $section['description'] .'</div>' : '';
 
               if ( ! empty( $section['fields'] ) ) {
 

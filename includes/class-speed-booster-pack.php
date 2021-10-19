@@ -158,7 +158,7 @@ class Speed_Booster_Pack {
 	 */
 	private function init_modules() {
 		if ( ! $this->should_plugin_run() ) {
-			return false;
+			return;
 		}
 		new SBP_WP_Admin();
 		new SBP_Database_Optimizer();
@@ -180,7 +180,7 @@ class Speed_Booster_Pack {
 		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
 		new SBP_Notice_Manager();
-//		new SBP_Advisor();
+		new SBP_Advisor();
 		new SBP_Sucuri();
 		new SBP_Cache_Warmup();
 		new SBP_Cache();

@@ -111,6 +111,8 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		'<!--',
 		'JS_Optimizer_Comment_Placeholder',
 		'window.lazyLoadOptions',
+		'data-noptimize',
+		'data-sbp-skip',
 	];
 
 	/**
@@ -186,10 +188,18 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 	private $js_footer = false;
 
 	public function __construct() {
+		parent::__construct();
+
 		$this->js_optimize_strategy = sbp_get_option( 'js_optimize', 'off' );
 		$this->js_footer            = sbp_get_option( 'js_footer' );
 
-		add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
+
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
+		}
 	}
 
 	public function optimize_scripts( $html ) {

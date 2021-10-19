@@ -32,11 +32,19 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	];
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_tweaks' ) ) {
 			return;
 		}
 
-		$this->call_option_methods( $this->tweak_settings );
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
+
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			$this->call_option_methods( $this->tweak_settings );
+		}
 	}
 
 	private function call_option_methods( $settings, $parent = null ) {
@@ -184,8 +192,11 @@ class SBP_Tweaks extends SBP_Abstract_Module {
 	}
 
 	private function post_revisions() {
-		if ( ! empty( sbp_get_option( 'post_revisions' ) ) && ! defined( 'WP_POST_REVISIONS' ) ) {
-			define( 'WP_POST_REVISIONS', sbp_get_option( 'post_revisions' ) );
+		$post_revisions = sbp_get_option( 'post_revisions' );
+		if ( ! empty( $post_revisions ) && (int) $post_revisions ) {
+			add_filter( 'wp_revisions_to_keep', function( $num, $post ) use ( $post_revisions ) {
+				return $post_revisions;
+			}, 2, 2 );
 		}
 	}
 

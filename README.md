@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 4.3.0
+Stable tag: 4.3.3.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -60,7 +60,7 @@ More than half of WordPress users don't speak English, and missing out so much! 
 Speed optimization plugins might do a great job at optimizing your website and increasing your PageSpeed scores, but even they can't perform well on websites with poor setups. There are lots of factors to think about when it comes to web performance optimization. That's where we, as Optimocha, come in: We log in to your website; create a specialized optimization report considering all your plugins, your theme settings, your hosting environment and your whole content; then we get our hands dirty to get your website as fast as possible. To learn more about our services and get in touch with us, here are some links:
 
 * [One-time speed optimization services](https://optimocha.com/speed-optimization-for-wordpress/)
-* [Monthly speed optimization & maintenance services](https://optimocha.com/monthly-wordpress-optimization-maintenance/)
+* [Monthly speed optimization & maintenance services](https://optimocha.com/speed-optimization-for-wordpress/#ongoing-optimization)
 * [Contact Optimocha](https://optimocha.com/contact/)
 
 ### Disclaimer
@@ -103,6 +103,43 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.3.3.1 =
+
+*Release Date: 16 October 2021*
+
+Had to release a tiny hotfix because we _forgot_ to change the version. And while we're at it, we edited the readme a bit.
+
+= 4.3.3 =
+
+*Release Date: 16 October 2021*
+
+* **Improved**: The Speed Booster Pack metabox in post/page edit screens is now shoed only to admins.
+* **Improved**: The settings page looks more clean now.
+* **Improved**: Added `data-noptimize` and `data-sbp-skip` to the default exclude lists of the JS optimizer.
+* **Updated**: lazyload.js was updated to version 17.5.0.
+* **Removed**: The PageSpeed Tricker feature is removed.
+* **Fixed**: Corrected the behavior of SBP when another plugin's page caching was active _and_ SBP's page caching weren't.
+* **Patched**: A security issue with the database optimizer was patched.
+
+= 4.3.2 =
+
+*Release Date: 01 October 2021*
+
+* **NEW**: You can now disable Speed Booster Pack for certain user roles.
+* **NEW**: You can now add `<link rel="preload">` tags for featured images.
+* **Improved**: Advisor works better now!
+
+= 4.3.1 =
+
+*Release Date: 11 September 2021*
+
+* **Improved**: Better handling of notices.
+* **Improved**: Database engine converter works slightly better now.
+* **Fixed**: Small bug in Google font optimizer.
+* **Fixed**: Post revisions setting wasn't working in some cases.
+* **Updated**: Codestar options framework is updated to its latest version.
+* **Removed**: "Dequeue Jetpack's devicepx script" is gone.
 
 = 4.3.0 =
 

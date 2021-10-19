@@ -8,29 +8,33 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class SBP_Font_Optimizer extends SBP_Abstract_Module {
-	private $families;
-	private $subsets;
+	private $families = [];
+	private $subsets = [];
 
-	private $css2_families;
+	private $css2_families = [];
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'optimize_gfonts' ) ) {
 			return;
 		}
 
-		add_action( 'init', [ $this, 'run' ] );
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
 	}
 
-	public function run() {
-		if ( is_embed() ) {
-			return;
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			add_filter( 'sbp_output_buffer', [ $this, 'process_google_fonts' ], 10 );
 		}
-
-		add_filter( 'sbp_output_buffer', [ $this, 'process_google_fonts' ], 10 );
 	}
 
 	public function process_google_fonts( $html ) {
-		// Process old Google Fonts API
+
+		if ( is_embed() ) {
+			return $html;
+		}
+
 		$html = $this->process_google_fonts_api( $html );
 		$html = $this->process_new_google_fonts_api( $html );
 
@@ -94,8 +98,8 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 
 		$link_tag = $this->generate_css2_link_tag();
 
-		$html     = preg_replace( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css2\?(.*?))['\"?].*?>/i", '', $html );
-		$html     = str_replace( '</title>', '</title>' . PHP_EOL . $link_tag, $html );
+		$html = preg_replace( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css2\?(.*?))['\"?].*?>/i", '', $html );
+		$html = str_replace( '</title>', '</title>' . PHP_EOL . $link_tag, $html );
 
 		return $html;
 	}
@@ -135,14 +139,14 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 		$query_strings = [];
 
 		// Sort and clear arrays first
-		$this->css2_families = array_map(function($item) {
-			$item['styles'] = array_unique($item['styles']);
-			sort($item['styles']);
-			$item['weights'] = array_unique($item['weights']);
-			sort($item['weights']);
+		$this->css2_families = array_map( function ( $item ) {
+			$item['styles'] = array_unique( $item['styles'] );
+			sort( $item['styles'] );
+			$item['weights'] = array_unique( $item['weights'] );
+			sort( $item['weights'] );
 
 			return $item;
-		}, $this->css2_families);
+		}, $this->css2_families );
 
 		if ( $this->css2_families ) {
 			foreach ( $this->css2_families as $family_name => $attributes ) {

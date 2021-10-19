@@ -9,14 +9,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Advisor {
 	private $messages = [];
-	private $dismissed_messages = [];
-	private $user_meta_key = 'sbp_dismissed_messages';
 
 	public function __construct() {
-		$this->get_dismissed_messages();
-		$this->set_messages();
-
-		add_action( 'wp_ajax_sbp_dismiss_advisor_message', [ $this, 'dismiss_advisor_message' ] );
+		add_action( 'wp_ajax_sbp_get_advisor_messages', [ $this, 'get_messages_html' ] );
 	}
 
 	public function set_messages() {
@@ -24,61 +19,84 @@ class SBP_Advisor {
 		$this->check_http_protocol_version();
 	}
 
-	public function get_dismissed_messages() {
-		$dismissed_messages = get_user_meta( get_current_user_id(), $this->user_meta_key, true );
-
-		if ( ! is_array( $dismissed_messages ) ) {
-			$this->dismissed_messages = [];
-		} else {
-			$this->dismissed_messages = $dismissed_messages;
-		}
-	}
-
 	private function check_http_protocol_version() {
+		$checked    = false;
 		$message_id = 'update_http_protocol';
 
-		if ( isset( $_SERVER['SERVER_PROTOCOL'] ) && $_SERVER['SERVER_PROTOCOL'] !== 'HTTP/1.1' ) {
-			return;
+		if ( isset( $_SERVER['SERVER_PROTOCOL'] ) && in_array( $_SERVER['SERVER_PROTOCOL'], [ 'HTTP/2', 'HTTP/3' ] ) ) {
+			$checked = true;
+			// Z_TODO: Use version compare instead string comparison
+		} else if ( isset( $_SERVER['SERVER_PROTOCOL'] ) && in_array( $_SERVER['SERVER_PROTOCOL'], [ 'HTTP/1.0', 'HTTP/1.1' ] ) ) {
+			if ( function_exists( 'curl_version' ) and defined( 'CURL_HTTP_VERSION_2_0' ) ) {
+				$ch = curl_init();
+				curl_setopt_array( $ch, [
+					CURLOPT_URL            => get_home_url(),
+					CURLOPT_HEADER         => true,
+					CURLOPT_NOBODY         => true,
+					CURLOPT_RETURNTRANSFER => true,
+					CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_2_0,
+				] );
+				$response = curl_exec( $ch );
+
+				if ( substr( $response, 0, 6 ) === 'HTTP/2' ) {
+					$checked = true;
+				}
+			} else {
+				$this->messages[ $message_id ] = [
+					'type'    => 'non-dismissible',
+					/** B_TODO: Need a text for curl disabled websites. "Use http2.pro bla bla bla" */
+					'content' => __( 'Curl is not active', 'speed-booster-pack' ),
+					'checked' => false,
+				];
+				return;
+			}
 		}
 
-		if ( ! in_array( $message_id, $this->dismissed_messages ) ) {
-			$this->messages[ $message_id ] = [
-				'style'   => 'warning',
-				'type'    => 'non-dismissible',
-				'content' => __( 'You\'re using HTTP/1.1. For best performance, you should upgrade to HTTP/2 or, if possible, HTTP/3.', 'speed-booster-pack' ),
-			];
-		}
+		$this->messages[ $message_id ] = [
+			'type'    => 'non-dismissible',
+			'content' => __( 'You\'re using HTTP/1.1. For best performance, you should upgrade to HTTP/2 or, if possible, HTTP/3.', 'speed-booster-pack' ),
+			'checked' => $checked,
+		];
 	}
 
 	private function check_php_version() {
+		$checked    = false;
 		$message_id = 'update_php';
 
-		if ( version_compare( PHP_VERSION, '7.3' ) !== -1 ) {
-			return;
+		if ( version_compare( PHP_VERSION, '7.3' ) !== - 1 ) {
+			$checked = true;
 		}
 
-		if ( ! in_array( $message_id, $this->dismissed_messages ) ) {
-			$this->messages[ $message_id ] = [
-				'style'   => 'warning',
-				'type'    => 'non-dismissible',
-				'content' => __( 'You\'re using and old version of PHP. For best performance, you should upgrade PHP to version 7.3 or above.', 'speed-booster-pack' ),
-			];
-		}
+		$this->messages[ $message_id ] = [
+			'type'    => 'non-dismissible',
+			'content' => __( 'You\'re using and old version of PHP. For best performance, you should upgrade PHP to version 7.3 or above.', 'speed-booster-pack' ),
+			'checked' => $checked,
+		];
 	}
 
-	public function get_messages() {
-		return $this->messages;
-	}
+	public function get_messages_html() {
+		$this->set_messages();
 
-	public function dismiss_advisor_message() {
-		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_dismiss_advisor_message' && current_user_can( 'manage_options' ) && isset( $_GET['nonce'] ) && wp_verify_nonce( $_GET['nonce'], 'sbp_ajax_nonce' ) ) {
-			$message_id = $_GET['sbp_dismiss_message_id'];
-			$this->get_dismissed_messages();
-			$dismissed_messages = $this->dismissed_messages;
-			$dismissed_messages[] = $message_id;
-			$dismissed_messages = array_unique($dismissed_messages);
-			update_user_meta( get_current_user_id(), $this->user_meta_key, $dismissed_messages );
-			wp_die();
+		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_get_advisor_messages' && current_user_can( 'manage_options' ) && isset( $_GET['nonce'] ) && wp_verify_nonce( $_GET['nonce'], 'sbp_ajax_nonce' ) ) {
+
+			usort( $this->messages, function ( $a, $b ) {
+				if ( $a['checked'] > $b['checked'] ) {
+					return 1;
+				} elseif ( $a['checked'] == $b['checked'] ) {
+					return 0;
+				} else {
+					return - 1;
+				}
+			} );
+			$advisor_messages_content = '';
+			foreach ( $this->messages as $message_id => $message ) {
+				$advisor_messages_content .= '<div class="sbp-advice" data-message-id="' . $message_id . '">
+                <input type="checkbox" disabled="disabled" ' . ( $message["checked"] ? "checked" : "" ) . ' /><span class="circle"></span> <p> ' . $message['content'] . '</p>
+            </div>';
+			}
+
+			echo $advisor_messages_content;
 		}
+		wp_die();
 	}
 }

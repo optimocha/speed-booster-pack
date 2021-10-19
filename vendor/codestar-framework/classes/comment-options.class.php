@@ -35,11 +35,11 @@ if ( ! class_exists( 'CSF_Comment_Metabox' ) ) {
       $this->sections   = apply_filters( "csf_{$this->unique}_sections", $params['sections'], $this );
       $this->pre_fields = $this->pre_fields( $this->sections );
 
-      add_action( 'add_meta_boxes_comment', array( &$this, 'add_comment_meta_box' ) );
-      add_action( 'edit_comment', array( &$this, 'save_comment_meta_box' ) );
+      add_action( 'add_meta_boxes_comment', array( $this, 'add_comment_meta_box' ) );
+      add_action( 'edit_comment', array( $this, 'save_comment_meta_box' ) );
 
       if ( ! empty( $this->args['class'] ) ) {
-        add_filter( 'postbox_classes_comment_'. $this->unique, array( &$this, 'add_comment_metabox_classes' ) );
+        add_filter( 'postbox_classes_comment_'. $this->unique, array( $this, 'add_comment_metabox_classes' ) );
       }
 
     }
@@ -77,7 +77,7 @@ if ( ! class_exists( 'CSF_Comment_Metabox' ) ) {
     // add comment metabox
     public function add_comment_meta_box( $post_type ) {
 
-      add_meta_box( $this->unique, $this->args['title'], array( &$this, 'add_comment_meta_box_content' ), 'comment', 'normal', $this->args['priority'], $this->args );
+      add_meta_box( $this->unique, $this->args['title'], array( $this, 'add_comment_meta_box_content' ), 'comment', 'normal', $this->args['priority'], $this->args );
 
     }
 
@@ -176,6 +176,7 @@ if ( ! class_exists( 'CSF_Comment_Metabox' ) ) {
               echo '<div class="csf-section hidden'. esc_attr( $section_onload . $section_class ) .'">';
 
               echo ( $section_title || $section_icon ) ? '<div class="csf-section-title"><h3>'. $section_icon . $section_title .'</h3></div>' : '';
+              echo ( ! empty( $section['description'] ) ) ? '<div class="csf-field csf-section-description">'. $section['description'] .'</div>' : '';
 
               if ( ! empty( $section['fields'] ) ) {
 

@@ -11,28 +11,20 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Special extends SBP_Abstract_Module {
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_special' ) ) {
 			return;
 		}
 
-		$this->jetpack_dequeue_devicepx();
-		$this->woocommerce_disable_cart_fragments();
-		$this->optimize_nonwc_pages();
-		$this->remove_wc_password_strength_meter();
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
 	}
 
-	/**
-	 * Dequeues Jetpack's devicepx-jetpack.js file
-	 */
-	private function jetpack_dequeue_devicepx() {
-		if ( sbp_get_option( 'jetpack_dequeue_devicepx' ) ) {
-			add_action( 'wp_enqueue_scripts', [ $this, 'jetpack_dequeue_devicepx_handle' ] );
-		}
-	}
-
-	public function jetpack_dequeue_devicepx_handle() {
-		if ( SBP_Utils::is_plugin_active( 'jetpack/jetpack.php' ) ) {
-			wp_dequeue_script( 'devicepx' );
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			$this->woocommerce_disable_cart_fragments();
+			$this->optimize_nonwc_pages();
+			$this->remove_wc_password_strength_meter();
 		}
 	}
 

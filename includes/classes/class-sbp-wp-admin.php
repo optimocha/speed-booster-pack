@@ -16,7 +16,6 @@ class SBP_WP_Admin {
 			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
-			add_action( 'admin_init', [ $this, 'check_pagespeed_tricker' ] );
 			add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 		}
 
@@ -142,17 +141,22 @@ class SBP_WP_Admin {
 		}
 
 		// Set Cloudflare Notice
-		if ( $transient_value = get_transient( 'sbp_notice_cloudflare' ) ) {
-			$notice_message = $transient_value == '1' ? __( 'Cloudflare cache cleared.',
-				'speed-booster-pack' ) : __( 'Error occured while clearing Cloudflare cache. Possible reason: Credentials invalid.',
-				'speed-booster-pack' );
-			$notice_type    = $transient_value == '1' ? 'success' : 'error';
-			SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>',
-				$notice_type,
-				true,
-				'flash' );
+		$cf_transient_value = get_transient( 'sbp_notice_cloudflare' );
+		if ($cf_transient_value == 1) {
+			$notice_message = __( 'Cloudflare cache cleared.', 'speed-booster-pack' );
+			$notice_type    = 'success';
+		} else if ($cf_transient_value == 2) {
+			$notice_message = __( 'Error occured while clearing Cloudflare cache. Possible reason: Credentials invalid.', 'speed-booster-pack' );
+			$notice_type    = 'error';
+		} else {
+			$notice_message = '';
+			$notice_type    = '';
 		}
+		SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare',
+			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>',
+			$notice_type,
+			true,
+			'flash' );
 
 		// Set Cache Clear Notice
 		SBP_Notice_Manager::display_notice( 'sbp_notice_cache',
@@ -327,12 +331,6 @@ class SBP_WP_Admin {
 			$notice_content .= '</p>';
 
 			SBP_Notice_Manager::display_notice('permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings');
-		}
-	}
-
-	public function check_pagespeed_tricker() {
-		if ( sbp_get_option( 'pagespeed_tricker' ) ) {
-			SBP_Notice_Manager::display_notice( 'pagespeed_tricker_active', '<p>' . sprintf( __( '%1$s\'s experimental feature, %2$s, is enabled. You will get 100%% PageSpeed Insights scores in all PageSpeed tests, but SEO rankings are calculated by Real User Monitoring (RUM) in all search engines. %2$s only proves that it\'s easy to manipulate PageSpeed Insights and nothing else. Please don\'t keep this feature enabled on production websites!', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, 'PageSpeed Tricker' ), 'info', false );
 		}
 	}
 }

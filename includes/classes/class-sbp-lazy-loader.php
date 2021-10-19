@@ -12,16 +12,24 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	private $noscripts = [];
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) || sbp_should_disable_feature( 'lazyload' ) ) {
 			return;
 		}
 
-		add_action( 'wp_enqueue_scripts', [ $this, 'add_lazy_load_script' ] );
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
 
-		// We need async attribute on lazyload file
-		add_filter( 'script_loader_tag', [ $this, 'add_attribute_to_tag' ], 10, 2 );
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			add_action( 'wp_enqueue_scripts', [ $this, 'add_lazy_load_script' ] );
 
-		add_filter( 'sbp_output_buffer', [ $this, 'lazy_load_handler' ] );
+			// We need async attribute on lazyload file
+			add_filter( 'script_loader_tag', [ $this, 'add_attribute_to_tag' ], 10, 2 );
+
+			add_filter( 'sbp_output_buffer', [ $this, 'lazy_load_handler' ] );
+		}
 	}
 
 	function add_lazy_load_script() {

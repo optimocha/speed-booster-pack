@@ -15,11 +15,19 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 	];
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'enable_criticalcss' ) ) {
 			return;
 		}
 
-		add_filter( 'sbp_output_buffer', [ $this, 'handle_criticalcss' ] );
+		add_action( 'set_current_user', [ $this, 'run_class' ] );
+	}
+
+	public function run_class() {
+		if ( $this->should_sbp_run ) {
+			add_filter( 'sbp_output_buffer', [ $this, 'handle_criticalcss' ] );
+		}
 	}
 
 	public function handle_criticalcss( $html ) {

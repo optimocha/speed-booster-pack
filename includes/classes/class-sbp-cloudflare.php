@@ -193,7 +193,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			$result       = self::clear_cache();
 			$notice_value = $result == true ? '1' : '2';
-			set_transient( 'sbp_notice_cloudflare', $notice_value, 60 );
+			set_transient( 'sbp_notice_cloudflare', $notice_value );
 			wp_safe_redirect( $redirect_url );
 			exit;
 		}

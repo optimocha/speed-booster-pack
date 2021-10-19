@@ -27,10 +27,10 @@ if ( ! class_exists( 'CSF_Nav_Menu_Options' ) ) {
       $this->args     = apply_filters( "csf_{$this->unique}_args", wp_parse_args( $params['args'], $this->args ), $this );
       $this->sections = apply_filters( "csf_{$this->unique}_sections", $params['sections'], $this );
 
-      add_action( 'wp_nav_menu_item_custom_fields', array( &$this, 'wp_nav_menu_item_custom_fields' ), 10, 4 );
-      add_action( 'wp_update_nav_menu_item', array( &$this, 'wp_update_nav_menu_item' ), 10, 3 );
+      add_action( 'wp_nav_menu_item_custom_fields', array( $this, 'wp_nav_menu_item_custom_fields' ), 10, 4 );
+      add_action( 'wp_update_nav_menu_item', array( $this, 'wp_update_nav_menu_item' ), 10, 3 );
 
-      add_filter( 'wp_edit_nav_menu_walker', array( &$this, 'wp_edit_nav_menu_walker' ), 10, 2 );
+      add_filter( 'wp_edit_nav_menu_walker', array( $this, 'wp_edit_nav_menu_walker' ), 10, 2 );
 
     }
 
@@ -112,6 +112,7 @@ if ( ! class_exists( 'CSF_Nav_Menu_Options' ) ) {
           echo '<div class="csf-fields">';
 
           echo ( $section_title || $section_icon ) ? '<div class="csf-nav-menu-title"><h4>'. $section_icon . $section_title .'</h4></div>' : '';
+          echo ( ! empty( $section['description'] ) ) ? '<div class="csf-field csf-section-description">'. $section['description'] .'</div>' : '';
 
           if ( ! empty( $section['fields'] ) ) {
 

@@ -89,28 +89,6 @@
     animation: loading 2s linear infinite;
 }
 
-@-webkit-keyframes loading {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes loading {
-    0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-
 .warmup-cache-error-list {
     display: none;
 }
@@ -149,7 +127,17 @@
     animation: rotating 2s linear infinite;
 }
 
-.js-include.csf-depend-on, .js-exclude.csf-depend-on, .js-footer-exclude.csf-depend-on {
+.js-include.csf-depend-on,
+.js-exclude.csf-depend-on,
+.js-footer-exclude.csf-depend-on,
+.csf-depend-on[data-controller="preboost_enable"],
+[data-section-id="cdn-proxy"] .csf-depend-on,
+.lazyload-exclude.csf-depend-on,
+.caching-exclude-urls.csf-depend-on,
+.caching-exclude-cookies.csf-depend-on,
+.caching-include-query-strings.csf-depend-on,
+.hide-if-disabled.csf-depend-on
+{
     display: none;
 }
 
@@ -193,14 +181,76 @@
 }
 
 .sbp-advice {
-    padding: 7px;
-    padding-right: 38px;
+    padding: 15px 5px;
+    border-bottom: 1px solid #ddd;
 }
 
 .sbp-advice p {
-    margin-bottom: 0;
+    display: inline-block;
+    position: relative;
+    top: -5px;
+}
+
+.sbp-advice input {
+    display: none;
+}
+
+.sbp-advice .circle {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+.sbp-advice input[type=checkbox]:checked + .circle {
+    background: green;
+    position: relative;
+}
+
+.sbp-advice input[type=checkbox]:checked + .circle:after {
+    content: "✓";
+    color: #fff;
+    font-size: 22px;
+    position: absolute;
+    right: 0;
+}
+
+.sbp-advice input[type=checkbox]:not(:checked) + .circle {
+    border: 1px solid #ddd;
+}
+
+.sbp-advice p {
+    margin: 0!important;
+}
+
+.sbp-advice input[type=checkbox]:checked ~ p {
+    text-decoration: line-through;
+    color: #888;
 }
 
 .meta_box_critical_css_excludes.csf-depend-on {
     display: none!important;
+}
+
+@-webkit-keyframes loading {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loading {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }
