@@ -90,7 +90,7 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', [], $this->version );
-		wp_enqueue_style( 'sbp_intro_css', SBP_URL . 'admin/css/intro.min.css', [], $this->version );
+		wp_enqueue_style( 'sbp_intro_css', SBP_URL . 'admin/css/intro.min.css', [], '4.2.2' );
 	}
 
 	/**
@@ -101,8 +101,8 @@ class Speed_Booster_Pack_Admin {
 	public function enqueue_scripts() {
 
         if ( get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true ) {
-	        wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], $this->version );
-	        wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], $this->version );
+	        wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], '4.2.2' );
+	        wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], '4.2.2' );
             /** B_TODO: Change texts */
 	        wp_localize_script( 'sbp_intro_js',
 		        'sbp_intro_translations',
@@ -115,7 +115,7 @@ class Speed_Booster_Pack_Admin {
 		        ] );
         }
 
-		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], '4.2.2' );
+		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], $this->version );
 		wp_localize_script( $this->plugin_name,
 			'sbp_ajax_vars',
 			[
