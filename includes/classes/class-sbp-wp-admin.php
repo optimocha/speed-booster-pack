@@ -16,7 +16,10 @@ class SBP_WP_Admin {
 			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
+			add_action( 'admin_init', [ $this, 'welcome_notice' ] );
 			add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
+
+			add_action( 'wp_ajax_sbp_dismiss_intro', [ $this, 'dismiss_intro' ] );
 		}
 
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
@@ -142,10 +145,10 @@ class SBP_WP_Admin {
 
 		// Set Cloudflare Notice
 		$cf_transient_value = get_transient( 'sbp_notice_cloudflare' );
-		if ($cf_transient_value == 1) {
+		if ( $cf_transient_value == 1 ) {
 			$notice_message = __( 'Cloudflare cache cleared.', 'speed-booster-pack' );
 			$notice_type    = 'success';
-		} else if ($cf_transient_value == 2) {
+		} elseif ( $cf_transient_value == 2 ) {
 			$notice_message = __( 'Error occured while clearing Cloudflare cache. Possible reason: Credentials invalid.', 'speed-booster-pack' );
 			$notice_type    = 'error';
 		} else {
@@ -296,15 +299,15 @@ class SBP_WP_Admin {
 			$wp_config_path = dirname( ABSPATH ) . '/wp-config.php';
 		}
 
-		$upload_dir = wp_upload_dir()['basedir'];
+		$upload_dir          = wp_upload_dir()['basedir'];
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
 		$check_list = [
-			'WordPress root directory' => ABSPATH,
-			'wp-content directory' => WP_CONTENT_DIR,
-			'WordPress uploads directory' => $upload_dir,
-			'SBP uploads directory' => SBP_UPLOADS_DIR,
-			'wp-config.php file' => $wp_config_path,
+			'WordPress root directory'           => ABSPATH,
+			'wp-content directory'               => WP_CONTENT_DIR,
+			'WordPress uploads directory'        => $upload_dir,
+			'SBP uploads directory'              => SBP_UPLOADS_DIR,
+			'wp-config.php file'                 => $wp_config_path,
 			'wp-content/advanced-cache.php file' => $advanced_cache_path,
 		];
 
@@ -314,12 +317,12 @@ class SBP_WP_Admin {
 		foreach ( $check_list as $key => $item ) {
 			if ( $wp_filesystem->exists( $item ) ) {
 				if ( ! sbp_check_file_permissions( $item ) ) {
-					$permission_errors[$key] = $item;
+					$permission_errors[ $key ] = $item;
 				}
 			}
 		}
 
-		if ( count($permission_errors) ) {
+		if ( count( $permission_errors ) ) {
 			$notice_content = '<p>';
 			$notice_content .= __( sprintf( '%s needs write permissions for the following files/directories to work properly:', SBP_PLUGIN_NAME ), 'speed-booster' );
 			$notice_content .= '<ul>';
@@ -330,7 +333,21 @@ class SBP_WP_Admin {
 			$notice_content .= '<a href="https://www.wpbeginner.com/beginners-guide/how-to-fix-file-and-folder-permissions-error-in-wordpress/" target="_blank">' . __( 'Here\'s a tutorial on how to change file/directory permissions.', 'speed-booster' ) . '</a>';
 			$notice_content .= '</p>';
 
-			SBP_Notice_Manager::display_notice('permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings');
+			SBP_Notice_Manager::display_notice( 'permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings' );
 		}
+	}
+
+	public function welcome_notice() {
+		/** B_TODO: Change Text */
+		SBP_Notice_Manager::display_notice( 'welcome_notice', sprintf( __( '<p>Welcome to %1$s. Go to %2$ssettings page%3$s to speed up your website.</p>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="' . admin_url( 'admin.php?page=sbp-settings&dismiss_welcome_notice=true' ) . '">', '</a>' ), 'success', true, 'one_time', 'plugins' );
+
+		// Remove
+		if ( isset( $_GET['dismiss_welcome_notice'] ) && $_GET['dismiss_welcome_notice'] == true ) {
+			SBP_Notice_Manager::dismiss_notice( 'welcome_notice' );
+		}
+	}
+
+	public function dismiss_intro() {
+		update_user_meta( get_current_user_id(), 'sbp_intro', true );
 	}
 }

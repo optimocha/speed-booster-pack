@@ -89,7 +89,8 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', array(), $this->version );
+		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', [], $this->version );
+		wp_enqueue_style( 'sbp_intro_css', SBP_URL . 'admin/css/intro.min.css', [], $this->version );
 	}
 
 	/**
@@ -98,7 +99,23 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', array( 'jquery' ), $this->version );
+
+        if ( get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true ) {
+	        wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], $this->version );
+	        wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], $this->version );
+            /** B_TODO: Change texts */
+	        wp_localize_script( 'sbp_intro_js',
+		        'sbp_intro_translations',
+		        [
+			        'step1' => __( 'Welcome to Speed Booster Pack!', 'speed-booster-pack' ),
+			        'step2' => __( 'You can find the caching options here.', 'speed-booster-pack' ),
+			        'step3' => __( 'You can enable/disable the caching settings from here.', 'speed-booster-pack' ),
+			        'step4' => __( 'Some settings with assets', 'speed-booster-pack' ),
+			        'step5' => __( 'That\'s all!', 'speed-booster-pack' ),
+		        ] );
+        }
+
+		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], '4.2.2' );
 		wp_localize_script( $this->plugin_name,
 			'sbp_ajax_vars',
 			[
@@ -1070,7 +1087,7 @@ class Speed_Booster_Pack_Admin {
 						'type'       => 'switcher',
 						'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						'class'      => $should_disable_lazyload ? ' inactive-section' : null,
+						'class'      => 'lazyload-media ' . ($should_disable_lazyload ? ' inactive-section' : null),
 						'sanitize'   => 'sbp_sanitize_boolean',
 					],
 					[

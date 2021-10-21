@@ -111,6 +111,7 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_hide_newsletter_pointer' );
 	delete_user_meta( $user->ID, 'sbp_newsletter_display_time' );
 	delete_user_meta( $user->ID, 'sbp_dismissed_messages' );
+	delete_user_meta( $user->ID, 'sbp_intro' );
 }
 
 // Z_TODO: let's make a tool called "Cleanup SBP metadata" in a future version
