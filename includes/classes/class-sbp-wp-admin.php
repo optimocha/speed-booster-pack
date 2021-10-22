@@ -199,39 +199,10 @@ class SBP_WP_Admin {
 
 		// Warmup Started Notice
 		SBP_Notice_Manager::display_notice( 'sbp_warmup_started',
-			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup started.', 'speed-booster-pack' ) . '</p>',
+			'<p>' . sprintf( __( '%s will now send requests to your homepage and all the pages that are linked to in the homepage (including links in navigation menus) so they\'ll all be cached.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>',
 			'info',
 			true,
 			'recurrent' );
-
-		// Warmup Completed Notice
-		SBP_Notice_Manager::display_notice( 'sbp_warmup_completed',
-			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup completed.', 'speed-booster-pack' ) . '</p>',
-			'success',
-			true,
-			'recurrent' );
-
-		// WP-Config File Error
-		if ( get_transient( 'sbp_warmup_errors' ) ) {
-			$list   = '';
-			$errors = get_transient( 'sbp_warmup_errors' );
-			if ( is_array( $errors ) ) {
-				foreach ( $errors as $error ) {
-					$extras = [];
-					if ( isset( $error['options']['user-agent'] ) && $error['options']['user-agent'] === 'Mobile' ) {
-						$extras[] = '(Mobile)';
-					}
-					$list .= '<li><a href="' . $error['url'] . '" target="_blank">' . $error['url'] . ' ' . implode( ' ',
-							$extras ) . '</a></li>';
-				}
-				SBP_Notice_Manager::display_notice( 'sbp_warmup_errors',
-					'<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Cache warmup completed but following pages may not be cached. Please check this pages are available. (Hover over this notice to see all errors)',
-						'speed-booster-pack' ) . '</p><ul class="warmup-cache-error-list">' . $list . '</ul>',
-					'error',
-					true,
-					'recurrent' );
-			}
-		}
 	}
 
 	public function timed_notifications() {

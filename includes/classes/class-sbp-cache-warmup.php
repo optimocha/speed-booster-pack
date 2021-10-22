@@ -47,17 +47,13 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 		$home_url = get_home_url();
 
 		$remote_get_args = [
-			'timeout'    => 10,
+			'timeout'    => 5,
 			'user-agent' => 'Speed Booster Pack/Cache Warmup',
 			'sslverify'  => apply_filters( 'https_local_ssl_verify', false ), // WPCS: prefix ok.
 		];
 
 		$response = wp_remote_get( $home_url, $remote_get_args );
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$transient          = get_transient( 'sbp_warmup_errors' );
-			$errors             = is_array( $transient ) ? $transient : [];
-			$errors['errors'][] = __( 'Error occured while processing home page url', 'speed-booster' );
-
 			return false;
 		} else {
 			$urls = [];

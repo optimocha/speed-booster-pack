@@ -20,9 +20,8 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 		$options = isset( $item['options'] ) ? $item['options'] : [];
 		$args    = array_merge( [
 			'blocking'            => false,
-			'compress'            => true,
 			'httpversion'         => '1.1',
-			'limit_response_size' => 100,
+			'timeout'             => 0.01,
 		],
 			$options );
 
@@ -37,7 +36,6 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 
 	protected function complete() {
 		delete_transient( 'sbp_warmup_started' );
-		set_transient( 'sbp_warmup_completed', 1 );
 		parent::complete();
 	}
 }

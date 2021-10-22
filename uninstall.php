@@ -100,6 +100,8 @@ delete_option( 'sbp_migrator_version' );
 delete_transient( 'sbp_notice_cache' );
 delete_transient( 'sbp_cloudflare_status' );
 delete_transient( 'sbp_upgraded_notice' );
+delete_transient( 'sbp_warmup_errors' );
+delete_transient( 'sbp_warmup_completed' );
 
 // Delete user metas
 $users = get_users( 'role=administrator' );
