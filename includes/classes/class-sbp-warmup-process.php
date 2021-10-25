@@ -8,7 +8,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class SBP_Warmup_Process extends \WP_Background_Process {
-	protected $action = 'warmup';
+	protected $action = 'sbp_cache_warmup';
 	private $begun = false;
 
 	protected function task( $item ) {
@@ -19,9 +19,9 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 
 		$options = isset( $item['options'] ) ? $item['options'] : [];
 		$args    = array_merge( [
-			'blocking'            => false,
-			'httpversion'         => '1.1',
-			'timeout'             => 0.01,
+			'blocking'    => false,
+			'httpversion' => '1.1',
+			'timeout'     => 0.01,
 		],
 			$options );
 
