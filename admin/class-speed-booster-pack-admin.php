@@ -99,8 +99,11 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_scripts() {
-
-        if ( get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true ) {
+        if (
+            get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
+            ( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
+            current_user_can( 'manage_options' )
+        ) {
 	        wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], '4.2.2' );
 	        wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], '4.2.2' );
             /** B_TODO: Change texts */
