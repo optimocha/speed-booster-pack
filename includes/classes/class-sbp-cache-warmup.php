@@ -56,13 +56,32 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
 			return false;
 		} else {
-			$urls = [];
-			$body = wp_remote_retrieve_body( $response );
-			$dom  = new HtmlDocument();
+			$urls         = [];
+			$exclude_urls = sbp_explode_lines( sbp_get_option( 'caching_exclude_urls' ) );
+
+			// Add WooCommerce pages to excluded urls
+			if ( function_exists( 'wc_get_checkout_url' ) ) {
+				$checkout_url = wc_get_checkout_url();
+				$exclude_urls[] = rtrim( parse_url( $checkout_url, PHP_URL_HOST ) . parse_url( $checkout_url, PHP_URL_PATH ), '/' );
+			}
+
+			if ( function_exists( 'wc_get_cart_url' ) ) {
+				$cart_url = wc_get_cart_url();
+				$exclude_urls[] = rtrim( parse_url( $cart_url, PHP_URL_HOST ) . parse_url( $cart_url, PHP_URL_PATH ), '/' );
+			}
+
+			$body         = wp_remote_retrieve_body( $response );
+			$dom          = new HtmlDocument();
 			$dom->load( $body, true, false );
 
 			foreach ( $dom->find( 'a' ) as $anchor_tag ) {
 				$href = $anchor_tag->href;
+
+				// Excluded URL's
+				$current_url = rtrim( parse_url( $href, PHP_URL_HOST ) . parse_url( $href, PHP_URL_PATH ), '/' );
+				if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
+					continue;
+				}
 
 				if ( substr( $href, 0, 1 ) == '#' ) {
 					continue;
@@ -91,18 +110,22 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 
 				if ( ! in_array( $href, $urls ) ) {
 					$urls[] = $href;
+				}
+			}
 
+			$urls = apply_filters( 'sbp_cache_warmup_urls', $urls );
+
+			foreach ( $urls as $url ) {
+				$this->warmup_process->push_to_queue( [
+					'url'     => $url,
+					'options' => [ 'user-agent' => 'Speed Booster Pack/Cache Warmup' ],
+				] );
+
+				if ( sbp_get_option( 'caching_separate_mobile' ) ) {
 					$this->warmup_process->push_to_queue( [
-						'url'     => $href,
-						'options' => [ 'user-agent' => 'Speed Booster Pack/Cache Warmup' ],
+						'url'     => $url,
+						'options' => [ 'user-agent' => 'Mobile' ],
 					] );
-
-					if ( sbp_get_option( 'caching_separate_mobile' ) ) {
-						$this->warmup_process->push_to_queue( [
-							'url'     => $href,
-							'options' => [ 'user-agent' => 'Mobile' ],
-						] );
-					}
 				}
 			}
 
