@@ -57,7 +57,7 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 			return false;
 		} else {
 			$urls         = [];
-			$exclude_urls = sbp_explode_lines( sbp_get_option( 'caching_exclude_urls' ) );
+			$exclude_urls = SBP_Utils::explode_lines( sbp_get_option( 'caching_exclude_urls' ) );
 
 			// Add WooCommerce pages to excluded urls
 			if ( function_exists( 'wc_get_checkout_url' ) ) {
