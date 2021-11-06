@@ -309,10 +309,8 @@ class SBP_WP_Admin {
 	}
 
 	public function welcome_notice() {
-		/** B_TODO: Change Text */
-		SBP_Notice_Manager::display_notice( 'welcome_notice', sprintf( __( '<p>Welcome to %1$s. Go to %2$ssettings page%3$s to speed up your website.</p>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="' . admin_url( 'admin.php?page=sbp-settings&dismiss_welcome_notice=true' ) . '">', '</a>' ), 'success', true, 'one_time', 'plugins' );
+		SBP_Notice_Manager::display_notice( 'welcome_notice', sprintf( '<p>' . __( 'Thank you for installing %1$s! You can now visit the %2$ssettings page%3$s to start speeding up your website.', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, '<a href="' . admin_url( 'admin.php?page=sbp-settings&dismiss_welcome_notice=true' ) . '">', '</a>' ), 'success', true, 'one_time', 'plugins' );
 
-		// Remove
 		if ( isset( $_GET['dismiss_welcome_notice'] ) && $_GET['dismiss_welcome_notice'] == true ) {
 			SBP_Notice_Manager::dismiss_notice( 'welcome_notice' );
 		}

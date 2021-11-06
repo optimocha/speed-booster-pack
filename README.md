@@ -104,6 +104,14 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
+= 4.3.4 =
+
+*Release Date: 7 November 2021*
+
+* **Improved**: Added an onboarding modal to the settings page for first-time users.
+* **Fixed**: Fixed some bugs in the advanced-cache.php generation process.
+* **Fixed**: Lots of improvements/fixes to the cache warmup process.
+
 = 4.3.3.1 =
 
 *Release Date: 16 October 2021*
