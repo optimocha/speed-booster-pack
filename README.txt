@@ -104,6 +104,12 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
+= 4.3.4.1 =
+
+*Release Date: 15 November 2021*
+
+* **Fixed**: Tiny bug in the cache delivery system.
+
 = 4.3.4 =
 
 *Release Date: 13 November 2021*
