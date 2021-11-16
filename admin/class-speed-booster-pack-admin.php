@@ -89,7 +89,14 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', array(), $this->version );
+		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', [], $this->version );
+        if (
+            get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
+            ( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
+            current_user_can( 'manage_options' )
+        ) {
+			wp_enqueue_style( 'sbp_intro_css', SBP_URL . 'admin/css/intro.min.css', [], '4.2.2' );
+		}
 	}
 
 	/**
@@ -98,7 +105,42 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', array( 'jquery' ), $this->version );
+        if (
+            get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
+            ( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
+            current_user_can( 'manage_options' )
+        ) {
+	        wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], '4.2.2' );
+	        wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], '4.2.2' );
+	        wp_localize_script( 'sbp_intro_js',
+		        'sbp_intro_translations',
+		        [
+					/* translators: onboarding modal, first step  */
+			        'welcome' => __( 'Welcome to Speed Booster Pack! We\'d like to give you a quick tour - feel free to close this box and look around the options yourself, or click Next to see our short intro.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, second step  */
+			        'caching' => __( 'This is our caching tab. Here, you can set caching for your pages to immediately speed up your website.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, third step  */
+			        'caching2' => __( 'Most tabs have an module toggle like this. Turning on or off the module toggle enables or disables the whole module.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, fourth step  */
+			        'general' => __( 'The "General" tab includes various tweaks to clean up and speed up things. You can also disable Speed Booster Pack features for certain user roles (e.g. subscribers or customers) if you need to.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, fifth step  */
+			        'cdn' => __( 'The CDN & Proxy tab has three main settings: You can set a CDN domain to serve all your assets from, you can connect to your Cloudflare account to change your Cloudflare settings, and you can connect to your Sucuri account so you can clear your Sucuri cache automatically.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, sixth step  */
+			        'css' => __( 'The Optimize CSS tab has some delicate settings which, if configured properly, can drastically improve your website performance. Be sure to follow the directions properly - especially the Critical CSS settings!', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, seventh step  */
+			        'assets' => __( 'The Assets tab can improve your website performance using font optimization, lazy loading, asset preloading and JavaScript optimization. It\'s tempting to enable them all, but make sure you test each change thoroughly or else you can break your website! Think of these tools like powerful weapons which you can hurt yourself with.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, last step  */
+			        'end' => __( 'That\'s it! Actually, that\'s not it - make sure you check the other tabs to see if you have more room to improve your website speed. Don\'t be afraid to experiment; even if you break something, resetting settings or simply deactivating Speed Booster Pack will undo everything.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, "Next" label  */
+			        'nextLabel' => __( 'Next', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, "Prev" label  */
+			        'prevLabel' => __( 'Prev', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, "Done" label  */
+			        'doneLabel' => __( 'Done', 'speed-booster-pack' ),
+		        ] );
+        }
+
+		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], $this->version );
 		wp_localize_script( $this->plugin_name,
 			'sbp_ajax_vars',
 			[
@@ -1070,7 +1112,7 @@ class Speed_Booster_Pack_Admin {
 						'type'       => 'switcher',
 						'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						'class'      => $should_disable_lazyload ? ' inactive-section' : null,
+						'class'      => 'lazyload-media ' . ($should_disable_lazyload ? ' inactive-section' : null),
 						'sanitize'   => 'sbp_sanitize_boolean',
 					],
 					[

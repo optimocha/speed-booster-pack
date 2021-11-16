@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
 Tested up to: 5.8
 Requires PHP: 5.6
-Stable tag: 4.3.3.1
+Stable tag: 4.3.4.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,6 +103,20 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.3.4.2 =
+
+*Release Date: 15 November 2021*
+
+* **Fixed**: Tiny bug in the cache delivery system.
+
+= 4.3.4 =
+
+*Release Date: 13 November 2021*
+
+* **Improved**: Added an onboarding modal to the settings page for first-time users.
+* **Fixed**: Fixed some bugs in the advanced-cache.php generation process.
+* **Fixed**: Lots of improvements/fixes to the cache warmup process.
 
 = 4.3.3.1 =
 

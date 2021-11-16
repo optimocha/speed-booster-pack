@@ -16,13 +16,22 @@ class SBP_Notice_Manager {
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 	}
 
-	public function dismiss_notice() {
-		if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_dismiss_notice' && current_user_can( 'manage_options' ) ) { // Dismiss notice for ever
-			$id                  = $_GET['notice_id'];
-			$dismissed_notices   = self::get_dismissed_notices();
+	public static function dismiss_notice( $id = null ) {
+		$is_ajax = false;
+		if ( $id == null ) {
+			$is_ajax = true;
+			if ( isset( $_GET['action'] ) && $_GET['action'] == 'sbp_dismiss_notice' ) {
+				$id = $_GET['notice_id'];
+			}
+		}
+
+		if ( $id && current_user_can( 'manage_options' ) ) { // Dismiss notice for ever
+			$dismissed_notices = self::get_dismissed_notices();
 			$dismissed_notices[] = $id;
 			update_user_meta( get_current_user_id(), 'sbp_dismissed_notices', $dismissed_notices );
-			wp_die();
+			if ( $is_ajax ) {
+				wp_die();
+			}
 		}
 	}
 
@@ -80,6 +89,7 @@ class SBP_Notice_Manager {
 
 	public static function should_display( $id ) {
 		$dismissed_notices = self::get_dismissed_notices();
+
 		return ! in_array( $id, $dismissed_notices );
 	}
 
