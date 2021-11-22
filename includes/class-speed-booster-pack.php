@@ -27,6 +27,7 @@ use SpeedBooster\SBP_CSS_Minifier;
 use SpeedBooster\SBP_Custom_Code_Manager;
 use SpeedBooster\SBP_Database_Optimizer;
 use SpeedBooster\SBP_Image_Dimensions;
+use SpeedBooster\SBP_LiteSpeed_Cache;
 use SpeedBooster\SBP_WP_Admin;
 use SpeedBooster\SBP_Font_Optimizer;
 use SpeedBooster\SBP_HTML_Minifier;
@@ -184,6 +185,7 @@ class Speed_Booster_Pack {
 		new SBP_Sucuri();
 		new SBP_Cache_Warmup();
 		new SBP_Cache();
+		new SBP_LiteSpeed_Cache();
 	}
 
 	/**
