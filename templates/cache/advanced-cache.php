@@ -1,5 +1,7 @@
 <?php
 
+define( 'SBP_ADVANCED_CACHE', true );
+
 // check if request method is GET
 if ( ! isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'GET') {
     return false;
@@ -9,6 +11,7 @@ if ( ! isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] != 'GET')
 if ( ! empty($_COOKIE)) {
     $cookies       = ['comment_author_', 'wordpress_logged_in_', 'wp-postpass_', '{{__CACHING_EXCLUDE_COOKIES__}}'];
     $cookies       = array_map('addslashes', $cookies);
+    $cookies       = array_filter($cookies);
     $cookies_regex = '/^('.implode('|', $cookies).')/';
 
     foreach ($_COOKIE as $key => $value) {

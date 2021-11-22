@@ -16,8 +16,10 @@ class SBP_WP_Admin {
 			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
-			add_action( 'admin_init', [ $this, 'check_pagespeed_tricker' ] );
+			add_action( 'admin_init', [ $this, 'welcome_notice' ] );
 			add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
+
+			add_action( 'wp_ajax_sbp_dismiss_intro', [ $this, 'dismiss_intro' ] );
 		}
 
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
@@ -143,10 +145,10 @@ class SBP_WP_Admin {
 
 		// Set Cloudflare Notice
 		$cf_transient_value = get_transient( 'sbp_notice_cloudflare' );
-		if ($cf_transient_value == 1) {
+		if ( $cf_transient_value == 1 ) {
 			$notice_message = __( 'Cloudflare cache cleared.', 'speed-booster-pack' );
 			$notice_type    = 'success';
-		} else if ($cf_transient_value == 2) {
+		} elseif ( $cf_transient_value == 2 ) {
 			$notice_message = __( 'Error occured while clearing Cloudflare cache. Possible reason: Credentials invalid.', 'speed-booster-pack' );
 			$notice_type    = 'error';
 		} else {
@@ -197,39 +199,10 @@ class SBP_WP_Admin {
 
 		// Warmup Started Notice
 		SBP_Notice_Manager::display_notice( 'sbp_warmup_started',
-			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup started.', 'speed-booster-pack' ) . '</p>',
+			'<p>' . sprintf( __( '%s will now send requests to your homepage and all the pages that are linked to in the homepage (including links in navigation menus) so they\'ll all be cached.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>',
 			'info',
 			true,
 			'recurrent' );
-
-		// Warmup Completed Notice
-		SBP_Notice_Manager::display_notice( 'sbp_warmup_completed',
-			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache warmup completed.', 'speed-booster-pack' ) . '</p>',
-			'success',
-			true,
-			'recurrent' );
-
-		// WP-Config File Error
-		if ( get_transient( 'sbp_warmup_errors' ) ) {
-			$list   = '';
-			$errors = get_transient( 'sbp_warmup_errors' );
-			if ( is_array( $errors ) ) {
-				foreach ( $errors as $error ) {
-					$extras = [];
-					if ( isset( $error['options']['user-agent'] ) && $error['options']['user-agent'] === 'Mobile' ) {
-						$extras[] = '(Mobile)';
-					}
-					$list .= '<li><a href="' . $error['url'] . '" target="_blank">' . $error['url'] . ' ' . implode( ' ',
-							$extras ) . '</a></li>';
-				}
-				SBP_Notice_Manager::display_notice( 'sbp_warmup_errors',
-					'<p><strong>' . SBP_PLUGIN_NAME . '</strong> ' . __( 'Cache warmup completed but following pages may not be cached. Please check this pages are available. (Hover over this notice to see all errors)',
-						'speed-booster-pack' ) . '</p><ul class="warmup-cache-error-list">' . $list . '</ul>',
-					'error',
-					true,
-					'recurrent' );
-			}
-		}
 	}
 
 	public function timed_notifications() {
@@ -297,15 +270,15 @@ class SBP_WP_Admin {
 			$wp_config_path = dirname( ABSPATH ) . '/wp-config.php';
 		}
 
-		$upload_dir = wp_upload_dir()['basedir'];
+		$upload_dir          = wp_upload_dir()['basedir'];
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
 		$check_list = [
-			'WordPress root directory' => ABSPATH,
-			'wp-content directory' => WP_CONTENT_DIR,
-			'WordPress uploads directory' => $upload_dir,
-			'SBP uploads directory' => SBP_UPLOADS_DIR,
-			'wp-config.php file' => $wp_config_path,
+			'WordPress root directory'           => ABSPATH,
+			'wp-content directory'               => WP_CONTENT_DIR,
+			'WordPress uploads directory'        => $upload_dir,
+			'SBP uploads directory'              => SBP_UPLOADS_DIR,
+			'wp-config.php file'                 => $wp_config_path,
 			'wp-content/advanced-cache.php file' => $advanced_cache_path,
 		];
 
@@ -315,12 +288,12 @@ class SBP_WP_Admin {
 		foreach ( $check_list as $key => $item ) {
 			if ( $wp_filesystem->exists( $item ) ) {
 				if ( ! sbp_check_file_permissions( $item ) ) {
-					$permission_errors[$key] = $item;
+					$permission_errors[ $key ] = $item;
 				}
 			}
 		}
 
-		if ( count($permission_errors) ) {
+		if ( count( $permission_errors ) ) {
 			$notice_content = '<p>';
 			$notice_content .= __( sprintf( '%s needs write permissions for the following files/directories to work properly:', SBP_PLUGIN_NAME ), 'speed-booster' );
 			$notice_content .= '<ul>';
@@ -331,13 +304,19 @@ class SBP_WP_Admin {
 			$notice_content .= '<a href="https://www.wpbeginner.com/beginners-guide/how-to-fix-file-and-folder-permissions-error-in-wordpress/" target="_blank">' . __( 'Here\'s a tutorial on how to change file/directory permissions.', 'speed-booster' ) . '</a>';
 			$notice_content .= '</p>';
 
-			SBP_Notice_Manager::display_notice('permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings');
+			SBP_Notice_Manager::display_notice( 'permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings' );
 		}
 	}
 
-	public function check_pagespeed_tricker() {
-		if ( sbp_get_option( 'pagespeed_tricker' ) ) {
-			SBP_Notice_Manager::display_notice( 'pagespeed_tricker_active', '<p>' . sprintf( __( '%1$s\'s experimental feature, %2$s, is enabled. You will get 100%% PageSpeed Insights scores in all PageSpeed tests, but SEO rankings are calculated by Real User Monitoring (RUM) in all search engines. %2$s only proves that it\'s easy to manipulate PageSpeed Insights and nothing else. Please don\'t keep this feature enabled on production websites!', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, 'PageSpeed Tricker' ), 'info', false );
+	public function welcome_notice() {
+		SBP_Notice_Manager::display_notice( 'welcome_notice', sprintf( '<p>' . __( 'Thank you for installing %1$s! You can now visit the %2$ssettings page%3$s to start speeding up your website.', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, '<a href="' . admin_url( 'admin.php?page=sbp-settings&dismiss_welcome_notice=true' ) . '">', '</a>' ), 'success', true, 'one_time', 'plugins' );
+
+		if ( isset( $_GET['dismiss_welcome_notice'] ) && $_GET['dismiss_welcome_notice'] == true ) {
+			SBP_Notice_Manager::dismiss_notice( 'welcome_notice' );
 		}
+	}
+
+	public function dismiss_intro() {
+		update_user_meta( get_current_user_id(), 'sbp_intro', true );
 	}
 }

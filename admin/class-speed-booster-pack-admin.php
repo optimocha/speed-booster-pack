@@ -62,6 +62,8 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
+		add_filter('csf_sbp_options_save', '\SpeedBooster\SBP_Cache::options_saved_filter');
+
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );
@@ -78,8 +80,7 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'plugins_loaded', [ $this, 'create_settings_page' ] );
 
-//		$this->create_settings_page();
-		$this->create_metaboxes();
+		add_action( 'plugins_loaded', [ $this, 'create_metaboxes' ] );
 	}
 
 	/**
@@ -88,7 +89,14 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', array(), $this->version );
+		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', [], $this->version );
+        if (
+            get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
+            ( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
+            current_user_can( 'manage_options' )
+        ) {
+			wp_enqueue_style( 'sbp_intro_css', SBP_URL . 'admin/css/intro.min.css', [], '4.2.2' );
+		}
 	}
 
 	/**
@@ -97,7 +105,42 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', array( 'jquery' ), $this->version );
+        if (
+            get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
+            ( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
+            current_user_can( 'manage_options' )
+        ) {
+	        wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], '4.2.2' );
+	        wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], '4.2.2' );
+	        wp_localize_script( 'sbp_intro_js',
+		        'sbp_intro_translations',
+		        [
+					/* translators: onboarding modal, first step  */
+			        'welcome' => __( 'Welcome to Speed Booster Pack! We\'d like to give you a quick tour - feel free to close this box and look around the options yourself, or click Next to see our short intro.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, second step  */
+			        'caching' => __( 'This is our caching tab. Here, you can set caching for your pages to immediately speed up your website.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, third step  */
+			        'caching2' => __( 'Most tabs have an module toggle like this. Turning on or off the module toggle enables or disables the whole module.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, fourth step  */
+			        'general' => __( 'The "General" tab includes various tweaks to clean up and speed up things. You can also disable Speed Booster Pack features for certain user roles (e.g. subscribers or customers) if you need to.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, fifth step  */
+			        'cdn' => __( 'The CDN & Proxy tab has three main settings: You can set a CDN domain to serve all your assets from, you can connect to your Cloudflare account to change your Cloudflare settings, and you can connect to your Sucuri account so you can clear your Sucuri cache automatically.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, sixth step  */
+			        'css' => __( 'The Optimize CSS tab has some delicate settings which, if configured properly, can drastically improve your website performance. Be sure to follow the directions properly - especially the Critical CSS settings!', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, seventh step  */
+			        'assets' => __( 'The Assets tab can improve your website performance using font optimization, lazy loading, asset preloading and JavaScript optimization. It\'s tempting to enable them all, but make sure you test each change thoroughly or else you can break your website! Think of these tools like powerful weapons which you can hurt yourself with.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, last step  */
+			        'end' => __( 'That\'s it! Actually, that\'s not it - make sure you check the other tabs to see if you have more room to improve your website speed. Don\'t be afraid to experiment; even if you break something, resetting settings or simply deactivating Speed Booster Pack will undo everything.', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, "Next" label  */
+			        'nextLabel' => __( 'Next', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, "Prev" label  */
+			        'prevLabel' => __( 'Prev', 'speed-booster-pack' ),
+			        /* translators: onboarding modal, "Done" label  */
+			        'doneLabel' => __( 'Done', 'speed-booster-pack' ),
+		        ] );
+        }
+
+		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], $this->version );
 		wp_localize_script( $this->plugin_name,
 			'sbp_ajax_vars',
 			[
@@ -225,7 +268,7 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Dashboard */
-			$advisor_fields   = [
+			$advisor_fields = [
 				[
 					'id'      => 'advisor_heading',
 					'type'    => 'subheading',
@@ -542,6 +585,15 @@ class Speed_Booster_Pack_Admin {
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
 			}
 
+
+			if ( sbp_get_option( 'module_caching' ) && ! defined( 'SBP_ADVANCED_CACHE' ) ) {
+                $cache_fields = array_merge( [ [
+	                'type'    => 'submessage',
+	                'style'   => 'danger',
+	                'content' => sprintf( __( '%1$s cache is enabled but the advanced-cache.php file is created by another plugin. Saving your settings now will overwrite %1$s\'s advanced-cache.php file. To fix this, you can either disable the other plugin\'s caching feature or ours.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+                ] ], $cache_fields );
+			}
+
 			CSF::createSection(
 				$prefix,
 				[
@@ -572,18 +624,21 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'cloudflare_api',
 					'type'  => 'text',
 					'desc'  => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
 					'id'    => 'cloudflare_email',
 					'type'  => 'text',
 					'desc'  => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
 					'id'    => 'cloudflare_zone',
 					'type'  => 'text',
 					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title'      => __( 'Rocket Loader', 'speed-booster-pack' ),
@@ -686,6 +741,7 @@ class Speed_Booster_Pack_Admin {
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> ' . __( 'Your Cloudflare credentials are correct.', 'speed-booster-pack' ) . '</span>
 				    <span class="sbp-cloudflare-info-text sbp-cloudflare-warning" style="color:orange; vertical-align: middle;"><i class="fa fa-exclamation-circle"></i> ' . __( 'Enter your Cloudflare credentials and save settings to see CloudFlare options.', 'speed-booster-pack' ) . '</span>
 				  ',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 			];
 			/* End Of Cloudflare Fields */
@@ -707,11 +763,13 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Sucuri API key', 'speed-booster-pack' ),
 					'id'    => 'sucuri_api',
 					'type'  => 'text',
+					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title' => __( 'Sucuri API Secret', 'speed-booster-pack' ),
 					'id'    => 'sucuri_secret',
 					'type'  => 'text',
+					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
 				],
 			];
 			/* End Of Sucuri Fields */
@@ -722,7 +780,7 @@ class Speed_Booster_Pack_Admin {
 					'type'  => 'subheading',
 				],
 				[
-					'title'    => __( 'Enable CDN', 'speed-booster-pack' ),
+					'title'    => __( 'CDN domain', 'speed-booster-pack' ),
 					'id'       => 'cdn_url',
 					'class'    => 'cdn-url',
 					'type'     => 'text',
@@ -737,6 +795,7 @@ class Speed_Booster_Pack_Admin {
 					'type'     => 'code_editor',
 					'desc'     => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_strip_tags',
+					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
 				],
 				[
 					'title'    => __( 'Excluded Extensions', 'speed-booster-pack' ),
@@ -744,6 +803,7 @@ class Speed_Booster_Pack_Admin {
 					'type'     => 'code_editor',
 					'desc'     => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_strip_tags',
+					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
 				],
 			],
 				$cloudflare_fields,
@@ -926,6 +986,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => sprintf( __( 'This CSS block will be injected into all pages if there\'s no critical CSS blocks with higher priority. %1$sLearn more about the template hierarchy of WordPress.%2$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/themes/basics/template-hierarchy/" rel="external noopener" target="_blank">', '</a>' ),
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'settings'   => [ 'lineWrapping' => true ],
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'id'         => 'criticalcss_codes',
@@ -934,6 +995,7 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_sanitize_strip_tags',
 							'accordions' => $critical_css_fields,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'title'      => __( 'Remove critical CSS after onload', 'speed-booster-pack' ),
@@ -943,6 +1005,7 @@ class Speed_Booster_Pack_Admin {
 							'default'    => true,
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'id'         => 'criticalcss_excludes',
@@ -952,6 +1015,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Enter CSS file names or URLs to exclude from critical CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css|enable_criticalcss', '==|==', '1|1', '', 'visible' ],
 							'settings'   => [ 'lineWrapping' => true ],
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'type'  => 'subheading',
@@ -964,6 +1028,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Inlines all CSS files into the HTML output. Useful for lightweight designs but might be harmful for websites with over 500KB of total CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'title'      => __( 'Minify all inlined CSS', 'speed-booster-pack' ),
@@ -972,6 +1037,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'Minifies the already inlined CSS.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
+							'class'      => 'hide-if-disabled',
 						],
 						[
 							'title'      => __( 'CSS exclusions', 'speed-booster-pack' ),
@@ -981,6 +1047,7 @@ class Speed_Booster_Pack_Admin {
 							'desc'       => __( 'If your design breaks after enabling the CSS options above, you can exclude CSS file URLs here. One rule per line.', 'speed-booster-pack' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_strip_tags',
+							'class'      => 'hide-if-disabled',
 						],
 					],
 				]
@@ -1015,10 +1082,10 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title' => __( 'Set missing image dimensions', 'speed-booster-pack' ),
-					'id'    => 'missing_image_dimensions',
-					'type'  => 'switcher',
-					'desc'  => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
+					'title'      => __( 'Set missing image dimensions', 'speed-booster-pack' ),
+					'id'         => 'missing_image_dimensions',
+					'type'       => 'switcher',
+					'desc'       => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
@@ -1045,7 +1112,7 @@ class Speed_Booster_Pack_Admin {
 						'type'       => 'switcher',
 						'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						'class'      => $should_disable_lazyload ? ' inactive-section' : null,
+						'class'      => 'lazyload-media ' . ($should_disable_lazyload ? ' inactive-section' : null),
 						'sanitize'   => 'sbp_sanitize_boolean',
 					],
 					[
@@ -1132,12 +1199,12 @@ class Speed_Booster_Pack_Admin {
 								'sanitize'   => 'sbp_sanitize_strip_tags',
 							],
 							[
-								'id'       => 'preboost_featured_image',
-								'type'     => 'switcher',
-								'label'    => __( 'Preload featured images.', 'speed-booster-pack' ),
+								'id'         => 'preboost_featured_image',
+								'type'       => 'switcher',
+								'label'      => __( 'Preload featured images.', 'speed-booster-pack' ),
 								'desc'       => __( 'Enable this if you want featured images to be preloaded.', 'speed-booster-pack' ),
 								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
-								'sanitize' => 'sbp_sanitize_boolean',
+								'sanitize'   => 'sbp_sanitize_boolean',
 							],
 						],
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
@@ -1263,23 +1330,6 @@ class Speed_Booster_Pack_Admin {
 							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
-						[
-							'type'  => 'subheading',
-							'title' => __( 'PageSpeed Tricker', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'submessage',
-							'style'   => 'warning',
-							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'This experimental feature is here to show you how easy it is to get top scores with Google PageSpeed (or Lighthouse to be exact), and how meaningless it is to obsess over these metrics. Google doesn\'t have a guideline about any penalties for websites manipulating Lighthouse metrics, but that doesn\'t mean they won\'t. Thus, take this feature as a joke and use only to experiment. By activating the feature, you acknowledge that you have sole responsibility for any kind of effects on your website.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-						],
-						[
-							/* translators: %s = PageSpeed Tricker  */
-							'title'    => sprintf( __( 'Enable %s', 'speed-booster-pack' ), 'PageSpeed Tricker' ),
-							'id'       => 'pagespeed_tricker',
-							'type'     => 'switcher',
-							'sanitize' => 'sbp_sanitize_boolean',
-						],
 					],
 				]
 			);
@@ -1289,7 +1339,7 @@ class Speed_Booster_Pack_Admin {
 			CSF::createSection(
 				$prefix,
 				[
-					'title'  => __( 'Database Optimization', 'speed-booster-pack' ),
+					'title'  => __( 'Database', 'speed-booster-pack' ),
 					'id'     => 'database_optimization',
 					'icon'   => 'fa fa-database',
 					'fields' => [
@@ -1399,6 +1449,12 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	public function create_metaboxes() {
+		if ( function_exists( 'current_user_can' ) ) {
+			if ( ! current_user_can( 'manage_options' ) ) {
+				return;
+			}
+		}
+
 		/* BEGIN Metaboxes */
 		$metabox_prefix    = 'sbp_post_meta';
 		$public_post_types = get_option( 'sbp_public_post_types' );
@@ -1439,8 +1495,8 @@ class Speed_Booster_Pack_Admin {
 				'title'   => __( 'Critical CSS for this content', 'speed-booster-pack' ),
 				'options' => array(
 					'main_setting' => 'Main setting',
-					'off'     => 'Off',
-					'custom'  => 'Custom',
+					'off'          => 'Off',
+					'custom'       => 'Custom',
 				),
 				'default' => 'main_setting',
 				'class'   => 'sbp-gap-top',
@@ -1472,10 +1528,10 @@ class Speed_Booster_Pack_Admin {
 				'desc'    => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
 				'type'    => 'button_set',
 				'options' => [
-					'main_setting'    => __( 'Main setting', 'speed-booster-pack' ),
-					'off'        => __( 'Off', 'speed-booster-pack' ),
-					'everything' => __( 'Everything', 'speed-booster-pack' ),
-					'custom'     => __( 'Custom', 'speed-booster-pack' ),
+					'main_setting' => __( 'Main setting', 'speed-booster-pack' ),
+					'off'          => __( 'Off', 'speed-booster-pack' ),
+					'everything'   => __( 'Everything', 'speed-booster-pack' ),
+					'custom'       => __( 'Custom', 'speed-booster-pack' ),
 				],
 				'default' => 'main_setting',
 			];
@@ -1511,8 +1567,8 @@ class Speed_Booster_Pack_Admin {
 				'type'    => 'button_set',
 				'options' => [
 					'main_setting' => __( 'Main setting', 'speed-booster-pack' ),
-					'off'     => __( 'Off', 'speed-booster-pack' ),
-					'on'      => __( 'On', 'speed-booster-pack' ),
+					'off'          => __( 'Off', 'speed-booster-pack' ),
+					'on'           => __( 'On', 'speed-booster-pack' ),
 				],
 				'desc'    => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
 				'default' => 'main_setting',

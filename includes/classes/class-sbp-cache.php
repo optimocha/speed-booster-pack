@@ -217,14 +217,10 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @param bool $wp_cache
 	 */
 	public static function set_wp_cache_constant( $wp_cache = true ) {
-		if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
-			$wp_config_file = ABSPATH . 'wp-config.php';
-		} else {
-			$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
-		}
-
-		if ( file_exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file ) ) {
+		if ( sbp_is_wp_config_writable() ) {
 			// get wp config as array
+			$wp_config_file = sbp_get_wp_config_path();
+
 			$wp_config_file_content = file_get_contents( $wp_config_file );
 
 			if ( $wp_cache ) {
@@ -253,44 +249,83 @@ class SBP_Cache extends SBP_Abstract_Module {
 	public static function options_saved_listener( $saved_data ) {
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
-		if ( ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
-			set_transient( 'sbp_advanced_cache_error', 1 );
-
+		if ( sbp_should_disable_feature( 'caching' ) != false ) {
 			return;
 		}
 
-		if ( file_exists( $advanced_cache_path ) && ! sbp_check_file_permissions( $advanced_cache_path ) ) {
-			set_transient( 'sbp_advanced_cache_error', 1 );
+		$module_caching_option = sbp_get_option( 'module_caching' );
 
-			return;
+		if ( $saved_data['module_caching'] != $module_caching_option ) {
+			if ( ! sbp_is_wp_config_writable() ) {
+				set_transient( 'sbp_wp_config_error', 1 );
+
+				return;
+			}
+
+			if ( ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
+				set_transient( 'sbp_advanced_cache_error', 1 );
+
+				return;
+			}
+
+			if ( file_exists( $advanced_cache_path ) && ! sbp_check_file_permissions( $advanced_cache_path ) ) {
+				set_transient( 'sbp_advanced_cache_error', 1 );
+
+				return;
+			}
 		}
 
-		if ( sbp_should_disable_feature( 'caching' ) === false ) {
-			// Delete or recreate advanced-cache.php
-			if ( $saved_data['module_caching'] ) {
-				$advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file( $saved_data );
-				if ( $advanced_cache_file_content ) {
-					SBP_Cache::set_wp_cache_constant( true );
+		// Delete or recreate advanced-cache.php
+		if ( $saved_data['module_caching'] ) {
+			$advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file( $saved_data );
+			if ( $advanced_cache_file_content ) {
+				SBP_Cache::set_wp_cache_constant( true );
 
-					file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
-				}
-			} else {
-				SBP_Cache::set_wp_cache_constant( false );
-				if ( file_exists( $advanced_cache_path ) ) {
-					if ( ! unlink( $advanced_cache_path ) ) {
-						wp_send_json_error( [
-							'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ),
-							'errors' => [],
-						] );
-					}
+				if ( ! @file_put_contents( $advanced_cache_path, $advanced_cache_file_content ) ) {
+					set_transient( 'sbp_advanced_cache_error', 1 );
 				}
 			}
-		} else {
-			// Z_TODO: Are we deleting other plugins advanced-cache.php?
+		}
+
+		if ( ! $saved_data['module_caching'] && $module_caching_option ) {
+			SBP_Cache::set_wp_cache_constant( false );
 			if ( file_exists( $advanced_cache_path ) ) {
-				@unlink( $advanced_cache_path );
+				if ( ! unlink( $advanced_cache_path ) ) {
+					wp_send_json_error( [
+						'notice' => esc_html__( 'advanced-cache.php can not be removed. Please remove it manually.', 'speed-booster-pack' ),
+						'errors' => [],
+					] );
+				}
 			}
 		}
+	}
+
+	public static function options_saved_filter( $data ) {
+		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
+
+		$module_caching_option = sbp_get_option( 'module_caching', '0' );
+
+		$do_not_change_cache = false;
+
+		if ( $data['module_caching'] != $module_caching_option ) {
+			if ( ! sbp_is_wp_config_writable() ) {
+				$do_not_change_cache = true;
+			}
+
+			if ( ! sbp_check_file_permissions( WP_CONTENT_DIR ) ) {
+				$do_not_change_cache = true;
+			}
+
+			if ( file_exists( $advanced_cache_path ) && ! sbp_check_file_permissions( $advanced_cache_path ) ) {
+				$do_not_change_cache = true;
+			}
+		}
+
+		if ( $do_not_change_cache == true ) {
+			$data['module_caching'] = $module_caching_option;
+		}
+
+		return $data;
 	}
 
 	public function clear_homepage_cache() {

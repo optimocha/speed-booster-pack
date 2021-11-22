@@ -100,6 +100,8 @@ delete_option( 'sbp_migrator_version' );
 delete_transient( 'sbp_notice_cache' );
 delete_transient( 'sbp_cloudflare_status' );
 delete_transient( 'sbp_upgraded_notice' );
+delete_transient( 'sbp_warmup_errors' );
+delete_transient( 'sbp_warmup_completed' );
 
 // Delete user metas
 $users = get_users( 'role=administrator' );
@@ -111,6 +113,7 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_hide_newsletter_pointer' );
 	delete_user_meta( $user->ID, 'sbp_newsletter_display_time' );
 	delete_user_meta( $user->ID, 'sbp_dismissed_messages' );
+	delete_user_meta( $user->ID, 'sbp_intro' );
 }
 
 // Z_TODO: let's make a tool called "Cleanup SBP metadata" in a future version
