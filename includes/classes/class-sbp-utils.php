@@ -53,4 +53,27 @@ class SBP_Utils extends SBP_Abstract_Module {
 		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || $is_plugin_active_for_network;
 	}
 
+	public static function insert_to_htaccess( $marker_name, $content ) {
+		global $wp_filesystem;
+
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+
+		$htaccess_file_path = get_home_path() . '/.htaccess';
+
+		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
+			$current_htaccess = trim( $wp_filesystem->get_contents( $htaccess_file_path ) );
+			$current_htaccess = preg_replace( '/(## BEGIN ' . $marker_name . '.*?## END ' . $marker_name . PHP_EOL . PHP_EOL . ')/msi', '', $current_htaccess );
+
+			if ( $content ) {
+				$current_htaccess = str_replace( "# BEGIN WordPress", '## BEGIN ' . $marker_name . PHP_EOL . $content . PHP_EOL . '## END ' . $marker_name . PHP_EOL . PHP_EOL . "# BEGIN WordPress", $current_htaccess );
+			}
+
+			$put_files = $wp_filesystem->put_contents( $htaccess_file_path, $current_htaccess );
+
+			return (bool) $put_files;
+		}
+
+		return false;
+	}
 }

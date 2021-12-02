@@ -11,7 +11,7 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 	public function __construct() {
 		parent::__construct();
 
-		if (isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] === 'LiteSpeed') {
+		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) && $_SERVER['SERVER_SOFTWARE'] === 'LiteSpeed' ) {
 			$this->run();
 
 			add_action( 'init', [ $this, 'clear_lscache_request' ] );
@@ -46,8 +46,8 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 			}
 		}
 
-		if (!is_user_logged_in()) {
-			header('X-LiteSpeed-Cache-Control: public');
+		if ( ! is_user_logged_in() ) {
+			header( 'X-LiteSpeed-Cache-Control: public' );
 
 			if ( $tags ) {
 				header( 'X-LiteSpeed-Tag: ' . implode( ',', $tags ) );
@@ -55,7 +55,7 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 
 			$html .= PHP_EOL . '<!-- LS CACHED BY SPEED BOOSTER PACK -->';
 		} else {
-			header('X-LiteSpeed-Cache-Control: no-cache');
+			header( 'X-LiteSpeed-Cache-Control: no-cache' );
 		}
 
 		return $html;
@@ -67,7 +67,7 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 			$clear_lscache_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_lscache' ),
 				'sbp_clear_total_lscache',
 				'sbp_nonce' );
-			$sbp_admin_menu  = [
+			$sbp_admin_menu    = [
 				'id'     => 'sbp_clear_lscache',
 				'parent' => 'speed_booster_pack',
 				'title'  => __( 'Clear LiteSpeed Cache', 'speed-booster-pack' ),
@@ -78,9 +78,9 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 
 			// Clear Front Page Cache
 			$clear_frontpage_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_frontpage_cache' ),
-				'sbp_clear_frontpage_cache',
-				'sbp_nonce' ) . '&tags=is_front_page';
-			$sbp_admin_menu  = [
+					'sbp_clear_frontpage_cache',
+					'sbp_nonce' ) . '&tags=is_front_page';
+			$sbp_admin_menu      = [
 				'id'     => 'sbp_clear_frontpage_lscache',
 				'parent' => 'speed_booster_pack',
 				'title'  => __( 'Clear Front Page Cache', 'speed-booster-pack' ),
@@ -110,7 +110,31 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 		}
 	}
 
-	public function generate_htaccess() {
+	public static function insert_htaccess_rules() {
+		if ( ! isset( $_SERVER['SERVER_SOFTWARE'] ) || $_SERVER['SERVER_SOFTWARE'] !== 'LiteSpeed' ) {
+			return;
+		}
 
+		$lines[] = '<IfModule LiteSpeed>';
+
+		$lines[] = 'Cache Lookup On';
+		$lines[] = 'RewriteEngine On';
+		if ( sbp_get_option( 'module_caching' ) ) {
+			// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
+			$cache_expire_time = sbp_get_option( 'caching_expiry', 1 ) * 3600;
+			$lines[]           = 'RewriteCond %{REQUEST_URI} !wp-admin/ [NC]';
+			$lines[]           = 'RewriteRule .* - [E=cache-control:max-age=' . $cache_expire_time . ']';
+
+			if ( sbp_get_option( 'caching_separate_mobile' ) ) {
+				$lines[] = 'RewriteCond %{HTTP_USER_AGENT} "iPhone|iPod|BlackBerry|Palm|Mobile|Opera Mini|Fennec|Windows Phone"';
+				$lines[] = 'RewriteRule .* - [E=Cache-Control:vary=ismobile]';
+			}
+		} else {
+			$lines[] = 'RewriteRule .* - [E=Cache-Control:no-cache]';
+		}
+
+		$lines[] = '</IfModule>';
+
+		SBP_Utils::insert_to_htaccess( 'SBP_LS_CACHE', implode( PHP_EOL, $lines ) );
 	}
 }
