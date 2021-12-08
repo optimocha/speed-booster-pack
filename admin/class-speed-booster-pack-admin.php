@@ -504,75 +504,150 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: General */
 
+            $page_caching_class = \SpeedBooster\SBP_Utils::is_litespeed() ? ' sbp-hidden ' : '';
+            $ls_caching_class = \SpeedBooster\SBP_Utils::is_litespeed() ? '' : ' sbp-hidden ';
+
 			/* BEGIN Section: Caching */
-			$cache_fields = [
-				[
-					'id'       => 'module_caching',
-					'class'    => 'module-caching',
-					'type'     => 'switcher',
-					/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-					'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
-					'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-					'sanitize' => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
-					'id'         => 'caching_expiry',
-					'type'       => 'spinner',
-					'min'        => '1',
-					'unit'       => __( 'hours', 'speed-booster-pack' ),
-					'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
-					'default'    => '10',
-					'sanitize'   => 'sbp_posabs',
-					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-				],
-				[
-					'id'         => 'caching_separate_mobile',
-					'type'       => 'switcher',
-					'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
-					'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
-					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
-					'id'         => 'caching_warmup_after_clear',
-					'type'       => 'switcher',
-					'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
-					'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
-					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
-					'id'         => 'caching_exclude_urls',
-					'class'      => 'caching-exclude-urls',
-					'type'       => 'code_editor',
-					'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
-					'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
-					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_caching_urls',
-				],
-				[
-					'id'         => 'caching_exclude_cookies',
-					'class'      => 'caching-exclude-cookies',
-					'type'       => 'code_editor',
-					'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
-					'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
-					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_caching_cookies',
-				],
-				[
-					'id'         => 'caching_include_query_strings',
-					'class'      => 'caching-include-query-strings',
-					'type'       => 'code_editor',
-					'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
-					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' .
-					                /* translators: 1. <code> 2. </code> */
-					                sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
-					'default'    => 'utm_source',
-					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_caching_included_query_strings',
-				],
-			];
+            $cache_fields = [
+                [
+                    'id'       => 'module_caching',
+                    'class'    => 'module-caching' . $page_caching_class,
+                    'type'     => 'switcher',
+                    /* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
+                    'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
+                    'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+                    'sanitize' => 'sbp_sanitize_boolean',
+                ],
+                [
+                    'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
+                    'class'      => $page_caching_class,
+                    'id'         => 'caching_expiry',
+                    'type'       => 'spinner',
+                    'min'        => '1',
+                    'unit'       => __( 'hours', 'speed-booster-pack' ),
+                    'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
+                    'default'    => '10',
+                    'sanitize'   => 'sbp_posabs',
+                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+                ],
+                [
+                    'id'         => 'caching_separate_mobile',
+                    'class'      => $page_caching_class,
+                    'type'       => 'switcher',
+                    'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
+                    'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
+                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+                    'sanitize'   => 'sbp_sanitize_boolean',
+                ],
+                [
+                    'id'         => 'caching_warmup_after_clear',
+                    'class'      => $page_caching_class,
+                    'type'       => 'switcher',
+                    'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
+                    'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
+                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+                    'sanitize'   => 'sbp_sanitize_boolean',
+                ],
+                [
+                    'id'         => 'caching_exclude_urls',
+                    'class'      => 'caching-exclude-urls' . $page_caching_class,
+                    'type'       => 'code_editor',
+                    'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
+                    'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
+                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+                    'sanitize'   => 'sbp_sanitize_caching_urls',
+                ],
+                [
+                    'id'         => 'caching_exclude_cookies',
+                    'class'      => 'caching-exclude-cookies' . $page_caching_class,
+                    'type'       => 'code_editor',
+                    'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
+                    'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
+                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+                    'sanitize'   => 'sbp_sanitize_caching_cookies',
+                ],
+                [
+                    'id'         => 'caching_include_query_strings',
+                    'class'      => 'caching-include-query-strings' . $page_caching_class,
+                    'type'       => 'code_editor',
+                    'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
+                    'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' .
+                                    /* translators: 1. <code> 2. </code> */
+                                    sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
+                    'default'    => 'utm_source',
+                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+                    'sanitize'   => 'sbp_sanitize_caching_included_query_strings',
+                ],
+                // LS CACHE
+	            [
+		            'id'       => 'ls_module_caching',
+		            'class'    => 'module-caching' . $ls_caching_class,
+		            'type'     => 'switcher',
+		            'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
+		            'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+		            'sanitize' => 'sbp_sanitize_boolean',
+	            ],
+	            [
+		            'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
+		            'class'      => $ls_caching_class,
+		            'id'         => 'ls_caching_expiry',
+		            'type'       => 'spinner',
+		            'min'        => '1',
+		            'unit'       => __( 'hours', 'speed-booster-pack' ),
+		            'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
+		            'default'    => '10',
+		            'sanitize'   => 'sbp_posabs',
+		            'dependency' => [ 'ls_module_caching', '==', '1', '', 'visible' ],
+	            ],
+	            [
+		            'id'         => 'ls_caching_separate_mobile',
+		            'class'      => $ls_caching_class,
+		            'type'       => 'switcher',
+		            'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
+		            'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
+		            'dependency' => [ 'ls_module_caching', '==', '1', '', 'visible' ],
+		            'sanitize'   => 'sbp_sanitize_boolean',
+	            ],
+	            [
+		            'id'         => 'ls_caching_warmup_after_clear',
+		            'class'      => $ls_caching_class,
+		            'type'       => 'switcher',
+		            'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
+		            'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
+		            'dependency' => [ 'ls_module_caching', '==', '1', '', 'visible' ],
+		            'sanitize'   => 'sbp_sanitize_boolean',
+	            ],
+	            [
+		            'id'         => 'ls_caching_exclude_urls',
+		            'class'      => 'caching-exclude-urls' . $ls_caching_class,
+		            'type'       => 'code_editor',
+		            'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
+		            'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
+		            'dependency' => [ 'ls_module_caching', '==', '1', '', 'visible' ],
+		            'sanitize'   => 'sbp_sanitize_caching_urls',
+	            ],
+	            [
+		            'id'         => 'ls_caching_exclude_cookies',
+		            'class'      => 'caching-exclude-cookies' . $ls_caching_class,
+		            'type'       => 'code_editor',
+		            'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
+		            'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
+		            'dependency' => [ 'ls_module_caching', '==', '1', '', 'visible' ],
+		            'sanitize'   => 'sbp_sanitize_caching_cookies',
+	            ],
+	            [
+		            'id'         => 'ls_caching_include_query_strings',
+		            'class'      => 'caching-include-query-strings' . $ls_caching_class,
+		            'type'       => 'code_editor',
+		            'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
+		            'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' .
+		                            /* translators: 1. <code> 2. </code> */
+		                            sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
+		            'default'    => 'utm_source',
+		            'dependency' => [ 'ls_module_caching', '==', '1', '', 'visible' ],
+		            'sanitize'   => 'sbp_sanitize_caching_included_query_strings',
+	            ],
+            ];
 
 			$should_disable_caching = sbp_should_disable_feature( 'caching' );
 			if ( $should_disable_caching ) {

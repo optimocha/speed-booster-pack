@@ -11,17 +11,12 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 	public function __construct() {
 		parent::__construct();
 
-		if ( isset( $_SERVER['SERVER_SOFTWARE'] ) && $_SERVER['SERVER_SOFTWARE'] === 'LiteSpeed' ) {
-			$this->run();
-
+		if ( SBP_Utils::is_litespeed() ) {
 			add_action( 'init', [ $this, 'clear_lscache_request' ] );
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 			add_filter( 'sbp_output_buffer', [ $this, 'add_tags' ] );
+			add_filter( 'sbp_output_buffer', [ $this, 'set_headers' ] );
 		}
-	}
-
-	private function run() {
-
 	}
 
 	public function add_tags( $html ) {
@@ -111,7 +106,7 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 	}
 
 	public static function insert_htaccess_rules() {
-		if ( ! isset( $_SERVER['SERVER_SOFTWARE'] ) || $_SERVER['SERVER_SOFTWARE'] !== 'LiteSpeed' ) {
+		if ( ! SBP_Utils::is_litespeed() ) {
 			return;
 		}
 
@@ -119,7 +114,7 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 
 		$lines[] = 'Cache Lookup On';
 		$lines[] = 'RewriteEngine On';
-		if ( sbp_get_option( 'module_caching' ) ) {
+		if ( sbp_get_option( 'ls_module_caching' ) ) {
 			// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
 			$cache_expire_time = sbp_get_option( 'caching_expiry', 1 ) * 3600;
 			$lines[]           = 'RewriteCond %{REQUEST_URI} !wp-admin/ [NC]';
@@ -136,5 +131,15 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 		$lines[] = '</IfModule>';
 
 		SBP_Utils::insert_to_htaccess( 'SBP_LS_CACHE', implode( PHP_EOL, $lines ) );
+	}
+
+	public function set_headers( $html ) {
+		if ( ! sbp_get_option( 'ls_module_caching' ) ) {
+			header('X-LiteSpeed-Cache-Control: no-cache');
+		} else {
+
+		}
+
+		return $html;
 	}
 }

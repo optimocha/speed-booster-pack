@@ -76,4 +76,8 @@ class SBP_Utils extends SBP_Abstract_Module {
 
 		return false;
 	}
+
+	public static function is_litespeed() {
+		return isset( $_SERVER['SERVER_SOFTWARE'] ) && $_SERVER['SERVER_SOFTWARE'] === 'LiteSpeed';
+	}
 }
