@@ -12,6 +12,7 @@
 
 use SpeedBooster\SBP_Advanced_Cache_Generator;
 use SpeedBooster\SBP_Cache;
+use SpeedBooster\SBP_LiteSpeed_Cache;
 use SpeedBooster\SBP_WP_Config_Injector;
 
 // If this file is called directly, abort.
@@ -43,6 +44,7 @@ class Speed_Booster_Pack_Activator {
             SBP_Cache::clear_total_cache();
             SBP_Cache::set_wp_cache_constant( true );
             SBP_Cache::generate_htaccess();
+			SBP_LiteSpeed_Cache::insert_htaccess_rules();
 
             $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file();
             $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';

@@ -78,6 +78,23 @@ class SBP_Utils extends SBP_Abstract_Module {
 	}
 
 	public static function is_litespeed() {
-		return isset( $_SERVER['SERVER_SOFTWARE'] ) && $_SERVER['SERVER_SOFTWARE'] === 'LiteSpeed';
+		if ( ! defined( 'LITESPEED_SERVER_TYPE' ) ) {
+			if ( isset( $_SERVER['HTTP_X_LSCACHE'] ) && $_SERVER['HTTP_X_LSCACHE'] ) {
+				define( 'LITESPEED_SERVER_TYPE', 'LITESPEED_SERVER_ADC' );
+			} elseif ( isset( $_SERVER['LSWS_EDITION'] ) && strpos( $_SERVER['LSWS_EDITION'], 'Openlitespeed' ) === 0 ) {
+				define( 'LITESPEED_SERVER_TYPE', 'LITESPEED_SERVER_OLS' );
+			} elseif ( isset( $_SERVER['SERVER_SOFTWARE'] ) && $_SERVER['SERVER_SOFTWARE'] == 'LiteSpeed' ) {
+				define( 'LITESPEED_SERVER_TYPE', 'LITESPEED_SERVER_ENT' );
+			} else {
+				define( 'LITESPEED_SERVER_TYPE', 'NONE' );
+			}
+		}
+
+		// Checks if caching is allowed via server variable
+		if ( ! empty ( $_SERVER['X-LSCACHE'] ) ||  LITESPEED_SERVER_TYPE === 'LITESPEED_SERVER_ADC' || defined( 'LITESPEED_CLI' ) ) {
+			! defined( 'LITESPEED_ALLOWED' ) &&  define( 'LITESPEED_ALLOWED', true );
+		}
+
+		return LITESPEED_SERVER_TYPE !== 'NONE' ? LITESPEED_SERVER_TYPE && LITESPEED_ALLOWED : false;
 	}
 }

@@ -8,18 +8,19 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
+	const ROOT_MARKER = 'SBP_LS_CACHE';
+
 	public function __construct() {
 		parent::__construct();
 
 		if ( SBP_Utils::is_litespeed() ) {
 			add_action( 'init', [ $this, 'clear_lscache_request' ] );
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
-			add_filter( 'sbp_output_buffer', [ $this, 'add_tags' ] );
 			add_filter( 'sbp_output_buffer', [ $this, 'set_headers' ] );
 		}
 	}
 
-	public function add_tags( $html ) {
+	private function add_tags() {
 		$tags = [];
 
 		$template_functions = [
@@ -47,13 +48,9 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 			if ( $tags ) {
 				header( 'X-LiteSpeed-Tag: ' . implode( ',', $tags ) );
 			}
-
-			$html .= PHP_EOL . '<!-- LS CACHED BY SPEED BOOSTER PACK -->';
 		} else {
 			header( 'X-LiteSpeed-Cache-Control: no-cache' );
 		}
-
-		return $html;
 	}
 
 	public function add_admin_bar_links( \WP_Admin_Bar $admin_bar ) {
@@ -114,30 +111,43 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 
 		$lines[] = 'Cache Lookup On';
 		$lines[] = 'RewriteEngine On';
-		if ( sbp_get_option( 'ls_module_caching' ) ) {
-			// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
-			$cache_expire_time = sbp_get_option( 'caching_expiry', 1 ) * 3600;
-			$lines[]           = 'RewriteCond %{REQUEST_URI} !wp-admin/ [NC]';
-			$lines[]           = 'RewriteRule .* - [E=cache-control:max-age=' . $cache_expire_time . ']';
-
-			if ( sbp_get_option( 'caching_separate_mobile' ) ) {
+		if ( sbp_get_option( 'module_caching_ls' ) ) {
+			if ( sbp_get_option( 'caching_separate_mobile_ls' ) ) {
 				$lines[] = 'RewriteCond %{HTTP_USER_AGENT} "iPhone|iPod|BlackBerry|Palm|Mobile|Opera Mini|Fennec|Windows Phone"';
 				$lines[] = 'RewriteRule .* - [E=Cache-Control:vary=ismobile]';
 			}
-		} else {
-			$lines[] = 'RewriteRule .* - [E=Cache-Control:no-cache]';
+
+			if ( $query_strings = sbp_get_option( 'caching_include_query_strings_ls' ) ) {
+				$keys = explode( PHP_EOL, $query_strings );
+				if ( $keys ) {
+					foreach ( $keys as $key ) {
+						$lines[] = 'CacheKeyModify -qs:' . $key;
+					}
+				}
+			}
 		}
 
 		$lines[] = '</IfModule>';
 
-		SBP_Utils::insert_to_htaccess( 'SBP_LS_CACHE', implode( PHP_EOL, $lines ) );
+		SBP_Utils::insert_to_htaccess( self::ROOT_MARKER, implode( PHP_EOL, $lines ) );
+	}
+
+	public static function remove_htaccess_rules() {
+		SBP_Utils::insert_to_htaccess( self::ROOT_MARKER, '' );
 	}
 
 	public function set_headers( $html ) {
-		if ( ! sbp_get_option( 'ls_module_caching' ) ) {
-			header('X-LiteSpeed-Cache-Control: no-cache');
+		if ( ! sbp_get_option( 'module_caching_ls' ) ) {
+			header( 'X-LiteSpeed-Cache-Control: no-cache' );
 		} else {
+			if ( ! is_user_logged_in() && ! is_admin() ) {
+				// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
+				$cache_expire_time = sbp_get_option( 'caching_expiry', 1 ) * 3600;
 
+				$this->add_tags();
+				header( 'X-LiteSpeed-Cache-Control: public,max-age=' . $cache_expire_time );
+				$html .= '<!-- LS CACHED BY SPEED BOOSTER PACK -->';
+			}
 		}
 
 		return $html;
