@@ -42,14 +42,8 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 			}
 		}
 
-		if ( ! is_user_logged_in() ) {
-			header( 'X-LiteSpeed-Cache-Control: public' );
-
-			if ( $tags ) {
-				header( 'X-LiteSpeed-Tag: ' . implode( ',', $tags ) );
-			}
-		} else {
-			header( 'X-LiteSpeed-Cache-Control: no-cache' );
+		if ( $tags ) {
+			header( 'X-LiteSpeed-Tag: ' . implode( ',', $tags ) );
 		}
 	}
 
@@ -113,9 +107,11 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 		$lines[] = 'RewriteEngine On';
 		if ( sbp_get_option( 'module_caching_ls' ) ) {
 			if ( sbp_get_option( 'caching_separate_mobile_ls' ) ) {
-				$lines[] = 'RewriteCond %{HTTP_USER_AGENT} "iPhone|iPod|BlackBerry|Palm|Mobile|Opera Mini|Fennec|Windows Phone"';
+				$lines[] = 'RewriteCond %{HTTP_USER_AGENT} "Mobile|Android|Silk/|Kindle|BlackBerry|Opera Mini|Opera Mobi"';
 				$lines[] = 'RewriteRule .* - [E=Cache-Control:vary=ismobile]';
 			}
+
+			// Z_TODO: Exclude cookie rules must be in htaccess
 
 			if ( $query_strings = sbp_get_option( 'caching_include_query_strings_ls' ) ) {
 				$keys = explode( PHP_EOL, $query_strings );
@@ -140,7 +136,10 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 		if ( ! sbp_get_option( 'module_caching_ls' ) ) {
 			header( 'X-LiteSpeed-Cache-Control: no-cache' );
 		} else {
-			if ( ! is_user_logged_in() && ! is_admin() ) {
+			// Check for all exclusions
+			if ( SBP_Cache::should_bypass_cache() ) {
+				header( 'X-LiteSpeed-Cache-Control: no-cache' );
+			} else {
 				// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
 				$cache_expire_time = sbp_get_option( 'caching_expiry', 1 ) * 3600;
 

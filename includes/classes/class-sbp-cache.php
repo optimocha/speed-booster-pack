@@ -38,7 +38,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 *
 	 * @return bool
 	 */
-	private function should_bypass_cache() {
+	public static function should_bypass_cache() {
 		// Do not cache for logged in users
 		if ( is_user_logged_in() ) {
 			return true;
@@ -83,11 +83,13 @@ class SBP_Cache extends SBP_Abstract_Module {
 			}
 		}
 
-		if ( $this->check_excluded_urls() ) {
+		$is_litespeed = SBP_Utils::is_litespeed();
+
+		if ( self::check_excluded_urls( $is_litespeed ) ) {
 			return true;
 		}
 
-		if ( $this->check_cookies() ) {
+		if ( self::check_cookies( $is_litespeed ) ) {
 			return true;
 		}
 
@@ -134,7 +136,7 @@ class SBP_Cache extends SBP_Abstract_Module {
 	 * @return bool|mixed|void
 	 */
 	public function handle_cache( $html ) {
-		if ( true === $this->should_bypass_cache() ) {
+		if ( true === self::should_bypass_cache() ) {
 			return $html;
 		}
 
@@ -643,12 +645,13 @@ AddEncoding gzip              svgz
 		}
 	}
 
-	private function check_cookies() {
+	// Z_TODO: Move this function to more proper place
+	private static function check_cookies( $is_litespeed = false ) {
 		// Check if user logged in
 		if ( ! empty( $_COOKIE ) ) {
 			// Default Cookie Excludes
 			$cookies          = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_' ];
-			$excluded_cookies = sbp_get_option( 'caching_exclude_cookies' );
+			$excluded_cookies = sbp_get_option( 'caching_exclude_cookies' . ( $is_litespeed ? '_ls' : '' ) );
 			$excluded_cookies = SBP_Utils::explode_lines( $excluded_cookies );
 			$cookies          = array_merge( $cookies, $excluded_cookies );
 
@@ -662,7 +665,7 @@ AddEncoding gzip              svgz
 		}
 	}
 
-	private function check_query_strings() {
+	public function check_query_strings() {
 		// Check for query strings
 		if ( ! empty( $_GET ) ) {
 			// Get included rules
@@ -682,9 +685,10 @@ AddEncoding gzip              svgz
 		}
 	}
 
-	private function check_excluded_urls() {
+	// Z_TODO: Move this function to more proper place
+	public static function check_excluded_urls( $is_litespeed = false ) {
 		// Check for exclude URLs
-		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' ) ) {
+		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' . ( $is_litespeed ? '_ls' : '' ) ) ) {
 			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines( $exclude_urls ) );
 			$exclude_urls[] = '/favicon.ico';
 			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
