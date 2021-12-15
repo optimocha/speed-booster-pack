@@ -106,6 +106,9 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 		$lines[] = 'Cache Lookup On';
 		$lines[] = 'RewriteEngine On';
 		if ( sbp_get_option( 'module_caching_ls' ) ) {
+			// Add vary, so the logged in users won't see public cache or other users' caches
+			$lines[] = 'RewriteRule .? - [E="Cache-Vary:,wp-postpass_' . COOKIEHASH . '"]';
+
 			if ( sbp_get_option( 'caching_separate_mobile_ls' ) ) {
 				$lines[] = 'RewriteCond %{HTTP_USER_AGENT} "Mobile|Android|Silk/|Kindle|BlackBerry|Opera Mini|Opera Mobi"';
 				$lines[] = 'RewriteRule .* - [E=Cache-Control:vary=ismobile]';

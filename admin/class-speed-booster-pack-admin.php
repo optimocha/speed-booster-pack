@@ -579,6 +579,14 @@ class Speed_Booster_Pack_Admin {
                     'sanitize'   => 'sbp_sanitize_caching_included_query_strings',
                 ],
                 // LS CACHE
+                // B_TODO: Add a message to inform users that we are handling the LiteSpeed Cache
+                [
+                    'id' => 'ls_cache_info',
+                    'class' => $ls_caching_class,
+                    'type'    => 'submessage',
+                    'style'   => 'info',
+                    'content' => sprintf( __( '%s is currently handling the LiteSpeed Cache.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+                ],
 	            [
 		            'id'       => 'module_caching_ls',
 		            'class'    => 'module-caching' . $ls_caching_class,
@@ -626,15 +634,15 @@ class Speed_Booster_Pack_Admin {
 		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'sbp_sanitize_caching_urls',
 	            ],
-	            [
-		            'id'         => 'caching_exclude_cookies_ls',
-		            'class'      => 'caching-exclude-cookies' . $ls_caching_class,
-		            'type'       => 'code_editor',
-		            'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
-		            'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
-		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-		            'sanitize'   => 'sbp_sanitize_caching_cookies',
-	            ],
+//	            [
+//		            'id'         => 'caching_exclude_cookies_ls',
+//		            'class'      => 'caching-exclude-cookies' . $ls_caching_class,
+//		            'type'       => 'code_editor',
+//		            'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
+//		            'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
+//		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
+//		            'sanitize'   => 'sbp_sanitize_caching_cookies',
+//	            ],
 	            [
 		            'id'         => 'caching_include_query_strings_ls',
 		            'class'      => 'caching-include-query-strings' . $ls_caching_class,
