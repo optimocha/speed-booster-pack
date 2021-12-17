@@ -103,15 +103,20 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 
 		$lines[] = '<IfModule LiteSpeed>';
 
-		$lines[] = 'Cache Lookup On';
 		$lines[] = 'RewriteEngine On';
 		if ( sbp_get_option( 'module_caching_ls' ) ) {
+			$lines[] = 'CacheLookup On' . PHP_EOL;
+
 			// Add vary, so the logged in users won't see public cache or other users' caches
+			$lines[] = '## BEGIN Cache vary for logged in users';
 			$lines[] = 'RewriteRule .? - [E="Cache-Vary:,wp-postpass_' . COOKIEHASH . '"]';
+			$lines[] = '## END Cache vary for logged in users' . PHP_EOL;
 
 			if ( sbp_get_option( 'caching_separate_mobile_ls' ) ) {
+				$lines[] = '## BEGIN Cache vary for mobile browsers';
 				$lines[] = 'RewriteCond %{HTTP_USER_AGENT} "Mobile|Android|Silk/|Kindle|BlackBerry|Opera Mini|Opera Mobi"';
 				$lines[] = 'RewriteRule .* - [E=Cache-Control:vary=ismobile]';
+				$lines[] = '## END Cache vary for mobile browsers' . PHP_EOL;
 			}
 
 			// Z_TODO: Exclude cookie rules must be in htaccess
@@ -119,11 +124,15 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 			if ( $query_strings = sbp_get_option( 'caching_include_query_strings_ls' ) ) {
 				$keys = explode( PHP_EOL, $query_strings );
 				if ( $keys ) {
+					$lines[] = '## BEGIN Dropped Query Strings';
 					foreach ( $keys as $key ) {
 						$lines[] = 'CacheKeyModify -qs:' . $key;
 					}
+					$lines[] = '## END Dropped Query Strings';
 				}
 			}
+		} else {
+			$lines[] = 'CacheLookup Off';
 		}
 
 		$lines[] = '</IfModule>';
