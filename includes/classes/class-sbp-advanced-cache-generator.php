@@ -9,7 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_Advanced_Cache_Generator {
 	private static $options = [];
-	private static $advanced_cache_template = SBP_PATH . 'templates/cache/advanced-cache.php';
+	private static $advanced_cache_template = SBP_PATH . 'templates/advanced-cache.php';
 	private static $placeholders = [
 		'\'__SEPARATE_MOBILE_CACHING__\';'          => [
 			'option_name'   => 'caching_separate_mobile',
