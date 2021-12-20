@@ -35,28 +35,18 @@ class SBP_Critical_CSS extends SBP_Abstract_Module {
 			return $html;
 		}
 
-		$run_main_setting = false;
 
 		// Content Specific Option
-		if ( is_singular() ) {
-			$content_specific_criticalcss_status = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss_status', 'main_setting' );
+		$content_specific_criticalcss_status = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss_status', 'main_setting' );
+		$run_main_setting                    = $content_specific_criticalcss_status == 'main_setting';
+		$criticalcss_code                    = sbp_get_option( 'criticalcss_default' );
 
+		if ( is_singular() ) {
 			if ( $content_specific_criticalcss_status == 'off' ) {
 				return $html;
 			} elseif ( $content_specific_criticalcss_status == 'custom' ) {
-				$content_specific_criticalcss = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss' );
-			} else {
-				$run_main_setting = true;
+				$criticalcss_code = sbp_get_post_meta( get_the_ID(), 'sbp_criticalcss' );
 			}
-		} else {
-			$run_main_setting = true;
-		}
-
-		// Find main_setting Critical CSS Code if exists
-		if ( $run_main_setting ) {
-			$criticalcss_code = sbp_get_option( 'criticalcss_default' );
-		} else {
-			$criticalcss_code = $content_specific_criticalcss;
 		}
 
 		if ( $run_main_setting ) {
