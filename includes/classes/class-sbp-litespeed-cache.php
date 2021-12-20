@@ -7,43 +7,14 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
+class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 	const ROOT_MARKER = 'SBP_LS_CACHE';
 
 	public function __construct() {
-		parent::__construct();
-
 		if ( SBP_Utils::is_litespeed() ) {
 			add_action( 'init', [ $this, 'clear_lscache_request' ] );
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 			add_filter( 'sbp_output_buffer', [ $this, 'set_headers' ] );
-		}
-	}
-
-	private function add_tags() {
-		$tags = [];
-
-		$template_functions = [
-			'is_front_page',
-			'is_home',
-			'is_single',
-			'is_page',
-			'is_category',
-			'is_tag',
-			'is_archive',
-			'is_shop',
-			'is_product',
-			'is_product_category',
-		];
-
-		foreach ( $template_functions as $function ) {
-			if ( function_exists( $function ) && call_user_func( $function ) ) {
-				$tags[] = $function;
-			}
-		}
-
-		if ( $tags ) {
-			header( 'X-LiteSpeed-Tag: ' . implode( ',', $tags ) );
 		}
 	}
 
@@ -63,8 +34,8 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 			$admin_bar->add_node( $sbp_admin_menu );
 
 			// Clear Front Page Cache
-			$clear_frontpage_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_frontpage_cache' ),
-					'sbp_clear_frontpage_cache',
+			$clear_frontpage_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_frontpage_lscache' ),
+					'sbp_clear_frontpage_lscache',
 					'sbp_nonce' ) . '&tags=is_front_page';
 			$sbp_admin_menu      = [
 				'id'     => 'sbp_clear_frontpage_lscache',
@@ -88,7 +59,7 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 			exit;
 		}
 
-		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_frontpage_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_frontpage_cache' ) && isset( $_GET['tags'] ) && $tags = $_GET['tags'] ) {
+		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_frontpage_lscache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_frontpage_lscache' ) && isset( $_GET['tags'] ) && $tags = $_GET['tags'] ) {
 			@header( 'X-LiteSpeed-Purge:' . $tags );
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			wp_safe_redirect( $redirect_url );
@@ -144,6 +115,33 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 		SBP_Utils::insert_to_htaccess( self::ROOT_MARKER, '' );
 	}
 
+	private function add_tags() {
+		$tags = [];
+
+		$template_functions = [
+			'is_front_page',
+			'is_home',
+			'is_single',
+			'is_page',
+			'is_category',
+			'is_tag',
+			'is_archive',
+			'is_shop',
+			'is_product',
+			'is_product_category',
+		];
+
+		foreach ( $template_functions as $function ) {
+			if ( function_exists( $function ) && call_user_func( $function ) ) {
+				$tags[] = $function;
+			}
+		}
+
+		if ( $tags ) {
+			header( 'X-LiteSpeed-Tag: ' . implode( ',', $tags ) );
+		}
+	}
+
 	public function set_headers( $html ) {
 		if ( ! sbp_get_option( 'module_caching_ls' ) ) {
 			header( 'X-LiteSpeed-Cache-Control: no-cache' );
@@ -153,7 +151,7 @@ class SBP_LiteSpeed_Cache extends SBP_Abstract_Module {
 				header( 'X-LiteSpeed-Cache-Control: no-cache' );
 			} else {
 				// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
-				$cache_expire_time = sbp_get_option( 'caching_expiry', 1 ) * 3600;
+				$cache_expire_time = sbp_get_option( 'caching_expiry', 10 ) * 3600;
 
 				$this->add_tags();
 				header( 'X-LiteSpeed-Cache-Control: public,max-age=' . $cache_expire_time );

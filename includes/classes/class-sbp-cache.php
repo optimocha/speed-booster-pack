@@ -9,7 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class SBP_Cache extends SBP_Abstract_Module {
+class SBP_Cache extends SBP_Base_Cache {
 	/**
 	 * Name of the cached file
 	 *
@@ -18,8 +18,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 	private $file_name = 'index.html';
 
 	public function __construct() {
-		global $sbp_cache_already_bypassed;
-
 		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) ) {
 			return;
 		}
@@ -31,69 +29,6 @@ class SBP_Cache extends SBP_Abstract_Module {
 
 		// Handle The Cache
 		add_filter( 'sbp_output_buffer', [ $this, 'handle_cache' ], 1000 );
-	}
-
-	/**
-	 * Decides to run cache or not.
-	 *
-	 * @return bool
-	 */
-	public static function should_bypass_cache() {
-		// Do not cache for logged in users
-		if ( is_user_logged_in() ) {
-			return true;
-		}
-
-		// Check for several special pages
-		if ( is_search() || is_404() || is_feed() || is_trackback() || is_robots() || is_preview() || post_password_required() ) {
-			return true;
-		}
-
-		// DONOTCACHEPAGE
-		if ( defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE === true ) {
-			return true;
-		}
-
-		// Woocommerce checkout check
-		if ( function_exists( 'is_checkout' ) ) {
-			if ( is_checkout() ) {
-				return true;
-			}
-		}
-
-		// Woocommerce cart check
-		if ( function_exists( 'is_cart' ) ) {
-			if ( is_cart() ) {
-				return true;
-			}
-		}
-
-		// Check request method. Only cache get methods
-		if ( $_SERVER['REQUEST_METHOD'] != 'GET' ) {
-			return true;
-		}
-
-		if ( ! empty( $_GET ) ) {
-			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
-
-			foreach ( $_GET as $key => $value ) {
-				if ( ! in_array( $key, $include_query_strings ) ) {
-					return true;
-				}
-			}
-		}
-
-		$is_litespeed = SBP_Utils::is_litespeed();
-
-		if ( self::check_excluded_urls( $is_litespeed ) ) {
-			return true;
-		}
-
-		if ( self::check_cookies( $is_litespeed ) ) {
-			return true;
-		}
-
-		return false;
 	}
 
 	/**
@@ -645,26 +580,6 @@ AddEncoding gzip              svgz
 		}
 	}
 
-	// Z_TODO: Move this function to more proper place
-	private static function check_cookies( $is_litespeed = false ) {
-		// Check if user logged in
-		if ( ! empty( $_COOKIE ) ) {
-			// Default Cookie Excludes
-			$cookies          = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_' ];
-			$excluded_cookies = sbp_get_option( 'caching_exclude_cookies' . ( $is_litespeed ? '_ls' : '' ) );
-			$excluded_cookies = SBP_Utils::explode_lines( $excluded_cookies );
-			$cookies          = array_merge( $cookies, $excluded_cookies );
-
-			$cookies_regex = '/^(' . implode( '|', $cookies ) . ')/';
-
-			foreach ( $_COOKIE as $key => $value ) {
-				if ( preg_match( $cookies_regex, $key ) ) {
-					return true;
-				}
-			}
-		}
-	}
-
 	public function check_query_strings() {
 		// Check for query strings
 		if ( ! empty( $_GET ) ) {
@@ -681,19 +596,6 @@ AddEncoding gzip              svgz
 			}
 			if ( '' !== $query_string_file_name ) {
 				$this->file_name = md5( $query_string_file_name ) . '.html';
-			}
-		}
-	}
-
-	// Z_TODO: Move this function to more proper place
-	public static function check_excluded_urls( $is_litespeed = false ) {
-		// Check for exclude URLs
-		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' . ( $is_litespeed ? '_ls' : '' ) ) ) {
-			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines( $exclude_urls ) );
-			$exclude_urls[] = '/favicon.ico';
-			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
-			if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
-				return true;
 			}
 		}
 	}
