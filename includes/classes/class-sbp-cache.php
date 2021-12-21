@@ -172,7 +172,7 @@ class SBP_Cache extends SBP_Base_Cache {
 				$wp_config_file_content = '<?php' . PHP_EOL . $wp_config_file_content;
 			}
 
-			$wp_config_file_content = str_replace( '<?php', '<?php' . $append_line, $wp_config_file_content );
+			$wp_config_file_content = preg_replace( '/(<\?php)/i', '<?php' . $append_line, $wp_config_file_content, 1 );
 
 			file_put_contents( $wp_config_file, $wp_config_file_content );
 		}
