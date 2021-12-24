@@ -83,7 +83,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			$lines[] = 'RewriteRule .? - [E="Cache-Vary:,wp-postpass_' . COOKIEHASH . '"]';
 			$lines[] = '## END Cache vary for logged in users' . PHP_EOL;
 
-			if ( sbp_get_option( 'caching_separate_mobile_ls' ) ) {
+			if ( sbp_get_option( 'caching_ls_separate_mobile' ) ) {
 				$lines[] = '## BEGIN Cache vary for mobile browsers';
 				$lines[] = 'RewriteCond %{HTTP_USER_AGENT} "Mobile|Android|Silk/|Kindle|BlackBerry|Opera Mini|Opera Mobi"';
 				$lines[] = 'RewriteRule .* - [E=Cache-Control:vary=ismobile]';
@@ -92,7 +92,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 
 			// Z_TODO: Exclude cookie rules must be in htaccess
 
-			if ( $query_strings = sbp_get_option( 'caching_include_query_strings_ls' ) ) {
+			if ( $query_strings = sbp_get_option( 'caching_ls_include_query_strings' ) ) {
 				$keys = explode( PHP_EOL, $query_strings );
 				if ( $keys ) {
 					$lines[] = '## BEGIN Dropped Query Strings';
@@ -151,11 +151,11 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 				header( 'X-LiteSpeed-Cache-Control: no-cache' );
 			} else {
 				// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
-				$cache_expire_time = sbp_get_option( 'caching_expiry', 10 ) * 3600;
+				$cache_expire_time = sbp_get_option( 'caching_ls_expiry', 10 ) * HOUR_IN_SECONDS;
 
 				$this->add_tags();
 				header( 'X-LiteSpeed-Cache-Control: public,max-age=' . $cache_expire_time );
-				$html .= '<!-- LS CACHED BY SPEED BOOSTER PACK -->';
+				$html .= '<!-- LiteSpeed cache controlled by ' . SBP_PLUGIN_NAME . ' -->';
 			}
 		}
 

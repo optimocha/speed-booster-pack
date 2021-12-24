@@ -576,29 +576,28 @@ class Speed_Booster_Pack_Admin {
                                     sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
                     'default'    => 'utm_source',
                     'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-                    'sanitize'   => 'sbp_sanitize_caching_included_query_strings',
+                    'sanitize'   => 'sbp_sanitize_query_strings',
                 ],
                 // LS CACHE
-                // B_TODO: Add a message to inform users that we are handling the LiteSpeed Cache
                 [
-                    'id' => 'ls_cache_info',
-                    'class' => $ls_caching_class,
-                    'type'    => 'submessage',
-                    'style'   => 'info',
-                    'content' => sprintf( __( '%s is currently handling the LiteSpeed Cache.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+                    'id'		=> 'ls_cache_info',
+                    'class'		=> $ls_caching_class,
+                    'type'		=> 'submessage',
+                    'style'		=> 'info',
+                    'content'	=> sprintf( __( 'Because your server is using LiteSpeed, %s is currently handling its caching system.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
                 ],
 	            [
-		            'id'       => 'module_caching_ls',
-		            'class'    => 'module-caching' . $ls_caching_class,
-		            'type'     => 'switcher',
-		            'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
-		            'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-		            'sanitize' => 'sbp_sanitize_boolean',
+		            'id'		=> 'module_caching_ls',
+		            'class'		=> 'module-caching' . $ls_caching_class,
+		            'type'		=> 'switcher',
+		            'title'		=> __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'LiteSpeed Cache', 'speed-booster-pack' ),
+		            'label'		=> __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+		            'sanitize'	=> 'sbp_sanitize_boolean',
 	            ],
 	            [
+		            'id'         => 'caching_ls_expiry',
 		            'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
 		            'class'      => $ls_caching_class,
-		            'id'         => 'caching_expiry_ls',
 		            'type'       => 'spinner',
 		            'min'        => '1',
 		            'unit'       => __( 'hours', 'speed-booster-pack' ),
@@ -608,7 +607,7 @@ class Speed_Booster_Pack_Admin {
 		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
 	            ],
 	            [
-		            'id'         => 'caching_separate_mobile_ls',
+		            'id'         => 'caching_ls_separate_mobile',
 		            'class'      => $ls_caching_class,
 		            'type'       => 'switcher',
 		            'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
@@ -617,7 +616,7 @@ class Speed_Booster_Pack_Admin {
 		            'sanitize'   => 'sbp_sanitize_boolean',
 	            ],
 	            [
-		            'id'         => 'caching_warmup_after_clear_ls',
+		            'id'         => 'caching_ls_warmup_after_clear',
 		            'class'      => $ls_caching_class,
 		            'type'       => 'switcher',
 		            'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
@@ -626,7 +625,7 @@ class Speed_Booster_Pack_Admin {
 		            'sanitize'   => 'sbp_sanitize_boolean',
 	            ],
 	            [
-		            'id'         => 'caching_exclude_urls_ls',
+		            'id'         => 'caching_ls_exclude_urls',
 		            'class'      => 'caching-exclude-urls' . $ls_caching_class,
 		            'type'       => 'code_editor',
 		            'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
@@ -635,7 +634,7 @@ class Speed_Booster_Pack_Admin {
 		            'sanitize'   => 'sbp_sanitize_caching_urls',
 	            ],
 //	            [
-//		            'id'         => 'caching_exclude_cookies_ls',
+//		            'id'         => 'caching_ls_exclude_cookies',
 //		            'class'      => 'caching-exclude-cookies' . $ls_caching_class,
 //		            'type'       => 'code_editor',
 //		            'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
@@ -644,16 +643,14 @@ class Speed_Booster_Pack_Admin {
 //		            'sanitize'   => 'sbp_sanitize_caching_cookies',
 //	            ],
 	            [
-		            'id'         => 'caching_include_query_strings_ls',
+		            'id'         => 'caching_ls_include_query_strings',
 		            'class'      => 'caching-include-query-strings' . $ls_caching_class,
 		            'type'       => 'code_editor',
 		            'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
-		            'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' .
-		                            /* translators: 1. <code> 2. </code> */
-		                            sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
+		            'desc'       => __( 'Enter one query string per line to cache URLs with those query strings. The cachefiles will be the same with the caches of the same page without any query string.', 'speed-booster-pack' ),
 		            'default'    => 'utm_source',
 		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-		            'sanitize'   => 'sbp_sanitize_caching_included_query_strings',
+		            'sanitize'   => 'sbp_sanitize_query_strings',
 	            ],
             ];
 
@@ -670,7 +667,7 @@ class Speed_Booster_Pack_Admin {
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
 			}
 
-
+			// Z_TODO: Make sure this isn't shown on a LiteSpeed server & some other caching plugin is enabled
 			if ( sbp_get_option( 'module_caching' ) && ! defined( 'SBP_ADVANCED_CACHE' ) ) {
                 $cache_fields = array_merge( [ [
 	                'type'    => 'submessage',
