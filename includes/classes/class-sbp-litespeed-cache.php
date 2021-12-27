@@ -11,6 +11,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 	const ROOT_MARKER = 'SBP_LS_CACHE';
 
 	public function __construct() {
+		parent::__construct();
 		if ( SBP_Utils::is_litespeed() ) {
 			add_action( 'init', [ $this, 'clear_lscache_request' ] );
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
@@ -72,10 +73,9 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			return;
 		}
 
-		$lines[] = '<IfModule LiteSpeed>';
-
-		$lines[] = 'RewriteEngine On';
 		if ( sbp_get_option( 'module_caching_ls' ) ) {
+			$lines[] = '<IfModule LiteSpeed>';
+			$lines[] = 'RewriteEngine On';
 			$lines[] = 'CacheLookup On' . PHP_EOL;
 
 			// Add vary, so the logged in users won't see public cache or other users' caches
@@ -102,11 +102,8 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 					$lines[] = '## END Dropped Query Strings';
 				}
 			}
-		} else {
-			$lines[] = 'CacheLookup Off';
+			$lines[] = '</IfModule>';
 		}
-
-		$lines[] = '</IfModule>';
 
 		SBP_Utils::insert_to_htaccess( self::ROOT_MARKER, implode( PHP_EOL, $lines ) );
 	}
@@ -147,7 +144,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			header( 'X-LiteSpeed-Cache-Control: no-cache' );
 		} else {
 			// Check for all exclusions
-			if ( SBP_Cache::should_bypass_cache() ) {
+			if ( true === $this->should_bypass_cache() ) {
 				header( 'X-LiteSpeed-Cache-Control: no-cache' );
 			} else {
 				// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here

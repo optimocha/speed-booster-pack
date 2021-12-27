@@ -18,6 +18,8 @@ class SBP_Cache extends SBP_Base_Cache {
 	private $file_name = 'index.html';
 
 	public function __construct() {
+		parent::__construct();
+
 		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) ) {
 			return;
 		}
@@ -71,7 +73,7 @@ class SBP_Cache extends SBP_Base_Cache {
 	 * @return bool|mixed|void
 	 */
 	public function handle_cache( $html ) {
-		if ( true === self::should_bypass_cache() ) {
+		if ( true === $this->should_bypass_cache() ) {
 			return $html;
 		}
 
@@ -580,7 +582,7 @@ AddEncoding gzip              svgz
 		}
 	}
 
-	public function check_query_strings() {
+	private function check_query_strings() {
 		// Check for query strings
 		if ( ! empty( $_GET ) ) {
 			// Get included rules

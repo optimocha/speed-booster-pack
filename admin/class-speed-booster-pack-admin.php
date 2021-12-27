@@ -62,7 +62,7 @@ class Speed_Booster_Pack_Admin {
 
 		$this->load_dependencies();
 
-		add_filter('csf_sbp_options_save', '\SpeedBooster\SBP_Cache::options_saved_filter');
+		add_filter( 'csf_sbp_options_save', '\SpeedBooster\SBP_Cache::options_saved_filter' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
@@ -92,11 +92,11 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function enqueue_styles() {
 		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', [], $this->version );
-        if (
-            get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
-            ( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
-            current_user_can( 'manage_options' )
-        ) {
+		if (
+			get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
+			( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
+			current_user_can( 'manage_options' )
+		) {
 			wp_enqueue_style( 'sbp_intro_css', SBP_URL . 'admin/css/intro.min.css', [], '4.2.2' );
 		}
 	}
@@ -107,40 +107,40 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_scripts() {
-        if (
-            get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
-            ( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
-            current_user_can( 'manage_options' )
-        ) {
-	        wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], '4.2.2' );
-	        wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], '4.2.2' );
-	        wp_localize_script( 'sbp_intro_js',
-		        'sbp_intro_translations',
-		        [
+		if (
+			get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
+			( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
+			current_user_can( 'manage_options' )
+		) {
+			wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], '4.2.2' );
+			wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], '4.2.2' );
+			wp_localize_script( 'sbp_intro_js',
+				'sbp_intro_translations',
+				[
 					/* translators: onboarding modal, first step  */
-			        'welcome' => __( 'Welcome to Speed Booster Pack! We\'d like to give you a quick tour - feel free to close this box and look around the options yourself, or click Next to see our short intro.', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, second step  */
-			        'caching' => __( 'This is our caching tab. Here, you can set caching for your pages to immediately speed up your website.', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, third step  */
-			        'caching2' => __( 'Most tabs have an module toggle like this. Turning on or off the module toggle enables or disables the whole module.', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, fourth step  */
-			        'general' => __( 'The "General" tab includes various tweaks to clean up and speed up things. You can also disable Speed Booster Pack features for certain user roles (e.g. subscribers or customers) if you need to.', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, fifth step  */
-			        'cdn' => __( 'The CDN & Proxy tab has three main settings: You can set a CDN domain to serve all your assets from, you can connect to your Cloudflare account to change your Cloudflare settings, and you can connect to your Sucuri account so you can clear your Sucuri cache automatically.', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, sixth step  */
-			        'css' => __( 'The Optimize CSS tab has some delicate settings which, if configured properly, can drastically improve your website performance. Be sure to follow the directions properly - especially the Critical CSS settings!', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, seventh step  */
-			        'assets' => __( 'The Assets tab can improve your website performance using font optimization, lazy loading, asset preloading and JavaScript optimization. It\'s tempting to enable them all, but make sure you test each change thoroughly or else you can break your website! Think of these tools like powerful weapons which you can hurt yourself with.', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, last step  */
-			        'end' => __( 'That\'s it! Actually, that\'s not it - make sure you check the other tabs to see if you have more room to improve your website speed. Don\'t be afraid to experiment; even if you break something, resetting settings or simply deactivating Speed Booster Pack will undo everything.', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, "Next" label  */
-			        'nextLabel' => __( 'Next', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, "Prev" label  */
-			        'prevLabel' => __( 'Prev', 'speed-booster-pack' ),
-			        /* translators: onboarding modal, "Done" label  */
-			        'doneLabel' => __( 'Done', 'speed-booster-pack' ),
-		        ] );
-        }
+					'welcome'   => __( 'Welcome to Speed Booster Pack! We\'d like to give you a quick tour - feel free to close this box and look around the options yourself, or click Next to see our short intro.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, second step  */
+					'caching'   => __( 'This is our caching tab. Here, you can set caching for your pages to immediately speed up your website.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, third step  */
+					'caching2'  => __( 'Most tabs have an module toggle like this. Turning on or off the module toggle enables or disables the whole module.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, fourth step  */
+					'general'   => __( 'The "General" tab includes various tweaks to clean up and speed up things. You can also disable Speed Booster Pack features for certain user roles (e.g. subscribers or customers) if you need to.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, fifth step  */
+					'cdn'       => __( 'The CDN & Proxy tab has three main settings: You can set a CDN domain to serve all your assets from, you can connect to your Cloudflare account to change your Cloudflare settings, and you can connect to your Sucuri account so you can clear your Sucuri cache automatically.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, sixth step  */
+					'css'       => __( 'The Optimize CSS tab has some delicate settings which, if configured properly, can drastically improve your website performance. Be sure to follow the directions properly - especially the Critical CSS settings!', 'speed-booster-pack' ),
+					/* translators: onboarding modal, seventh step  */
+					'assets'    => __( 'The Assets tab can improve your website performance using font optimization, lazy loading, asset preloading and JavaScript optimization. It\'s tempting to enable them all, but make sure you test each change thoroughly or else you can break your website! Think of these tools like powerful weapons which you can hurt yourself with.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, last step  */
+					'end'       => __( 'That\'s it! Actually, that\'s not it - make sure you check the other tabs to see if you have more room to improve your website speed. Don\'t be afraid to experiment; even if you break something, resetting settings or simply deactivating Speed Booster Pack will undo everything.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, "Next" label  */
+					'nextLabel' => __( 'Next', 'speed-booster-pack' ),
+					/* translators: onboarding modal, "Prev" label  */
+					'prevLabel' => __( 'Prev', 'speed-booster-pack' ),
+					/* translators: onboarding modal, "Done" label  */
+					'doneLabel' => __( 'Done', 'speed-booster-pack' ),
+				] );
+		}
 
 		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], $this->version );
 		wp_localize_script( $this->plugin_name,
@@ -270,36 +270,6 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Dashboard */
-			$advisor_fields = [
-				[
-					'id'      => 'advisor_heading',
-					'type'    => 'subheading',
-					'content' => __( 'Recommendations to Improve Performance', 'speed-booster-pack' ),
-				],
-				[
-					'id'      => 'advisor_introduction',
-					'type'    => 'content',
-					'content' => __( 'All the notices below include optional, yet recommended changes to your website or your server, which will improve performance.', 'speed-booster-pack' ),
-				],
-			];
-
-			$advisor_fields[] = [
-				'type'    => 'content',
-				'content' => '<div id="advisor-content"></div>',
-			];
-
-			/* BEGIN Section: Speed Advisor */
-			CSF::createSection(
-				$prefix,
-				[
-					'title'  => __( 'Advisor', 'speed-booster-pack' ),
-					'id'     => 'dashboard',
-					'class'  => 'dashboard',
-					'icon'   => 'fa fa-graduation-cap',
-					'fields' => $advisor_fields,
-				]
-			);
-			/* END Section: Speed Advisor */
 
 			/* BEGIN Section: General */
 			CSF::createSection(
@@ -504,135 +474,205 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: General */
 
-            $page_caching_class = \SpeedBooster\SBP_Utils::is_litespeed() ? ' sbp-hidden ' : '';
-            $ls_caching_class = \SpeedBooster\SBP_Utils::is_litespeed() ? '' : ' sbp-hidden ';
+            $is_litespeed = \SpeedBooster\SBP_Utils::is_litespeed();
+			$page_caching_class = $is_litespeed ? ' sbp-hidden ' : '';
+			$ls_caching_class   = $is_litespeed ? '' : ' sbp-hidden ';
+
+			$ls_query_string_defaults = [
+				'name',
+				'fbclid',
+				'gclid',
+				'gclsrc',
+				'utm_content',
+				'utm_term',
+				'utm_campaign',
+				'utm_medium',
+				'utm_source',
+				'utm_id',
+				'_ga',
+				'mc_cid',
+				'mc_eid',
+				'_bta_tid',
+				'_bta_c',
+				'trk_contact',
+				'trk_msg',
+				'trk_module',
+				'trk_sid',
+				'gdfms',
+				'gdftrk',
+				'gdffi',
+				'_ke',
+				'redirect_log_mongo_id',
+				'redirect_mongo_id',
+				'sb_referer_host',
+				'mkwid',
+				'pcrid',
+				'ef_id',
+				's_kwcid',
+				'msclkid',
+				'dm_i',
+				'epik',
+				'pk_campaign',
+				'pk_kwd',
+				'pk_keyword',
+				'piwik_campaign',
+				'piwik_kwd',
+				'piwik_keyword',
+				'mtm_campaign',
+				'mtm_keyword',
+				'mtm_source',
+				'mtm_medium',
+				'mtm_content',
+				'mtm_cid',
+				'mtm_group',
+				'mtm_placement',
+				'matomo_campaign',
+				'matomo_keyword',
+				'matomo_source',
+				'matomo_medium',
+				'matomo_content',
+				'matomo_cid',
+				'matomo_group',
+				'matomo_placement',
+				'hsa_cam',
+				'hsa_grp',
+				'hsa_mt',
+				'hsa_src',
+				'hsa_ad',
+				'hsa_acc',
+				'hsa_net',
+				'hsa_kw',
+				'hsa_tgt',
+				'hsa_ver',
+				'_branch_match_id'
+			];
 
 			/* BEGIN Section: Caching */
-            $cache_fields = [
-                [
-                    'id'       => 'module_caching',
-                    'class'    => 'module-caching' . $page_caching_class,
-                    'type'     => 'switcher',
-                    /* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-                    'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
-                    'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-                    'sanitize' => 'sbp_sanitize_boolean',
-                ],
-                [
-                    'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
-                    'class'      => $page_caching_class,
-                    'id'         => 'caching_expiry',
-                    'type'       => 'spinner',
-                    'min'        => '1',
-                    'unit'       => __( 'hours', 'speed-booster-pack' ),
-                    'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
-                    'default'    => '10',
-                    'sanitize'   => 'sbp_posabs',
-                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-                ],
-                [
-                    'id'         => 'caching_separate_mobile',
-                    'class'      => $page_caching_class,
-                    'type'       => 'switcher',
-                    'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
-                    'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
-                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-                    'sanitize'   => 'sbp_sanitize_boolean',
-                ],
-                [
-                    'id'         => 'caching_warmup_after_clear',
-                    'class'      => $page_caching_class,
-                    'type'       => 'switcher',
-                    'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
-                    'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
-                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-                    'sanitize'   => 'sbp_sanitize_boolean',
-                ],
-                [
-                    'id'         => 'caching_exclude_urls',
-                    'class'      => 'caching-exclude-urls' . $page_caching_class,
-                    'type'       => 'code_editor',
-                    'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
-                    'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
-                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-                    'sanitize'   => 'sbp_sanitize_caching_urls',
-                ],
-                [
-                    'id'         => 'caching_exclude_cookies',
-                    'class'      => 'caching-exclude-cookies' . $page_caching_class,
-                    'type'       => 'code_editor',
-                    'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
-                    'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
-                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-                    'sanitize'   => 'sbp_sanitize_caching_cookies',
-                ],
-                [
-                    'id'         => 'caching_include_query_strings',
-                    'class'      => 'caching-include-query-strings' . $page_caching_class,
-                    'type'       => 'code_editor',
-                    'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
-                    'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' .
-                                    /* translators: 1. <code> 2. </code> */
-                                    sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
-                    'default'    => 'utm_source',
-                    'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-                    'sanitize'   => 'sbp_sanitize_query_strings',
-                ],
-                // LS CACHE
-                [
-                    'id'		=> 'ls_cache_info',
-                    'class'		=> $ls_caching_class,
-                    'type'		=> 'submessage',
-                    'style'		=> 'info',
-                    'content'	=> sprintf( __( 'Because your server is using LiteSpeed, %s is currently handling its caching system.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-                ],
-	            [
-		            'id'		=> 'module_caching_ls',
-		            'class'		=> 'module-caching' . $ls_caching_class,
-		            'type'		=> 'switcher',
-		            'title'		=> __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'LiteSpeed Cache', 'speed-booster-pack' ),
-		            'label'		=> __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-		            'sanitize'	=> 'sbp_sanitize_boolean',
-	            ],
-	            [
-		            'id'         => 'caching_ls_expiry',
-		            'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
-		            'class'      => $ls_caching_class,
-		            'type'       => 'spinner',
-		            'min'        => '1',
-		            'unit'       => __( 'hours', 'speed-booster-pack' ),
-		            'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
-		            'default'    => '10',
-		            'sanitize'   => 'sbp_posabs',
-		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-	            ],
-	            [
-		            'id'         => 'caching_ls_separate_mobile',
-		            'class'      => $ls_caching_class,
-		            'type'       => 'switcher',
-		            'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
-		            'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
-		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-		            'sanitize'   => 'sbp_sanitize_boolean',
-	            ],
-	            [
-		            'id'         => 'caching_ls_warmup_after_clear',
-		            'class'      => $ls_caching_class,
-		            'type'       => 'switcher',
-		            'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
-		            'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
-		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-		            'sanitize'   => 'sbp_sanitize_boolean',
-	            ],
-	            [
-		            'id'         => 'caching_ls_exclude_urls',
-		            'class'      => 'caching-exclude-urls' . $ls_caching_class,
-		            'type'       => 'code_editor',
-		            'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
-		            'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
-		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-		            'sanitize'   => 'sbp_sanitize_caching_urls',
-	            ],
+			$cache_fields = [
+				[
+					'id'       => 'module_caching',
+					'class'    => 'module-caching' . $page_caching_class,
+					'type'     => 'switcher',
+					/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
+					'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
+					'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+					'sanitize' => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
+					'class'      => $page_caching_class,
+					'id'         => 'caching_expiry',
+					'type'       => 'spinner',
+					'min'        => '1',
+					'unit'       => __( 'hours', 'speed-booster-pack' ),
+					'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
+					'default'    => '10',
+					'sanitize'   => 'sbp_posabs',
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+				],
+				[
+					'id'         => 'caching_separate_mobile',
+					'class'      => $page_caching_class,
+					'type'       => 'switcher',
+					'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
+					'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'id'         => 'caching_warmup_after_clear',
+					'class'      => $page_caching_class,
+					'type'       => 'switcher',
+					'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
+					'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'id'         => 'caching_exclude_urls',
+					'class'      => 'caching-exclude-urls' . $page_caching_class,
+					'type'       => 'code_editor',
+					'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
+					'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_caching_urls',
+				],
+				[
+					'id'         => 'caching_exclude_cookies',
+					'class'      => 'caching-exclude-cookies' . $page_caching_class,
+					'type'       => 'code_editor',
+					'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
+					'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_caching_cookies',
+				],
+				[
+					'id'         => 'caching_include_query_strings',
+					'class'      => 'caching-include-query-strings' . $page_caching_class,
+					'type'       => 'code_editor',
+					'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
+					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' .
+					                /* translators: 1. <code> 2. </code> */
+					                sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
+					'default'    => 'utm_source',
+					'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_query_strings',
+				],
+				// LS CACHE
+				[
+					'id'      => 'ls_cache_info',
+					'class'   => $ls_caching_class,
+					'type'    => 'submessage',
+					'style'   => 'info',
+					'content' => sprintf( __( 'Because your server is using LiteSpeed, %s is currently handling its caching system.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+				],
+				[
+					'id'       => 'module_caching_ls',
+					'class'    => 'module-caching' . $ls_caching_class,
+					'type'     => 'switcher',
+					'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'LiteSpeed Cache', 'speed-booster-pack' ),
+					'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+					'sanitize' => 'sbp_sanitize_boolean',
+				],
+				[
+					'id'         => 'caching_ls_expiry',
+					'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
+					'class'      => $ls_caching_class,
+					'type'       => 'spinner',
+					'min'        => '1',
+					'unit'       => __( 'hours', 'speed-booster-pack' ),
+					'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
+					'default'    => '10',
+					'sanitize'   => 'sbp_posabs',
+					'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
+				],
+				[
+					'id'         => 'caching_ls_separate_mobile',
+					'class'      => $ls_caching_class,
+					'type'       => 'switcher',
+					'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
+					'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'id'         => 'caching_ls_warmup_after_clear',
+					'class'      => $ls_caching_class,
+					'type'       => 'switcher',
+					'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
+					'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'id'         => 'caching_ls_exclude_urls',
+					'class'      => 'caching-exclude-urls' . $ls_caching_class,
+					'type'       => 'code_editor',
+					'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
+					'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_caching_urls',
+				],
 //	            [
 //		            'id'         => 'caching_ls_exclude_cookies',
 //		            'class'      => 'caching-exclude-cookies' . $ls_caching_class,
@@ -642,17 +682,17 @@ class Speed_Booster_Pack_Admin {
 //		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
 //		            'sanitize'   => 'sbp_sanitize_caching_cookies',
 //	            ],
-	            [
-		            'id'         => 'caching_ls_include_query_strings',
-		            'class'      => 'caching-include-query-strings' . $ls_caching_class,
-		            'type'       => 'code_editor',
-		            'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
-		            'desc'       => __( 'Enter one query string per line to cache URLs with those query strings. The cachefiles will be the same with the caches of the same page without any query string.', 'speed-booster-pack' ),
-		            'default'    => 'utm_source',
-		            'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-		            'sanitize'   => 'sbp_sanitize_query_strings',
-	            ],
-            ];
+				[
+					'id'         => 'caching_ls_include_query_strings',
+					'class'      => 'caching-include-query-strings' . $ls_caching_class,
+					'type'       => 'code_editor',
+					'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
+					'desc'       => __( 'Enter one query string per line to cache URLs with those query strings. The cachefiles will be the same with the caches of the same page without any query string.', 'speed-booster-pack' ),
+					'default'    => implode( PHP_EOL, $ls_query_string_defaults ),
+					'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_query_strings',
+				],
+			];
 
 			$should_disable_caching = sbp_should_disable_feature( 'caching' );
 			if ( $should_disable_caching ) {
@@ -669,11 +709,13 @@ class Speed_Booster_Pack_Admin {
 
 			// Z_TODO: Make sure this isn't shown on a LiteSpeed server & some other caching plugin is enabled
 			if ( sbp_get_option( 'module_caching' ) && ! defined( 'SBP_ADVANCED_CACHE' ) ) {
-                $cache_fields = array_merge( [ [
-	                'type'    => 'submessage',
-	                'style'   => 'danger',
-	                'content' => sprintf( __( '%1$s cache is enabled but the advanced-cache.php file is created by another plugin. Saving your settings now will overwrite %1$s\'s advanced-cache.php file. To fix this, you can either disable the other plugin\'s caching feature or ours.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-                ] ], $cache_fields );
+				$cache_fields = array_merge( [
+					[
+						'type'    => 'submessage',
+						'style'   => 'danger',
+						'content' => sprintf( __( '%1$s cache is enabled but the advanced-cache.php file is created by another plugin. Saving your settings now will overwrite %1$s\'s advanced-cache.php file. To fix this, you can either disable the other plugin\'s caching feature or ours.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+					]
+				], $cache_fields );
 			}
 
 			CSF::createSection(
@@ -702,24 +744,24 @@ class Speed_Booster_Pack_Admin {
 					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
-					'title' => __( 'Cloudflare global API key', 'speed-booster-pack' ),
-					'id'    => 'cloudflare_api',
-					'type'  => 'text',
-					'desc'  => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
+					'title'      => __( 'Cloudflare global API key', 'speed-booster-pack' ),
+					'id'         => 'cloudflare_api',
+					'type'       => 'text',
+					'desc'       => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
 					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title' => __( 'Cloudflare email address', 'speed-booster-pack' ),
-					'id'    => 'cloudflare_email',
-					'type'  => 'text',
-					'desc'  => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
+					'title'      => __( 'Cloudflare email address', 'speed-booster-pack' ),
+					'id'         => 'cloudflare_email',
+					'type'       => 'text',
+					'desc'       => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
 					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title' => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
-					'id'    => 'cloudflare_zone',
-					'type'  => 'text',
-					'desc'  => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
+					'title'      => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
+					'id'         => 'cloudflare_zone',
+					'type'       => 'text',
+					'desc'       => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
 					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
@@ -812,8 +854,8 @@ class Speed_Booster_Pack_Admin {
 					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'type'    => 'content',
-					'content' => '
+					'type'       => 'content',
+					'content'    => '
 				    <span>
 				    	<a href="#" class="button button-small sbp-cloudflare-test">' . __( 'Test Cloudflare connection', 'speed-booster-pack' ) . '<span class="sbp-cloudflare-spinner"></span></a>
 				    	<span class="sbp-cloudflare-fetching">' . __( 'Fetching Cloudflare settings...', 'speed-booster-pack' ) . '</span>
@@ -842,15 +884,15 @@ class Speed_Booster_Pack_Admin {
 					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
-					'title' => __( 'Sucuri API key', 'speed-booster-pack' ),
-					'id'    => 'sucuri_api',
-					'type'  => 'text',
+					'title'      => __( 'Sucuri API key', 'speed-booster-pack' ),
+					'id'         => 'sucuri_api',
+					'type'       => 'text',
 					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title' => __( 'Sucuri API Secret', 'speed-booster-pack' ),
-					'id'    => 'sucuri_secret',
-					'type'  => 'text',
+					'title'      => __( 'Sucuri API Secret', 'speed-booster-pack' ),
+					'id'         => 'sucuri_secret',
+					'type'       => 'text',
 					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
 				],
 			];
@@ -872,19 +914,19 @@ class Speed_Booster_Pack_Admin {
 					'sanitize' => 'sbp_sanitize_url',
 				],
 				[
-					'title'    => __( 'Included Directories', 'speed-booster-pack' ),
-					'id'       => 'cdn_includes',
-					'type'     => 'code_editor',
-					'desc'     => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
-					'sanitize' => 'sbp_sanitize_strip_tags',
+					'title'      => __( 'Included Directories', 'speed-booster-pack' ),
+					'id'         => 'cdn_includes',
+					'type'       => 'code_editor',
+					'desc'       => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
+					'sanitize'   => 'sbp_sanitize_strip_tags',
 					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
 				],
 				[
-					'title'    => __( 'Excluded Extensions', 'speed-booster-pack' ),
-					'id'       => 'cdn_excludes',
-					'type'     => 'code_editor',
-					'desc'     => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
-					'sanitize' => 'sbp_sanitize_strip_tags',
+					'title'      => __( 'Excluded Extensions', 'speed-booster-pack' ),
+					'id'         => 'cdn_excludes',
+					'type'       => 'code_editor',
+					'desc'       => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
+					'sanitize'   => 'sbp_sanitize_strip_tags',
 					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
 				],
 			],
@@ -1194,7 +1236,7 @@ class Speed_Booster_Pack_Admin {
 						'type'       => 'switcher',
 						'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						'class'      => 'lazyload-media ' . ($should_disable_lazyload ? ' inactive-section' : null),
+						'class'      => 'lazyload-media ' . ( $should_disable_lazyload ? ' inactive-section' : null ),
 						'sanitize'   => 'sbp_sanitize_boolean',
 					],
 					[

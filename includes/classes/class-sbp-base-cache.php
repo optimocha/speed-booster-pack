@@ -3,12 +3,18 @@
 namespace SpeedBooster;
 
 class SBP_Base_Cache extends SBP_Abstract_Module {
+	protected $is_litespeed = false;
+
+	public function __construct() {
+		$this->is_litespeed = SBP_Utils::is_litespeed();
+	}
+
 	/**
 	 * Decides to run cache or not.
 	 *
 	 * @return bool
 	 */
-	public static function should_bypass_cache() {
+	protected function should_bypass_cache() {
 		// Do not cache for logged in users
 		if ( is_user_logged_in() ) {
 			return true;
@@ -55,20 +61,20 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 
 		$is_litespeed = SBP_Utils::is_litespeed();
 
-		if ( self::check_excluded_urls( $is_litespeed ) ) {
+		if ( $this->check_excluded_urls() ) {
 			return true;
 		}
 
-		if ( self::check_cookies( $is_litespeed ) ) {
+		if ( $this->check_cookies() ) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public static function check_excluded_urls( $is_litespeed = false ) {
+	private function check_excluded_urls() {
 		// Check for exclude URLs
-		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' . ( $is_litespeed ? '_ls' : '' ) ) ) {
+		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' . ( $this->is_litespeed !== false ? '_ls' : '' ) ) ) {
 			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines( $exclude_urls ) );
 			$exclude_urls[] = '/favicon.ico';
 			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
@@ -78,12 +84,12 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 		}
 	}
 
-	private static function check_cookies( $is_litespeed = false ) {
+	private function check_cookies() {
 		// Check if user logged in
 		if ( ! empty( $_COOKIE ) ) {
 			// Default Cookie Excludes
 			$cookies          = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_' ];
-			$excluded_cookies = sbp_get_option( 'caching_exclude_cookies' . ( $is_litespeed ? '_ls' : '' ) );
+			$excluded_cookies = sbp_get_option( 'caching_exclude_cookies' . ( $this->is_litespeed !== false ? '_ls' : '' ) );
 			$excluded_cookies = SBP_Utils::explode_lines( $excluded_cookies );
 			$cookies          = array_merge( $cookies, $excluded_cookies );
 

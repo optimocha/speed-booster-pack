@@ -205,10 +205,6 @@
         if (hash === 'database') {
             $.scanDatabaseTables();
         }
-
-        if (hash === 'advisor') {
-            $.getAdvisorMessages();
-        }
     });
 
     $.scanDatabaseTables = function() {
@@ -251,19 +247,6 @@
         });
     };
 
-    $.getAdvisorMessages = function() {
-        $.ajax({
-            type: 'GET',
-            url: ajaxurl,
-            data: {'action': 'sbp_get_advisor_messages', 'sbp_action': 'sbp_get_advisor_messages', 'nonce': sbp_ajax_vars.nonce},
-            success: function(response) {
-                $('#advisor-content').html(response);
-            },
-            error: function(xhr, status) {
-            },
-        });
-    };
-
     $(document).on('click', '.sbp-scan-database-tables', function() {
         $.scanDatabaseTables();
     });
@@ -296,20 +279,6 @@
                 $button.removeClass('sbp-loading-active');
                 $button.removeAttr('disabled');
             }
-        });
-    });
-
-    $(document).on('click', '.sbp-advice .notice-dismiss', function() {
-        var message_id = $(this).parent().data('message-id');
-
-        $.ajax({
-            type: 'GET',
-            url: ajaxurl,
-            data: {'action': 'sbp_dismiss_advisor_message', 'sbp_action': 'sbp_dismiss_advisor_message', 'nonce': sbp_ajax_vars.nonce, 'sbp_dismiss_message_id': message_id},
-            success: function(response) {
-            },
-            error: function(xhr, status) {
-            },
         });
     });
 
