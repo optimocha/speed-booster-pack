@@ -635,6 +635,15 @@ class Speed_Booster_Pack_Admin {
 					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
+					'id'         => 'caching_ls_cache_logged_in_users',
+                    // B_TODO: Change texts
+					'title'      => __( 'Cache logged in users', 'speed-booster-pack' ),
+					'desc'       => __( 'Enable cache for logged in users.', 'speed-booster-pack' ),
+					'class'      => $ls_caching_class,
+					'type'       => 'switcher',
+					'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
+				],
+				[
 					'id'         => 'caching_ls_expiry',
 					'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
 					'class'      => $ls_caching_class,

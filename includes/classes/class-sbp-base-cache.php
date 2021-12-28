@@ -14,9 +14,9 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 	 *
 	 * @return bool
 	 */
-	protected function should_bypass_cache() {
+	protected function should_bypass_cache( $skipped_conditions = [] ) {
 		// Do not cache for logged in users
-		if ( is_user_logged_in() ) {
+		if ( is_user_logged_in() && ! in_array( 'is_logged_in', $skipped_conditions ) ) {
 			return true;
 		}
 

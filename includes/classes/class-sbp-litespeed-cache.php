@@ -73,6 +73,8 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			return;
 		}
 
+		$lines = [];
+
 		if ( sbp_get_option( 'module_caching_ls' ) ) {
 			$lines[] = '<IfModule LiteSpeed>';
 			$lines[] = 'RewriteEngine On';
@@ -143,13 +145,18 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 		if ( ! sbp_get_option( 'module_caching_ls' ) ) {
 			header( 'X-LiteSpeed-Cache-Control: no-cache' );
 		} else {
-			// Check for all exclusions
-			if ( true === $this->should_bypass_cache() ) {
-				header( 'X-LiteSpeed-Cache-Control: no-cache' );
-			} else {
-				// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
-				$cache_expire_time = sbp_get_option( 'caching_ls_expiry', 10 ) * HOUR_IN_SECONDS;
+			// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
+			$cache_expire_time = sbp_get_option( 'caching_ls_expiry', 10 ) * HOUR_IN_SECONDS;
 
+			// Check for all exclusions
+			if ( true === $this->should_bypass_cache( [ 'is_logged_in' ] ) ) {
+				if ( ! sbp_get_option( 'caching_ls_cache_logged_in_users' ) ) {
+					header( 'X-LiteSpeed-Cache-Control: no-cache' );
+				} else {
+					header( 'X-LiteSpeed-Cache-Control: private,max-age=' . $cache_expire_time );
+					header( 'X-LiteSpeed-Vary: cookie=wp-postpass_' . COOKIEHASH );
+				}
+			} else {
 				$this->add_tags();
 				header( 'X-LiteSpeed-Cache-Control: public,max-age=' . $cache_expire_time );
 				$html .= '<!-- LiteSpeed cache controlled by ' . SBP_PLUGIN_NAME . ' -->';
