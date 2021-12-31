@@ -16,6 +16,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			add_action( 'init', [ $this, 'clear_lscache_request' ] );
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 			add_filter( 'sbp_output_buffer', [ $this, 'set_headers' ] );
+			add_action( 'csf_sbp_options_saved', [ $this, 'send_clear_cache_header' ] );
 		}
 	}
 
@@ -54,7 +55,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 	 */
 	public function clear_lscache_request() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_lscache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_total_lscache' ) ) {
-			@header( 'X-LiteSpeed-Purge:*' );
+			$this->send_clear_cache_header();
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			wp_safe_redirect( $redirect_url );
 			exit;
@@ -164,5 +165,53 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 		}
 
 		return $html;
+	}
+
+	private function clear_cache_hooks() {
+		add_action( '_core_updated_successfully', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'switch_theme', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'save_post', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'autoptimize_action_cachepurged', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'upgrader_process_complete', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'woocommerce_thankyou', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'woocommerce_product_set_stock', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'woocommerce_product_set_stock_status', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'woocommerce_variation_set_stock', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'woocommerce_variation_set_stock_status', [ $this, 'send_clear_cache_header' ] );
+		add_action( 'wp_update_nav_menu', [ $this, 'send_clear_cache_header' ] );  // When a custom menu is update.
+		add_action( 'update_option_sidebars_widgets', [ $this, 'send_clear_cache_header' ] );  // When you change the order of widgets.
+		add_action( 'update_option_category_base', [ $this, 'send_clear_cache_header' ] );  // When category permalink prefix is update.
+		add_action( 'update_option_tag_base', [ $this, 'send_clear_cache_header' ] );  // When tag permalink prefix is update.
+		add_action( 'permalink_structure_changed', [ $this, 'send_clear_cache_header' ] );  // When permalink structure is update.
+		add_action( 'edited_terms', [ $this, 'send_clear_cache_header' ] );  // When a term is updated.
+		add_action( 'customize_save', [ $this, 'send_clear_cache_header' ] );  // When customizer is saved.
+		add_action( 'comment_post', [ $this, 'clear_post_by_comment' ] );
+		add_action(
+			'wp_trash_post',
+			function ( $post_id ) {
+				if ( get_post_status( $post_id ) == 'publish' ) {
+					$this->send_clear_cache_header();
+				}
+			}
+		);
+
+		if ( is_admin() ) {
+			add_action( 'wpmu_new_blog', [ $this, 'send_clear_cache_header' ] );
+			add_action( 'delete_blog', [ $this, 'send_clear_cache_header' ] );
+			add_action( 'transition_comment_status', [ $this, 'send_clear_cache_header' ], 10, 3 );
+			add_action( 'edit_comment', [ $this, 'clear_post_by_comment' ] );
+		}
+	}
+
+	public function send_clear_cache_header() {
+		@header( 'X-LiteSpeed-Purge:*' );
+	}
+
+	public function clear_post_by_comment( $comment_id ) {
+		$comment = get_comment( $comment_id );
+
+		if ( $comment->comment_approved ) {
+			self::clear_post_by_id( $comment->comment_post_ID );
+		}
 	}
 }

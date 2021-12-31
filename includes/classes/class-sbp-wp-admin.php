@@ -13,7 +13,7 @@ class SBP_WP_Admin {
 		if ( is_admin() ) {
 			require_once SBP_LIB_PATH . 'announce4wp/announce4wp-client.php';
 			add_action( 'admin_init', [ $this, 'set_notices' ] );
-			$this->initialize_announce4wp();
+//			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
 			add_action( 'admin_init', [ $this, 'welcome_notice' ] );

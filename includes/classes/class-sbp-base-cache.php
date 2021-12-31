@@ -59,8 +59,6 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 			}
 		}
 
-		$is_litespeed = SBP_Utils::is_litespeed();
-
 		if ( $this->check_excluded_urls() ) {
 			return true;
 		}
