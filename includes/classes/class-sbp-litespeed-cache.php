@@ -17,6 +17,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 			add_filter( 'sbp_output_buffer', [ $this, 'set_headers' ] );
 			add_action( 'csf_sbp_options_saved', [ $this, 'send_clear_cache_header' ] );
+			$this->clear_cache_hooks();
 		}
 	}
 
@@ -34,19 +35,6 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			];
 
 			$admin_bar->add_node( $sbp_admin_menu );
-
-			// Clear Front Page Cache
-			$clear_frontpage_url = wp_nonce_url( add_query_arg( 'sbp_action', 'sbp_clear_frontpage_lscache' ),
-					'sbp_clear_frontpage_lscache',
-					'sbp_nonce' ) . '&tags=is_front_page';
-			$sbp_admin_menu      = [
-				'id'     => 'sbp_clear_frontpage_lscache',
-				'parent' => 'speed_booster_pack',
-				'title'  => __( 'Clear Front Page Cache', 'speed-booster-pack' ),
-				'href'   => $clear_frontpage_url,
-			];
-
-			$admin_bar->add_node( $sbp_admin_menu );
 		}
 	}
 
@@ -56,13 +44,6 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 	public function clear_lscache_request() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_lscache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_total_lscache' ) ) {
 			$this->send_clear_cache_header();
-			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
-			wp_safe_redirect( $redirect_url );
-			exit;
-		}
-
-		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_frontpage_lscache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_frontpage_lscache' ) && isset( $_GET['tags'] ) && $tags = $_GET['tags'] ) {
-			@header( 'X-LiteSpeed-Purge:' . $tags );
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			wp_safe_redirect( $redirect_url );
 			exit;
@@ -83,7 +64,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 
 			// Add vary, so the logged in users won't see public cache or other users' caches
 			$lines[] = '## BEGIN Cache vary for logged in users';
-			$lines[] = 'RewriteRule .? - [E="Cache-Vary:,wp-postpass_' . COOKIEHASH . '"]';
+			$lines[] = 'RewriteRule .? - [E="Cache-Vary:,wordpress_logged_in_' . COOKIEHASH . '"]';
 			$lines[] = '## END Cache vary for logged in users' . PHP_EOL;
 
 			if ( sbp_get_option( 'caching_ls_separate_mobile' ) ) {
@@ -155,7 +136,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 					header( 'X-LiteSpeed-Cache-Control: no-cache' );
 				} else {
 					header( 'X-LiteSpeed-Cache-Control: private,max-age=' . $cache_expire_time );
-					header( 'X-LiteSpeed-Vary: cookie=wp-postpass_' . COOKIEHASH );
+					header( 'X-LiteSpeed-Vary: cookie=wordpress_logged_in_' . COOKIEHASH );
 				}
 			} else {
 				$this->add_tags();
@@ -185,7 +166,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 		add_action( 'permalink_structure_changed', [ $this, 'send_clear_cache_header' ] );  // When permalink structure is update.
 		add_action( 'edited_terms', [ $this, 'send_clear_cache_header' ] );  // When a term is updated.
 		add_action( 'customize_save', [ $this, 'send_clear_cache_header' ] );  // When customizer is saved.
-		add_action( 'comment_post', [ $this, 'clear_post_by_comment' ] );
+//		add_action( 'comment_post', [ $this, 'clear_post_by_comment' ] );
 		add_action(
 			'wp_trash_post',
 			function ( $post_id ) {
@@ -199,19 +180,26 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			add_action( 'wpmu_new_blog', [ $this, 'send_clear_cache_header' ] );
 			add_action( 'delete_blog', [ $this, 'send_clear_cache_header' ] );
 			add_action( 'transition_comment_status', [ $this, 'send_clear_cache_header' ], 10, 3 );
-			add_action( 'edit_comment', [ $this, 'clear_post_by_comment' ] );
+//			add_action( 'edit_comment', [ $this, 'clear_post_by_comment' ] );
 		}
 	}
 
 	public function send_clear_cache_header() {
 		@header( 'X-LiteSpeed-Purge:*' );
-	}
-
-	public function clear_post_by_comment( $comment_id ) {
-		$comment = get_comment( $comment_id );
-
-		if ( $comment->comment_approved ) {
-			self::clear_post_by_id( $comment->comment_post_ID );
+		if ( sbp_get_option( 'caching_ls_warmup_after_clear' ) && sbp_get_option( 'module_caching_ls' ) ) {
+			// Start Warmup
+			$warmup = new SBP_Cache_Warmup();
+			$warmup->start_process();
+			unset( $warmup );
 		}
 	}
+
+	// Z_TODO: We are currently not supporting this feature on LiteSpeed Cache
+//	public function clear_post_by_comment( $comment_id ) {
+//		$comment = get_comment( $comment_id );
+//
+//		if ( $comment->comment_approved ) {
+//			self::clear_post_by_id( $comment->comment_post_ID );
+//		}
+//	}
 }

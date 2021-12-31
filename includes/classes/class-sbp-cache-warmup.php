@@ -13,7 +13,7 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 	private $warmup_process;
 
 	public function __construct() {
-		if ( ! sbp_get_option( 'module_caching' ) ) {
+		if ( ! sbp_get_option( 'module_caching' ) && ! sbp_get_option( 'module_caching_ls' ) ) {
 			return;
 		}
 
