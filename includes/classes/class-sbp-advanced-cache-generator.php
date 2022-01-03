@@ -46,7 +46,6 @@ if ( ! empty( $_COOKIE ) ) {
 	$cookies_regex = \'/^(\' . implode( \'|\', $cookies ) . \')/\';
 
 	foreach ( $_COOKIE as $key => $value ) {
-		// Z_TODO: Need to decode each key before match
 		if ( preg_match( $cookies_regex, $key ) ) {
 			return false;
 		}
@@ -59,7 +58,7 @@ if ( ! empty( $_COOKIE ) ) {
 $filename = \'index.html\';
 
 // Check for query strings
-if ( ! empty( $_GET ) ) {
+if ( count($_GET) > 1 ) {
 	// Get included rules
 	$include_query_strings = sbp_explode_lines( \'' . self::caching_query_string_includes() . '\' );
 
