@@ -49,7 +49,7 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 			return true;
 		}
 
-		if ( ! empty( $_GET ) ) {
+		if ( count($_GET) > 1 ) {
 			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
 
 			foreach ( $_GET as $key => $value ) {
