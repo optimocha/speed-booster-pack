@@ -131,17 +131,23 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			$cache_expire_time = sbp_get_option( 'caching_ls_expiry', 10 ) * HOUR_IN_SECONDS;
 
 			// Check for all exclusions
-			if ( true === $this->should_bypass_cache( [ 'is_logged_in', 'include_query_strings' ] ) ) {
-				if ( ! sbp_get_option( 'caching_ls_cache_logged_in_users' ) ) {
+			if ( true === $this->should_bypass_cache( [ 'is_logged_in', 'include_query_strings', 'check_cookies' ] ) ) {
+				header( 'X-LiteSpeed-Cache-Control: no-cache' );
+			} else {
+				if ( ! sbp_get_option( 'caching_ls_cache_logged_in_users' ) && is_user_logged_in() ) {
 					header( 'X-LiteSpeed-Cache-Control: no-cache' );
 				} else {
-					header( 'X-LiteSpeed-Cache-Control: private,max-age=' . $cache_expire_time );
-					header( 'X-LiteSpeed-Vary: cookie=wordpress_logged_in_' . COOKIEHASH );
+					$this->add_tags();
+
+					if (is_user_logged_in()) {
+						header( 'X-LiteSpeed-Cache-Control: private,max-age=' . $cache_expire_time );
+						header( 'X-LiteSpeed-Vary: cookie=wordpress_logged_in_' . COOKIEHASH );
+					} else {
+						header( 'X-LiteSpeed-Cache-Control: public,max-age=' . $cache_expire_time );
+						$html .= '<!-- LiteSpeed cache controlled by ' . SBP_PLUGIN_NAME . ' -->';
+					}
 				}
-			} else {
-				$this->add_tags();
-				header( 'X-LiteSpeed-Cache-Control: public,max-age=' . $cache_expire_time );
-				$html .= '<!-- LiteSpeed cache controlled by ' . SBP_PLUGIN_NAME . ' -->';
+
 			}
 		}
 

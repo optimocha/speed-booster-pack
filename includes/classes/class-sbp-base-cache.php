@@ -65,7 +65,7 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 			return true;
 		}
 
-		if ( $this->check_cookies() ) {
+		if ( $this->check_cookies() && ! in_array( 'check_cookies', $skipped_conditions ) ) {
 			return true;
 		}
 
