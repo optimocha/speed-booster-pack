@@ -74,7 +74,7 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 
 	private function check_excluded_urls() {
 		// Check for exclude URLs
-		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' . ( $this->is_litespeed !== false ? '_ls' : '' ) ) ) {
+		if ( $exclude_urls = sbp_get_option( 'caching_' . ( $this->is_litespeed !== false ? 'ls_' : '' ) . 'exclude_urls' ) ) {
 			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines( $exclude_urls ) );
 			$exclude_urls[] = '/favicon.ico';
 			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
@@ -89,7 +89,7 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 		if ( ! empty( $_COOKIE ) ) {
 			// Default Cookie Excludes
 			$cookies          = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_' ];
-			$excluded_cookies = sbp_get_option( 'caching_exclude_cookies' . ( $this->is_litespeed !== false ? '_ls' : '' ) );
+			$excluded_cookies = sbp_get_option( 'caching_' . ( $this->is_litespeed !== false ? 'ls_' : '' ) . 'exclude_cookies' );
 			$excluded_cookies = SBP_Utils::explode_lines( $excluded_cookies );
 			$cookies          = array_merge( $cookies, $excluded_cookies );
 
