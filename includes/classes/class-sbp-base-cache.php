@@ -49,12 +49,14 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 			return true;
 		}
 
-		if ( count($_GET) > 1 ) {
-			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
+		if ( ! in_array( 'include_query_strings', $skipped_conditions ) ) {
+			if ( ! empty( $_GET ) ) {
+				$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
 
-			foreach ( $_GET as $key => $value ) {
-				if ( ! in_array( $key, $include_query_strings ) ) {
-					return true;
+				foreach ( $_GET as $key => $value ) {
+					if ( ! in_array( $key, $include_query_strings ) ) {
+						return true;
+					}
 				}
 			}
 		}

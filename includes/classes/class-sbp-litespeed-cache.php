@@ -131,7 +131,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			$cache_expire_time = sbp_get_option( 'caching_ls_expiry', 10 ) * HOUR_IN_SECONDS;
 
 			// Check for all exclusions
-			if ( true === $this->should_bypass_cache( [ 'is_logged_in' ] ) ) {
+			if ( true === $this->should_bypass_cache( [ 'is_logged_in', 'include_query_strings' ] ) ) {
 				if ( ! sbp_get_option( 'caching_ls_cache_logged_in_users' ) ) {
 					header( 'X-LiteSpeed-Cache-Control: no-cache' );
 				} else {
