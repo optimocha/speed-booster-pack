@@ -663,15 +663,6 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'id'         => 'caching_ls_warmup_after_clear',
-					'class'      => $ls_caching_class,
-					'type'       => 'switcher',
-					'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
-					'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
-					'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
 					'id'         => 'caching_ls_exclude_urls',
 					'class'      => 'caching-exclude-urls' . $ls_caching_class,
 					'type'       => 'code_editor',
