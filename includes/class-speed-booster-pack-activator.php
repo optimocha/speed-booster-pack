@@ -13,7 +13,6 @@
 use SpeedBooster\SBP_Advanced_Cache_Generator;
 use SpeedBooster\SBP_Cache;
 use SpeedBooster\SBP_LiteSpeed_Cache;
-use SpeedBooster\SBP_WP_Config_Injector;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -55,8 +54,6 @@ class Speed_Booster_Pack_Activator {
 		if ( sbp_get_option( 'module_caching_ls' ) && ! sbp_should_disable_feature( 'caching' ) ) {
 			SBP_LiteSpeed_Cache::insert_htaccess_rules();
 		}
-
-        SBP_WP_Config_Injector::inject_wp_config();
 	}
 
 }

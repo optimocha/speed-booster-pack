@@ -7,6 +7,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/** @removal */
 class SBP_WP_Config_Injector {
 	private static $options = [];
 
