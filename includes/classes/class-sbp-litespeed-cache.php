@@ -43,7 +43,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 	 */
 	public function clear_lscache_request() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_clear_lscache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_clear_total_lscache' ) ) {
-			$this->send_clear_cache_header();
+			self::send_clear_cache_header();
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			wp_safe_redirect( $redirect_url );
 			exit;
@@ -118,6 +118,10 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			}
 		}
 
+		if ( sbp_get_option( 'caching_ls_separate_mobile' ) && wp_is_mobile() ) {
+			$tags[] = 'is_mobile';
+		}
+
 		if ( $tags ) {
 			header( 'X-LiteSpeed-Tag: ' . implode( ',', $tags ) );
 		}
@@ -177,7 +181,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			'wp_trash_post',
 			function ( $post_id ) {
 				if ( get_post_status( $post_id ) == 'publish' ) {
-					$this->send_clear_cache_header();
+					self::send_clear_cache_header();
 				}
 			}
 		);
@@ -190,14 +194,8 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 		}
 	}
 
-	public function send_clear_cache_header() {
-		@header( 'X-LiteSpeed-Purge:*' );
-		if ( sbp_get_option( 'caching_ls_warmup_after_clear' ) && sbp_get_option( 'module_caching_ls' ) ) {
-			// Start Warmup
-			$warmup = new SBP_Cache_Warmup();
-			$warmup->start_process();
-			unset( $warmup );
-		}
+	public static function send_clear_cache_header() {
+		@header( 'X-LiteSpeed-Purge: *' );
 	}
 
 	// Z_TODO: We are currently not supporting this feature on LiteSpeed Cache

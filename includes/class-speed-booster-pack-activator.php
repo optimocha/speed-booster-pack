@@ -40,11 +40,10 @@ class Speed_Booster_Pack_Activator {
 	 * @since    4.0.0
 	 */
 	public static function activate() {
-        if (sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' )) {
+        if ( sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' ) ) {
             SBP_Cache::clear_total_cache();
             SBP_Cache::set_wp_cache_constant( true );
             SBP_Cache::generate_htaccess();
-			SBP_LiteSpeed_Cache::insert_htaccess_rules();
 
             $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file();
             $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
@@ -52,6 +51,11 @@ class Speed_Booster_Pack_Activator {
                 file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
             }
         }
+
+		if ( sbp_get_option( 'module_caching_ls' ) && ! sbp_should_disable_feature( 'caching' ) ) {
+			SBP_LiteSpeed_Cache::insert_htaccess_rules();
+		}
+
         SBP_WP_Config_Injector::inject_wp_config();
 	}
 
