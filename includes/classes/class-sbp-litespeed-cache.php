@@ -195,7 +195,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 	}
 
 	public static function send_clear_cache_header() {
-		@header( 'X-LiteSpeed-Purge: *' );
+		@header( 'X-LiteSpeed-Purge: private, *; public, *' );
 	}
 
 	// Z_TODO: We are currently not supporting this feature on LiteSpeed Cache
