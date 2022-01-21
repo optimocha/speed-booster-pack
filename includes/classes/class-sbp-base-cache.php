@@ -77,7 +77,9 @@ class SBP_Base_Cache extends SBP_Abstract_Module {
 		if ( $exclude_urls = sbp_get_option( 'caching_' . ( $this->is_litespeed !== false ? 'ls_' : '' ) . 'exclude_urls' ) ) {
 			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines( $exclude_urls ) );
 			$exclude_urls[] = '/favicon.ico';
-			$current_url    = rtrim( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '/' );
+			$current_url    = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			$current_url = explode( '?', $current_url )[0];
+			$current_url = rtrim( $current_url, '/' );
 			if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
 				return true;
 			}
