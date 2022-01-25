@@ -116,7 +116,7 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_intro' );
 }
 
-// Z_TODO: let's make a tool called "Cleanup SBP metadata" in a future version
+// B_TODO: let's make a tool called "Cleanup SBP metadata" in a future version
 // $posts = new WP_Query([
 //     'post_type' => 'any',
 //     'meta_key' => 'sbp_post_meta',

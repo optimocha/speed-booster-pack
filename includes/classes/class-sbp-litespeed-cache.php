@@ -74,7 +74,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 				$lines[] = '## END Cache vary for mobile browsers' . PHP_EOL;
 			}
 
-			// Z_TODO: Exclude cookie rules must be in htaccess
+			// B_TODO: Exclude cookie rules must be in htaccess
 
 			if ( $query_strings = sbp_get_option( 'caching_ls_include_query_strings' ) ) {
 				$keys = explode( PHP_EOL, $query_strings );
@@ -198,7 +198,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 		@header( 'X-LiteSpeed-Purge: private, *; public, *' );
 	}
 
-	// Z_TODO: We are currently not supporting this feature on LiteSpeed Cache
+	// B_TODO: We are currently not supporting this feature on LiteSpeed Cache
 //	public function clear_post_by_comment( $comment_id ) {
 //		$comment = get_comment( $comment_id );
 //

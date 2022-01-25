@@ -705,7 +705,6 @@ class Speed_Booster_Pack_Admin {
 				$cache_fields              = array_merge( $restricted_hosting_notice, $cache_fields );
 			}
 
-			// Z_TODO: Make sure this isn't shown on a LiteSpeed server & some other caching plugin is enabled
 			if ( sbp_get_option( 'module_caching' ) && ! defined( 'SBP_ADVANCED_CACHE' ) ) {
 				$cache_fields = array_merge( [
 					[
