@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 4.4.0
+Stable tag: 4.4.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,6 +103,12 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.4.1 =
+
+*Release Date: XX February 2021*
+
+* **Fixed**: Fixed a development console error when there are no fonts found inside page sources.
 
 = 4.4.0 =
 

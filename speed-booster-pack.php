@@ -6,7 +6,7 @@
  * Plugin Name:       Speed Booster Pack
  * Plugin URI:        https://speedboosterpack.com
  * Description:       PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize & cache your site with this smart plugin!
- * Version:           4.4.0
+ * Version:           4.4.1
  * Author:            Optimocha
  * Author URI:        https://optimocha.com
  * License:           GPLv3 or later
