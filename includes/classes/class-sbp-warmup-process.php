@@ -13,9 +13,6 @@ class SBP_Warmup_Process extends \WP_Background_Process {
 
 	protected function task( $item ) {
 		$item['url'] = SBP_Utils::clear_hashes_and_question_mark( $item['url'] );
-		if ( in_array( $item['url'], $this->done ) ) {
-			return false;
-		}
 
 		$options = isset( $item['options'] ) ? $item['options'] : [];
 		$args    = array_merge( [

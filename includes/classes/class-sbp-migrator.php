@@ -40,8 +40,6 @@ class SBP_Migrator {
 		if ( ! $current_migrator_version || (int) $current_migrator_version < (int) SBP_MIGRATOR_VERSION ) {
 			add_action( 'init', [ $this, 'migrate_plugin' ] );
 		}
-
-		add_action( 'admin_init', [ $this, 'update_pagespeed_tricker' ] );
 	}
 
 	public function migrate_plugin() {
@@ -115,7 +113,6 @@ ga('send', 'pageview');";
 	}
 
 	private function apply_cache_settings() {
-		SBP_WP_Config_Injector::inject_wp_config();
 		SBP_Cache::generate_htaccess();
 		SBP_Cache::set_wp_cache_constant();
 	}
@@ -252,18 +249,6 @@ ga('send', 'pageview');";
 
 		if ( get_transient( 'sbp_options_migrated' ) && current_user_can( 'manage_options' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_database_migrated_' . SBP_MIGRATOR_VERSION, '<p>' . SBP_PLUGIN_NAME . ': ' . __( 'With version 4.2.0, we\'ve split the JavaScript optimization feature into two: Defer and move to footer. Check your JS optimization settings to ensure the settings are correct.', 'speed-booster-pack' ) . '</p>' );
-		}
-	}
-
-	public function update_pagespeed_tricker() {
-		if ( sbp_get_option( 'pagespeed_tricker' ) && current_user_can( 'manage_options' ) ) {
-			$inject = SBP_WP_Config_Injector::inject_wp_config();
-
-			if ( $inject ) {
-				$this->sbp_options                      = get_option( 'sbp_options' );
-				$this->sbp_options['pagespeed_tricker'] = 0;
-				update_option( 'sbp_options', $this->sbp_options );
-			}
 		}
 	}
 }

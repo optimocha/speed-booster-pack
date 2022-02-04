@@ -388,7 +388,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_cookies' ) ) {
 	}
 }
 
-if ( ! function_exists( 'sbp_sanitize_caching_included_query_strings' ) ) {
+if ( ! function_exists( 'sbp_sanitize_query_strings' ) ) {
 	/**
 	 * Sanitizes included query strings for caching
 	 *
@@ -398,7 +398,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_included_query_strings' ) ) {
 	 * @since 4.2.0
 	 *
 	 */
-	function sbp_sanitize_caching_included_query_strings( $urls ) {
+	function sbp_sanitize_query_strings( $urls ) {
 		$urls = strip_tags( $urls );
 		$urls = SBP_Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );

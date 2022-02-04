@@ -254,3 +254,7 @@
         transform: rotate(360deg);
     }
 }
+
+.sbp-hidden {
+    display: none!important;
+}

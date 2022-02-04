@@ -3782,31 +3782,6 @@
     min-height: 32px;
   }
 
-  .csf-modal-inner {
-    width: 350px;
-    height: 400px;
-  }
-
-  .csf-modal-content {
-    height: 237px;
-  }
-
-  .csf-icon-dialog .csf-modal-inner {
-    width: 305px;
-    height: 380px;
-  }
-  .csf-icon-dialog .csf-modal-content {
-    height: 267px;
-  }
-
-  .csf-modal-icon .csf-modal-inner {
-    width: 330px;
-    height: 385px;
-  }
-  .csf-modal-icon .csf-modal-content {
-    height: 252px;
-  }
-
   .csf-profile-options > .csf-field > .csf-title,
   .csf-taxonomy-edit-fields > .csf-field > .csf-title {
     float: none;
@@ -3825,6 +3800,19 @@
   }
   .csf-nav-menu-options > .csf-fields > .csf-field {
     padding: 10px;
+  }
+}
+@media only screen and (max-width: 782px) {
+  .csf-modal .csf-modal-inner {
+    width: 90%;
+  }
+}
+@media only screen and (max-height: 750px) {
+  .csf-modal .csf-modal-inner {
+    height: auto;
+  }
+  .csf-modal .csf-modal-content {
+    height: calc(100vh - 200px);
   }
 }
 /**

@@ -53,4 +53,48 @@ class SBP_Utils extends SBP_Abstract_Module {
 		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || $is_plugin_active_for_network;
 	}
 
+	public static function insert_to_htaccess( $marker_name, $content ) {
+		global $wp_filesystem;
+
+		require_once( ABSPATH . '/wp-admin/includes/file.php' );
+		WP_Filesystem();
+
+		$htaccess_file_path = get_home_path() . '/.htaccess';
+
+		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
+			$current_htaccess = trim( $wp_filesystem->get_contents( $htaccess_file_path ) );
+			$current_htaccess = preg_replace( '/(## BEGIN ' . $marker_name . '.*?## END ' . $marker_name . PHP_EOL . PHP_EOL . ')/msi', '', $current_htaccess );
+
+			if ( $content ) {
+				$current_htaccess = str_replace( "# BEGIN WordPress", '## BEGIN ' . $marker_name . PHP_EOL . $content . PHP_EOL . '## END ' . $marker_name . PHP_EOL . PHP_EOL . "# BEGIN WordPress", $current_htaccess );
+			}
+
+			$put_files = $wp_filesystem->put_contents( $htaccess_file_path, $current_htaccess );
+
+			return (bool) $put_files;
+		}
+
+		return false;
+	}
+
+	public static function is_litespeed() {
+		if ( ! defined( 'LITESPEED_SERVER_TYPE' ) ) {
+			if ( isset( $_SERVER['HTTP_X_LSCACHE'] ) && $_SERVER['HTTP_X_LSCACHE'] ) {
+				define( 'LITESPEED_SERVER_TYPE', 'LITESPEED_SERVER_ADC' );
+			} elseif ( isset( $_SERVER['LSWS_EDITION'] ) && strpos( $_SERVER['LSWS_EDITION'], 'Openlitespeed' ) === 0 ) {
+				define( 'LITESPEED_SERVER_TYPE', 'LITESPEED_SERVER_OLS' );
+			} elseif ( isset( $_SERVER['SERVER_SOFTWARE'] ) && $_SERVER['SERVER_SOFTWARE'] == 'LiteSpeed' ) {
+				define( 'LITESPEED_SERVER_TYPE', 'LITESPEED_SERVER_ENT' );
+			} else {
+				define( 'LITESPEED_SERVER_TYPE', 'NONE' );
+			}
+		}
+
+		// Checks if caching is allowed via server variable
+		if ( ! empty ( $_SERVER['X-LSCACHE'] ) ||  LITESPEED_SERVER_TYPE === 'LITESPEED_SERVER_ADC' || defined( 'LITESPEED_CLI' ) ) {
+			! defined( 'LITESPEED_ALLOWED' ) &&  define( 'LITESPEED_ALLOWED', true );
+		}
+
+		return LITESPEED_SERVER_TYPE !== 'NONE' ? LITESPEED_SERVER_TYPE && LITESPEED_ALLOWED : false;
+	}
 }

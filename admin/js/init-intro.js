@@ -12,7 +12,7 @@ jQuery(function() {
                 steps: [{
                     intro: sbp_intro_translations.welcome
                 }, {
-                    element: document.querySelector('[data-tab-id="caching"]'),
+                    element: document.querySelector('.csf-tab-item:nth-child(3)'),
                     intro: sbp_intro_translations.caching,
                     position: 'right'
                 }, {
@@ -20,44 +20,43 @@ jQuery(function() {
                     intro: sbp_intro_translations.caching2,
                     position: 'bottom'
                 }, {
-                    element: document.querySelector('[data-tab-id="general"]'),
+                    element: document.querySelector('.csf-tab-item:nth-child(2)'),
                     intro: sbp_intro_translations.general,
                     position: 'right'
                 }, {
-                    element: document.querySelector('[data-tab-id="cdn-proxy"]'),
+                    element: document.querySelector('.csf-tab-item:nth-child(4)'),
                     intro: sbp_intro_translations.cdn,
                     position: 'right'
                 }, {
-                    element: document.querySelector('[data-tab-id="optimize-css"]'),
+                    element: document.querySelector('.csf-tab-item:nth-child(5)'),
                     intro: sbp_intro_translations.css,
                     position: 'right'
                 }, {
-                    element: document.querySelector('[data-tab-id="assets"]'),
+                    element: document.querySelector('.csf-tab-item:nth-child(6)'),
                     intro: sbp_intro_translations.assets,
                     position: 'right'
                 }, {
                     intro: sbp_intro_translations.end
                 }]
-            }).start().onbeforechange(function(targetElement) {
-
-                if ($(targetElement).is('[data-tab-id="caching"]') || $(targetElement).is('.module-caching')) {
-                    window.location.hash = '#tab=caching';
+            }).start().onbeforechange(async function(targetElement) {
+                if ($(targetElement).is('.csf-tab-item:nth-child(3)') || $(targetElement).is('.module-caching')) {
+                    window.location.hash = $('.csf-tab-item:nth-child(3) > a').attr('href');
                 }
 
-                if ($(targetElement).is('[data-tab-id="general"]')) {
-                    window.location.hash = '#tab=general';
+                if ($(targetElement).is('.csf-tab-item:nth-child(2)')) {
+                    window.location.hash = $('.csf-tab-item:nth-child(2) > a').attr('href');
                 }
 
-                if ($(targetElement).is('[data-tab-id="cdn-proxy"]')) {
-                    window.location.hash = '#tab=cdn-proxy';
+                if ($(targetElement).is('.csf-tab-item:nth-child(4)')) {
+                    window.location.hash = $('.csf-tab-item:nth-child(4) > a').attr('href');
                 }
 
-                if ($(targetElement).is('[data-tab-id="optimize-css"]')) {
-                    window.location.hash = '#tab=optimize-css';
+                if ($(targetElement).is('.csf-tab-item:nth-child(5)')) {
+                    window.location.hash = $('.csf-tab-item:nth-child(5) > a').attr('href');
                 }
 
-                if ($(targetElement).is('[data-tab-id="assets"]')) {
-                    window.location.hash = '#tab=assets';
+                if ($(targetElement).is('.csf-tab-item:nth-child(6)')) {
+                    window.location.hash = $('.csf-tab-item:nth-child(6) > a').attr('href');
                 }
 
             }).onexit(function() {

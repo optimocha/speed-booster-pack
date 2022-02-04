@@ -80,16 +80,16 @@
  * ---------------------------------------------------------
  *
  */
-@import "vendor/base";
-@import "vendor/themes";
-@import "vendor/fields";
-@import "vendor/widget";
-@import "vendor/customizer";
-@import "vendor/taxonomy";
-@import "vendor/navmenu";
-@import "vendor/profile";
-@import "vendor/modal";
-@import "vendor/helper";
-@import "vendor/welcome";
-@import "vendor/responsive";
-@import "vendor/chosen";
+@import "partials/base";
+@import "partials/themes";
+@import "partials/fields";
+@import "partials/widget";
+@import "partials/customizer";
+@import "partials/taxonomy";
+@import "partials/navmenu";
+@import "partials/profile";
+@import "partials/modal";
+@import "partials/helper";
+@import "partials/welcome";
+@import "partials/responsive";
+@import "partials/chosen";

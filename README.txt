@@ -3,9 +3,9 @@ Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
 Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 4.3.4.2
+Stable tag: 4.4.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,6 +103,17 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.4.0 =
+
+*Release Date: 05 February 2021*
+
+* **NEW - LiteSpeed Caching**: This experimental new feature connects to your LiteSpeed server and use LiteSpeed's caching structure. Since it's really new, be sure to test thoroughly and [kindly report any bugs to our GitHub page](https://github.com/optimocha/speed-booster-pack/issues/).
+* **Improved**: Better page caching by refactoring some of the code.
+* **Fixed**: Fixed onboarding for non-English users.
+* **Fixed**: Fixed a small issue with per-post/page critical CSS settings.
+* **Updated**: Updated Codestar Framework to v2.2.5.
+* **Removed**: The Advisor tab is now removed because the Site Health screen in WordPress core will include a Performance tab with the same functionality (in the future).
 
 = 4.3.4.2 =
 

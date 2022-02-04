@@ -16,6 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 use SpeedBooster\SBP_Cache;
+use SpeedBooster\SBP_LiteSpeed_Cache;
 use SpeedBooster\SBP_WP_Config_Injector;
 
 /**
@@ -42,6 +43,7 @@ class Speed_Booster_Pack_Deactivator {
 		SBP_WP_Config_Injector::remove_wp_config_lines();
 		SBP_Cache::set_wp_cache_constant( false );
 		SBP_Cache::clean_htaccess();
+		SBP_LiteSpeed_Cache::remove_htaccess_rules();
 
 		$adv_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
 		if ( file_exists( $adv_cache_file ) ) {
