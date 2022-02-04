@@ -58,7 +58,7 @@ if ( ! empty( $_COOKIE ) ) {
 $filename = \'index.html\';
 
 // Check for query strings
-if ( count($_GET) > 1 ) {
+if ( ! empty( $_GET ) ) {
 	// Get included rules
 	$include_query_strings = sbp_explode_lines( \'' . self::caching_query_string_includes() . '\' );
 

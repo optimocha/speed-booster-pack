@@ -74,6 +74,8 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_LiteSpeed_Cache::insert_htaccess_rules' );
 
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_WP_Config_Injector::remove_wp_config_lines' );
+
 		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
 
 		add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );

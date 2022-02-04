@@ -584,7 +584,7 @@ AddEncoding gzip              svgz
 
 	private function check_query_strings() {
 		// Check for query strings
-		if ( count($_GET) > 1 ) {
+		if ( ! empty( $_GET ) ) {
 			// Get included rules
 			$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
 
