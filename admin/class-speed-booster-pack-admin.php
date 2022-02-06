@@ -652,7 +652,6 @@ class Speed_Booster_Pack_Admin {
 				],
 				[
 					'id'         => 'caching_ls_cache_logged_in_users',
-                    // B_TODO: Change texts
 					'title'      => __( 'Cache logged in users', 'speed-booster-pack' ),
 					'desc'       => __( 'Enable cache for logged in users.', 'speed-booster-pack' ),
 					'class'      => $ls_caching_class,
