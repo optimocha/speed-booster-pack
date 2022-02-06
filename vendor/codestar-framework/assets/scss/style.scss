@@ -35,34 +35,35 @@
  *     03. 10. Field: color_group
  *     03. 11. Field: fieldset
  *     03. 12. Field: date
- *     03. 13. Field: gallery
- *     03. 14. Field: group
- *     03. 15. Field: icon
- *     03. 16. Field: image_select
- *     03. 17. Field: link_color
- *     03. 18. Field: map
- *     03. 19. Field: media
- *     03. 20. Field: palette
- *     03. 21. Field: repeater
- *     03. 22. Field: select
- *     03. 23. Field: slider
- *     03. 24. Field: sortable
- *     03. 25. Field: sorter
- *     03. 26. Field: spinner
- *     03. 27. Field: switcher
- *     03. 28. Field: tabbed
- *     03. 29. Field: text
- *     03. 30. Field: textarea
- *     03. 31. Field: typography
- *     03. 32. Field: upload
- *     03. 33. Field: wp_editor
- *     03. 34. Field: heading
- *     03. 35. Field: subheading
- *     03. 36. Field: submessage
- *     03. 37. Field: notice
- *     03. 38. Field: number
- *     03. 39. Field: link
- *     03. 40. Field: others
+ *     03. 13. Field: datetime
+ *     03. 14. Field: gallery
+ *     03. 15. Field: group
+ *     03. 16. Field: icon
+ *     03. 17. Field: image_select
+ *     03. 18. Field: link_color
+ *     03. 19. Field: map
+ *     03. 20. Field: media
+ *     03. 21. Field: palette
+ *     03. 22. Field: repeater
+ *     03. 23. Field: select
+ *     03. 24. Field: slider
+ *     03. 25. Field: sortable
+ *     03. 26. Field: sorter
+ *     03. 27. Field: spinner
+ *     03. 28. Field: switcher
+ *     03. 29. Field: tabbed
+ *     03. 30. Field: text
+ *     03. 31. Field: textarea
+ *     03. 32. Field: typography
+ *     03. 33. Field: upload
+ *     03. 34. Field: wp_editor
+ *     03. 35. Field: heading
+ *     03. 36. Field: subheading
+ *     03. 37. Field: submessage
+ *     03. 38. Field: notice
+ *     03. 39. Field: number
+ *     03. 40. Field: link
+ *     03. 41. Field: others
  * 04. Widget
  * 05. Customizer
  * 06. Taxonomy
@@ -93,3 +94,4 @@
 @import "partials/welcome";
 @import "partials/responsive";
 @import "partials/chosen";
+@import "partials/flatpickr";
