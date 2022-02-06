@@ -10,6 +10,7 @@ jQuery(function() {
                 prevLabel: sbp_intro_translations.prevLabel,
                 doneLabel: sbp_intro_translations.doneLabel,
                 steps: [{
+                    title: sbp_intro_translations.welcomeTitle,
                     intro: sbp_intro_translations.welcome
                 }, {
                     element: document.querySelector('.csf-tab-item:nth-child(3)'),
