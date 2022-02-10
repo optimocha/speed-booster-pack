@@ -19,7 +19,7 @@ class SBP_Localize_Tracker extends SBP_Abstract_Module {
 	public function __construct() {
 		parent::__construct();
 
-		if ( ! sbp_get_option( 'module_special' ) || ! sbp_get_option( 'localize_tracking_scripts' ) ) {
+		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'localize_tracking_scripts' ) ) {
 			return;
 		}
 

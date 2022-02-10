@@ -7,6 +7,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Z_TODO: Remove The Class
 class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
 
 	public function __construct() {

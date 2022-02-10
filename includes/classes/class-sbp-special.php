@@ -9,6 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Z_TODO: Remove class
 class SBP_Special extends SBP_Abstract_Module {
 	public function __construct() {
 		parent::__construct();
@@ -31,12 +32,14 @@ class SBP_Special extends SBP_Abstract_Module {
 	/**
 	 * Removes WooCommerce scripts from non-woocommerce pages
 	 */
+	// Z_TODO: Will we move this method or completely remove?
 	private function optimize_nonwc_pages() {
 		if ( function_exists( 'is_woocommerce' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'optimize_nonwc_pages_handle' ] );
 		}
 	}
 
+	// Z_TODO: Will we move this method or completely remove?
 	public function optimize_nonwc_pages_handle() {
 		if ( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
 			if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() ) {
@@ -61,6 +64,7 @@ class SBP_Special extends SBP_Abstract_Module {
 		}
 	}
 
+	// Z_TODO: Will we move this method or completely remove?
 	private function woocommerce_disable_cart_fragments() {
 		if ( sbp_get_option( 'woocommerce_disable_cart_fragments' ) ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'woocommerce_disable_cart_fragments_handle' ], 999 );
@@ -70,6 +74,7 @@ class SBP_Special extends SBP_Abstract_Module {
 	/**
 	 * Removes cart-fragments.js
 	 */
+	// Z_TODO: Will we move this method or completely remove?
 	public function woocommerce_disable_cart_fragments_handle() {
 		if ( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			global $wp_scripts;
@@ -88,12 +93,14 @@ class SBP_Special extends SBP_Abstract_Module {
 	/**
 	 * Removes password strength meter in WooCommerce checkout process
 	 */
+	// Z_TODO: Will we move this method or completely remove?
 	private function remove_wc_password_strength_meter() {
 		if ( function_exists( 'is_account_page' ) && sbp_get_option( 'woocommerce_disable_password_meter' ) ) {
 			add_action( 'wp_print_scripts', [ $this, 'remove_wc_password_strength_meter_handle' ], 100 );
 		}
 	}
 
+	// Z_TODO: Will we move this method or completely remove?
 	public function remove_wc_password_strength_meter_handle() {
 		global $wp;
 

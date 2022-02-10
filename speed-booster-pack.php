@@ -97,7 +97,7 @@ define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 /**
  * Migrator script version.
  */
-define( 'SBP_MIGRATOR_VERSION', '42000' );
+define( 'SBP_MIGRATOR_VERSION', '44000' );
 
 /**
  * Load all plugin options

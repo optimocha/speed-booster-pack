@@ -18,7 +18,7 @@ class SBP_CDN extends SBP_Abstract_Module {
 	public function __construct() {
 		parent::__construct();
 
-		if ( ! sbp_get_option( 'cdn_url' ) ) {
+		if ( ! sbp_get_option( 'cdn_url' ) || ! sbp_get_option( 'cdn_enable' ) ) {
 			return;
 		}
 

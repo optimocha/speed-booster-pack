@@ -23,6 +23,7 @@ use SpeedBooster\SBP_CDN;
 use SpeedBooster\SBP_Compatibility_Checker;
 use SpeedBooster\SBP_Critical_CSS;
 use SpeedBooster\SBP_CSS_Minifier;
+// Z_TODO: Remove use
 use SpeedBooster\SBP_Custom_Code_Manager;
 use SpeedBooster\SBP_Database_Optimizer;
 use SpeedBooster\SBP_Image_Dimensions;
@@ -37,6 +38,7 @@ use SpeedBooster\SBP_Migrator;
 use SpeedBooster\SBP_Newsletter;
 use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Preboost;
+// Z_TODO: Remove use
 use SpeedBooster\SBP_Special;
 use SpeedBooster\SBP_Cloudflare;
 use SpeedBooster\SBP_Sucuri;
@@ -176,7 +178,9 @@ class Speed_Booster_Pack {
 		new SBP_Image_Dimensions();
 		new SBP_HTML_Minifier();
 		new SBP_Localize_Tracker();
+		// Z_TODO: Remove instance
 		new SBP_Special();
+		// Z_TODO: Remove instance
 		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
 		new SBP_Notice_Manager();
