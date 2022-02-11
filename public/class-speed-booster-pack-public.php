@@ -67,4 +67,10 @@ class Speed_Booster_Pack_Public {
 		return $html;
 	}
 
+	public function sbp_headers( $headers ) {
+		$headers['X-Powered-By'] = SBP_PLUGIN_NAME;
+
+		return $headers;
+	}
+
 }
