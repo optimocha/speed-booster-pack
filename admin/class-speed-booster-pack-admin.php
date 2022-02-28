@@ -1216,6 +1216,93 @@ class Speed_Booster_Pack_Admin {
 					],
 				] );
 
+
+			// Custom Code Manager
+			if ( count( sbp_get_option('custom_codes', []) ) ) {
+				// We removed this feature but still need to keep it's content. So, hide it using only css.
+				$custom_code_manager = [ [
+					'title'                  => __( 'Custom code manager', 'speed-booster-pack' ),
+					'id'                     => 'custom_codes',
+					'type'                   => 'group',
+                    'class'                  => 'sbp-hidden',
+					'before'                 => '<p>' . __( 'Code blocks added with this tool can be loaded in the header, the footer and can even be delayed.', 'speed-booster-pack' ) . '</p>',
+					'accordion_title_number' => true,
+					'accordion_title_auto'   => false,
+					'sanitize'               => function ( $item ) {
+						if ( $item && is_iterable( $item ) ) {
+							foreach ( $item as &$code_item ) {
+								if ( isset( $code_item['custom_codes_item'] ) ) {
+									$code                           = $code_item['custom_codes_item'];
+									$code                           = preg_replace( '#<(textarea)>.*?<\/$1>#s', '', $code );
+									$code_item['custom_codes_item'] = str_replace( '</textarea>', '', $code );
+								}
+							}
+						}
+
+						return $item;
+					},
+					'fields'                 => [
+						[
+							'id'       => 'custom_codes_item',
+							'type'     => 'code_editor',
+							'before'   => '&lt;script&gt;',
+							'after'    => '&lt;/script&gt;',
+							/* translators: %s = script tag  */
+							'desc'     => sprintf( __( 'Paste the inline JavaScript here. DON\'T include the %s tags or else you might break it!', 'speed-booster-pack' ), '<code>&lt;script&gt;</code>' ),
+							'settings' => [ 'lineWrapping' => true ],
+						],
+						[
+							'title'   => __( 'Placement', 'speed-booster-pack' ),
+							'id'      => 'custom_codes_place',
+							'desc'    => __( 'Set this to "Footer" to place the code before &lt;/body&gt;, or "Header" to place it before &lt;/head&gt;.', 'speed-booster-pack' ),
+							'type'    => 'button_set',
+							'options' => [
+								'footer' => __( 'Footer', 'speed-booster-pack' ),
+								'header' => __( 'Header', 'speed-booster-pack' ),
+							],
+							'default' => 'footer',
+						],
+						[
+							'title'   => __( 'Loading method', 'speed-booster-pack' ),
+							'id'      => 'custom_codes_method',
+							'desc'    => __( 'Set this to "onload" to defer the code to page onload, or "4-second delay" to defer it to four seconds after onload. When in doubt, set it to "Normal".', 'speed-booster-pack' ),
+							'type'    => 'button_set',
+							'options' => [
+								'normal'  => __( 'Normal', 'speed-booster-pack' ),
+								'onload'  => __( 'onload', 'speed-booster-pack' ),
+								'delayed' => __( '4-second delay', 'speed-booster-pack' ),
+							],
+							'default' => 'normal',
+						],
+					],
+				] ];
+
+                $asset_fields = array_merge( $asset_fields, $custom_code_manager );
+
+                $custom_code_manager_backup = '';
+
+                $i = 1;
+                foreach ( sbp_get_option( 'custom_codes', [] ) as $code ) {
+                    $custom_code_manager_backup .= '<!-- Custom code #' . $i . ' (' . $code['custom_codes_place'] . ') -->' . PHP_EOL;
+                    $custom_code_manager_backup .= '<script>' . PHP_EOL;
+                    $custom_code_manager_backup .= $code['custom_codes_item'] . PHP_EOL;
+                    $custom_code_manager_backup .= '</script>' . PHP_EOL . PHP_EOL;
+                    $i ++;
+                }
+
+                SBP_Notice_Manager::display_notice(
+                'custom_code_manager_backup',
+                '<p>' . __( 'Speed Booster Pack: We have removed the Custom Code Manager feature from our plugin because it\'s not totally related to performance. Since you were using this feature, here\'s a backup of your custom codes:', 'speed-booster-pack' ) . '</p>' .
+                    '<textarea style="max-width: 100%; width: 600px; min-height: 150px;" readonly>' . $custom_code_manager_backup . '</textarea>' .
+                    '<p>' . __( 'You can use any plugin you want to add these custom codes (<a href="' . admin_url() . 'plugin-install.php?s=optimocha&tab=search&type=author" target="_blank">We released a new plugin just for this purpose</a>).', 'speed-booster-pack' ) . '</p>' .
+                    '<p><button class="button button-primary sbp-dismiss-ccm-notice notice-dismiss-button" data-notice-id="custom_code_manager_backup" data-notice-action="sbp_dismiss_notice">' . __( 'I copied the code, dismiss this notice', 'speed-booster-pack' ) . '</button></p>',
+                'warning',
+                false,
+                'one_time',
+                'toplevel_page_sbp-settings'
+                );
+			}
+
 			CSF::createSection(
 				$prefix,
 				[
