@@ -2,19 +2,17 @@
 
 namespace SpeedBooster;
 
-use SpeedBooster\SBP_Utils;
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
 // Z_TODO: Remove class in version 4.5
-class SBP_Special extends SBP_Abstract_Module {
+class SBP_Woocommerce extends SBP_Abstract_Module {
 	public function __construct() {
 		parent::__construct();
 
-		if ( ! sbp_get_option( 'module_special' ) ) {
+		if ( ! sbp_get_option( 'module_woocommerce' ) ) {
 			return;
 		}
 
@@ -26,6 +24,8 @@ class SBP_Special extends SBP_Abstract_Module {
 			$this->woocommerce_disable_cart_fragments();
 			$this->optimize_nonwc_pages();
 			$this->remove_wc_password_strength_meter();
+			$this->set_action_scheduler_period();
+			$this->disable_admin();
 		}
 	}
 
@@ -120,6 +120,18 @@ class SBP_Special extends SBP_Abstract_Module {
 			if ( wp_script_is( 'wc-password-strength-meter', 'enqueued' ) ) {
 				wp_dequeue_script( 'wc-password-strength-meter' );
 			}
+		}
+	}
+
+	private function set_action_scheduler_period() {
+		add_filter( 'action_scheduler_retention_period', function() {
+			return DAY_IN_SECONDS * sbp_get_option( 'wc_action_scheduler_period', 7 );
+		} );
+	}
+
+	private function disable_admin() {
+		if ( sbp_get_option( 'wc_disable_admin' ) ) {
+			add_filter( 'woocommerce_admin_disabled', '__return_true' );
 		}
 	}
 }

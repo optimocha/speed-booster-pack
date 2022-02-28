@@ -490,6 +490,78 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: General */
 
+
+			/* BEGIN Section: Woocommerce */
+			CSF::createSection(
+                $prefix,
+                [
+	                'title'  => __( 'Woocommerce', 'speed-booster-pack' ),
+	                'id'     => 'woocommerce',
+	                'icon'   => 'fa fa-shopping-cart',
+	                'fields' => [
+		                [
+			                /* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
+			                'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . 'Woocommerce',
+			                'id'       => 'module_woocommerce',
+			                'class'    => 'module-woocommerce',
+			                'type'     => 'switcher',
+			                'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
+			                'default'  => false,
+			                'sanitize' => 'sbp_sanitize_boolean',
+		                ],
+		                [
+			                'title'      => __( 'Disable cart fragments', 'speed-booster-pack' ),
+			                'id'         => 'woocommerce_disable_cart_fragments',
+			                'type'       => 'switcher',
+			                /* translators: %s = cart-fragments.js  */
+			                'desc'       => sprintf( __( 'Dequeues the %s file if the visitor\'s cart is empty,  preventing an unnecessary and slow AJAX request.', 'speed-booster-pack' ), '<code>cart-fragments.js</code>' ),
+			                'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
+			                'sanitize'   => 'sbp_sanitize_boolean',
+		                ],
+		                [
+			                'title'      => __( 'Optimize non-WooCommerce pages', 'speed-booster-pack' ),
+			                'id'         => 'woocommerce_optimize_nonwc_pages',
+			                'type'       => 'switcher',
+			                'desc'       => __( 'Prevents loading of WooCommerce-related scripts and styles on non-WooCommerce pages.', 'speed-booster-pack' ),
+			                'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
+			                'sanitize'   => 'sbp_sanitize_boolean',
+		                ],
+		                [
+			                'title'      => __( 'Disable password strength meter', 'speed-booster-pack' ),
+			                'id'         => 'woocommerce_disable_password_meter',
+			                'type'       => 'switcher',
+			                'desc'       => __( 'Disables the password strength meter for password inputs during a WooCommerce checkout.', 'speed-booster-pack' ),
+			                'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
+			                'sanitize'   => 'sbp_sanitize_boolean',
+		                ],
+		                [
+                            /** B_TODO: Check text */
+			                'title'      => __( 'Action Scheduler Retention Period', 'speed-booster-pack' ),
+			                'id'         => 'wc_action_scheduler_period',
+			                'type'       => 'spinner',
+                            'default'    => 7,
+                            /** B_TODO: Change text */
+			                'desc'       => __( '', 'speed-booster-pack' ),
+			                'unit'       => __( 'days', 'speed-booster-pack' ),
+			                'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
+			                'sanitize'   => 'absint',
+		                ],
+		                [
+                            /** B_TODO: Check text */
+			                'title'      => __( 'Disable Woocommerce Analytics', 'speed-booster-pack' ),
+			                'id'         => 'wc_disable_admin',
+			                'type'       => 'switcher',
+                            /** B_TODO: Change text */
+			                'desc'       => __( '', 'speed-booster-pack' ),
+			                'unit'       => __( 'days', 'speed-booster-pack' ),
+			                'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
+			                'sanitize'   => 'sbp_sanitize_boolean',
+		                ],
+                    ],
+                ]
+            );
+			/* END Section: Woocommerce */
+
             $is_litespeed = \SpeedBooster\SBP_Utils::is_litespeed();
 			$page_caching_class = $is_litespeed ? ' sbp-hidden ' : '';
 			$ls_caching_class   = $is_litespeed ? '' : ' sbp-hidden ';
@@ -1375,55 +1447,6 @@ class Speed_Booster_Pack_Admin {
 				)
 			);
 			/* END Section: CDN & Proxy */
-
-			/* BEGIN Section: Special */
-			CSF::createSection(
-				$prefix,
-				[
-					'title'  => __( 'Special', 'speed-booster-pack' ),
-					'id'     => 'special',
-					'icon'   => 'fa fa-bolt',
-					'fields' => [
-
-						[
-							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Special', 'speed-booster-pack' ),
-							'id'       => 'module_special',
-							'class'    => 'module-special',
-							'type'     => 'switcher',
-							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default'  => true,
-							'sanitize' => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => 'WooCommerce: ' . __( 'Disable cart fragments', 'speed-booster-pack' ),
-							'id'         => 'woocommerce_disable_cart_fragments',
-							'type'       => 'switcher',
-							/* translators: %s = cart-fragments.js  */
-							'desc'       => sprintf( __( 'Dequeues the %s file if the visitor\'s cart is empty,  preventing an unnecessary and slow AJAX request.', 'speed-booster-pack' ), '<code>cart-fragments.js</code>' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => 'WooCommerce: ' . __( 'Optimize non-WooCommerce pages', 'speed-booster-pack' ),
-							'id'         => 'woocommerce_optimize_nonwc_pages',
-							'type'       => 'switcher',
-							'desc'       => __( 'Prevents loading of WooCommerce-related scripts and styles on non-WooCommerce pages.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => 'WooCommerce: ' . __( 'Disable password strength meter', 'speed-booster-pack' ),
-							'id'         => 'woocommerce_disable_password_meter',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disables the password strength meter for password inputs during a WooCommerce checkout.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-					],
-				]
-			);
-			/* END Section: Special */
 
 			/** BEGIN Section: Database Optimization */
 			CSF::createSection(

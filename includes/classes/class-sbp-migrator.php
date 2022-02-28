@@ -47,6 +47,7 @@ class SBP_Migrator {
 		$this->update_js_optimize_options();
 		$this->apply_cache_settings();
 		$this->migrate_cdn_toggle();
+		$this->migrate_special_to_woocommerce();
 		update_option( 'sbp_migrator_version', SBP_MIGRATOR_VERSION );
 	}
 
@@ -139,6 +140,13 @@ ga('send', 'pageview');";
 	private function migrate_cdn_toggle() {
 		if ( isset( $this->sbp_options['cdn_url'] ) && $this->sbp_options['cdn_url'] ) {
 			$this->sbp_options['cdn_enable'] = 1;
+			update_option( 'sbp_options', $this->sbp_options );
+		}
+	}
+
+	private function migrate_special_to_woocommerce() {
+		if ( isset( $this->sbp_options['module_special'] ) && $this->sbp_options['module_special'] ) {
+			$this->sbp_options['module_woocommerce'] = 1;
 			update_option( 'sbp_options', $this->sbp_options );
 		}
 	}

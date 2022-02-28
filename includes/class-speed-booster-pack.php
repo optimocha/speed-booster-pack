@@ -38,8 +38,7 @@ use SpeedBooster\SBP_Migrator;
 use SpeedBooster\SBP_Newsletter;
 use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Preboost;
-// Z_TODO: Remove use
-use SpeedBooster\SBP_Special;
+use SpeedBooster\SBP_Woocommerce;
 use SpeedBooster\SBP_Cloudflare;
 use SpeedBooster\SBP_Sucuri;
 use SpeedBooster\SBP_Tweaks;
@@ -178,8 +177,7 @@ class Speed_Booster_Pack {
 		new SBP_Image_Dimensions();
 		new SBP_HTML_Minifier();
 		new SBP_Localize_Tracker();
-		// Z_TODO: Remove instance
-		new SBP_Special();
+		new SBP_Woocommerce();
 		// Z_TODO: Remove instance
 		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
