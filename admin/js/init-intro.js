@@ -10,32 +10,40 @@ jQuery(function() {
                 prevLabel: sbp_intro_translations.prevLabel,
                 doneLabel: sbp_intro_translations.doneLabel,
                 steps: [{
+                    title: sbp_intro_translations.welcomeTitle,
                     intro: sbp_intro_translations.welcome
                 }, {
                     element: document.querySelector('.csf-tab-item:nth-child(3)'),
+                    title: sbp_intro_translations.cachingTitle,
                     intro: sbp_intro_translations.caching,
                     position: 'right'
                 }, {
                     element: document.querySelector('.module-caching'),
+                    title: sbp_intro_translations.caching2Title,
                     intro: sbp_intro_translations.caching2,
                     position: 'bottom'
                 }, {
                     element: document.querySelector('.csf-tab-item:nth-child(2)'),
+                    title: sbp_intro_translations.generalTitle,
                     intro: sbp_intro_translations.general,
                     position: 'right'
                 }, {
                     element: document.querySelector('.csf-tab-item:nth-child(4)'),
+                    title: sbp_intro_translations.cdnTitle,
                     intro: sbp_intro_translations.cdn,
                     position: 'right'
                 }, {
                     element: document.querySelector('.csf-tab-item:nth-child(5)'),
+                    title: sbp_intro_translations.cssTitle,
                     intro: sbp_intro_translations.css,
                     position: 'right'
                 }, {
                     element: document.querySelector('.csf-tab-item:nth-child(6)'),
+                    title: sbp_intro_translations.assetsTitle,
                     intro: sbp_intro_translations.assets,
                     position: 'right'
                 }, {
+                    title: sbp_intro_translations.endTitle,
                     intro: sbp_intro_translations.end
                 }]
             }).start().onbeforechange(async function(targetElement) {

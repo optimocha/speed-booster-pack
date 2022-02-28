@@ -46,6 +46,7 @@ class SBP_Migrator {
 		$this->migrate_from_legacy();
 		$this->update_js_optimize_options();
 		$this->apply_cache_settings();
+		$this->migrate_cdn_toggle();
 		update_option( 'sbp_migrator_version', SBP_MIGRATOR_VERSION );
 	}
 
@@ -132,6 +133,13 @@ ga('send', 'pageview');";
 			$new_cdn_url                  = sbp_remove_leading_string( $new_cdn_url, '//' );
 			$new_cdn_url                  = sbp_remove_leading_string( $new_cdn_url, '/' );
 			$this->sbp_options['cdn_url'] = $new_cdn_url;
+		}
+	}
+
+	private function migrate_cdn_toggle() {
+		if ( isset( $this->sbp_options['cdn_url'] ) && $this->sbp_options['cdn_url'] ) {
+			$this->sbp_options['cdn_enable'] = 1;
+			update_option( 'sbp_options', $this->sbp_options );
 		}
 	}
 

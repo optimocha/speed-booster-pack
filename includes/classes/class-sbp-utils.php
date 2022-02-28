@@ -97,4 +97,15 @@ class SBP_Utils extends SBP_Abstract_Module {
 
 		return LITESPEED_SERVER_TYPE !== 'NONE' ? LITESPEED_SERVER_TYPE && LITESPEED_ALLOWED : false;
 	}
+
+	/**
+	 * Removes the http and https prefixes from url's
+	 *
+	 * @param $url
+	 *
+	 * @return void
+	 */
+	public static function remove_protocol( $url ) {
+		return str_replace( [ 'http://', 'https://' ], [ '//', '//' ], $url );
+	}
 }

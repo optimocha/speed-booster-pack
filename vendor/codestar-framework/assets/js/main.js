@@ -633,8 +633,7 @@
       var $this    = $(this),
           $inputs  = $this.find('input'),
           settings = $this.find('.csf-date-settings').data('settings'),
-          wrapper  = '<div class="csf-datepicker-wrapper"></div>',
-          $datepicker;
+          wrapper  = '<div class="csf-datepicker-wrapper"></div>';
 
       var defaults = {
         showAnim: '',
@@ -675,6 +674,41 @@
 
         $input.datepicker(settings);
 
+      });
+
+    });
+  };
+
+  //
+  // Field: datetime
+  //
+  $.fn.csf_field_datetime = function() {
+    return this.each( function() {
+
+      var $this    = $(this),
+          $inputs  = $this.find('input'),
+          settings = $this.find('.csf-datetime-settings').data('settings');
+
+      settings = $.extend({}, settings, {
+        onReady: function( selectedDates, dateStr, instance) {
+          $(instance.calendarContainer).addClass('csf-flatpickr');
+        },
+      });
+
+      if ( $inputs.length === 2 ) {
+        settings = $.extend({}, settings, {
+          onChange: function( selectedDates, dateStr, instance) {
+            if ( $(instance.element).data('type') === 'from' ) {
+              $inputs.last().get(0)._flatpickr.set( 'minDate', selectedDates[0] );
+            } else {
+              $inputs.first().get(0)._flatpickr.set( 'maxDate', selectedDates[0] );
+            }
+          },
+        });
+      }
+
+      $inputs.each( function() {
+        $(this).flatpickr(settings);
       });
 
     });
@@ -3340,6 +3374,7 @@
         $this.children('.csf-field-background').csf_field_background();
         $this.children('.csf-field-code_editor').csf_field_code_editor();
         $this.children('.csf-field-date').csf_field_date();
+        $this.children('.csf-field-datetime').csf_field_datetime();
         $this.children('.csf-field-fieldset').csf_field_fieldset();
         $this.children('.csf-field-gallery').csf_field_gallery();
         $this.children('.csf-field-group').csf_field_group();

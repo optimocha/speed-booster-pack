@@ -10,13 +10,16 @@ if ( ! defined( 'WPINC' ) ) {
 class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 	const ROOT_MARKER = 'SBP_LS_CACHE';
 
+	private $headers = [];
+
 	public function __construct() {
 		parent::__construct();
 		if ( SBP_Utils::is_litespeed() ) {
 			add_action( 'init', [ $this, 'clear_lscache_request' ] );
+			add_action( 'init', [ $this, 'set_headers' ] );
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
-			add_filter( 'sbp_output_buffer', [ $this, 'set_headers' ] );
 			add_action( 'csf_sbp_options_saved', [ $this, 'send_clear_cache_header' ] );
+			add_filter( 'sbp_output_buffer', [ $this, 'add_cache_signature' ] );
 			$this->clear_cache_hooks();
 		}
 	}
@@ -33,8 +36,10 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 				'title'  => __( 'Clear LiteSpeed Cache', 'speed-booster-pack' ),
 				'href'   => $clear_lscache_url,
 			];
-
-			$admin_bar->add_node( $sbp_admin_menu );
+			
+			if ( sbp_get_option( 'module_caching_ls' ) ) {
+				$admin_bar->add_node( $sbp_admin_menu );
+			}
 		}
 	}
 
@@ -123,39 +128,41 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 		}
 
 		if ( $tags ) {
-			header( 'X-LiteSpeed-Tag: ' . implode( ',', $tags ) );
+			$this->headers['X-LiteSpeed-Tag'] = implode( ',', $tags );
 		}
 	}
 
-	public function set_headers( $html ) {
+	public function set_headers() {
 		if ( ! sbp_get_option( 'module_caching_ls' ) ) {
-			header( 'X-LiteSpeed-Cache-Control: no-cache' );
+			$this->headers['X-LiteSpeed-Cache-Control'] = 'no-cache';
 		} else {
 			// Multiply by 3600 because we store this value in hours but this value should be converted to seconds here
 			$cache_expire_time = sbp_get_option( 'caching_ls_expiry', 10 ) * HOUR_IN_SECONDS;
 
 			// Check for all exclusions
 			if ( true === $this->should_bypass_cache( [ 'is_logged_in', 'include_query_strings', 'check_cookies' ] ) ) {
-				header( 'X-LiteSpeed-Cache-Control: no-cache' );
+				$this->headers['X-LiteSpeed-Cache-Control'] = 'no-cache';
 			} else {
 				if ( ! sbp_get_option( 'caching_ls_cache_logged_in_users' ) && is_user_logged_in() ) {
-					header( 'X-LiteSpeed-Cache-Control: no-cache' );
+					$this->headers['X-LiteSpeed-Cache-Control'] = 'no-cache';
 				} else {
 					$this->add_tags();
 
 					if (is_user_logged_in()) {
-						header( 'X-LiteSpeed-Cache-Control: private,max-age=' . $cache_expire_time );
-						header( 'X-LiteSpeed-Vary: cookie=wordpress_logged_in_' . COOKIEHASH );
+						$this->headers['X-LiteSpeed-Cache-Control'] = 'private,max-age=' . $cache_expire_time;
+						$this->headers['X-LiteSpeed-Vary'] = 'cookie=wordpress_logged_in_' . COOKIEHASH;
 					} else {
-						header( 'X-LiteSpeed-Cache-Control: public,max-age=' . $cache_expire_time );
-						$html .= '<!-- LiteSpeed cache controlled by ' . SBP_PLUGIN_NAME . ' -->';
+						$this->headers['X-LiteSpeed-Cache-Control'] = 'public,max-age=' . $cache_expire_time;
 					}
 				}
-
 			}
 		}
 
-		return $html;
+		add_filter( 'wp_headers', [ $this, 'send_headers' ] );
+	}
+
+	public function send_headers($headers) {
+		return array_merge($headers, $this->headers);
 	}
 
 	private function clear_cache_hooks() {
@@ -196,6 +203,14 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 
 	public static function send_clear_cache_header() {
 		@header( 'X-LiteSpeed-Purge: private, *; public, *' );
+	}
+
+	public function add_cache_signature( $html ) {
+		if ( SBP_Utils::is_litespeed() && sbp_get_option( 'module_caching_ls' ) ) {
+			$html .= '<!-- LiteSpeed cache managed by ' . SBP_PLUGIN_NAME . ' -->';
+		}
+
+		return $html;
 	}
 
 	// B_TODO: We are currently not supporting this feature on LiteSpeed Cache

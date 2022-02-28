@@ -73,9 +73,15 @@
     }
   }
 
-  .csf-field-date{
+  .csf-field-date,
+  .csf-field-datetime{
+
+    label{
+      display: block;
+    }
 
     .csf--to{
+      margin-top: 4px;
       margin-left: 0;
     }
   }

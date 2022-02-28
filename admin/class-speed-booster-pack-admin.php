@@ -117,20 +117,36 @@ class Speed_Booster_Pack_Admin {
 			wp_localize_script( 'sbp_intro_js',
 				'sbp_intro_translations',
 				[
+					/* translators: onboarding modal, first step title  */
+					'welcomeTitle'   => __( 'Welcome!', 'speed-booster-pack' ),
 					/* translators: onboarding modal, first step  */
 					'welcome'   => __( 'Welcome to Speed Booster Pack! We\'d like to give you a quick tour - feel free to close this box and look around the options yourself, or click Next to see our short intro.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, second step title  */
+					'cachingTitle'   => __( 'Caching', 'speed-booster-pack' ),
 					/* translators: onboarding modal, second step  */
 					'caching'   => __( 'This is our caching tab. Here, you can set caching for your pages to immediately speed up your website.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, third step title  */
+					'caching2Title'   => __( 'Module Toggles', 'speed-booster-pack' ),
 					/* translators: onboarding modal, third step  */
-					'caching2'  => __( 'Most tabs have an module toggle like this. Turning on or off the module toggle enables or disables the whole module.', 'speed-booster-pack' ),
+					'caching2'  => __( 'Most tabs have module toggles like this. Turning on or off the module toggle enables or disables the whole module.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, fourth step title  */
+					'generalTitle'   => __( 'General Settings', 'speed-booster-pack' ),
 					/* translators: onboarding modal, fourth step  */
 					'general'   => __( 'The "General" tab includes various tweaks to clean up and speed up things. You can also disable Speed Booster Pack features for certain user roles (e.g. subscribers or customers) if you need to.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, fifth step title  */
+					'cdnTitle'   => __( 'CDN & Proxy Settings', 'speed-booster-pack' ),
 					/* translators: onboarding modal, fifth step  */
 					'cdn'       => __( 'The CDN & Proxy tab has three main settings: You can set a CDN domain to serve all your assets from, you can connect to your Cloudflare account to change your Cloudflare settings, and you can connect to your Sucuri account so you can clear your Sucuri cache automatically.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, sixth step title  */
+					'cssTitle'   => __( 'CSS Settings', 'speed-booster-pack' ),
 					/* translators: onboarding modal, sixth step  */
 					'css'       => __( 'The Optimize CSS tab has some delicate settings which, if configured properly, can drastically improve your website performance. Be sure to follow the directions properly - especially the Critical CSS settings!', 'speed-booster-pack' ),
+					/* translators: onboarding modal, seventh step title  */
+					'assetsTitle'   => __( 'Assets Settings', 'speed-booster-pack' ),
 					/* translators: onboarding modal, seventh step  */
 					'assets'    => __( 'The Assets tab can improve your website performance using font optimization, lazy loading, asset preloading and JavaScript optimization. It\'s tempting to enable them all, but make sure you test each change thoroughly or else you can break your website! Think of these tools like powerful weapons which you can hurt yourself with.', 'speed-booster-pack' ),
+					/* translators: onboarding modal, last step title  */
+					'endTitle'   => __( 'Done!', 'speed-booster-pack' ),
 					/* translators: onboarding modal, last step  */
 					'end'       => __( 'That\'s it! Actually, that\'s not it - make sure you check the other tabs to see if you have more room to improve your website speed. Don\'t be afraid to experiment; even if you break something, resetting settings or simply deactivating Speed Booster Pack will undo everything.', 'speed-booster-pack' ),
 					/* translators: onboarding modal, "Next" label  */
@@ -636,7 +652,6 @@ class Speed_Booster_Pack_Admin {
 				],
 				[
 					'id'         => 'caching_ls_cache_logged_in_users',
-                    // B_TODO: Change texts
 					'title'      => __( 'Cache logged in users', 'speed-booster-pack' ),
 					'desc'       => __( 'Enable cache for logged in users.', 'speed-booster-pack' ),
 					'class'      => $ls_caching_class,
@@ -728,219 +743,6 @@ class Speed_Booster_Pack_Admin {
 				]
 			);
 			/* END Section: Caching */
-
-			/* BEGIN Section: CDN & Proxy */
-			/* Begin Of Cloudflare Fields */
-			$cloudflare_fields = [
-				[
-					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
-					'type'  => 'subheading',
-				],
-				[
-					'title'    => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
-					'id'       => 'cloudflare_enable',
-					'type'     => 'switcher',
-					'sanitize' => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'Cloudflare global API key', 'speed-booster-pack' ),
-					'id'         => 'cloudflare_api',
-					'type'       => 'text',
-					'desc'       => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-				],
-				[
-					'title'      => __( 'Cloudflare email address', 'speed-booster-pack' ),
-					'id'         => 'cloudflare_email',
-					'type'       => 'text',
-					'desc'       => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-				],
-				[
-					'title'      => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
-					'id'         => 'cloudflare_zone',
-					'type'       => 'text',
-					'desc'       => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-				],
-				[
-					'title'      => __( 'Rocket Loader', 'speed-booster-pack' ),
-					'id'         => 'cf_rocket_loader_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'Development Mode', 'speed-booster-pack' ),
-					'id'         => 'cf_dev_mode_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'Minify CSS', 'speed-booster-pack' ),
-					'id'         => 'cf_css_minify_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
-					'id'         => 'cf_html_minify_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'Minify JS', 'speed-booster-pack' ),
-					'id'         => 'cf_js_minify_enable',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'Automatic Platform Optimization', 'speed-booster-pack' ),
-					'id'         => 'cf_apo_enable',
-					'desc'       => __( 'You need to be a paying Cloudflare user to enable this setting, otherwise it will get disabled again.', 'speed-booster-pack' ),
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'APO: Cache By Device Type', 'speed-booster-pack' ),
-					'id'         => 'cf_apo_device_type',
-					'class'      => 'with-preloader',
-					'type'       => 'switcher',
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-					'sanitize'   => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'Browser Cache TTL', 'speed-booster-pack' ),
-					'id'         => 'cf_browser_cache_ttl',
-					'class'      => 'with-preloader',
-					'type'       => 'select',
-					'options'    => [
-						0        => __( 'Respect Existing Headers', 'speed-booster-pack' ),
-						1800     => __( '30 minutes', 'speed-booster-pack' ),
-						3600     => __( '1 hour', 'speed-booster-pack' ),
-						7200     => __( '2 hours', 'speed-booster-pack' ),
-						10800    => __( '3 hours', 'speed-booster-pack' ),
-						14400    => __( '4 hours', 'speed-booster-pack' ),
-						18000    => __( '5 hours', 'speed-booster-pack' ),
-						28800    => __( '8 hours', 'speed-booster-pack' ),
-						43200    => __( '12 hours', 'speed-booster-pack' ),
-						57600    => __( '16 hours', 'speed-booster-pack' ),
-						72000    => __( '20 hours', 'speed-booster-pack' ),
-						86400    => __( '1 day', 'speed-booster-pack' ),
-						172800   => __( '2 days', 'speed-booster-pack' ),
-						259200   => __( '3 days', 'speed-booster-pack' ),
-						345600   => __( '4 days', 'speed-booster-pack' ),
-						432000   => __( '5 days', 'speed-booster-pack' ),
-						691200   => __( '8 days', 'speed-booster-pack' ),
-						1382400  => __( '16 days', 'speed-booster-pack' ),
-						2073600  => __( '24 days', 'speed-booster-pack' ),
-						2678400  => __( '1 month', 'speed-booster-pack' ),
-						5356800  => __( '2 months', 'speed-booster-pack' ),
-						16070400 => __( '6 months', 'speed-booster-pack' ),
-						31536000 => __( '1 year', 'speed-booster-pack' ),
-					],
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-				],
-				[
-					'type'       => 'content',
-					'content'    => '
-				    <span>
-				    	<a href="#" class="button button-small sbp-cloudflare-test">' . __( 'Test Cloudflare connection', 'speed-booster-pack' ) . '<span class="sbp-cloudflare-spinner"></span></a>
-				    	<span class="sbp-cloudflare-fetching">' . __( 'Fetching Cloudflare settings...', 'speed-booster-pack' ) . '</span>
-			        </span>
-				    <span class="sbp-cloudflare-info-text sbp-cloudflare-incorrect" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> ' . __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ) . '</span>
-				    <span class="sbp-cloudflare-info-text sbp-cloudflare-connection-issue" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> ' . __( 'Error occured while connecting to Cloudflare.', 'speed-booster-pack' ) . '</span>
-				    <span class="sbp-cloudflare-info-text sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> ' . __( 'Your Cloudflare credentials are correct.', 'speed-booster-pack' ) . '</span>
-				    <span class="sbp-cloudflare-info-text sbp-cloudflare-warning" style="color:orange; vertical-align: middle;"><i class="fa fa-exclamation-circle"></i> ' . __( 'Enter your Cloudflare credentials and save settings to see CloudFlare options.', 'speed-booster-pack' ) . '</span>
-				  ',
-					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
-				],
-			];
-			/* End Of Cloudflare Fields */
-
-			/* Begin Of Sucuri Fields */
-			$sucuri_fields = [
-				[
-					'title' => __( 'Sucuri', 'speed-booster-pack' ),
-					'type'  => 'subheading',
-				],
-				[
-					'title'    => __( 'Connect to Sucuri', 'speed-booster-pack' ),
-					'id'       => 'sucuri_enable',
-					'type'     => 'switcher',
-					'desc'     => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s Cache\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-					'sanitize' => 'sbp_sanitize_boolean',
-				],
-				[
-					'title'      => __( 'Sucuri API key', 'speed-booster-pack' ),
-					'id'         => 'sucuri_api',
-					'type'       => 'text',
-					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
-				],
-				[
-					'title'      => __( 'Sucuri API Secret', 'speed-booster-pack' ),
-					'id'         => 'sucuri_secret',
-					'type'       => 'text',
-					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
-				],
-			];
-			/* End Of Sucuri Fields */
-
-			$proxy_fields = array_merge( [
-				[
-					'title' => __( 'CDN', 'speed-booster-pack' ),
-					'type'  => 'subheading',
-				],
-				[
-					'title'    => __( 'CDN domain', 'speed-booster-pack' ),
-					'id'       => 'cdn_url',
-					'class'    => 'cdn-url',
-					'type'     => 'text',
-					'before'   => 'http(s)://&nbsp;',
-					'after'    => '&nbsp;/',
-					'desc'     => __( 'Rewrites all asset URLs with the specified CDN domain. Enter the CDN domain without a protocol or a trailing slash; a relative protocol will be automatically added to all changed asset URLs.', 'speed-booster-pack' ),
-					'sanitize' => 'sbp_sanitize_url',
-				],
-				[
-					'title'      => __( 'Included Directories', 'speed-booster-pack' ),
-					'id'         => 'cdn_includes',
-					'type'       => 'code_editor',
-					'desc'       => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
-					'sanitize'   => 'sbp_sanitize_strip_tags',
-					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
-				],
-				[
-					'title'      => __( 'Excluded Extensions', 'speed-booster-pack' ),
-					'id'         => 'cdn_excludes',
-					'type'       => 'code_editor',
-					'desc'       => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
-					'sanitize'   => 'sbp_sanitize_strip_tags',
-					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
-				],
-			],
-				$cloudflare_fields,
-				$sucuri_fields );
-			CSF::createSection(
-				$prefix,
-				array(
-					'title'  => __( 'CDN & Proxy', 'speed-booster-pack' ),
-					'id'     => 'cdn_proxy',
-					'icon'   => 'fa fa-directions',
-					'fields' => $proxy_fields,
-				)
-			);
-			/* END Section: CDN & Proxy */
 
 			/* BEGIN Section: Optimize CSS */
 			$critical_css_fields = [
@@ -1212,6 +1014,14 @@ class Speed_Booster_Pack_Admin {
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
+				[
+					'title'      => __( 'Localize Google Analytics & Google Tag Manager', 'speed-booster-pack' ),
+					'id'         => 'localize_tracking_scripts',
+					'type'       => 'switcher',
+					'desc'       => __( 'Searches for Google Analytics or Google Tag Manager scripts (analytics.js, gtag.js or gtm.js) in your page sources, and replaces them with a locally saved script.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
 			];
 
 			$should_disable_lazyload = sbp_should_disable_feature( 'lazyload' );
@@ -1345,6 +1155,227 @@ class Speed_Booster_Pack_Admin {
 			);
 			/* END Section: Assets */
 
+			/* BEGIN Section: CDN & Proxy */
+			/* Begin Of Cloudflare Fields */
+			$cloudflare_fields = [
+				[
+					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
+					'type'  => 'subheading',
+				],
+				[
+					'title'    => __( 'Connect to Cloudflare', 'speed-booster-pack' ),
+					'id'       => 'cloudflare_enable',
+					'type'     => 'switcher',
+					'sanitize' => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Cloudflare global API key', 'speed-booster-pack' ),
+					'id'         => 'cloudflare_api',
+					'type'       => 'text',
+					'desc'       => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Cloudflare email address', 'speed-booster-pack' ),
+					'id'         => 'cloudflare_email',
+					'type'       => 'text',
+					'desc'       => __( 'The email address you signed up for Cloudflare with.', 'speed-booster-pack' ),
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Cloudflare zone ID', 'speed-booster-pack' ),
+					'id'         => 'cloudflare_zone',
+					'type'       => 'text',
+					'desc'       => __( 'You can find your zone ID in the Overview tab on your Cloudflare panel.', 'speed-booster-pack' ),
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Rocket Loader', 'speed-booster-pack' ),
+					'id'         => 'cf_rocket_loader_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Development Mode', 'speed-booster-pack' ),
+					'id'         => 'cf_dev_mode_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Minify CSS', 'speed-booster-pack' ),
+					'id'         => 'cf_css_minify_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
+					'id'         => 'cf_html_minify_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Minify JS', 'speed-booster-pack' ),
+					'id'         => 'cf_js_minify_enable',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Automatic Platform Optimization', 'speed-booster-pack' ),
+					'id'         => 'cf_apo_enable',
+					'desc'       => __( 'You need to be a paying Cloudflare user to enable this setting, otherwise it will get disabled again.', 'speed-booster-pack' ),
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'APO: Cache By Device Type', 'speed-booster-pack' ),
+					'id'         => 'cf_apo_device_type',
+					'class'      => 'with-preloader',
+					'type'       => 'switcher',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Browser Cache TTL', 'speed-booster-pack' ),
+					'id'         => 'cf_browser_cache_ttl',
+					'class'      => 'with-preloader',
+					'type'       => 'select',
+					'options'    => [
+						0        => __( 'Respect Existing Headers', 'speed-booster-pack' ),
+						1800     => __( '30 minutes', 'speed-booster-pack' ),
+						3600     => __( '1 hour', 'speed-booster-pack' ),
+						7200     => __( '2 hours', 'speed-booster-pack' ),
+						10800    => __( '3 hours', 'speed-booster-pack' ),
+						14400    => __( '4 hours', 'speed-booster-pack' ),
+						18000    => __( '5 hours', 'speed-booster-pack' ),
+						28800    => __( '8 hours', 'speed-booster-pack' ),
+						43200    => __( '12 hours', 'speed-booster-pack' ),
+						57600    => __( '16 hours', 'speed-booster-pack' ),
+						72000    => __( '20 hours', 'speed-booster-pack' ),
+						86400    => __( '1 day', 'speed-booster-pack' ),
+						172800   => __( '2 days', 'speed-booster-pack' ),
+						259200   => __( '3 days', 'speed-booster-pack' ),
+						345600   => __( '4 days', 'speed-booster-pack' ),
+						432000   => __( '5 days', 'speed-booster-pack' ),
+						691200   => __( '8 days', 'speed-booster-pack' ),
+						1382400  => __( '16 days', 'speed-booster-pack' ),
+						2073600  => __( '24 days', 'speed-booster-pack' ),
+						2678400  => __( '1 month', 'speed-booster-pack' ),
+						5356800  => __( '2 months', 'speed-booster-pack' ),
+						16070400 => __( '6 months', 'speed-booster-pack' ),
+						31536000 => __( '1 year', 'speed-booster-pack' ),
+					],
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+				],
+				[
+					'type'       => 'content',
+					'content'    => '
+				    <span>
+				    	<a href="#" class="button button-small sbp-cloudflare-test">' . __( 'Test Cloudflare connection', 'speed-booster-pack' ) . '<span class="sbp-cloudflare-spinner"></span></a>
+				    	<span class="sbp-cloudflare-fetching">' . __( 'Fetching Cloudflare settings...', 'speed-booster-pack' ) . '</span>
+			        </span>
+				    <span class="sbp-cloudflare-info-text sbp-cloudflare-incorrect" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> ' . __( 'Your Cloudflare credentials are incorrect.', 'speed-booster-pack' ) . '</span>
+				    <span class="sbp-cloudflare-info-text sbp-cloudflare-connection-issue" style="color:red; vertical-align: middle;"><i class="fa fa-exclamation-triangle"></i> ' . __( 'Error occured while connecting to Cloudflare.', 'speed-booster-pack' ) . '</span>
+				    <span class="sbp-cloudflare-info-text sbp-cloudflare-correct" style="color:green; vertical-align: middle;"><i class="fa fa-check-circle"></i> ' . __( 'Your Cloudflare credentials are correct.', 'speed-booster-pack' ) . '</span>
+				    <span class="sbp-cloudflare-info-text sbp-cloudflare-warning" style="color:orange; vertical-align: middle;"><i class="fa fa-exclamation-circle"></i> ' . __( 'Enter your Cloudflare credentials and save settings to see CloudFlare options.', 'speed-booster-pack' ) . '</span>
+				  ',
+					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
+				],
+			];
+			/* End Of Cloudflare Fields */
+
+			/* Begin Of Sucuri Fields */
+			$sucuri_fields = [
+				[
+					'title' => __( 'Sucuri', 'speed-booster-pack' ),
+					'type'  => 'subheading',
+				],
+				[
+					'title'    => __( 'Connect to Sucuri', 'speed-booster-pack' ),
+					'id'       => 'sucuri_enable',
+					'type'     => 'switcher',
+					'desc'     => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s Cache\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+					'sanitize' => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Sucuri API key', 'speed-booster-pack' ),
+					'id'         => 'sucuri_api',
+					'type'       => 'text',
+					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Sucuri API Secret', 'speed-booster-pack' ),
+					'id'         => 'sucuri_secret',
+					'type'       => 'text',
+					'dependency' => [ 'sucuri_enable', '==', '1', '', 'visible' ],
+				],
+			];
+			/* End Of Sucuri Fields */
+
+			$proxy_fields = array_merge( [
+				[
+					'title' => __( 'CDN', 'speed-booster-pack' ),
+					'type'  => 'subheading',
+				],
+				[
+					'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'CDN', 'speed-booster-pack' ),
+					'id' => 'cdn_enable',
+					'type' => 'switcher',
+					// B_TODO: Description text needed.
+					'desc' => __( '', 'speed-booster-pack' ),
+					'sanitize' => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'    => __( 'CDN domain', 'speed-booster-pack' ),
+					'id'       => 'cdn_url',
+					'class'    => 'cdn-url',
+					'type'     => 'text',
+					'before'   => 'http(s)://&nbsp;',
+					'after'    => '&nbsp;/',
+					'desc'     => __( 'Rewrites all asset URLs with the specified CDN domain. Enter the CDN domain without a protocol or a trailing slash; a relative protocol will be automatically added to all changed asset URLs.', 'speed-booster-pack' ),
+					'sanitize' => 'sbp_sanitize_url',
+				],
+				[
+					'title'      => __( 'Included Directories', 'speed-booster-pack' ),
+					'id'         => 'cdn_includes',
+					'type'       => 'code_editor',
+					'desc'       => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
+					'sanitize'   => 'sbp_sanitize_strip_tags',
+					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'Excluded Extensions', 'speed-booster-pack' ),
+					'id'         => 'cdn_excludes',
+					'type'       => 'code_editor',
+					'desc'       => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
+					'sanitize'   => 'sbp_sanitize_strip_tags',
+					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
+				],
+			],
+				$cloudflare_fields,
+				$sucuri_fields );
+			CSF::createSection(
+				$prefix,
+				array(
+					'title'  => __( 'CDN & Proxy', 'speed-booster-pack' ),
+					'id'     => 'cdn_proxy',
+					'icon'   => 'fa fa-directions',
+					'fields' => $proxy_fields,
+				)
+			);
+			/* END Section: CDN & Proxy */
+
 			/* BEGIN Section: Special */
 			CSF::createSection(
 				$prefix,
@@ -1363,70 +1394,6 @@ class Speed_Booster_Pack_Admin {
 							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 							'default'  => true,
 							'sanitize' => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Localize Google Analytics & Google Tag Manager', 'speed-booster-pack' ),
-							'id'         => 'localize_tracking_scripts',
-							'type'       => 'switcher',
-							'desc'       => __( 'Searches for Google Analytics or Google Tag Manager scripts (analytics.js, gtag.js or gtm.js) in your page sources, and replaces them with a locally saved script.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_special', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'                  => __( 'Custom code manager', 'speed-booster-pack' ),
-							'id'                     => 'custom_codes',
-							'type'                   => 'group',
-							'before'                 => '<p>' . __( 'Code blocks added with this tool can be loaded in the header, the footer and can even be delayed.', 'speed-booster-pack' ) . '</p>',
-							'accordion_title_number' => true,
-							'accordion_title_auto'   => false,
-							'sanitize'               => function ( $item ) {
-								if ( $item && is_iterable( $item ) ) {
-									foreach ( $item as &$code_item ) {
-										if ( isset( $code_item['custom_codes_item'] ) ) {
-											$code                           = $code_item['custom_codes_item'];
-											$code                           = preg_replace( '#<(textarea)>.*?<\/$1>#s', '', $code );
-											$code_item['custom_codes_item'] = str_replace( '</textarea>', '', $code );
-										}
-									}
-								}
-
-								return $item;
-							},
-							'fields'                 => [
-								[
-									'id'       => 'custom_codes_item',
-									'type'     => 'code_editor',
-									'before'   => '&lt;script&gt;',
-									'after'    => '&lt;/script&gt;',
-									/* translators: %s = script tag  */
-									'desc'     => sprintf( __( 'Paste the inline JavaScript here. DON\'T include the %s tags or else you might break it!', 'speed-booster-pack' ), '<code>&lt;script&gt;</code>' ),
-									'settings' => [ 'lineWrapping' => true ],
-								],
-								[
-									'title'   => __( 'Placement', 'speed-booster-pack' ),
-									'id'      => 'custom_codes_place',
-									'desc'    => __( 'Set this to "Footer" to place the code before &lt;/body&gt;, or "Header" to place it before &lt;/head&gt;.', 'speed-booster-pack' ),
-									'type'    => 'button_set',
-									'options' => [
-										'footer' => __( 'Footer', 'speed-booster-pack' ),
-										'header' => __( 'Header', 'speed-booster-pack' ),
-									],
-									'default' => 'footer',
-								],
-								[
-									'title'   => __( 'Loading method', 'speed-booster-pack' ),
-									'id'      => 'custom_codes_method',
-									'desc'    => __( 'Set this to "onload" to defer the code to page onload, or "4-second delay" to defer it to four seconds after onload. When in doubt, set it to "Normal".', 'speed-booster-pack' ),
-									'type'    => 'button_set',
-									'options' => [
-										'normal'  => __( 'Normal', 'speed-booster-pack' ),
-										'onload'  => __( 'onload', 'speed-booster-pack' ),
-										'delayed' => __( '4-second delay', 'speed-booster-pack' ),
-									],
-									'default' => 'normal',
-								],
-							],
-							'dependency'             => [ 'module_special', '==', '1', '', 'visible' ],
 						],
 						[
 							'title'      => 'WooCommerce: ' . __( 'Disable cart fragments', 'speed-booster-pack' ),

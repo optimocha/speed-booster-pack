@@ -12,7 +12,7 @@ if ( ! class_exists( 'CSF' ) ) {
 
     // Default constants
     public static $premium  = true;
-    public static $version  = '2.2.5';
+    public static $version  = '2.2.6';
     public static $dir      = '';
     public static $url      = '';
     public static $css      = '';
@@ -414,6 +414,7 @@ if ( ! class_exists( 'CSF' ) ) {
         'color_group',
         'content',
         'date',
+        'datetime',
         'dimensions',
         'fieldset',
         'gallery',
