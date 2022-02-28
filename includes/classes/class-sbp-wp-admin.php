@@ -206,11 +206,6 @@ class SBP_WP_Admin {
 	public function timed_notifications() {
 		$tweet_link = "https://twitter.com/intent/tweet?hashtags=SpeedBoosterPack&text=I've been using Speed Booster Pack for a couple of weeks and I love it!&tw_p=tweetbutton&url=https://wordpress.org/plugins/speed-booster-pack/";
 		$notices    = [
-			'sbp_tweet'       => [
-				'show_after' => '+7 days',
-				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you\'re enjoying using our plugin, can you %1$ssend a tweet to support us%2$s?', 'speed-booster-pack' ), '<a href="' . $tweet_link . '" rel="noopener" target="_blank">', '</a>' ),
-				'depends_on' => 'sbp_rate_wp_org',
-			],
 			'sbp_rate_wp_org' => [
 				'show_after' => '+7 days',
 				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you like our plugin, we would be so grateful if you could %1$sgive us a fair rating on wordpress.org%2$s.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">', '</a>' ),
