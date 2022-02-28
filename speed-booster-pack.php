@@ -32,7 +32,7 @@ define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' );
 /**
  * Current plugin version.
  */
-define( 'SBP_VERSION', '4.4.0' );
+define( 'SBP_VERSION', '4.4.1' );
 
 /**
  * Plugin website URL.
