@@ -156,27 +156,38 @@ class SBP_Cache extends SBP_Base_Cache {
 	 * @param bool $wp_cache
 	 */
 	public static function set_wp_cache_constant( $wp_cache = true ) {
+		if ( $wp_cache === true && defined( 'WP_CACHE' ) && WP_CACHE === true ) {
+			return;
+		}
+
 		if ( sbp_is_wp_config_writable() ) {
 			// get wp config as array
 			$wp_config_file = sbp_get_wp_config_path();
 
-			$wp_config_file_content = file_get_contents( $wp_config_file );
+			// Get content of the config file.
+			$config_file = file( $wp_config_file );
 
 			if ( $wp_cache ) {
-				$append_line = PHP_EOL . "define('WP_CACHE', true); // Added by Speed Booster Pack" . PHP_EOL;
+				$append_line = PHP_EOL . "define( 'WP_CACHE', true ); // Added by Speed Booster Pack";
 			} else {
 				$append_line = '';
 			}
 
-			$wp_config_file_content = preg_replace( '/^.*define\s*\(\s*[\'\"]WP_CACHE[\'\"]\s*,.*\);.*$' . PHP_EOL . '(?:\r\n|\n)?/m', "", $wp_config_file_content );
+			$config_file_content = '';
+			foreach ( $config_file as &$line ) {
+				preg_match( '/^define\(\s*\'([A-Z_]+)\',(.*)\)/', trim($line), $match );
 
-			if ( strpos( $wp_config_file_content, '<?php' ) === false && strpos( $wp_config_file_content, '<?' ) === false ) {
-				$wp_config_file_content = '<?php' . PHP_EOL . $wp_config_file_content;
+				if ( isset( $match[1] ) && 'WP_CACHE' === $match[1] ) {
+					$line              = '';
+				}
+
+				$config_file_content .= $line;
 			}
+			unset( $line );
 
-			$wp_config_file_content = preg_replace( '/(<\?php)/i', '<?php' . $append_line, $wp_config_file_content, 1 );
+			$config_file_content = str_replace( '<?php', '<?php' . $append_line, $config_file_content );
 
-			file_put_contents( $wp_config_file, $wp_config_file_content );
+			file_put_contents( $wp_config_file, $config_file_content );
 		}
 	}
 
