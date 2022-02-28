@@ -282,4 +282,15 @@
         });
     });
 
+    $(document).on('click', '.sbp-dismiss-ccm-notice', function() {
+        $.ajax({
+            type: 'GET',
+            url: ajaxurl,
+            data: {action: 'sbp_clear_ccm', 'nonce': sbp_ajax_vars.nonce},
+            success: function(response) {
+                // Nothing?
+            }
+        })
+    });
+
 })(jQuery);
