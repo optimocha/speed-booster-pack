@@ -1631,16 +1631,6 @@ class Speed_Booster_Pack_Admin {
 											<li><a href="https://codestarframework.com/" rel="external noopener" target="_blank">CodeStar Framework</a></li>
 										 </ul>',
 						],
-						[
-							'title'    => __( 'Allow external notices', 'speed-booster-pack' ),
-							'id'       => 'enable_external_notices',
-							'type'     => 'switcher',
-							'label'    => __( '', 'speed-booster-pack' ),
-							/* translators: %s = hyperlink to speedboosterpack.com  */
-							'desc'     => sprintf( __( 'Fetches notices from %s, and shows them in a non-obtrusive manner. We intend to send essential notices only, and we hate spam as much as you do, but if you don\'t want to get them, you can disable this setting.', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/" rel="external noopener" target="_blank">speedboosterpack.com</a>' ),
-							'default'  => true,
-							'sanitize' => 'sbp_sanitize_boolean',
-						],
 					],
 				]
 			);

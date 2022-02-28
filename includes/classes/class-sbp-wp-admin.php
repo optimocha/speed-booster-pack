@@ -11,9 +11,7 @@ class SBP_WP_Admin {
 	public function __construct() {
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 		if ( is_admin() ) {
-			require_once SBP_LIB_PATH . 'announce4wp/announce4wp-client.php';
 			add_action( 'admin_init', [ $this, 'set_notices' ] );
-//			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
 			add_action( 'admin_init', [ $this, 'welcome_notice' ] );
@@ -245,16 +243,6 @@ class SBP_WP_Admin {
 		array_unshift( $links, $pro_link );
 
 		return $links;
-	}
-
-	private function initialize_announce4wp() {
-		if ( sbp_get_option( 'enable_external_notices' ) ) {
-			new \Announce4WP_Client( 'speed-booster-pack.php',
-				SBP_PLUGIN_NAME,
-				"sbp",
-				"https://speedboosterpack.com/wp-json/a4wp/v1/" . SBP_VERSION . "/news.json",
-				"toplevel_page_sbp-settings" );
-		}
 	}
 
 	public function check_required_file_permissions() {
