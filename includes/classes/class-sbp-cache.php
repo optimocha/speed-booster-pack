@@ -178,7 +178,7 @@ class SBP_Cache extends SBP_Base_Cache {
 				preg_match( '/^define\(\s*\'([A-Z_]+)\',(.*)\)/', trim($line), $match );
 
 				if ( isset( $match[1] ) && 'WP_CACHE' === $match[1] ) {
-					$line              = '';
+					$line = '';
 				}
 
 				$config_file_content .= $line;
