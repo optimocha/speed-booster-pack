@@ -185,7 +185,10 @@ class SBP_Cache extends SBP_Base_Cache {
 			}
 			unset( $line );
 
-			$config_file_content = str_replace( '<?php', '<?php' . $append_line, $config_file_content );
+			$pos = strpos($config_file_content, '<?php');
+			if ($pos !== false) {
+				$config_file_content = substr_replace($config_file_content, '<?php' . $append_line, $pos, strlen('<?php'));
+			}
 
 			file_put_contents( $wp_config_file, $config_file_content );
 		}
