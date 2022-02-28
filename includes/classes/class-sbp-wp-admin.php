@@ -18,6 +18,8 @@ class SBP_WP_Admin {
 			add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 
 			add_action( 'wp_ajax_sbp_dismiss_intro', [ $this, 'dismiss_intro' ] );
+
+			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_deactivation_survey_scripts' ] );
 		}
 
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
@@ -301,5 +303,56 @@ class SBP_WP_Admin {
 
 	public function dismiss_intro() {
 		update_user_meta( get_current_user_id(), 'sbp_intro', true );
+	}
+
+	public function enqueue_deactivation_survey_scripts() {
+		if ( get_current_screen()->id === 'plugins' ) {
+			wp_enqueue_script( 'sbp_deactivation_survey', SBP_URL . '/admin/js/deactivation-survey.js', array(
+				'jquery'
+			), SBP_VERSION );
+
+			wp_enqueue_style( 'sbp_deactivation_survey', SBP_URL . '/admin/css/deactivation-survey.css', null, SBP_VERSION );
+
+			add_action( 'admin_footer', [ $this, 'deactivation_survey_modal' ] );
+		}
+	}
+
+	public function deactivation_survey_modal() {
+		echo '
+		<div class="sbp-deactivation-survey">
+			<div class="sbp-survey-inner">
+				<h4>' . __( 'Sorry to see you go, we would appreciate if you let us know why you\'re deactivating ' . SBP_PLUGIN_NAME . '!', 'speed-booster-pack' ) . '</h4>
+				<form action="" method="POST">
+					<label>
+						<input type="radio" name="reason" value="I don\'t see a performance improvement." />
+						I don\'t see a performance improvement.
+					</label>
+					<label>
+						<input type="radio" name="reason" value="It broke my site." />
+						It broke my site.
+					</label>
+					<label>
+						<input type="radio" name="reason" value="I found a better solution." />
+						I found a better solution.
+					</label>
+					<label>
+						<input type="radio" name="reason" value="I\'m just disabling temporarily." />
+						I\'m just disabling temporarily.
+					</label>
+					<label>
+						<input type="radio" name="reason" value="Other (please specify below)" />
+						Other (please specify below)
+					</label>
+					<div style="display: flex; justify-content: space-between;">
+						<div style="display: flex; justify-content: flex-start; align-items: center;">
+							<button class="button button-secondary deactivate-plugin" type="button">' . __( 'Just Deactivate', 'speed-booster-pack' ) . '</button>
+							<button class="button button-secondary cancel-deactivation-survey" type="button" style="margin-left: 10px;">' . __( 'Cancel', 'speed-booster-pack' ) . '</button>
+						</div>
+						<button class="button button-primary">' . __( 'Submit & Deactivate', 'speed-booster-pack' ) . '</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		';
 	}
 }
