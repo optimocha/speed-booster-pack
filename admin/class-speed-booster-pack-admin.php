@@ -1146,7 +1146,7 @@ class Speed_Booster_Pack_Admin {
 
 
 			// Custom Code Manager
-			if ( count( sbp_get_option('custom_codes', []) ) ) {
+			if ( is_array( sbp_get_option( 'custom_codes', [] ) ) && count( sbp_get_option( 'custom_codes', [] ) ) ) {
 				// We removed this feature but still need to keep it's content. So, hide it using only css.
 				$custom_code_manager = [ [
 					'title'                  => __( 'Custom code manager', 'speed-booster-pack' ),
