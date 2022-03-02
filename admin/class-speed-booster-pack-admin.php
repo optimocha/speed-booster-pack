@@ -1439,7 +1439,7 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'code_editor',
 					'desc'       => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize'   => 'sbp_sanitize_strip_tags',
-					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
+					'dependency' => [ 'cdn_enable', '!=', '', '', 'visible' ],
 				],
 				[
 					'title'      => __( 'Excluded Extensions', 'speed-booster-pack' ),
@@ -1447,7 +1447,7 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'code_editor',
 					'desc'       => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize'   => 'sbp_sanitize_strip_tags',
-					'dependency' => [ 'cdn_url', '!=', '', '', 'visible' ],
+					'dependency' => [ 'cdn_enable', '!=', '', '', 'visible' ],
 				],
 			],
 				$cloudflare_fields,
