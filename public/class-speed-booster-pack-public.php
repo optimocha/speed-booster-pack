@@ -68,7 +68,7 @@ class Speed_Booster_Pack_Public {
 	}
 
 	public function sbp_headers( $headers ) {
-		$headers['X-Powered-By'] = SBP_PLUGIN_NAME;
+		$headers['X-Powered-By'] = SBP_PLUGIN_NAME . ' v' . SBP_VERSION;
 
 		return $headers;
 	}
