@@ -1225,9 +1225,7 @@ class Speed_Booster_Pack_Admin {
                     '<p>' . __( 'You can use any plugin you want to add these custom codes (<a href="' . admin_url() . 'plugin-install.php?s=optimocha&tab=search&type=author" target="_blank">We released a new plugin just for this purpose</a>).', 'speed-booster-pack' ) . '</p>' .
                     '<p><button class="button button-primary sbp-dismiss-ccm-notice notice-dismiss-button" data-notice-id="custom_code_manager_backup" data-notice-action="sbp_dismiss_notice">' . __( 'I copied the code, dismiss this notice', 'speed-booster-pack' ) . '</button></p>',
                 'warning',
-                false,
-                'one_time',
-                'toplevel_page_sbp-settings'
+                false
                 );
 			}
 
