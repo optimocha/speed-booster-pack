@@ -1329,7 +1329,7 @@ class Speed_Booster_Pack_Admin {
 					'title'      => __( 'Cloudflare global API key', 'speed-booster-pack' ),
 					'id'         => 'cloudflare_api',
 					'type'       => 'text',
-					'desc'       => '<a href="https://support.cloudflare.com/hc/en-us/articles/200167836-Managing-API-Tokens-and-Keys#12345682" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
+					'desc'       => '<a href="https://developers.cloudflare.com/api/keys/#view-your-api-key" rel="external noopener" target="_blank">' . __( 'You can find it using this tutorial.', 'speed-booster-pack' ) . '</a>',
 					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
