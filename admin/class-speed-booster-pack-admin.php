@@ -1222,7 +1222,7 @@ class Speed_Booster_Pack_Admin {
                 'custom_code_manager_backup',
                 '<p>' . __( 'Speed Booster Pack: We have removed the Custom Code Manager feature from our plugin because it\'s not totally related to performance. Since you were using this feature, here\'s a backup of your custom codes:', 'speed-booster-pack' ) . '</p>' .
                     '<textarea style="max-width: 100%; width: 600px; min-height: 150px;" readonly>' . $custom_code_manager_backup . '</textarea>' .
-                    '<p>' . __( 'You can use any plugin you want to add these custom codes (<a href="' . admin_url() . 'plugin-install.php?s=optimocha&tab=search&type=author" target="_blank">We released a new plugin just for this purpose</a>).', 'speed-booster-pack' ) . '</p>' .
+                    '<p>' . sprintf( __( 'You can use any plugin you want to add these custom codes (%s is a decent alternative). Better yet, you can use your theme if it has a custom code feature.', 'speed-booster-pack' ), '<a href="https://wordpress.org/plugins/insert-headers-and-footers/" target="_blank" rel="external nofollow">Insert Headers and Footers</a>' ) . '</p>' .
                     '<p><button class="button button-primary sbp-dismiss-ccm-notice notice-dismiss-button" data-notice-id="custom_code_manager_backup" data-notice-action="sbp_dismiss_notice">' . __( 'I copied the code, dismiss this notice', 'speed-booster-pack' ) . '</button></p>',
                 'warning',
                 false
@@ -1430,6 +1430,7 @@ class Speed_Booster_Pack_Admin {
 					'after'    => '&nbsp;/',
 					'desc'     => __( 'Rewrites all asset URLs with the specified CDN domain. Enter the CDN domain without a protocol or a trailing slash; a relative protocol will be automatically added to all changed asset URLs.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_url',
+					'dependency' => [ 'cdn_enable', '!=', '', '', 'visible' ],
 				],
 				[
 					'title'      => __( 'Included Directories', 'speed-booster-pack' ),

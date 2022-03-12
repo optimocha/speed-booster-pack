@@ -106,9 +106,20 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.4.1 =
 
-*Release Date: XX February 2021*
+*Release Date: 12 March 2021*
 
-* **Fixed**: Fixed a development console error when there are no fonts found inside page sources.
+* **Improved**: Speed Booster Pack's wp-admin CSS file got a bit smaller.
+* **Improved**: Better onboarding with titles.
+* **Improved**: The CDN feature is now enabled with a toggle.
+* **Improved**: Code improvements in the "LiteSpeed cache" feature.
+* **Improved**: 
+* **Fixed**: Fixed an issue when there were no fonts found inside page sources.
+* **Fixed**: The "set image dimensions" feature now correctly detects image URLs that start with `http://` while the site URL starts with `https://` (and vice versa).
+* **Fixed**: 
+* **Updated**: Updated Codestar Framework to v2.2.6.
+* **Updated**: Updated intro.js to v5.0.0.
+* **Removed**: Custom Code Manager is now removed. Users who added custom codes will get a notice to copy their code to somewhere else
+* **Removed**: 
 
 = 4.4.0 =
 
