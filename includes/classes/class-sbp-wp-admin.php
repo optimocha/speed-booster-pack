@@ -323,31 +323,35 @@ class SBP_WP_Admin {
 				<h4>' . __( 'Sorry to see you go, we would appreciate if you let us know why you\'re deactivating ' . SBP_PLUGIN_NAME . '!', 'speed-booster-pack' ) . '</h4>
 				<form action="" method="POST">
 					<label>
-						<input type="radio" name="reason" value="I don\'t see a performance improvement." />
+						<input type="radio" name="sbp_reason" value="I don\'t see a performance improvement." />
 						I don\'t see a performance improvement.
 					</label>
 					<label>
-						<input type="radio" name="reason" value="It broke my site." />
+						<input type="radio" name="sbp_reason" value="It broke my site." />
 						It broke my site.
 					</label>
 					<label>
-						<input type="radio" name="reason" value="I found a better solution." />
+						<input type="radio" name="sbp_reason" value="I found a better solution." />
 						I found a better solution.
 					</label>
 					<label>
-						<input type="radio" name="reason" value="I\'m just disabling temporarily." />
+						<input type="radio" name="sbp_reason" value="I\'m just disabling temporarily." />
 						I\'m just disabling temporarily.
 					</label>
 					<label>
-						<input type="radio" name="reason" value="Other (please specify below)" />
+						<input type="radio" name="sbp_reason" value="other" />
 						Other (please specify below)
 					</label>
+					<label>
+						<textarea name="sbp_deactivation_description" class="widefat" style="display: none;"></textarea>
+					</label>
+					<input type="hidden" name="sbp_site_url" value="' . site_url() . '" />
 					<div style="display: flex; justify-content: space-between;">
 						<div style="display: flex; justify-content: flex-start; align-items: center;">
 							<button class="button button-secondary deactivate-plugin" type="button">' . __( 'Just Deactivate', 'speed-booster-pack' ) . '</button>
 							<button class="button button-secondary cancel-deactivation-survey" type="button" style="margin-left: 10px;">' . __( 'Cancel', 'speed-booster-pack' ) . '</button>
 						</div>
-						<button class="button button-primary">' . __( 'Submit & Deactivate', 'speed-booster-pack' ) . '</button>
+						<button class="button button-primary submit-and-deactivate" disabled="disabled">' . __( 'Submit & Deactivate', 'speed-booster-pack' ) . '</button>
 					</div>
 				</form>
 			</div>
