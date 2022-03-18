@@ -282,7 +282,9 @@ class Speed_Booster_Pack {
 	private function define_public_hooks() {
 		$plugin_public = new Speed_Booster_Pack_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 9999999 );
+		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 0 );
+
+		$this->loader->add_action( 'shutdown', $plugin_public, 'shutdown', PHP_INT_MAX );
 
 		$this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
 	}
