@@ -317,6 +317,12 @@ class SBP_WP_Admin {
 	}
 
 	public function deactivation_survey_modal() {
+		global $current_user;
+		get_currentuserinfo();
+
+		$email = (string) $current_user->user_email;
+
+		// B_TODO: Check design
 		echo '
 		<div class="sbp-deactivation-survey">
 			<div class="sbp-survey-inner">
@@ -324,28 +330,37 @@ class SBP_WP_Admin {
 				<form action="" method="POST">
 					<label>
 						<input type="radio" name="sbp_reason" value="I don\'t see a performance improvement." />
-						I don\'t see a performance improvement.
+						' . __( 'I don\'t see a performance improvement.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
 						<input type="radio" name="sbp_reason" value="It broke my site." />
-						It broke my site.
+						' . __( 'It broke my site.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
 						<input type="radio" name="sbp_reason" value="I found a better solution." />
-						I found a better solution.
+						' . __( 'I found a better solution.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
 						<input type="radio" name="sbp_reason" value="I\'m just disabling temporarily." />
-						I\'m just disabling temporarily.
+						' . __( 'I\'m just disabling temporarily.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
 						<input type="radio" name="sbp_reason" value="other" />
-						Other (please specify below)
+						' . __( 'Other (please specify below)', 'speed-booster-pack' ) . '
 					</label>
 					<label>
 						<textarea name="sbp_deactivation_description" class="widefat" style="display: none;"></textarea>
 					</label>
 					<input type="hidden" name="sbp_site_url" value="' . site_url() . '" />
+					<input type="hidden" name="sbp_version" value="' . SBP_VERSION . '" />
+					<hr>
+					<label>
+						<input type="checkbox" name="sbp_reply" />
+						' . __( 'I want to get reply for this submission.', 'speed-booster-pack' ) . '
+					</label>
+					<label>
+						<input name="sbp_reply_email" class="widefat" value="' . $email . '" style="padding: 3px 5px; display: none;" />
+					</label>
 					<div style="display: flex; justify-content: space-between;">
 						<div style="display: flex; justify-content: flex-start; align-items: center;">
 							<button class="button button-secondary deactivate-plugin" type="button">' . __( 'Just Deactivate', 'speed-booster-pack' ) . '</button>

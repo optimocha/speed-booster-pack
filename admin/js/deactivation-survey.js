@@ -48,6 +48,9 @@
             e.preventDefault();
             var reason = $.trim($('input[name=sbp_reason]:checked').val());
             var description = $.trim($('textarea[name=sbp_deactivation_description]').val());
+            var share_email = $('[name=sbp_reply]').prop('checked');
+            var email = $('[name=sbp_reply_email]').val();
+            var version = $('[name=sbp_version]').val();
 
             if (reason === 'other' && !description) {
                 alert('Please fill the description.');
@@ -57,7 +60,13 @@
             $.ajax({
                 type: 'POST',
                 url: 'https://speedboosterpack.com/wp-json/sbp_survey/v1/vote',
-                data: {reason: reason, description: description, site_url: $('input[name=sbp_site_url]').val()},
+                data: {
+                    reason: reason,
+                    description: description,
+                    site_url: $('input[name=sbp_site_url]').val(),
+                    email: share_email ? email : '',
+                    version: version,
+                },
                 success: function (response) {
                     console.log('RESPONSE', response);
                 },
@@ -65,6 +74,16 @@
                     window.location.href = redirectUrl;
                 }
             })
+        })
+
+        $(document).on('change', '[name=sbp_reply]', function() {
+            var $target = $('[name=sbp_reply]');
+
+            if ($target.prop('checked')) {
+                $('[name=sbp_reply_email]').stop().slideDown();
+            } else {
+                $('[name=sbp_reply_email]').stop().slideUp();
+            }
         })
     });
 })(jQuery);
