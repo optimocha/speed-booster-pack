@@ -66,6 +66,8 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
+		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Woocommerce::options_saved_listener' );
+
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
@@ -548,6 +550,17 @@ class Speed_Booster_Pack_Admin {
 		                ],
 		                [
                             /** B_TODO: Check text */
+			                'title'      => __( 'Disable Woocommerce Marketing', 'speed-booster-pack' ),
+			                'id'         => 'wc_disable_marketing',
+			                'type'       => 'switcher',
+                            /** B_TODO: Change text */
+			                'desc'       => __( '', 'speed-booster-pack' ),
+			                'unit'       => __( 'days', 'speed-booster-pack' ),
+			                'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
+			                'sanitize'   => 'sbp_sanitize_boolean',
+		                ],
+		                [
+                            /** B_TODO: Check text */
 			                'title'      => __( 'Disable Woocommerce Analytics', 'speed-booster-pack' ),
 			                'id'         => 'wc_disable_admin',
 			                'type'       => 'switcher',
@@ -556,6 +569,19 @@ class Speed_Booster_Pack_Admin {
 			                'unit'       => __( 'days', 'speed-booster-pack' ),
 			                'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 			                'sanitize'   => 'sbp_sanitize_boolean',
+                            'value'      => get_option( 'woocommerce_analytics_enabled' ) == 'yes' ? '1' : '0',
+		                ],
+		                [
+                            /** B_TODO: Check text */
+			                'title'      => __( 'Disable Woocommerce Tracking', 'speed-booster-pack' ),
+			                'id'         => 'wc_disable_tracking',
+			                'type'       => 'switcher',
+                            /** B_TODO: Change text */
+			                'desc'       => __( '', 'speed-booster-pack' ),
+			                'unit'       => __( 'days', 'speed-booster-pack' ),
+			                'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
+			                'sanitize'   => 'sbp_sanitize_boolean',
+                            'value'      => get_option( 'woocommerce_allow_tracking' ) == 'yes' ? '0' : '1',
 		                ],
                     ],
                 ]

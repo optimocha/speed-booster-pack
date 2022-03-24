@@ -25,7 +25,7 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 			$this->optimize_nonwc_pages();
 			$this->remove_wc_password_strength_meter();
 			$this->set_action_scheduler_period();
-			$this->disable_admin();
+//			$this->remove_marketing();
 		}
 	}
 
@@ -123,15 +123,36 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 		}
 	}
 
+	// Z_TODO: Somehow it's not working. Will check
+//	public function remove_marketing() {
+//		if ( sbp_get_option( 'wc_disable_marketing' ) ) {
+//			add_filter( 'woocommerce_marketing_menu_items', function() {
+//				return [];
+//			} );
+//		}
+//	}
+
 	private function set_action_scheduler_period() {
 		add_filter( 'action_scheduler_retention_period', function() {
 			return DAY_IN_SECONDS * sbp_get_option( 'wc_action_scheduler_period', 7 );
 		} );
 	}
 
-	private function disable_admin() {
-		if ( sbp_get_option( 'wc_disable_admin' ) ) {
-			add_filter( 'woocommerce_admin_disabled', '__return_true' );
+	public static function options_saved_listener( $saved_data ) {
+		if ( isset( $saved_data['wc_disable_admin'] ) ) {
+			$woocommerce_analytics_enabled = get_option( 'woocommerce_analytics_enabled' ) == 'yes' ? '1' : '0';
+
+			if ( $woocommerce_analytics_enabled != $saved_data['wc_disable_admin'] ) {
+				update_option( 'woocommerce_analytics_enabled', $saved_data['wc_disable_admin'] == '1' ? 'yes' : 'no' );
+			}
+		}
+
+		if ( isset( $saved_data['wc_disable_tracking'] ) ) {
+			$woocommerce_allow_tracking = get_option( 'woocommerce_allow_tracking' ) == 'yes' ? '0' : '1';
+
+			if ( $woocommerce_allow_tracking != $saved_data['wc_disable_tracking'] ) {
+				update_option( 'woocommerce_allow_tracking', $saved_data['wc_disable_tracking'] == '1' ? 'no' : 'yes' );
+			}
 		}
 	}
 }
