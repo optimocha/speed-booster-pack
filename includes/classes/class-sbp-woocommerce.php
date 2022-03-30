@@ -25,7 +25,7 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 			$this->optimize_nonwc_pages();
 			$this->remove_wc_password_strength_meter();
 			$this->set_action_scheduler_period();
-//			$this->remove_marketing();
+			$this->remove_marketing();
 		}
 	}
 
@@ -124,16 +124,22 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 	}
 
 	// Z_TODO: Somehow it's not working. Will check
-//	public function remove_marketing() {
-//		if ( sbp_get_option( 'wc_disable_marketing' ) ) {
-//			add_filter( 'woocommerce_marketing_menu_items', function() {
-//				return [];
-//			} );
-//		}
-//	}
+	public function remove_marketing() {
+		if ( sbp_get_option( 'wc_disable_marketing' ) ) {
+			add_filter( 'woocommerce_marketing_menu_items', '__return_empty_array' );
+
+			add_filter( 'woocommerce_admin_features', function ( $features ) {
+				return array_values(
+					array_filter( $features, function ( $feature ) {
+						return $feature !== 'marketing';
+					} )
+				);
+			} );
+		}
+	}
 
 	private function set_action_scheduler_period() {
-		add_filter( 'action_scheduler_retention_period', function() {
+		add_filter( 'action_scheduler_retention_period', function () {
 			return DAY_IN_SECONDS * sbp_get_option( 'wc_action_scheduler_period', 7 );
 		} );
 	}

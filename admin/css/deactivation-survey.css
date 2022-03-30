@@ -32,4 +32,21 @@
     margin-bottom: 10px;
 }
 
-.sbp-deactivation-survey .sbp-survey-inner
+.sbp-deactivation-survey .sbp-survey-inner .sbp-deactivate-buttons-wrapper {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.sbp-deactivation-survey .sbp-survey-inner .sbp-deactivate-buttons-wrapper button {
+    margin-right: 10px;
+}
+
+@media all and (max-width: 420px) {
+    .sbp-deactivation-survey .sbp-survey-inner .sbp-deactivate-buttons-wrapper {
+        flex-direction: column;
+    }
+
+    .sbp-deactivation-survey .sbp-survey-inner .sbp-deactivate-buttons-wrapper button {
+        margin-right: 0;
+    }
+}

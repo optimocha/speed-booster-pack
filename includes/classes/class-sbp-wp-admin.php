@@ -361,12 +361,10 @@ class SBP_WP_Admin {
 					<label>
 						<input name="sbp_reply_email" class="widefat" value="' . $email . '" style="padding: 3px 5px; display: none;" />
 					</label>
-					<div style="display: flex; justify-content: space-between;">
-						<div style="display: flex; justify-content: flex-start; align-items: center;">
-							<button class="button button-secondary deactivate-plugin" type="button">' . __( 'Just Deactivate', 'speed-booster-pack' ) . '</button>
-							<button class="button button-secondary cancel-deactivation-survey" type="button" style="margin-left: 10px;">' . __( 'Cancel', 'speed-booster-pack' ) . '</button>
-						</div>
+					<div class="sbp-deactivate-buttons-wrapper">
 						<button class="button button-primary submit-and-deactivate" disabled="disabled">' . __( 'Submit & Deactivate', 'speed-booster-pack' ) . '</button>
+						<button class="button button-secondary deactivate-plugin" type="button">' . __( 'Just Deactivate', 'speed-booster-pack' ) . '</button>
+						<button class="button button-secondary cancel-deactivation-survey" type="button">' . __( 'Cancel', 'speed-booster-pack' ) . '</button>
 					</div>
 				</form>
 			</div>
