@@ -68,7 +68,9 @@ class Speed_Booster_Pack_Public {
 	}
 
 	public function shutdown() {
-		ob_end_flush();
+		if ( ob_get_length() != false ) {
+			ob_end_flush();
+		}
 	}
 
 	public function sbp_headers( $headers ) {
