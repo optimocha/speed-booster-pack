@@ -19,6 +19,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		}
 
 		add_action( 'set_current_user', [ $this, 'run_class' ] );
+		add_action('wp_enqueue_scripts',[ $this, 'deregister_media_elements' ]);
 	}
 
 	public function run_class() {
@@ -74,6 +75,12 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		wp_add_inline_script( 'sbp-lazy-load', $lazy_loader_script );
 	}
 
+	 function deregister_media_elements(){
+	   wp_deregister_script('wp-mediaelement');
+	   wp_deregister_style('wp-mediaelement');
+	}
+
+
 	function lazy_load_handler( $html ) {
 		if ( is_embed() != false ) {
 			return $html;
@@ -99,7 +106,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		$placeholder                 = 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=';
 
 		// Find all images
-		preg_match_all( '/<(img|source|iframe)(.*?) (src=)[\'|"](.*?)[\'|"](.*?)>/is', $html, $resource_elements );
+		preg_match_all( '/<(img|source|video|iframe)(.*?) (src=)[\'|"](.*?)[\'|"](.*?)>/is', $html, $resource_elements );
 
 		$elements_to_be_changed = [];
 
@@ -143,7 +150,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			// add loading attribute, but only if the tag doesn't have one
 			if ( ! strpos( $newElement, 'loading=' ) ) {
 				$newElement = preg_replace(
-					"/<(img|source|iframe)(.*?) ?(\/?)>/is",
+					"/<(img|source|video|iframe)(.*?) ?(\/?)>/is",
 					'<$1$2 loading="lazy" $3>',
 					$newElement
 				);
