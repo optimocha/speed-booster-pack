@@ -103,7 +103,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			'images.dmca.com/Badges/',
 		];
 		$lazyload_exclusions         = apply_filters( 'sbp_lazyload_exclusions', array_merge( $lazyload_exclusions, $default_lazyload_exclusions ) );
-		$placeholder                 = 'data:image/gif;base64,R0lGODdhAQABAPAAAP///wAAACwAAAAAAQABAEACAkQBADs=';
+		$placeholder                 = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 		// Find all images
 		preg_match_all( '/<(img|source|video|iframe)(.*?) (src=)[\'|"](.*?)[\'|"](.*?)>/is', $html, $resource_elements );
