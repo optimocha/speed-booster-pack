@@ -359,7 +359,7 @@ class SBP_WP_Admin {
 						' . __( 'I want to get reply for this submission.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
-						<input name="sbp_reply_email" class="widefat" value="' . $email . '" style="padding: 3px 5px; display: none;" />
+						<input name="sbp_reply_email" type="email" class="widefat" value="' . $email . '" style="padding: 3px 5px; display: none;" />
 					</label>
 					<div class="sbp-deactivate-buttons-wrapper">
 						<button class="button button-primary submit-and-deactivate" disabled="disabled">' . __( 'Submit & Deactivate', 'speed-booster-pack' ) . '</button>
