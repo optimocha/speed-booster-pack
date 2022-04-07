@@ -100,7 +100,7 @@ class Speed_Booster_Pack_Admin {
 			( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
 			current_user_can( 'manage_options' )
 		) {
-			wp_enqueue_style( 'sbp_intro_css', SBP_URL . 'admin/css/intro.min.css', [], '4.2.2' );
+			wp_enqueue_style( 'sbp_intro_css', SBP_URL . 'admin/css/intro.min.css', [], '5.0.0' );
 		}
 	}
 
@@ -115,8 +115,8 @@ class Speed_Booster_Pack_Admin {
 			( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
 			current_user_can( 'manage_options' )
 		) {
-			wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], '4.2.2' );
-			wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], '4.2.2' );
+			wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], '5.0.0' );
+			wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], '5.0.0' );
 			wp_localize_script( 'sbp_intro_js',
 				'sbp_intro_translations',
 				[
