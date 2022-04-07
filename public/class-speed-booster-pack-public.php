@@ -57,6 +57,7 @@ class Speed_Booster_Pack_Public {
 	 * Basically a hook for functions which use output buffer
 	 */
 	public function template_redirect() {
+		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 		ob_start( [ $this, 'output_buffer' ] );
 	}
 

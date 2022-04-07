@@ -83,9 +83,9 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
 
-		add_action( 'plugins_loaded', [ $this, 'create_settings_page' ] );
+		add_action( 'csf_loaded', [ $this, 'create_settings_page' ] );
 
-		add_action( 'plugins_loaded', [ $this, 'create_metaboxes' ] );
+		add_action( 'csf_loaded', [ $this, 'create_metaboxes' ] );
 	}
 
 	/**

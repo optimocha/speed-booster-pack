@@ -280,6 +280,9 @@ class Speed_Booster_Pack {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
+
+		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
+		
 		$plugin_public = new Speed_Booster_Pack_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 0 );
