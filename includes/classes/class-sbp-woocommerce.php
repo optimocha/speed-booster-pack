@@ -20,28 +20,30 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			$this->woocommerce_disable_cart_fragments();
-			$this->optimize_nonwc_pages();
-			$this->remove_wc_password_strength_meter();
-			$this->set_action_scheduler_period();
-			$this->remove_marketing();
+
+		if ( ! $this->should_sbp_run || ! SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+			return;
 		}
+
+		$this->woocommerce_disable_cart_fragments();
+		$this->optimize_nonwc_pages();
+		$this->remove_wc_password_strength_meter();
+		$this->set_action_scheduler_period();
+		$this->remove_marketing();
+
 	}
 
 	/**
 	 * Removes WooCommerce scripts from non-woocommerce pages
 	 */
-	// Z_TODO: Move this method to WooCommerce class in version 4.5
 	private function optimize_nonwc_pages() {
 		if ( function_exists( 'is_woocommerce' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'optimize_nonwc_pages_handle' ] );
 		}
 	}
 
-	// Z_TODO: Move this method to WooCommerce class in version 4.5
 	public function optimize_nonwc_pages_handle() {
-		if ( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
+		if ( sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
 			if ( ! is_woocommerce() && ! is_cart() && ! is_checkout() ) {
 				// dequeue WooCommerce styles
 				wp_dequeue_style( 'woocommerce_chosen_styles' );
@@ -53,10 +55,8 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 				wp_dequeue_script( 'wc-add-to-cart' );
 				wp_dequeue_script( 'wc-add-to-cart-variation' );
 				wp_dequeue_script( 'wc-cart' );
-				wp_dequeue_script( 'wc-cart-fragments' );
 				wp_dequeue_script( 'wc-checkout' );
 				wp_dequeue_script( 'wc-chosen' );
-				wp_dequeue_script( 'wc-single-product' );
 				wp_dequeue_script( 'wc-single-product' );
 				wp_dequeue_script( 'wc_price_slider' );
 				wp_dequeue_script( 'woocommerce' );
@@ -64,7 +64,6 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 		}
 	}
 
-	// Z_TODO: Move this method to WooCommerce class in version 4.5
 	private function woocommerce_disable_cart_fragments() {
 		if ( sbp_get_option( 'woocommerce_disable_cart_fragments' ) ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'woocommerce_disable_cart_fragments_handle' ], 999 );
@@ -74,33 +73,30 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 	/**
 	 * Removes cart-fragments.js
 	 */
-	// Z_TODO: Move this method to WooCommerce class in version 4.5
 	public function woocommerce_disable_cart_fragments_handle() {
-		if ( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
-			global $wp_scripts;
-			$handle = 'wc-cart-fragments';
-			if ( isset( $wp_scripts->registered[ $handle ] ) && $wp_scripts->registered[ $handle ]->src ) {
-				$load_cart_fragments_path               = $wp_scripts->registered[ $handle ]->src;
-				$wp_scripts->registered[ $handle ]->src = null;
-				wp_add_inline_script(
-					'jquery',
-					'function sbp_getCookie(c){var e=document.cookie.match("(^|;) ?"+c+"=([^;]*)(;|$)");return e?e[2]:null}function sbp_check_wc_cart_script(){var c="sbp_loaded_wc_cart_fragments";if(null!==document.getElementById(c))return!1;if(sbp_getCookie("woocommerce_cart_hash")){var e=document.createElement("script");e.id=c,e.src="' . $load_cart_fragments_path . '",e.async=!0,document.head.appendChild(e)}}sbp_check_wc_cart_script(),document.addEventListener("click",function(){setTimeout(sbp_check_wc_cart_script,1e3)});'
-				);
-			}
+
+		global $wp_scripts;
+		$handle = 'wc-cart-fragments';
+		if ( isset( $wp_scripts->registered[ $handle ] ) && $wp_scripts->registered[ $handle ]->src ) {
+			$load_cart_fragments_path = $wp_scripts->registered[ $handle ]->src;
+			$wp_scripts->registered[ $handle ]->src = null;
+			wp_add_inline_script(
+				'jquery',
+				'function sbp_getCookie(c){var e=document.cookie.match("(^|;) ?"+c+"=([^;]*)(;|$)");return e?e[2]:null}function sbp_check_wc_cart_script(){var c="sbp_loaded_wc_cart_fragments";if(null!==document.getElementById(c))return!1;if(sbp_getCookie("woocommerce_cart_hash")){var e=document.createElement("script");e.id=c,e.src="' . $load_cart_fragments_path . '",e.async=!0,document.head.appendChild(e)}}sbp_check_wc_cart_script(),document.addEventListener("click",function(){setTimeout(sbp_check_wc_cart_script,1e3)});'
+			);
 		}
+
 	}
 
 	/**
 	 * Removes password strength meter in WooCommerce checkout process
 	 */
-	// Z_TODO: Move this method to WooCommerce class in version 4.5
 	private function remove_wc_password_strength_meter() {
 		if ( function_exists( 'is_account_page' ) && sbp_get_option( 'woocommerce_disable_password_meter' ) ) {
 			add_action( 'wp_print_scripts', [ $this, 'remove_wc_password_strength_meter_handle' ], 100 );
 		}
 	}
 
-	// Z_TODO: Move this method to WooCommerce class in version 4.5
 	public function remove_wc_password_strength_meter_handle() {
 		global $wp;
 
@@ -160,6 +156,7 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 	}
 
 	public static function set_woocommerce_option_tracking( $saved_data ) {
+		
 		$woocommerce_tracking = $saved_data[ 'woocommerce_tracking' ] === '1' ? 'yes' : 'no';
 		update_option( 'woocommerce_allow_tracking', $woocommerce_tracking );
 
