@@ -49,6 +49,24 @@ class Speed_Booster_Pack_Admin {
 	private $version;
 
 	/**
+	 * WooCommerce Tracking setting.
+	 *
+	 * @since    4.5.0
+	 * @access   private
+	 * @var      string $version WooCommerce Tracking setting.
+	 */
+	private $woocommerce_tracking;
+
+	/**
+	 * WooCommerce Analytics setting.
+	 *
+	 * @since    4.5.0
+	 * @access   private
+	 * @var      string $version WooCommerce Analytics setting.
+	 */
+	private $woocommerce_analytics;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $plugin_name The name of this plugin.
@@ -60,16 +78,23 @@ class Speed_Booster_Pack_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+		$this->woocommerce_analytics = 1;
+		$this->woocommerce_tracking  = 1;
+
 
 		$this->load_dependencies();
 
-		add_filter( 'csf_sbp_options_save', '\SpeedBooster\SBP_Cache::options_saved_filter' );
+		add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
+
+		add_filter( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_filter' );
 
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
 
-		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Woocommerce::options_saved_listener' );
-
 		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );
+
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Woocommerce::set_woocommerce_option_tracking' );
+
+		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Woocommerce::set_woocommerce_option_analytics' );
 
 		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
 
@@ -167,6 +192,14 @@ class Speed_Booster_Pack_Admin {
 			[
 				'nonce' => wp_create_nonce( 'sbp_ajax_nonce' ),
 			] );
+	}
+
+	public function get_woocommerce_options() {
+		
+		$this->woocommerce_analytics = \SpeedBooster\SBP_Woocommerce::get_woocommerce_option( 'woocommerce_analytics_enabled' );
+
+		$this->woocommerce_tracking  = \SpeedBooster\SBP_Woocommerce::get_woocommerce_option( 'woocommerce_allow_tracking' );
+
 	}
 
 	public function load_dependencies() {
@@ -1522,9 +1555,9 @@ class Speed_Booster_Pack_Admin {
 	            [
 		            /** B_TODO: Check text */
 		            'title'      => __( 'Action Scheduler Retention Period', 'speed-booster-pack' ),
-		            'id'         => 'wc_action_scheduler_period',
+		            'id'         => 'woocommerce_action_scheduler_period',
 		            'type'       => 'spinner',
-		            'default'    => 7,
+		            'default'    => 30,
 		            /** B_TODO: Change text */
 		            'desc'       => __( '', 'speed-booster-pack' ),
 		            'unit'       => __( 'days', 'speed-booster-pack' ),
@@ -1533,40 +1566,36 @@ class Speed_Booster_Pack_Admin {
 	            ],
 	            [
 		            /** B_TODO: Check text */
-		            'title'      => __( 'Disable Woocommerce Marketing', 'speed-booster-pack' ),
-		            'id'         => 'wc_disable_marketing',
+		            'title'      => __( 'Woocommerce Marketing', 'speed-booster-pack' ),
+		            'id'         => 'woocommerce_marketing',
 		            'type'       => 'switcher',
 		            /** B_TODO: Change text */
-		            'desc'       => __( '', 'speed-booster-pack' ),
-		            'unit'       => __( 'days', 'speed-booster-pack' ),
+		            'desc'       => __( 'Turn on or turn off WooCommerce marketing. Note that this will also disable coupons.', 'speed-booster-pack' ),
 		            'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'sbp_sanitize_boolean',
+                    'default'    => '1',
 	            ],
 	            [
 		            /** B_TODO: Check text */
-		            'title'      => __( 'Disable Woocommerce Analytics', 'speed-booster-pack' ),
-		            'id'         => 'wc_disable_admin',
+		            'title'      => __( 'Woocommerce Analytics', 'speed-booster-pack' ),
+		            'id'         => 'woocommerce_analytics',
 		            'type'       => 'switcher',
 		            /** B_TODO: Change text */
-		            'desc'       => __( '', 'speed-booster-pack' ),
-		            'unit'       => __( 'days', 'speed-booster-pack' ),
+		            'desc'       => __( 'Turn on or turn off WooCommerce analytics.', 'speed-booster-pack' ),
 		            'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'sbp_sanitize_boolean',
-                    'default'    => $woocommerce_analytics_enabled ? '1' : '0',
-		            'value'      => $woocommerce_analytics_enabled ? '1' : '0',
+                    'default'    => $this->woocommerce_analytics,
 	            ],
 	            [
 		            /** B_TODO: Check text */
-		            'title'      => __( 'Disable Woocommerce Tracking', 'speed-booster-pack' ),
-		            'id'         => 'wc_disable_tracking',
+		            'title'      => __( 'Woocommerce Tracking', 'speed-booster-pack' ),
+		            'id'         => 'woocommerce_tracking',
 		            'type'       => 'switcher',
 		            /** B_TODO: Change text */
-		            'desc'       => __( '', 'speed-booster-pack' ),
-		            'unit'       => __( 'days', 'speed-booster-pack' ),
+		            'desc'       => __( 'Turn on or turn off WooCommerce tracking.', 'speed-booster-pack' ),
 		            'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'sbp_sanitize_boolean',
-		            'default'    => $woocommerce_allow_tracking ? '0' : '1',
-		            'value'      => $woocommerce_allow_tracking ? '0' : '1',
+		            'default'    => $this->woocommerce_tracking,
 	            ],
             ] );
 

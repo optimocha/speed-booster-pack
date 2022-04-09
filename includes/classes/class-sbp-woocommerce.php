@@ -125,7 +125,7 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 
 	// Z_TODO: Somehow it's not working. Will check
 	public function remove_marketing() {
-		if ( sbp_get_option( 'wc_disable_marketing' ) ) {
+		if ( ! sbp_get_option( 'woocommerce_marketing' ) ) {
 			add_filter( 'woocommerce_marketing_menu_items', '__return_empty_array' );
 
 			add_filter( 'woocommerce_admin_features', function ( $features ) {
@@ -140,25 +140,32 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 
 	private function set_action_scheduler_period() {
 		add_filter( 'action_scheduler_retention_period', function () {
-			return DAY_IN_SECONDS * sbp_get_option( 'wc_action_scheduler_period', 7 );
+			return DAY_IN_SECONDS * sbp_get_option( 'woocommerce_action_scheduler_period', 7 );
 		} );
 	}
 
-	public static function options_saved_listener( $saved_data ) {
-		if ( isset( $saved_data['wc_disable_admin'] ) ) {
-			$woocommerce_analytics_enabled = get_option( 'woocommerce_analytics_enabled' ) == 'yes' ? '1' : '0';
+	public static function get_woocommerce_option( $option_name ) {
 
-			if ( $woocommerce_analytics_enabled != $saved_data['wc_disable_admin'] ) {
-				update_option( 'woocommerce_analytics_enabled', $saved_data['wc_disable_admin'] == '1' ? 'yes' : 'no' );
-			}
+		if ( ! class_exists( 'woocommerce' ) ) { return; }
+
+		if ( get_option( $option_name ) === 'yes' ) {
+			return 1;
 		}
 
-		if ( isset( $saved_data['wc_disable_tracking'] ) ) {
-			$woocommerce_allow_tracking = get_option( 'woocommerce_allow_tracking' ) == 'yes' ? '0' : '1';
+		return 0;
 
-			if ( $woocommerce_allow_tracking != $saved_data['wc_disable_tracking'] ) {
-				update_option( 'woocommerce_allow_tracking', $saved_data['wc_disable_tracking'] == '1' ? 'no' : 'yes' );
-			}
-		}
 	}
+	public static function set_woocommerce_option_analytics( $saved_data ) {
+
+		$woocommerce_analytics = $saved_data[ 'woocommerce_analytics' ] === '1' ? 'yes' : 'no';
+		update_option( 'woocommerce_analytics_enabled', $woocommerce_analytics );
+
+	}
+
+	public static function set_woocommerce_option_tracking( $saved_data ) {
+		$woocommerce_tracking = $saved_data[ 'woocommerce_tracking' ] === '1' ? 'yes' : 'no';
+		update_option( 'woocommerce_allow_tracking', $woocommerce_tracking );
+
+	}
+
 }
