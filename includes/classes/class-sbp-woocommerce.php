@@ -123,7 +123,6 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 		}
 	}
 
-	// Z_TODO: Somehow it's not working. Will check
 	public function remove_marketing() {
 		if ( ! sbp_get_option( 'woocommerce_marketing' ) ) {
 			add_filter( 'woocommerce_marketing_menu_items', '__return_empty_array' );
