@@ -7,7 +7,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Z_TODO: Remove class in version 4.5
 class SBP_Woocommerce extends SBP_Abstract_Module {
 	public function __construct() {
 		parent::__construct();
@@ -148,12 +147,20 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 	}
 	public static function set_woocommerce_option_analytics( $saved_data ) {
 
+		if ( ! sbp_get_option( 'module_woocommerce' ) ) {
+			return;
+		}
+
 		$woocommerce_analytics = $saved_data[ 'woocommerce_analytics' ] === '1' ? 'yes' : 'no';
 		update_option( 'woocommerce_analytics_enabled', $woocommerce_analytics );
 
 	}
 
 	public static function set_woocommerce_option_tracking( $saved_data ) {
+
+		if ( ! sbp_get_option( 'module_woocommerce' ) ) {
+			return;
+		}
 
 		$woocommerce_tracking = $saved_data[ 'woocommerce_tracking' ] === '1' ? 'yes' : 'no';
 		update_option( 'woocommerce_allow_tracking', $woocommerce_tracking );
