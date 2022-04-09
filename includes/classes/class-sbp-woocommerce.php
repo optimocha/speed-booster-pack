@@ -146,8 +146,6 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 
 	public static function get_woocommerce_option( $option_name ) {
 
-		if ( ! class_exists( 'woocommerce' ) ) { return; }
-
 		if ( get_option( $option_name ) === 'yes' ) {
 			return 1;
 		}
