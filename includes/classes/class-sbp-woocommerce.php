@@ -37,9 +37,7 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 	 * Removes WooCommerce scripts from non-woocommerce pages
 	 */
 	private function optimize_nonwc_pages() {
-		if ( function_exists( 'is_woocommerce' ) && sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) {
-			add_action( 'wp_enqueue_scripts', [ $this, 'optimize_nonwc_pages_handle' ] );
-		}
+		add_action( 'wp_enqueue_scripts', [ $this, 'optimize_nonwc_pages_handle' ] );
 	}
 
 	public function optimize_nonwc_pages_handle() {
@@ -156,7 +154,7 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 	}
 
 	public static function set_woocommerce_option_tracking( $saved_data ) {
-		
+
 		$woocommerce_tracking = $saved_data[ 'woocommerce_tracking' ] === '1' ? 'yes' : 'no';
 		update_option( 'woocommerce_allow_tracking', $woocommerce_tracking );
 
