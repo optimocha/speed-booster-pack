@@ -266,6 +266,9 @@ class Speed_Booster_Pack {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
+
+		if ( ! is_admin() ) { return; }
+		
 		$plugin_admin = new Speed_Booster_Pack_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
