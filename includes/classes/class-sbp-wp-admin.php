@@ -326,11 +326,12 @@ class SBP_WP_Admin {
 		echo '
 		<div class="sbp-deactivation-survey">
 			<div class="sbp-survey-inner">
-				<h4>' . __( 'Sorry to see you go, we would appreciate if you let us know why you\'re deactivating ' . SBP_PLUGIN_NAME . '!', 'speed-booster-pack' ) . '</h4>
+				<h3>' . __( 'Sorry to see you go!', 'speed-booster-pack' ) . '</h3>
+				<h4>' . sprintf( __( 'We would appreciate if you let us know why you\'re deactivating %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</h4>
 				<form action="" method="POST">
 					<label>
-						<input type="radio" name="sbp_reason" value="I don\'t see a performance improvement." />
-						' . __( 'I don\'t see a performance improvement.', 'speed-booster-pack' ) . '
+						<input type="radio" name="sbp_reason" value="I don\'t see any performance improvement." />
+						' . __( 'I don\'t see any performance improvement.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
 						<input type="radio" name="sbp_reason" value="It broke my site." />
@@ -345,7 +346,7 @@ class SBP_WP_Admin {
 						' . __( 'I\'m just disabling temporarily.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
-						<input type="radio" name="sbp_reason" value="other" />
+						<input type="radio" name="sbp_reason" value="Other." />
 						' . __( 'Other (please specify below)', 'speed-booster-pack' ) . '
 					</label>
 					<label>
@@ -356,7 +357,7 @@ class SBP_WP_Admin {
 					<hr>
 					<label>
 						<input type="checkbox" name="sbp_reply" />
-						' . __( 'I want to get reply for this submission.', 'speed-booster-pack' ) . '
+						' . __( 'I would like to get response to my submission.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
 						<input name="sbp_reply_email" type="email" class="widefat" value="' . $email . '" style="padding: 3px 5px; display: none;" />
