@@ -322,7 +322,6 @@ class SBP_WP_Admin {
 
 		$email = (string) $current_user->user_email;
 
-		// B_TODO: Check design
 		echo '
 		<div class="sbp-deactivation-survey">
 			<div class="sbp-survey-inner">
@@ -357,7 +356,7 @@ class SBP_WP_Admin {
 					<hr>
 					<label>
 						<input type="checkbox" name="sbp_reply" />
-						' . __( 'I would like to get response to my submission.', 'speed-booster-pack' ) . '
+						' . __( 'I would like to get a response to my submission.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
 						<input name="sbp_reply_email" type="email" class="widefat" value="' . $email . '" style="padding: 3px 5px; display: none;" />

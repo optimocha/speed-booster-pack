@@ -79,7 +79,6 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 				$lines[] = '## END Cache vary for mobile browsers' . PHP_EOL;
 			}
 
-			// B_TODO: Exclude cookie rules must be in htaccess
 			if ( $query_strings = sbp_get_option( 'caching_ls_exclude_cookies' ) ) {
 				$keys = explode( PHP_EOL, $query_strings );
 				if ( $keys ) {
