@@ -1508,7 +1508,7 @@ class Speed_Booster_Pack_Admin {
                         'type'  => 'submessage',
                         'style' => 'warning',
                         // B_TODO: Change text
-                        'content' => __( 'You can still change your settings but WooCommerce is not enabled right now.' ),
+                        'content' => __( 'You can still change your settings but WooCommerce is not enabled right now.', 'speed-booster-pack' ),
                     ]
                 ];
             }

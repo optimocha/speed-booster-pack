@@ -104,6 +104,20 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
+= 4.5.0 =
+
+*Release Date: 11 April 2021*
+
+* **Improved**: Added a shutdown hook so the plugin plays better with other plugins (like Really Simple SSL).
+* **Improved**: A few `if`s here and there to improve the performance of the plugin.
+* **NEW - WooCommerce optimizations**: The "Special" tab is replaced with the "WooCommerce" tab with SEVEN WC-related optimizations, four of them brand new!
+* **NEW - Deactivation survey**: An optional survey added to the "Deactivate" button to get feedback from users leaving us, so we can improve SBP even further.
+* **Improved**: LiteSpeed cache users can now exclude cookies!
+* **Improved**: Improvements with the lazy load feature - GetWid videos and videos using `mediaelements.js` are now lazy loaded properly.
+* **Improved**: The placeholder image of lazy loaded images is also improved, using a transparent pixel instead of a gray one.
+* **Improved**: Improvements with the method which adds the `WP_CACHE` constant to the `wp-config.php` file.
+
+
 = 4.4.1 =
 
 *Release Date: 12 March 2021*
@@ -119,7 +133,6 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Updated**: Updated Codestar Framework to v2.2.6.
 * **Updated**: Updated intro.js to v5.0.0.
 * **Removed**: Custom Code Manager is now removed. Users who added custom codes will get a notice to copy their code to somewhere else
-* **Removed**: 
 
 = 4.4.0 =
 
