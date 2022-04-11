@@ -79,11 +79,7 @@
         $(document).on('change', '[name=sbp_reply]', function() {
             var $target = $('[name=sbp_reply]');
 
-            if ($target.prop('checked')) {
-                $('[name=sbp_reply_email]').stop().slideDown();
-            } else {
-                $('[name=sbp_reply_email]').stop().slideUp();
-            }
+            $('[name=sbp_reply_email]').fadeToggle('100');
         })
     });
 })(jQuery);
