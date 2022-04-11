@@ -151,7 +151,7 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 			return;
 		}
 
-		$woocommerce_analytics = $saved_data[ 'woocommerce_analytics' ] === '1' ? 'yes' : 'no';
+		$woocommerce_analytics = $saved_data[ 'woocommerce_analytics' ] == '1' ? 'yes' : 'no';
 		update_option( 'woocommerce_analytics_enabled', $woocommerce_analytics );
 
 	}
@@ -162,7 +162,7 @@ class SBP_Woocommerce extends SBP_Abstract_Module {
 			return;
 		}
 
-		$woocommerce_tracking = $saved_data[ 'woocommerce_tracking' ] === '1' ? 'yes' : 'no';
+		$woocommerce_tracking = $saved_data[ 'woocommerce_tracking' ] == '1' ? 'yes' : 'no';
 		update_option( 'woocommerce_allow_tracking', $woocommerce_tracking );
 
 	}
