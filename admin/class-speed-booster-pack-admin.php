@@ -1061,199 +1061,110 @@ class Speed_Booster_Pack_Admin {
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
-			];
-
-			$asset_fields = array_merge( $asset_fields,
 				[
-					[
-						'title'      => __( 'Lazy load media', 'speed-booster-pack' ),
-						'id'         => 'lazyload',
-						'type'       => 'switcher',
-						'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ) . ' <a href="https://web.dev/lazy-loading/" rel="external noopener" target="_blank">' . __( 'Learn more about lazy loading.', 'speed-booster-pack' ) . '</a>',
-						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						'class'      => 'lazyload-media ',
-						'sanitize'   => 'sbp_sanitize_boolean',
+					'title'      => __( 'Lazy load media', 'speed-booster-pack' ),
+					'id'         => 'lazyload',
+					'type'       => 'switcher',
+					'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ) . ' <a href="https://web.dev/lazy-loading/" rel="external noopener" target="_blank">' . __( 'Learn more about lazy loading.', 'speed-booster-pack' ) . '</a>',
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					'class'      => 'lazyload-media ',
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
+					'id'         => 'lazyload_exclude',
+					'class'      => 'lazyload-exclude',
+					'type'       => 'code_editor',
+					'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
+					'dependency' => [ 'module_assets|lazyload', '==|==', '1|1', '', 'visible|visible' ],
+					'sanitize'   => 'sbp_clear_http',
+				],
+				[
+					'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
+					'id'         => 'js_optimize',
+					'desc'       => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
+					'type'       => 'button_set',
+					'options'    => [
+						'off'        => __( 'Off', 'speed-booster-pack' ),
+						'everything' => __( 'Everything', 'speed-booster-pack' ),
+						'custom'     => __( 'Custom', 'speed-booster-pack' ),
 					],
-					[
-						'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
-						'id'         => 'lazyload_exclude',
-						'class'      => 'lazyload-exclude',
-						'type'       => 'code_editor',
-						'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
-						'dependency' => [ 'module_assets|lazyload', '==|==', '1|1', '', 'visible|visible' ],
-						'sanitize'   => 'sbp_clear_http',
-					],
-					[
-						'title'      => __( 'Optimize JavaScript', 'speed-booster-pack' ),
-						'id'         => 'js_optimize',
-						'desc'       => __( 'Improves JavaScript loading by deferring all JS files and inline JS, avoiding render blocking issues. You can either defer everything and exclude some JS, or only defer some JS with the Custom option. Be sure what you\'re doing and use the exclude/include lists, or you might break your front-end JavaScript!', 'speed-booster-pack' ),
-						'type'       => 'button_set',
-						'options'    => [
-							'off'        => __( 'Off', 'speed-booster-pack' ),
-							'everything' => __( 'Everything', 'speed-booster-pack' ),
-							'custom'     => __( 'Custom', 'speed-booster-pack' ),
-						],
-						'default'    => 'off',
-						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-					],
-					[
-						'title'      => __( 'JavaScript to exclude from deferring', 'speed-booster-pack' ),
-						'id'         => 'js_exclude',
-						'class'      => 'js-exclude',
-						'type'       => 'code_editor',
-						'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from deferring.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
-						'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-						'dependency' => [ 'module_assets|js_optimize', '==|==', '1|everything', '', 'visible|visible' ],
-						'sanitize'   => 'sbp_sanitize_strip_tags',
-					],
-					[
-						'title'      => __( 'JavaScript to defer', 'speed-booster-pack' ),
-						'id'         => 'js_include',
-						'class'      => 'js-include',
-						'type'       => 'code_editor',
-						'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to defer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
-						'default'    => '',
-						'dependency' => [ 'module_assets|js_optimize', '==|==', '1|custom', '', 'visible|visible' ],
-						'sanitize'   => 'sbp_sanitize_strip_tags',
-					],
-					[
-						'title'      => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
-						'id'         => 'js_footer',
-						'class'      => 'js-footer',
-						'desc'       => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
-						'type'       => 'switcher',
-						'default'    => '',
-						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						'sanitize'   => 'sbp_sanitize_boolean',
-					],
-					[
-						'title'      => __( 'JavaScript to exclude from moving to footer', 'speed-booster-pack' ),
-						'id'         => 'js_footer_exclude',
-						'class'      => 'js-footer-exclude',
-						'type'       => 'code_editor',
-						'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from moving to footer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
-						'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
-						'dependency' => [ 'module_assets|js_footer', '==|==', '1|1', '', 'visible|visible' ],
-						'sanitize'   => 'sbp_sanitize_strip_tags',
-					],
-					[
-						'title'      => __( 'Preload assets', 'speed-booster-pack' ),
-						'id'         => 'preboost',
-						'class'      => 'preboost',
-						'type'       => 'fieldset',
-						'sanitize'   => 'sbp_sanitize_strip_tags',
-						'fields'     => [
-							[
-								'id'       => 'preboost_enable',
-								'type'     => 'switcher',
-								'label'    => __( 'Enable preloading of the assets specified below.', 'speed-booster-pack' ),
-								'sanitize' => 'sbp_sanitize_boolean',
-							],
-							[
-								'id'         => 'preboost_include',
-								'type'       => 'code_editor',
-								'desc'       => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
-								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
-								'settings'   => [ 'lineWrapping' => true ],
-								'sanitize'   => 'sbp_sanitize_strip_tags',
-							],
-							[
-								'id'         => 'preboost_featured_image',
-								'type'       => 'switcher',
-								'label'      => __( 'Preload featured images.', 'speed-booster-pack' ),
-								'desc'       => __( 'Enable this if you want featured images to be preloaded.', 'speed-booster-pack' ),
-								'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
-								'sanitize'   => 'sbp_sanitize_boolean',
-							],
-						],
-						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-					],
-				] );
-
-
-			// Custom Code Manager
-			if ( is_array( sbp_get_option( 'custom_codes', [] ) ) && count( sbp_get_option( 'custom_codes', [] ) ) ) {
-				// We removed this feature but still need to keep it's content. So, hide it using only css.
-				$custom_code_manager = [ [
-					'title'                  => __( 'Custom code manager', 'speed-booster-pack' ),
-					'id'                     => 'custom_codes',
-					'type'                   => 'group',
-                    'class'                  => 'sbp-hidden',
-					'before'                 => '<p>' . __( 'Code blocks added with this tool can be loaded in the header, the footer and can even be delayed.', 'speed-booster-pack' ) . '</p>',
-					'accordion_title_number' => true,
-					'accordion_title_auto'   => false,
-					'sanitize'               => function ( $item ) {
-						if ( $item && is_iterable( $item ) ) {
-							foreach ( $item as &$code_item ) {
-								if ( isset( $code_item['custom_codes_item'] ) ) {
-									$code                           = $code_item['custom_codes_item'];
-									$code                           = preg_replace( '#<(textarea)>.*?<\/$1>#s', '', $code );
-									$code_item['custom_codes_item'] = str_replace( '</textarea>', '', $code );
-								}
-							}
-						}
-
-						return $item;
-					},
-					'fields'                 => [
+					'default'    => 'off',
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				],
+				[
+					'title'      => __( 'JavaScript to exclude from deferring', 'speed-booster-pack' ),
+					'id'         => 'js_exclude',
+					'class'      => 'js-exclude',
+					'type'       => 'code_editor',
+					'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from deferring.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
+					'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
+					'dependency' => [ 'module_assets|js_optimize', '==|==', '1|everything', '', 'visible|visible' ],
+					'sanitize'   => 'sbp_sanitize_strip_tags',
+				],
+				[
+					'title'      => __( 'JavaScript to defer', 'speed-booster-pack' ),
+					'id'         => 'js_include',
+					'class'      => 'js-include',
+					'type'       => 'code_editor',
+					'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to defer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
+					'default'    => '',
+					'dependency' => [ 'module_assets|js_optimize', '==|==', '1|custom', '', 'visible|visible' ],
+					'sanitize'   => 'sbp_sanitize_strip_tags',
+				],
+				[
+					'title'      => __( 'Move JavaScript to footer', 'speed-booster-pack' ),
+					'id'         => 'js_footer',
+					'class'      => 'js-footer',
+					'desc'       => __( 'Moves all JS files and inline JS to the bottom of your page sources. Has a high chance to break your website, so be sure to exclude things! If you\'re using the defer setting, you probably don\'t need to enable this.', 'speed-booster-pack' ),
+					'type'       => 'switcher',
+					'default'    => '',
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+					'sanitize'   => 'sbp_sanitize_boolean',
+				],
+				[
+					'title'      => __( 'JavaScript to exclude from moving to footer', 'speed-booster-pack' ),
+					'id'         => 'js_footer_exclude',
+					'class'      => 'js-footer-exclude',
+					'type'       => 'code_editor',
+					'desc'       => __( 'Enter JS filenames/URLs or parts of inline JS to exclude from moving to footer.', 'speed-booster-pack' ) . ' ' . __( 'One rule per line. Each line will be taken as a separate rule, so don\'t paste entire blocks of inline JS!', 'speed-booster-pack' ),
+					'default'    => 'js/jquery/jquery.js' . PHP_EOL . 'js/jquery/jquery.min.js',
+					'dependency' => [ 'module_assets|js_footer', '==|==', '1|1', '', 'visible|visible' ],
+					'sanitize'   => 'sbp_sanitize_strip_tags',
+				],
+				[
+					'title'      => __( 'Preload assets', 'speed-booster-pack' ),
+					'id'         => 'preboost',
+					'class'      => 'preboost',
+					'type'       => 'fieldset',
+					'sanitize'   => 'sbp_sanitize_strip_tags',
+					'fields'     => [
 						[
-							'id'       => 'custom_codes_item',
-							'type'     => 'code_editor',
-							'before'   => '&lt;script&gt;',
-							'after'    => '&lt;/script&gt;',
-							/* translators: %s = script tag  */
-							'desc'     => sprintf( __( 'Paste the inline JavaScript here. DON\'T include the %s tags or else you might break it!', 'speed-booster-pack' ), '<code>&lt;script&gt;</code>' ),
-							'settings' => [ 'lineWrapping' => true ],
+							'id'       => 'preboost_enable',
+							'type'     => 'switcher',
+							'label'    => __( 'Enable preloading of the assets specified below.', 'speed-booster-pack' ),
+							'sanitize' => 'sbp_sanitize_boolean',
 						],
 						[
-							'title'   => __( 'Placement', 'speed-booster-pack' ),
-							'id'      => 'custom_codes_place',
-							'desc'    => __( 'Set this to "Footer" to place the code before &lt;/body&gt;, or "Header" to place it before &lt;/head&gt;.', 'speed-booster-pack' ),
-							'type'    => 'button_set',
-							'options' => [
-								'footer' => __( 'Footer', 'speed-booster-pack' ),
-								'header' => __( 'Header', 'speed-booster-pack' ),
-							],
-							'default' => 'footer',
+							'id'         => 'preboost_include',
+							'type'       => 'code_editor',
+							'desc'       => __( 'Enter full URLs of the assets you want to preload. One URL per line.', 'speed-booster-pack' ),
+							'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
+							'settings'   => [ 'lineWrapping' => true ],
+							'sanitize'   => 'sbp_sanitize_strip_tags',
 						],
 						[
-							'title'   => __( 'Loading method', 'speed-booster-pack' ),
-							'id'      => 'custom_codes_method',
-							'desc'    => __( 'Set this to "onload" to defer the code to page onload, or "4-second delay" to defer it to four seconds after onload. When in doubt, set it to "Normal".', 'speed-booster-pack' ),
-							'type'    => 'button_set',
-							'options' => [
-								'normal'  => __( 'Normal', 'speed-booster-pack' ),
-								'onload'  => __( 'onload', 'speed-booster-pack' ),
-								'delayed' => __( '4-second delay', 'speed-booster-pack' ),
-							],
-							'default' => 'normal',
+							'id'         => 'preboost_featured_image',
+							'type'       => 'switcher',
+							'label'      => __( 'Preload featured images.', 'speed-booster-pack' ),
+							'desc'       => __( 'Enable this if you want featured images to be preloaded.', 'speed-booster-pack' ),
+							'dependency' => [ 'preboost_enable', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
 						],
 					],
-				] ];
-
-                $asset_fields = array_merge( $asset_fields, $custom_code_manager );
-
-                $custom_code_manager_backup = '';
-
-                $i = 1;
-                foreach ( sbp_get_option( 'custom_codes', [] ) as $code ) {
-                    $custom_code_manager_backup .= '<!-- Custom code #' . $i . ' (' . $code['custom_codes_place'] . ') -->' . PHP_EOL;
-                    $custom_code_manager_backup .= '<script>' . PHP_EOL;
-                    $custom_code_manager_backup .= $code['custom_codes_item'] . PHP_EOL;
-                    $custom_code_manager_backup .= '</script>' . PHP_EOL . PHP_EOL;
-                    $i ++;
-                }
-
-                SBP_Notice_Manager::display_notice(
-                'custom_code_manager_backup',
-                '<p>' . __( 'Speed Booster Pack: We have removed the Custom Code Manager feature from our plugin because it\'s not totally related to performance. Since you were using this feature, here\'s a backup of your custom codes:', 'speed-booster-pack' ) . '</p>' .
-                    '<textarea style="max-width: 100%; width: 600px; min-height: 150px;" readonly>' . $custom_code_manager_backup . '</textarea>' .
-                    '<p>' . sprintf( __( 'You can use any plugin you want to add these custom codes (%s is a decent alternative). Better yet, you can use your theme if it has a custom code feature.', 'speed-booster-pack' ), '<a href="https://wordpress.org/plugins/insert-headers-and-footers/" target="_blank" rel="external nofollow">Insert Headers and Footers</a>' ) . '</p>' .
-                    '<p><button class="button button-primary sbp-dismiss-ccm-notice notice-dismiss-button" data-notice-id="custom_code_manager_backup" data-notice-action="sbp_dismiss_notice">' . __( 'I copied the code, dismiss this notice', 'speed-booster-pack' ) . '</button></p>',
-                'warning',
-                false
-                );
-			}
+					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
+				],
+			];
 
 			CSF::createSection(
 				$prefix,

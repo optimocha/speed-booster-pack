@@ -15,9 +15,11 @@ class SBP_WP_Admin {
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
 			add_action( 'admin_init', [ $this, 'welcome_notice' ] );
+			add_action( 'admin_init', [ $this, 'clear_custom_code_manager' ] );
 			add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 
 			add_action( 'wp_ajax_sbp_dismiss_intro', [ $this, 'dismiss_intro' ] );
+			add_action( 'wp_ajax_sbp_dismiss_ccm_backup', [ $this, 'dismiss_custom_code_manager_backup' ] );
 
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_deactivation_survey_scripts' ] );
 		}
@@ -368,4 +370,63 @@ class SBP_WP_Admin {
 		</div>
 		';
 	}
+
+	public function clear_custom_code_manager() {
+
+		$custom_code_manager_original = sbp_get_option( 'custom_codes', []);
+		if( sbp_get_option( 'custom_codes', []) ) {
+
+			$custom_code_manager_backup = '';
+
+			for( $i = 0; $i < count( $custom_code_manager_original ); $i++ ) {
+			    $custom_code_manager_backup .= '<!-- Custom code #' . $i . ' (' . $custom_code_manager_original[$i]['custom_codes_place'] . ') -->' . PHP_EOL;
+			    $custom_code_manager_backup .= '<script>' . PHP_EOL;
+			    $custom_code_manager_backup .= $custom_code_manager_original[$i]['custom_codes_item'] . PHP_EOL;
+			    $custom_code_manager_backup .= '</script>' . PHP_EOL . PHP_EOL;
+			}
+
+			update_option( 'sbp_custom_code_manager_backup', $custom_code_manager_backup );
+
+			$sbp_options = get_option( 'sbp_options' );
+
+			if ( $sbp_options ) {
+				unset( $sbp_options['custom_codes'] );
+				update_option( 'sbp_options', $sbp_options );
+			}
+
+		}
+
+		if( ! get_option( 'sbp_custom_code_manager_backup' ) ) { return; }
+
+		SBP_Notice_Manager::display_notice(
+		'custom_code_manager_backup',
+		'<p>' . __( 'Speed Booster Pack: We have removed the Custom Code Manager feature from our plugin because it\'s not totally related to performance. Since you were using this feature, here\'s a backup of your custom codes:', 'speed-booster-pack' ) . '</p>' .
+		    '<textarea style="max-width: 100%; width: 600px; min-height: 150px;" readonly>' . get_option( 'sbp_custom_code_manager_backup' ) . '</textarea>' .
+		    '<p>' . sprintf( __( 'You can use any plugin you want to add these custom codes (%s is a decent alternative). Better yet, you can use your theme if it has a custom code feature.', 'speed-booster-pack' ), '<a href="https://wordpress.org/plugins/insert-headers-and-footers/" target="_blank" rel="external nofollow">Insert Headers and Footers</a>' ) . '</p>' .
+		    '<p><button class="button button-primary sbp-dismiss-ccm-notice notice-dismiss-button" data-notice-id="custom_code_manager_backup" data-notice-action="sbp_dismiss_notice">' . __( 'I copied the code, dismiss this notice', 'speed-booster-pack' ) . '</button></p>',
+		'warning',
+		false
+		);
+
+	}
+
+	public function dismiss_custom_code_manager_backup() {
+
+		if ( ! current_user_can( 'manage_options' ) || ! isset( $_GET['action'] ) || ! $_GET['action'] === 'sbp_dismiss_ccm_backup' ) { return; }
+
+		if ( ! wp_verify_nonce( $_GET['nonce'], 'sbp_ajax_nonce' ) ) {
+			echo wp_json_encode( [
+				'status'  => 'failure',
+				'message' => __( 'Invalid nonce.', 'speed-booster-pack' ),
+			] );
+			wp_die();
+		}
+
+		delete_option( 'sbp_custom_code_manager_backup' );
+
+		echo wp_json_encode( [ 'status' => 'success', 'message' => 'Custom codes successfully removed.' ] );
+		wp_die();
+
+	}
+
 }
