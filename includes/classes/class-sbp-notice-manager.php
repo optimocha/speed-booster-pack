@@ -101,9 +101,15 @@ class SBP_Notice_Manager {
 
 	public function enqueue_scripts() {
 		wp_add_inline_script( 'jquery',
-			'jQuery(document).on(\'click\', \'.sbp-notice .notice-dismiss\', function() {
-		    var $notice = jQuery(this).parent();
-		    var notice_id = $notice.data(\'notice-id\');
+			'jQuery(document).on(\'click\', \'.sbp-notice .notice-dismiss, .sbp-notice .notice-dismiss-button\', function(e) {
+			if (jQuery(e.target).hasClass("notice-dismiss-button")) {
+				var notice_id = jQuery(this).data(\'notice-id\');
+	            var $notice = jQuery("div[data-notice-id=" + notice_id + "]");
+	            $notice.stop().slideUp();
+	        } else {
+	            var $notice = jQuery(this).parent();
+	            var notice_id = $notice.data(\'notice-id\');
+            }
 		    var action = $notice.data(\'notice-action\');
 		    var data = {action: action, notice_id: notice_id};
 		    jQuery.get(ajaxurl, data);
