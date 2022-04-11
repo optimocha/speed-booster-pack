@@ -281,10 +281,12 @@ class Speed_Booster_Pack_Admin {
 							'type'    => 'content',
 							/* translators: %s = Speed Booster Pack  */
 							'content' => '<p>' . __( 'Each module of this plugin has different sets of really cool features that can help speed up your website:', 'speed-booster-pack' ) . '</p>' . '<ul><li>' .
+							             '<strong>' . __( 'General', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module lets you tweak the WordPress core and your page sources by dequeueing core scripts/styles, decluttering &lt;head&gt;, optimizing revisions and the Heartbeat API and so on.', 'speed-booster-pack' ) . '</li><li>' .
 							             '<strong>' . __( 'Caching', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module caches your pages into static HTML files, greatly reducing database queries. It also helps browsers cache static assets more efficiently.', 'speed-booster-pack' ) . '</li><li>' .
-							             '<strong>' . __( 'Assets', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module helps you optimize the static assets in your pages by minifying HTML and CSS, lazy loading media (images, videos and iframes), deferring JavaScript, optimizing Google fonts and preloading any asset you want.', 'speed-booster-pack' ) . '</li><li>' .
-							             '<strong>' . __( 'Special', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module has features for specific cases like CDN usage, localizing tracker scripts, adding custom JavaScript code and optimizations for some popular plugins.', 'speed-booster-pack' ) . '</li><li>' .
-							             '<strong>' . __( 'Tweaks', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module lets you tweak the WordPress core and your page sources by dequeueing core scripts/styles, decluttering &lt;head&gt;, optimizing revisions and the Heartbeat API and so on.', 'speed-booster-pack' ) . '</li></ul>' .
+							             '<strong>' . __( 'Optimize CSS', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module allows you to delay loading of your CSS files while injecting "critical CSS" to your pages, which will definitely improve your PageSpeed metrics.', 'speed-booster-pack' ) . '</li><li>' .
+							             '<strong>' . __( 'Assets', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module helps you optimize the static assets in your pages by minifying HTML, lazy loading media (images, videos and iframes), deferring JavaScript, optimizing Google fonts and preloading any asset you want.', 'speed-booster-pack' ) . '</li><li>' .
+							             '<strong>' . __( 'WooCommerce', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module has optimizations specific to WooCommerce, speeding up your users\' shopping experience.', 'speed-booster-pack' ) . '</li><li>' .
+							             '<strong>' . __( 'And many more', 'speed-booster-pack' ) . '</strong>: ' . __( 'Lots and lots of other features (like Cloudflare integration and database cleanups) for you to get your website faster than ever!', 'speed-booster-pack' ) . '</li></ul>' .
 							             '<p>' . __( 'Feel free to experiment, and don\'t forget to create exclude rules when necessary!', 'speed-booster-pack' ) . '</p>',
 						],
 						[
@@ -682,6 +684,7 @@ class Speed_Booster_Pack_Admin {
 					'id'       => 'module_caching_ls',
 					'class'    => 'module-caching' . $ls_caching_class,
 					'type'     => 'switcher',
+					/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
 					'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'LiteSpeed Cache', 'speed-booster-pack' ),
 					'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_boolean',
@@ -788,7 +791,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_front_page',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into the front page of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_front_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_front_page()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into the front page of your website.', 'speed-booster-pack' ) . ' <a href="https://developer.wordpress.org/reference/functions/is_front_page/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_front_page()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -800,7 +803,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_home',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into the blog homepage of your website. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_home/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_home()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into the blog homepage of your website.', 'speed-booster-pack' ) . ' <a href="https://developer.wordpress.org/reference/functions/is_home/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_home()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -812,7 +815,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_single',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into all single posts. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_single/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_single()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into all single posts.', 'speed-booster-pack' ) . ' <a href="https://developer.wordpress.org/reference/functions/is_single/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_single()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -824,7 +827,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_page',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into all static pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_page/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_page()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into all static pages.', 'speed-booster-pack' ) . ' <a href="https://developer.wordpress.org/reference/functions/is_page/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_page()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -836,7 +839,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_category',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into all category archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_category/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_category()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into all category archive pages.', 'speed-booster-pack' ) . ' <a href="https://developer.wordpress.org/reference/functions/is_category/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_category()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -848,7 +851,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_tag',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into all tag archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_tag/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_tag()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into all tag archive pages.', 'speed-booster-pack' ) . ' <a href="https://developer.wordpress.org/reference/functions/is_tag/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_tag()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -860,7 +863,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_archive',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into all archive pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://developer.wordpress.org/reference/functions/is_archive/" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_archive()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into all archive pages.', 'speed-booster-pack' ) . ' <a href="https://developer.wordpress.org/reference/functions/is_archive/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_archive()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -876,7 +879,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_shop',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into all shop pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-4" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_shop()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into the shop page of your website.', 'speed-booster-pack' ) . ' <a href="https://woocommerce.com/document/conditional-tags/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_shop()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -888,7 +891,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_product',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into all single product pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-7" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into all single product pages.', 'speed-booster-pack' ) . ' <a href="https://woocommerce.com/document/conditional-tags/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -900,7 +903,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'       => 'is_product_category',
 							'type'     => 'code_editor',
-							'desc'     => sprintf( __( 'This CSS block will be injected into all product category pages. %1$s%2$s%3$s', 'speed-booster-pack' ), '<a href="https://docs.woocommerce.com/document/conditional-tags/#section-5" rel="external noopener" target="_blank">', sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product_category()</code>' ), '</a>' ),
+							'desc'     => __( 'This CSS block will be injected into all product category pages.', 'speed-booster-pack' ) . ' <a href="https://woocommerce.com/document/conditional-tags/" rel="external noopener" target="_blank">' . sprintf( __( 'Learn more about %s.', 'speed-booster-pack' ), '<code>is_product_category()</code>' ) . '</a>',
 							'settings' => [ 'lineWrapping' => true ],
 							'sanitize' => 'sbp_sanitize_strip_tags',
 						],
@@ -932,10 +935,10 @@ class Speed_Booster_Pack_Admin {
 						],
 						[
 							'id'         => 'enable_criticalcss',
-							'title'      => __( 'Enable', 'speed-booster-pack' ) . ' ' . __( 'Critical CSS', 'speed-booster-pack' ),
+							'title'      => __( 'Enable Critical CSS', 'speed-booster-pack' ),
 							'type'       => 'switcher',
 							'default'    => false,
-							'desc'       => sprintf( __( 'Critical CSS is a method to optimize CSS delivery, %1$srecommended by Google%2$s. It allows you to defer all your CSS files and inline the styles of your content above the fold. You can generate critical CSS needed for your website %3$susing a tool like this%4$s and paste them below.', 'speed-booster-pack' ), '<a href="https://web.dev/extract-critical-css/" rel="external noopener" target="_blank">', '</a>', '<a href="https://www.sitelocity.com/critical-path-css-generator" rel="external noopener" target="_blank">', '</a>' ),
+							'desc'       => sprintf( __( 'Critical CSS is a method to optimize CSS delivery, %1$srecommended by Google%2$s. It allows you to defer all your CSS files and inline the styles of your content above the fold. You can generate critical CSS needed for your website %3$susing a tool like this%4$s and paste them below.', 'speed-booster-pack' ), '<a href="https://web.dev/extract-critical-css/" rel="external noopener" target="_blank">', '</a>', '<a href="https://speedboosterpack.com/go/criticalcss" rel="external noopener" target="_blank">', '</a>' ),
 							'dependency' => [ 'module_css', '==', '1', '', 'visible' ],
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
@@ -1046,7 +1049,7 @@ class Speed_Booster_Pack_Admin {
 					'title'      => __( 'Set missing image dimensions', 'speed-booster-pack' ),
 					'id'         => 'missing_image_dimensions',
 					'type'       => 'switcher',
-					'desc'       => __( 'Automatically sets missing image width and height parameters to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
+					'desc'       => __( 'Automatically sets missing image width and height attributes to improve the Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP) metrics.', 'speed-booster-pack' ),
 					'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
@@ -1060,34 +1063,21 @@ class Speed_Booster_Pack_Admin {
 				],
 			];
 
-			$should_disable_lazyload = sbp_should_disable_feature( 'lazyload' );
-			if ( $should_disable_lazyload ) {
-				$asset_fields = array_merge( $asset_fields,
-					[
-						[
-							'type'    => 'submessage',
-							'style'   => 'success',
-							'class'   => 'hosting-warning',
-							'content' => sprintf( __( 'Since you\'re using %s, lazyload feature is completely disabled to ensure compatibility with internal lazyload system of %s.' ), $should_disable_lazyload, $should_disable_lazyload ),
-						],
-					] );
-			}
-
 			$asset_fields = array_merge( $asset_fields,
 				[
 					[
 						'title'      => __( 'Lazy load media', 'speed-booster-pack' ),
 						'id'         => 'lazyload',
 						'type'       => 'switcher',
-						'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ),
+						'desc'       => __( 'Defers loading of images, videos and iframes to page onload.', 'speed-booster-pack' ) . ' <a href="https://web.dev/lazy-loading/" rel="external noopener" target="_blank">' . __( 'Learn more about lazy loading.', 'speed-booster-pack' ) . '</a>',
 						'dependency' => [ 'module_assets', '==', '1', '', 'visible' ],
-						'class'      => 'lazyload-media ' . ( $should_disable_lazyload ? ' inactive-section' : null ),
+						'class'      => 'lazyload-media ',
 						'sanitize'   => 'sbp_sanitize_boolean',
 					],
 					[
 						'title'      => __( 'Lazy load exclusions', 'speed-booster-pack' ),
 						'id'         => 'lazyload_exclude',
-						'class'      => 'lazyload-exclude' . ( $should_disable_lazyload ? ' inactive-section' : null ),
+						'class'      => 'lazyload-exclude',
 						'type'       => 'code_editor',
 						'desc'       => __( 'Excluding important images at the top of your pages (like your logo and such) is a good idea. One URL per line.', 'speed-booster-pack' ),
 						'dependency' => [ 'module_assets|lazyload', '==|==', '1|1', '', 'visible|visible' ],
@@ -1277,10 +1267,11 @@ class Speed_Booster_Pack_Admin {
 			/* END Section: Assets */
 
 			/* BEGIN Section: CDN & Proxy */
-			/* Begin Of Cloudflare Fields */
+
+			/* Begin Cloudflare Fields */
 			$cloudflare_fields = [
 				[
-					'title' => __( 'Cloudflare', 'speed-booster-pack' ),
+					'title' => 'Cloudflare',
 					'type'  => 'subheading',
 				],
 				[
@@ -1311,7 +1302,7 @@ class Speed_Booster_Pack_Admin {
 					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 				[
-					'title'      => __( 'Rocket Loader', 'speed-booster-pack' ),
+					'title'      => 'Rocket Loader',
 					'id'         => 'cf_rocket_loader_enable',
 					'class'      => 'with-preloader',
 					'type'       => 'switcher',
@@ -1319,7 +1310,7 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title'      => __( 'Development Mode', 'speed-booster-pack' ),
+					'title'      => 'Development Mode',
 					'id'         => 'cf_dev_mode_enable',
 					'class'      => 'with-preloader',
 					'type'       => 'switcher',
@@ -1327,7 +1318,7 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title'      => __( 'Minify CSS', 'speed-booster-pack' ),
+					'title'      => 'Minify CSS',
 					'id'         => 'cf_css_minify_enable',
 					'class'      => 'with-preloader',
 					'type'       => 'switcher',
@@ -1335,7 +1326,7 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title'      => __( 'Minify HTML', 'speed-booster-pack' ),
+					'title'      => 'Minify HTML',
 					'id'         => 'cf_html_minify_enable',
 					'class'      => 'with-preloader',
 					'type'       => 'switcher',
@@ -1343,7 +1334,7 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title'      => __( 'Minify JS', 'speed-booster-pack' ),
+					'title'      => 'Minify JS',
 					'id'         => 'cf_js_minify_enable',
 					'class'      => 'with-preloader',
 					'type'       => 'switcher',
@@ -1351,7 +1342,7 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title'      => __( 'Automatic Platform Optimization', 'speed-booster-pack' ),
+					'title'      => 'Automatic Platform Optimization',
 					'id'         => 'cf_apo_enable',
 					'desc'       => __( 'You need to be a paying Cloudflare user to enable this setting, otherwise it will get disabled again.', 'speed-booster-pack' ),
 					'class'      => 'with-preloader',
@@ -1360,7 +1351,7 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title'      => __( 'APO: Cache By Device Type', 'speed-booster-pack' ),
+					'title'      => 'APO: Cache By Device Type',
 					'id'         => 'cf_apo_device_type',
 					'class'      => 'with-preloader',
 					'type'       => 'switcher',
@@ -1368,34 +1359,34 @@ class Speed_Booster_Pack_Admin {
 					'sanitize'   => 'sbp_sanitize_boolean',
 				],
 				[
-					'title'      => __( 'Browser Cache TTL', 'speed-booster-pack' ),
+					'title'      => 'Browser Cache TTL',
 					'id'         => 'cf_browser_cache_ttl',
 					'class'      => 'with-preloader',
 					'type'       => 'select',
 					'options'    => [
-						0        => __( 'Respect Existing Headers', 'speed-booster-pack' ),
-						1800     => __( '30 minutes', 'speed-booster-pack' ),
-						3600     => __( '1 hour', 'speed-booster-pack' ),
-						7200     => __( '2 hours', 'speed-booster-pack' ),
-						10800    => __( '3 hours', 'speed-booster-pack' ),
-						14400    => __( '4 hours', 'speed-booster-pack' ),
-						18000    => __( '5 hours', 'speed-booster-pack' ),
-						28800    => __( '8 hours', 'speed-booster-pack' ),
-						43200    => __( '12 hours', 'speed-booster-pack' ),
-						57600    => __( '16 hours', 'speed-booster-pack' ),
-						72000    => __( '20 hours', 'speed-booster-pack' ),
-						86400    => __( '1 day', 'speed-booster-pack' ),
-						172800   => __( '2 days', 'speed-booster-pack' ),
-						259200   => __( '3 days', 'speed-booster-pack' ),
-						345600   => __( '4 days', 'speed-booster-pack' ),
-						432000   => __( '5 days', 'speed-booster-pack' ),
-						691200   => __( '8 days', 'speed-booster-pack' ),
-						1382400  => __( '16 days', 'speed-booster-pack' ),
-						2073600  => __( '24 days', 'speed-booster-pack' ),
-						2678400  => __( '1 month', 'speed-booster-pack' ),
-						5356800  => __( '2 months', 'speed-booster-pack' ),
-						16070400 => __( '6 months', 'speed-booster-pack' ),
-						31536000 => __( '1 year', 'speed-booster-pack' ),
+						0        => 'Respect Existing Headers',
+						1800     => '30 minutes',
+						3600     => '1 hour',
+						7200     => '2 hours',
+						10800    => '3 hours',
+						14400    => '4 hours',
+						18000    => '5 hours',
+						28800    => '8 hours',
+						43200    => '12 hours',
+						57600    => '16 hours',
+						72000    => '20 hours',
+						86400    => '1 day',
+						172800   => '2 days',
+						259200   => '3 days',
+						345600   => '4 days',
+						432000   => '5 days',
+						691200   => '8 days',
+						1382400  => '16 days',
+						2073600  => '24 days',
+						2678400  => '1 month',
+						5356800  => '2 months',
+						16070400 => '6 months',
+						31536000 => '1 year',
 					],
 					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
@@ -1414,19 +1405,19 @@ class Speed_Booster_Pack_Admin {
 					'dependency' => [ 'cloudflare_enable', '==', '1', '', 'visible' ],
 				],
 			];
-			/* End Of Cloudflare Fields */
+			/* End Cloudflare Fields */
 
-			/* Begin Of Sucuri Fields */
+			/* Begin Sucuri Fields */
 			$sucuri_fields = [
 				[
-					'title' => __( 'Sucuri', 'speed-booster-pack' ),
+					'title' => 'Sucuri',
 					'type'  => 'subheading',
 				],
 				[
 					'title'    => __( 'Connect to Sucuri', 'speed-booster-pack' ),
 					'id'       => 'sucuri_enable',
 					'type'     => 'switcher',
-					'desc'     => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s Cache\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+					'desc'     => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
@@ -1453,8 +1444,6 @@ class Speed_Booster_Pack_Admin {
 					'title' => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'CDN', 'speed-booster-pack' ),
 					'id' => 'cdn_enable',
 					'type' => 'switcher',
-					// B_TODO: Description text needed.
-					'desc' => __( '', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
@@ -1507,8 +1496,7 @@ class Speed_Booster_Pack_Admin {
                         'id'    => 'sbp_csp_warning',
                         'type'  => 'submessage',
                         'style' => 'warning',
-                        // B_TODO: Change text
-                        'content' => __( 'You can still change your settings but WooCommerce is not enabled right now.', 'speed-booster-pack' ),
+                        'content' => __( 'WooCommerce is not active right now, but you can still change the settings below.', 'speed-booster-pack' ),
                     ]
                 ];
             }
@@ -1519,7 +1507,7 @@ class Speed_Booster_Pack_Admin {
             $woocommerce_fields = array_merge( $woocommerce_fields, [
 	            [
 		            /* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-		            'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . 'Woocommerce',
+		            'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' WooCommerce',
 		            'id'       => 'module_woocommerce',
 		            'class'    => 'module-woocommerce',
 		            'type'     => 'switcher',
@@ -1553,48 +1541,49 @@ class Speed_Booster_Pack_Admin {
 		            'sanitize'   => 'sbp_sanitize_boolean',
 	            ],
 	            [
-		            /** B_TODO: Check text */
-		            'title'      => __( 'Action Scheduler Retention Period', 'speed-booster-pack' ),
+		            'title'      => __( 'Action Scheduler retention period', 'speed-booster-pack' ),
 		            'id'         => 'woocommerce_action_scheduler_period',
 		            'type'       => 'spinner',
 		            'default'    => 30,
-		            /** B_TODO: Change text */
-		            'desc'       => __( '', 'speed-booster-pack' ),
+		            'desc'       => __( 'The "Action Scheduler" of WooCommerce has a default retention period of 30 days. Change it here, if you know what you are doing.', 'speed-booster-pack' ),
 		            'unit'       => __( 'days', 'speed-booster-pack' ),
 		            'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'absint',
 	            ],
 	            [
-		            /** B_TODO: Check text */
-		            'title'      => __( 'Woocommerce Marketing', 'speed-booster-pack' ),
+		            'title'      => __( 'WooCommerce Marketing', 'speed-booster-pack' ),
 		            'id'         => 'woocommerce_marketing',
 		            'type'       => 'switcher',
-		            /** B_TODO: Change text */
-		            'desc'       => __( 'Turn on or turn off WooCommerce marketing. Note that this will also disable coupons.', 'speed-booster-pack' ),
+		            'desc'       => __( 'Enable or disable WooCommerce marketing. Note that this will also disable coupons.', 'speed-booster-pack' ),
 		            'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'sbp_sanitize_boolean',
+		            'text_on'    => 'Enabled',
+		            'text_off'   => 'Disabled',
+		            'text_width' => 100,
                     'default'    => '1',
 	            ],
 	            [
-		            /** B_TODO: Check text */
-		            'title'      => __( 'Woocommerce Analytics', 'speed-booster-pack' ),
+		            'title'      => __( 'WooCommerce Analytics', 'speed-booster-pack' ),
 		            'id'         => 'woocommerce_analytics',
 		            'type'       => 'switcher',
-		            /** B_TODO: Change text */
-		            'desc'       => __( 'Turn on or turn off WooCommerce analytics.', 'speed-booster-pack' ),
+		            'desc'       => __( 'Enable or disable WooCommerce analytics.', 'speed-booster-pack' ),
 		            'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'sbp_sanitize_boolean',
+		            'text_on'    => 'Enabled',
+		            'text_off'   => 'Disabled',
+		            'text_width' => 100,
                     'default'    => $this->woocommerce_analytics,
 	            ],
 	            [
-		            /** B_TODO: Check text */
-		            'title'      => __( 'Woocommerce Tracking', 'speed-booster-pack' ),
+		            'title'      => __( 'WooCommerce Tracking', 'speed-booster-pack' ),
 		            'id'         => 'woocommerce_tracking',
 		            'type'       => 'switcher',
-		            /** B_TODO: Change text */
-		            'desc'       => __( 'Turn on or turn off WooCommerce tracking.', 'speed-booster-pack' ),
+		            'desc'       => __( 'Enable or disable WooCommerce tracking.', 'speed-booster-pack' ),
 		            'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'sbp_sanitize_boolean',
+		            'text_on'    => 'Enabled',
+		            'text_off'   => 'Disabled',
+		            'text_width' => 100,
 		            'default'    => $this->woocommerce_tracking,
 	            ],
             ] );
@@ -1602,19 +1591,19 @@ class Speed_Booster_Pack_Admin {
 			CSF::createSection(
 				$prefix,
 				[
-					'title'  => __( 'Woocommerce', 'speed-booster-pack' ),
+					'title'  => 'WooCommerce',
 					'id'     => 'woocommerce',
 					'icon'   => 'fa fa-shopping-cart',
 					'fields' => $woocommerce_fields,
 				]
 			);
-			/* END Section: Woocommerce */
+			/* END Section: WooCommerce */
 
 			/** BEGIN Section: Database Optimization */
 			CSF::createSection(
 				$prefix,
 				[
-					'title'  => __( 'Database', 'speed-booster-pack' ),
+					'title'  => __( 'Optimize Database', 'speed-booster-pack' ),
 					'id'     => 'database_optimization',
 					'icon'   => 'fa fa-database',
 					'fields' => [
@@ -1700,11 +1689,14 @@ class Speed_Booster_Pack_Admin {
 							'type'    => 'content',
 							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
 							'content' => __( 'We made use of the following libraries and frameworks in Speed Booster Pack, so we\'d like to give them a shout out and thank them:', 'speed-booster-pack' ) .
-							             '<ul>
-											<li><a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a></li>
-											<li><a href="https://github.com/verlok/vanilla-lazyload" rel="external noopener" target="_blank">LazyLoad by Andrea Verlicchi</a></li>
-											<li><a href="https://codestarframework.com/" rel="external noopener" target="_blank">CodeStar Framework</a></li>
-										 </ul>',
+				            '<ul>
+								<li><a href="https://codestarframework.com/" rel="external noopener" target="_blank">CodeStar Framework</a></li>
+								<li><a href="http://sourceforge.net/projects/simplehtmldom/" rel="external noopener" target="_blank">PHP Simple HTML DOM Parser</a></li>
+								<li><a href="https://github.com/verlok/vanilla-lazyload" rel="external noopener" target="_blank">LazyLoad by Andrea Verlicchi</a></li>
+								<li><a href="https://github.com/deliciousbrains/wp-background-processing" rel="external noopener" target="_blank">WP Background Processing by Delicious Brains</a></li>
+								<li><a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a></li>
+								<li><a href="https://introjs.com/" rel="external noopener" target="_blank">intro.js</a></li>
+							</ul>',
 						],
 					],
 				]
@@ -1736,7 +1728,7 @@ class Speed_Booster_Pack_Admin {
 				[
 					'id'       => 'sbp_preload',
 					'type'     => 'code_editor',
-					'title'    => __( 'Preload Rules for this content', 'speed-booster-pack' ),
+					'title'    => __( 'Preload rules for this content', 'speed-booster-pack' ),
 					'desc'     => __( 'Enter full URLs of files to preload only for this content.', 'speed-booster-pack' ),
 					'settings' => [ 'lineWrapping' => true ],
 					'sanitize' => 'sbp_sanitize_strip_tags',

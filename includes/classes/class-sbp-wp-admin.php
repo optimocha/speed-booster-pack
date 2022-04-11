@@ -132,12 +132,10 @@ class SBP_WP_Admin {
 	public function set_notices() {
 		// Set Sucuri Notice
 		if ( $transient_value = get_transient( 'sbp_clear_sucuri_cache' ) ) {
-			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.',
-				'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ',
-					'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
+			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ', 'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
 			SBP_Notice_Manager::display_notice( 'sbp_clear_sucuri_cache',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>',
+				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . $notice_message . '</p>',
 				$notice_type,
 				true,
 				'flash' );
@@ -156,7 +154,7 @@ class SBP_WP_Admin {
 			$notice_type    = '';
 		}
 		SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare',
-			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>',
+			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . $notice_message . '</p>',
 			$notice_type,
 			true,
 			'flash' );
