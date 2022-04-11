@@ -1501,9 +1501,6 @@ class Speed_Booster_Pack_Admin {
                 ];
             }
 
-			$woocommerce_analytics_enabled = get_option( 'woocommerce_analytics_enabled' ) == 'yes';
-            $woocommerce_allow_tracking = get_option( 'woocommerce_allow_tracking' ) == 'yes';
-
             $woocommerce_fields = array_merge( $woocommerce_fields, [
 	            [
 		            /* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
@@ -1512,7 +1509,7 @@ class Speed_Booster_Pack_Admin {
 		            'class'    => 'module-woocommerce',
 		            'type'     => 'switcher',
 		            'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-		            'default'  => false,
+		            'default'  => true,
 		            'sanitize' => 'sbp_sanitize_boolean',
 	            ],
 	            [
