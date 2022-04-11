@@ -315,9 +315,8 @@ class SBP_WP_Admin {
 	}
 
 	public function deactivation_survey_modal() {
-		global $current_user;
-		get_currentuserinfo();
-
+		$current_user = wp_get_current_user();
+		
 		$email = (string) $current_user->user_email;
 
 		echo '
