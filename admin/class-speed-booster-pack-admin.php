@@ -53,7 +53,7 @@ class Speed_Booster_Pack_Admin {
 	 *
 	 * @since    4.5.0
 	 * @access   private
-	 * @var      string $version WooCommerce Tracking setting.
+	 * @var      string $woocommerce_tracking WooCommerce Tracking setting.
 	 */
 	private $woocommerce_tracking;
 
@@ -62,7 +62,7 @@ class Speed_Booster_Pack_Admin {
 	 *
 	 * @since    4.5.0
 	 * @access   private
-	 * @var      string $version WooCommerce Analytics setting.
+	 * @var      string $woocommerce_analytics WooCommerce Analytics setting.
 	 */
 	private $woocommerce_analytics;
 
