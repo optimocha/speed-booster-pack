@@ -35,15 +35,14 @@ With our huge set of features, of course!
 🌟 **Caching**: Cache your pages into static HTML files, reduce database queries, get a faster website almost immediately. What's not to love about caching?
 ⭐ **Optimize Google Fonts**: Did you know that there are better ways to load Google fonts? We like to brag about finding one of the best ways.
 🌟 **Lazy Load**: It's a disheartening issue that page speed tools encourage laziness... Just kidding, we love being lazy. And search engines will love your pages when you enable lazy loading for images, videos and iframes (except for the above-the-fold stuff, trust us).
-⭐ **Custom Code Manager**: Hey, you know that huge live chat widget, or the weird script that you really, *really* have to load? Well, you can probably delay them so the rest of the page can load first.
 🌟 **Optimize JavaScript**: You know that totally-not-cryptic "Remove Render-Blocking JavaScript" recommendation? Speed Booster Pack can help defer them all until after the whole HTML is rendered, or at least move all scripts to footer. Works like a charm.
 🌟 **Optimize CSS**: Who needs all those different CSS files when you can inline them all into your page source? Especially when your CSS footprint is so small? Moreover, you can use the "[Critical CSS](https://web.dev/extract-critical-css/)" feature to essentially lazy-load all your CSS except for the CSS for above-the-fold.
 🌟 **Preload Assets**: Have some fonts that load in all your pages, or a script, or some CSS files? Preloading them will help modern browsers serve your pages way faster!
+🌟 **WooCommerce Optimizations**: Disable cart fragments, change Action Scheduler's retention period, disable things like WooCommerce Marketing and WooCommerce Analytics... and more to come!
+🌟 **Dequeue Core Scripts/Styles**: Dashicons, jQuery Migrate, emoji script, post embed script... If you don't need them, you can now choose to prevent them from loading in the first place... which can get you to the first place on your Google SERPs.
 ⭐ **Localize Google Analytics & Tag Manager**: Tracker scripts aren't the worst things that'll slow your pages down, but they cause the most "recommendations". Localizing Google Analytics and/or Google Tag Manager is a good idea to speed up your website then, right? Right?
 ⭐ **Enable CDN**: Integrate your content delivery network to your website by rewriting all static asset URLs with your CDN domain.
-⭐ **Cloudflare Integration**: Connect to your Cloudflare account so you can clear your cache every time your page cache is cleared.
-🌟 **Plugin-specific Optimizations**: Disable WooCommerce cart fragments, dequeue Jetpack's devicepx script, and more to come!
-🌟 **Dequeue Core Scripts/Styles**: Dashicons, jQuery Migrate, emoji script, post embed script... If you don't need them, you can now choose to prevent them from loading in the first place... which can get you to the first place on your Google SERPs.
+⭐ **Cloudflare & Sucuri Integration**: Connect to your Cloudflare or Sucuri account so you can clear your cache every time your page cache is cleared.
 ⭐ **Declutter HEAD**: Do you think all that useless junk in your <head> should be gone? Us too! You know what they say: A clear <head> works faster.
 ⭐ **Other Features**: Minify HTML, enable instant.page, trim query strings, disable self pingbacks, optimize the Heartbeat API, set a limit for post revisions, change autosave interval... Did we forget anything?
 
