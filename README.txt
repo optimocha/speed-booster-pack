@@ -106,7 +106,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.0 =
 
-*Release Date: 13 April 2021*
+*Release Date: 14 April 2021*
 
 * **NEW - WooCommerce optimizations**: The "Special" tab is replaced with the "WooCommerce" tab with SEVEN WC-related optimizations, four of them brand new!
 * **NEW - Deactivation survey**: An optional survey added to the "Deactivate" button to get feedback from users leaving us, so we can improve SBP even further.
@@ -116,6 +116,8 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Improved**: Improvements with the lazy load feature - GetWid videos and videos using `mediaelements.js` are now lazy loaded properly.
 * **Improved**: The placeholder image of lazy loaded images is also improved, using a transparent pixel instead of a gray one.
 * **Improved**: Improvements with the method which adds the `WP_CACHE` constant to the `wp-config.php` file.
+* **Updated**: Updated Codestar Framework to v2.2.6.
+* **Updated**: Updated lazyload.js to v17.7.0.
 
 
 = 4.4.1 =
@@ -130,7 +132,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Fixed**: The "set image dimensions" feature now correctly detects image URLs that start with `http://` while the site URL starts with `https://` (and vice versa).
 * **Updated**: Updated Codestar Framework to v2.2.6.
 * **Updated**: Updated intro.js to v5.0.0.
-* **Removed**: Custom Code Manager is now removed. Users who added custom codes will get a notice to copy their code to somewhere else
+* **Removed**: Custom Code Manager is now removed. Users who added custom codes will get a notice to copy their code to somewhere else.
 
 = 4.4.0 =
 
