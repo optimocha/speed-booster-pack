@@ -119,7 +119,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Updated**: Updated lazyload.js to v17.7.0.
 
 
-= 4.4.1.1 =
+= 4.4.1 =
 
 *Release Date: 12 March 2021*
 
