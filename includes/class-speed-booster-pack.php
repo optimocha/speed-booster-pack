@@ -38,8 +38,7 @@ use SpeedBooster\SBP_Migrator;
 use SpeedBooster\SBP_Newsletter;
 use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Preboost;
-// Z_TODO: Remove use
-use SpeedBooster\SBP_Special;
+use SpeedBooster\SBP_Woocommerce;
 use SpeedBooster\SBP_Cloudflare;
 use SpeedBooster\SBP_Sucuri;
 use SpeedBooster\SBP_Tweaks;
@@ -178,8 +177,7 @@ class Speed_Booster_Pack {
 		new SBP_Image_Dimensions();
 		new SBP_HTML_Minifier();
 		new SBP_Localize_Tracker();
-		// Z_TODO: Remove instance
-		new SBP_Special();
+		new SBP_Woocommerce();
 		// Z_TODO: Remove instance
 		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
@@ -268,6 +266,9 @@ class Speed_Booster_Pack {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
+
+		if ( ! is_admin() ) { return; }
+		
 		$plugin_admin = new Speed_Booster_Pack_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -282,9 +283,14 @@ class Speed_Booster_Pack {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
+
+		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
+		
 		$plugin_public = new Speed_Booster_Pack_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 9999999 );
+		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 0 );
+
+		$this->loader->add_action( 'shutdown', $plugin_public, 'shutdown', PHP_INT_MAX );
 
 		$this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
 	}

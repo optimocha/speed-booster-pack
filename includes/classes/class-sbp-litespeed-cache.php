@@ -79,7 +79,15 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 				$lines[] = '## END Cache vary for mobile browsers' . PHP_EOL;
 			}
 
-			// B_TODO: Exclude cookie rules must be in htaccess
+			if ( $query_strings = sbp_get_option( 'caching_ls_exclude_cookies' ) ) {
+				$keys = explode( PHP_EOL, $query_strings );
+				if ( $keys ) {
+					$lines[] = '## BEGIN Exclude Cookies';
+					$lines[] = 'RewriteCond %{HTTP_COOKIE} ' . implode( '|', $keys );
+					$lines[] = 'RewriteRule .* - [E=Cache-Control:no-cache]';
+					$lines[] = '## END Exclude Cookies' . PHP_EOL;
+				}
+			}
 
 			if ( $query_strings = sbp_get_option( 'caching_ls_include_query_strings' ) ) {
 				$keys = explode( PHP_EOL, $query_strings );
@@ -140,7 +148,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			$cache_expire_time = sbp_get_option( 'caching_ls_expiry', 10 ) * HOUR_IN_SECONDS;
 
 			// Check for all exclusions
-			if ( true === $this->should_bypass_cache( [ 'is_logged_in', 'include_query_strings', 'check_cookies' ] ) ) {
+			if ( true === $this->should_bypass_cache( [ 'is_logged_in', 'include_query_strings' ] ) ) {
 				$this->headers['X-LiteSpeed-Cache-Control'] = 'no-cache';
 			} else {
 				if ( ! sbp_get_option( 'caching_ls_cache_logged_in_users' ) && is_user_logged_in() ) {

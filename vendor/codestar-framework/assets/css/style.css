@@ -1351,11 +1351,9 @@
 /**
  * 03. 16. Field: icon
  */
-.csf-field-icon .button {
-  margin-right: 5px;
-}
 .csf-field-icon .csf-icon-select {
   display: flex;
+  grid-gap: 5px;
 }
 .csf-field-icon .csf-icon-preview:not(.hidden) {
   display: flex;
@@ -1366,7 +1364,6 @@
   align-items: center;
   width: 30px;
   font-size: 14px;
-  margin-right: 5px;
   text-align: center;
   vertical-align: top;
   color: #555;
@@ -2927,14 +2924,12 @@
   width: 100%;
 }
 .csf-nav-menu-options > .csf-fields {
-  margin-left: -10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px -10px;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
 }
 .csf-nav-menu-options > .csf-fields > .csf-field {
-  padding: 12px 14px 12px 12px;
+  padding: 12px;
 }
 .csf-nav-menu-options > .csf-fields > .csf-field .csf-title {
   float: none;
@@ -2953,7 +2948,7 @@
 }
 
 .csf-nav-menu-title {
-  padding: 12px 14px 12px 12px;
+  padding: 12px;
   background-color: #f5f5f5;
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;

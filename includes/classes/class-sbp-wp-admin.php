@@ -11,15 +11,17 @@ class SBP_WP_Admin {
 	public function __construct() {
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 		if ( is_admin() ) {
-			require_once SBP_LIB_PATH . 'announce4wp/announce4wp-client.php';
 			add_action( 'admin_init', [ $this, 'set_notices' ] );
-//			$this->initialize_announce4wp();
 
 			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
 			add_action( 'admin_init', [ $this, 'welcome_notice' ] );
+			add_action( 'admin_init', [ $this, 'clear_custom_code_manager' ] );
 			add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 
 			add_action( 'wp_ajax_sbp_dismiss_intro', [ $this, 'dismiss_intro' ] );
+			add_action( 'wp_ajax_sbp_dismiss_ccm_backup', [ $this, 'dismiss_custom_code_manager_backup' ] );
+
+			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_deactivation_survey_scripts' ] );
 		}
 
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
@@ -132,12 +134,10 @@ class SBP_WP_Admin {
 	public function set_notices() {
 		// Set Sucuri Notice
 		if ( $transient_value = get_transient( 'sbp_clear_sucuri_cache' ) ) {
-			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.',
-				'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ',
-					'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
+			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ', 'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
 			SBP_Notice_Manager::display_notice( 'sbp_clear_sucuri_cache',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>',
+				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . $notice_message . '</p>',
 				$notice_type,
 				true,
 				'flash' );
@@ -156,7 +156,7 @@ class SBP_WP_Admin {
 			$notice_type    = '';
 		}
 		SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare',
-			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( $notice_message, 'speed-booster-pack' ) . '</p>',
+			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . $notice_message . '</p>',
 			$notice_type,
 			true,
 			'flash' );
@@ -206,13 +206,7 @@ class SBP_WP_Admin {
 	}
 
 	public function timed_notifications() {
-		$tweet_link = "https://twitter.com/intent/tweet?hashtags=SpeedBoosterPack&text=I've been using Speed Booster Pack for a couple of weeks and I love it!&tw_p=tweetbutton&url=https://wordpress.org/plugins/speed-booster-pack/";
 		$notices    = [
-			'sbp_tweet'       => [
-				'show_after' => '+7 days',
-				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you\'re enjoying using our plugin, can you %1$ssend a tweet to support us%2$s?', 'speed-booster-pack' ), '<a href="' . $tweet_link . '" rel="noopener" target="_blank">', '</a>' ),
-				'depends_on' => 'sbp_rate_wp_org',
-			],
 			'sbp_rate_wp_org' => [
 				'show_after' => '+7 days',
 				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you like our plugin, we would be so grateful if you could %1$sgive us a fair rating on wordpress.org%2$s.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">', '</a>' ),
@@ -245,16 +239,6 @@ class SBP_WP_Admin {
 		array_unshift( $links, $pro_link );
 
 		return $links;
-	}
-
-	private function initialize_announce4wp() {
-		if ( sbp_get_option( 'enable_external_notices' ) ) {
-			new \Announce4WP_Client( 'speed-booster-pack.php',
-				SBP_PLUGIN_NAME,
-				"sbp",
-				"https://speedboosterpack.com/wp-json/a4wp/v1/" . SBP_VERSION . "/news.json",
-				"toplevel_page_sbp-settings" );
-		}
 	}
 
 	public function check_required_file_permissions() {
@@ -319,4 +303,130 @@ class SBP_WP_Admin {
 	public function dismiss_intro() {
 		update_user_meta( get_current_user_id(), 'sbp_intro', true );
 	}
+
+	public function enqueue_deactivation_survey_scripts() {
+		if ( get_current_screen()->id === 'plugins' ) {
+			wp_enqueue_script( 'sbp_deactivation_survey', SBP_URL . '/admin/js/deactivation-survey.js', array(
+				'jquery'
+			), SBP_VERSION );
+
+			wp_enqueue_style( 'sbp_deactivation_survey', SBP_URL . '/admin/css/deactivation-survey.css', null, SBP_VERSION );
+
+			add_action( 'admin_footer', [ $this, 'deactivation_survey_modal' ] );
+		}
+	}
+
+	public function deactivation_survey_modal() {
+		$current_user = wp_get_current_user();
+		
+		$email = (string) $current_user->user_email;
+
+		echo '
+		<div class="sbp-deactivation-survey">
+			<div class="sbp-survey-inner">
+				<h3>' . __( 'Sorry to see you go!', 'speed-booster-pack' ) . '</h3>
+				<h4>' . sprintf( __( 'We would appreciate if you let us know why you\'re deactivating %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</h4>
+				<form action="" method="POST">
+					<label>
+						<input type="radio" name="sbp_reason" value="I don\'t see any performance improvement." />
+						' . __( 'I don\'t see any performance improvement.', 'speed-booster-pack' ) . '
+					</label>
+					<label>
+						<input type="radio" name="sbp_reason" value="It broke my site." />
+						' . __( 'It broke my site.', 'speed-booster-pack' ) . '
+					</label>
+					<label>
+						<input type="radio" name="sbp_reason" value="I found a better solution." />
+						' . __( 'I found a better solution.', 'speed-booster-pack' ) . '
+					</label>
+					<label>
+						<input type="radio" name="sbp_reason" value="I\'m just disabling temporarily." />
+						' . __( 'I\'m just disabling temporarily.', 'speed-booster-pack' ) . '
+					</label>
+					<label>
+						<input type="radio" name="sbp_reason" value="Other." />
+						' . __( 'Other (please specify below)', 'speed-booster-pack' ) . '
+					</label>
+					<label>
+						<textarea name="sbp_deactivation_description" class="widefat" style="display: none;"></textarea>
+					</label>
+					<input type="hidden" name="sbp_site_url" value="' . site_url() . '" />
+					<input type="hidden" name="sbp_version" value="' . SBP_VERSION . '" />
+					<hr>
+					<label>
+						<input type="checkbox" name="sbp_reply" />
+						' . __( 'I would like to get a response to my submission.', 'speed-booster-pack' ) . '
+					</label>
+					<label>
+						<input name="sbp_reply_email" type="email" class="widefat" value="' . $email . '" style="padding: 3px 5px; display: none;" />
+					</label>
+					<div class="sbp-deactivate-buttons-wrapper">
+						<button class="button button-primary submit-and-deactivate" disabled="disabled">' . __( 'Submit & Deactivate', 'speed-booster-pack' ) . '</button>
+						<button class="button button-secondary deactivate-plugin" type="button">' . __( 'Just Deactivate', 'speed-booster-pack' ) . '</button>
+						<button class="button button-secondary cancel-deactivation-survey" type="button">' . __( 'Cancel', 'speed-booster-pack' ) . '</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		';
+	}
+
+	public function clear_custom_code_manager() {
+
+		$custom_code_manager_original = sbp_get_option( 'custom_codes', []);
+		if( sbp_get_option( 'custom_codes', []) ) {
+
+			$custom_code_manager_backup = '';
+
+			for( $i = 0; $i < count( $custom_code_manager_original ); $i++ ) {
+			    $custom_code_manager_backup .= '<!-- Custom code #' . $i . ' (' . $custom_code_manager_original[$i]['custom_codes_place'] . ') -->' . PHP_EOL;
+			    $custom_code_manager_backup .= '<script>' . PHP_EOL;
+			    $custom_code_manager_backup .= $custom_code_manager_original[$i]['custom_codes_item'] . PHP_EOL;
+			    $custom_code_manager_backup .= '</script>' . PHP_EOL . PHP_EOL;
+			}
+
+			update_option( 'sbp_custom_code_manager_backup', $custom_code_manager_backup );
+
+			$sbp_options = get_option( 'sbp_options' );
+
+			if ( $sbp_options ) {
+				unset( $sbp_options['custom_codes'] );
+				update_option( 'sbp_options', $sbp_options );
+			}
+
+		}
+
+		if( ! get_option( 'sbp_custom_code_manager_backup' ) ) { return; }
+
+		SBP_Notice_Manager::display_notice(
+		'custom_code_manager_backup',
+		'<p>' . __( 'Speed Booster Pack: We have removed the Custom Code Manager feature from our plugin because it\'s not totally related to performance. Since you were using this feature, here\'s a backup of your custom codes:', 'speed-booster-pack' ) . '</p>' .
+		    '<textarea style="max-width: 100%; width: 600px; min-height: 150px;" readonly>' . get_option( 'sbp_custom_code_manager_backup' ) . '</textarea>' .
+		    '<p>' . sprintf( __( 'You can use any plugin you want to add these custom codes (%s is a decent alternative). Better yet, you can use your theme if it has a custom code feature.', 'speed-booster-pack' ), '<a href="https://wordpress.org/plugins/insert-headers-and-footers/" target="_blank" rel="external nofollow">Insert Headers and Footers</a>' ) . '</p>' .
+		    '<p><button class="button button-primary sbp-dismiss-ccm-notice notice-dismiss-button" data-notice-id="custom_code_manager_backup" data-notice-action="sbp_dismiss_notice">' . __( 'I copied the code, dismiss this notice', 'speed-booster-pack' ) . '</button></p>',
+		'warning',
+		false
+		);
+
+	}
+
+	public function dismiss_custom_code_manager_backup() {
+
+		if ( ! current_user_can( 'manage_options' ) || ! isset( $_GET['action'] ) || ! $_GET['action'] === 'sbp_dismiss_ccm_backup' ) { return; }
+
+		if ( ! wp_verify_nonce( $_GET['nonce'], 'sbp_ajax_nonce' ) ) {
+			echo wp_json_encode( [
+				'status'  => 'failure',
+				'message' => __( 'Invalid nonce.', 'speed-booster-pack' ),
+			] );
+			wp_die();
+		}
+
+		delete_option( 'sbp_custom_code_manager_backup' );
+
+		echo wp_json_encode( [ 'status' => 'success', 'message' => 'Custom codes successfully removed.' ] );
+		wp_die();
+
+	}
+
 }

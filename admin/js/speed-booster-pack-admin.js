@@ -286,7 +286,7 @@
         $.ajax({
             type: 'GET',
             url: ajaxurl,
-            data: {action: 'sbp_clear_ccm', 'nonce': sbp_ajax_vars.nonce},
+            data: {action: 'sbp_dismiss_ccm_backup', 'nonce': sbp_ajax_vars.nonce},
             success: function(response) {
                 // Nothing?
             }

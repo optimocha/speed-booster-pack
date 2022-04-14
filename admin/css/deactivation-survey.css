@@ -1,0 +1,52 @@
+.sbp-deactivation-survey {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .7);
+    width: 100%;
+    height: 100vh;
+    z-index: 999999;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 350ms;
+}
+
+.sbp-deactivation-survey .sbp-survey-inner {
+    max-width: 100%;
+    width: 600px;
+    padding: 20px;
+    background: #f1f1f1;
+}
+
+.sbp-deactivation-survey .sbp-survey-inner h4 {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.sbp-deactivation-survey .sbp-survey-inner label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.sbp-deactivation-survey .sbp-survey-inner .sbp-deactivate-buttons-wrapper {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.sbp-deactivation-survey .sbp-survey-inner .sbp-deactivate-buttons-wrapper button {
+    margin-right: 10px;
+}
+
+@media all and (max-width: 420px) {
+    .sbp-deactivation-survey .sbp-survey-inner .sbp-deactivate-buttons-wrapper {
+        flex-direction: column;
+    }
+
+    .sbp-deactivation-survey .sbp-survey-inner .sbp-deactivate-buttons-wrapper button {
+        margin-right: 0;
+    }
+}

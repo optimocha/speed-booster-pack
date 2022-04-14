@@ -50,7 +50,9 @@ if ( ! class_exists( 'CSF_Shortcoder' ) ) {
 
       if ( ! empty( $this->args['show_in_editor'] ) ) {
 
-        CSF::$shortcode_instances[$this->unique] = wp_parse_args( array( 'hash' => md5( $key ), 'modal_id' => $this->unique ), $this->args );
+        $name = str_replace( '_', '-', sanitize_title( $this->unique ) );
+
+        CSF::$shortcode_instances[] = wp_parse_args( array( 'name' => 'csf/'. $name, 'modal_id' => $this->unique ), $this->args );
 
         // elementor editor support
         if ( CSF::is_active_plugin( 'elementor/elementor.php' ) ) {
@@ -322,9 +324,9 @@ if ( ! class_exists( 'CSF_Shortcoder' ) ) {
 
       wp_localize_script( 'csf-gutenberg-block', 'csf_gutenberg_blocks', CSF::$shortcode_instances );
 
-      foreach ( CSF::$shortcode_instances as $value ) {
+      foreach ( CSF::$shortcode_instances as $block ) {
 
-        register_block_type( 'csf-gutenberg-block/block-'. $value['hash'], array(
+        register_block_type( $block['name'], array(
           'editor_script' => 'csf-gutenberg-block',
         ) );
 
