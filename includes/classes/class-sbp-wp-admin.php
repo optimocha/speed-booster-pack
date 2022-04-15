@@ -308,7 +308,7 @@ class SBP_WP_Admin {
 
 		if ( version_compare( phpversion(), '7.0', '>=' ) ) { return; }
 
-		SBP_Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or have your hosting company do it).', 'speed-booster-pack' ) . '</p>', 'warning', false );
+		SBP_Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or ask your hosting company to do it).', 'speed-booster-pack' ) . '</p>', 'warning', false );
 
 	}
 
@@ -356,11 +356,11 @@ class SBP_WP_Admin {
 						' . __( 'I\'m just disabling temporarily.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
-						<input type="radio" name="sbp_reason" value="Other." />
+						<input type="radio" name="sbp_reason" value="Other" />
 						' . __( 'Other (please specify below)', 'speed-booster-pack' ) . '
 					</label>
 					<label>
-						<textarea name="sbp_deactivation_description" class="widefat" placeholder="Add more details here if you like."></textarea>
+						<textarea name="sbp_deactivation_description" class="widefat" placeholder="' . __( 'Details (optional)', 'speed-booster-pack' ) . '"></textarea>
 					</label>
 					<input type="hidden" name="sbp_site_url" value="' . site_url() . '" />
 					<input type="hidden" name="sbp_version" value="' . SBP_VERSION . '" />
