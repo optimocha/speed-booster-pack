@@ -155,22 +155,6 @@ if ( ! function_exists( 'sbp_str_replace_first' ) ) {
 	}
 }
 
-if ( ! function_exists( 'sbp_get_filesystem' ) ) {
-	/**
-	 * Return WP_Filesystem instance
-	 *
-	 * @return mixed
-	 */
-	function sbp_get_filesystem() {
-		global $wp_filesystem;
-
-		require_once( ABSPATH . '/wp-admin/includes/file.php' );
-		WP_Filesystem();
-
-		return $wp_filesystem;
-	}
-}
-
 if ( ! function_exists( 'sbp_posabs' ) ) {
 	/**
 	 * Returns absolute value of a number. Returns 1 if value is zero.
@@ -515,4 +499,16 @@ if ( ! function_exists( 'sbp_is_wp_config_writable' ) ) {
 
 		return file_exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file );
 	}
+}
+
+if ( ! function_exists( 'sbp_log' ) ) {
+
+	function sbp_log( $message ) {
+
+		if ( WP_DEBUG !== true ) { return; }
+
+		error_log( print_r( $message, true ) );
+
+	}
+
 }
