@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
 Tested up to: 5.9
 Requires PHP: 5.6
-Stable tag: 4.5.0
+Stable tag: 4.5.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -103,6 +103,14 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
+= 4.5.1 =
+
+*Release Date: 14 April 2021*
+
+* **NEW**: Simple warning notice about PHP version (when it's below 7.0).
+* **Fixed**: Deactivation survey didn't show the details textarea.
+* **Fixed**: LiteSpeed cache cached logged-in users even when the setting was turned off.
+
 = 4.5.0 =
 
 *Release Date: 14 April 2021*
@@ -117,7 +125,6 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Improved**: Improvements with the method which adds the `WP_CACHE` constant to the `wp-config.php` file.
 * **Updated**: Updated Codestar Framework to v2.2.6.
 * **Updated**: Updated lazyload.js to v17.7.0.
-
 
 = 4.4.1.1 =
 

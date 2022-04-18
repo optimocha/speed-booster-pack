@@ -107,9 +107,9 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 *Release Date: 14 April 2021*
 
-* **Improved**: 
+* **NEW**: Simple warning notice about PHP version (when it's below 7.0).
 * **Fixed**: Deactivation survey didn't show the details textarea.
-* **Updated**: 
+* **Fixed**: LiteSpeed cache cached logged-in users even when the setting was turned off.
 
 = 4.5.0 =
 
@@ -126,7 +126,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Updated**: Updated Codestar Framework to v2.2.6.
 * **Updated**: Updated lazyload.js to v17.7.0.
 
-= 4.4.1 =
+= 4.4.1.1 =
 
 *Release Date: 12 March 2021*
 
