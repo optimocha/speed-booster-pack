@@ -105,7 +105,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.1 =
 
-*Release Date: 14 April 2021*
+*Release Date: 18 April 2021*
 
 * **NEW**: Simple warning notice about PHP version (when it's below 7.0).
 * **Fixed**: Deactivation survey didn't show the details textarea.
