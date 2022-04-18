@@ -67,10 +67,12 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			$lines[] = 'RewriteEngine On';
 			$lines[] = 'CacheLookup On' . PHP_EOL;
 
-			// Add vary, so the logged in users won't see public cache or other users' caches
-			$lines[] = '## BEGIN Cache vary for logged in users';
-			$lines[] = 'RewriteRule .? - [E="Cache-Vary:,wordpress_logged_in_' . COOKIEHASH . '"]';
-			$lines[] = '## END Cache vary for logged in users' . PHP_EOL;
+			if ( sbp_get_option( 'caching_ls_cache_logged_in_users' ) ) {
+				// Add vary, so the logged in users won't see public cache or other users' caches
+				$lines[] = '## BEGIN Cache vary for logged in users';
+				$lines[] = 'RewriteRule .? - [E="Cache-Vary:,wordpress_logged_in_' . COOKIEHASH . '"]';
+				$lines[] = '## END Cache vary for logged in users' . PHP_EOL;
+			}
 
 			if ( sbp_get_option( 'caching_ls_separate_mobile' ) ) {
 				$lines[] = '## BEGIN Cache vary for mobile browsers';

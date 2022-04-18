@@ -9,20 +9,22 @@ if ( ! defined( 'WPINC' ) ) {
 
 class SBP_WP_Admin {
 	public function __construct() {
+
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
-		if ( is_admin() ) {
-			add_action( 'admin_init', [ $this, 'set_notices' ] );
 
-			add_action( 'admin_init', [ $this, 'timed_notifications' ] );
-			add_action( 'admin_init', [ $this, 'welcome_notice' ] );
-			add_action( 'admin_init', [ $this, 'clear_custom_code_manager' ] );
-			add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
+		if ( ! is_admin() ) { return; }
 
-			add_action( 'wp_ajax_sbp_dismiss_intro', [ $this, 'dismiss_intro' ] );
-			add_action( 'wp_ajax_sbp_dismiss_ccm_backup', [ $this, 'dismiss_custom_code_manager_backup' ] );
+		add_action( 'admin_init', [ $this, 'set_notices' ] );
+		add_action( 'admin_init', [ $this, 'timed_notifications' ] );
+		add_action( 'admin_init', [ $this, 'welcome_notice' ] );
+		add_action( 'admin_init', [ $this, 'clear_custom_code_manager' ] );
+		add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
+		add_action( 'admin_init', [ $this, 'upgrade_php_notice' ] );
 
-			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_deactivation_survey_scripts' ] );
-		}
+		add_action( 'wp_ajax_sbp_dismiss_intro', [ $this, 'dismiss_intro' ] );
+		add_action( 'wp_ajax_sbp_dismiss_ccm_backup', [ $this, 'dismiss_custom_code_manager_backup' ] );
+
+		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_deactivation_survey_scripts' ] );
 
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
 		add_filter( 'plugin_action_links_' . SBP_PLUGIN_BASENAME, [ $this, 'settings_links' ], 10, 2 );
@@ -293,11 +295,21 @@ class SBP_WP_Admin {
 	}
 
 	public function welcome_notice() {
+
 		SBP_Notice_Manager::display_notice( 'welcome_notice', sprintf( '<p>' . __( 'Thank you for installing %1$s! You can now visit the %2$ssettings page%3$s to start speeding up your website.', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, '<a href="' . admin_url( 'admin.php?page=sbp-settings&dismiss_welcome_notice=true' ) . '">', '</a>' ), 'success', true, 'one_time', 'plugins' );
 
 		if ( isset( $_GET['dismiss_welcome_notice'] ) && $_GET['dismiss_welcome_notice'] == true ) {
 			SBP_Notice_Manager::dismiss_notice( 'welcome_notice' );
 		}
+
+	}
+
+	public function upgrade_php_notice() {
+
+		if ( version_compare( phpversion(), '7.0', '>=' ) ) { return; }
+
+		SBP_Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or ask your hosting company to do it).', 'speed-booster-pack' ) . '</p>', 'warning', false );
+
 	}
 
 	public function dismiss_intro() {
@@ -344,11 +356,11 @@ class SBP_WP_Admin {
 						' . __( 'I\'m just disabling temporarily.', 'speed-booster-pack' ) . '
 					</label>
 					<label>
-						<input type="radio" name="sbp_reason" value="Other." />
+						<input type="radio" name="sbp_reason" value="Other" />
 						' . __( 'Other (please specify below)', 'speed-booster-pack' ) . '
 					</label>
 					<label>
-						<textarea name="sbp_deactivation_description" class="widefat" style="display: none;"></textarea>
+						<textarea name="sbp_deactivation_description" class="widefat" placeholder="' . __( 'Details (optional)', 'speed-booster-pack' ) . '"></textarea>
 					</label>
 					<input type="hidden" name="sbp_site_url" value="' . site_url() . '" />
 					<input type="hidden" name="sbp_version" value="' . SBP_VERSION . '" />
