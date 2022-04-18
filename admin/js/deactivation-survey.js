@@ -28,12 +28,6 @@
             } else {
                 $('.submit-and-deactivate').attr('disabled', 'disabled');
             }
-
-            if (e.target.value === 'other') {
-                $('[name=sbp_deactivation_description]').stop().slideDown();
-            } else {
-                $('[name=sbp_deactivation_description]').stop().slideUp();
-            }
         })
 
         $(document).on('keyup', '[name=sbp_deactivation_description]', function(e) {
