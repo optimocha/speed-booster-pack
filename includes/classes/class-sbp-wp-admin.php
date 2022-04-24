@@ -360,6 +360,7 @@ class SBP_WP_Admin {
 						' . __( 'Other (please specify below)', 'speed-booster-pack' ) . '
 					</label>
 					<label>
+						<p>We love getting feedback! If you have more details for us to share, feel free to write it below:</p>
 						<textarea name="sbp_deactivation_description" class="widefat" placeholder="' . __( 'Details (optional)', 'speed-booster-pack' ) . '"></textarea>
 					</label>
 					<input type="hidden" name="sbp_site_url" value="' . site_url() . '" />
