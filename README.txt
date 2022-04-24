@@ -103,7 +103,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
-= 4.5.1 =
+= 4.5.1.1 =
 
 *Release Date: 24 April 2021*
 
