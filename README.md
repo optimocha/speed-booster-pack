@@ -105,11 +105,12 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.2 =
 
-*Release Date: TODO*
+*Release Date: B_TODO*
 
-* **Improved**: TODO
-* **Fixed**: TODO
-* **Updated**: TODO
+* **NEW**: New option called "Dequeue global styles".
+* **Improved**: Lots of refactoring to the `class-sbp-tweaks.php` file.
+* **Fixed**: HTML minifier did a lot more damage than it did good, so we replaced it with an external class from github.com/mrclay/minify.
+* **Updated**: B_TODO
 
 = 4.5.1.1 =
 

@@ -414,6 +414,14 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
 						[
+							'title'      => __( 'Dequeue "global styles"', 'speed-booster-pack' ),
+							'id'         => 'dequeue_global_styles',
+							'type'       => 'switcher',
+							'desc'       => __( 'With version 5.9, full site editing capabilities has been added to WordPress. However, the new structure has some "global styles" that isn\'t really needed for most themes and/or WordPress users. Enabling this will remove a big chunk of inline CSS that WordPress adds, plus some SVG definitions. If you don\'t know what this is, you can try enabling it and see if it affects your front-end.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
 							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
 							'id'         => 'heartbeat_settings',
 							/* translators: 1. opening tag for the hyperlink to the Heartbeat API 2. closing tag for the hyperlink  */
