@@ -300,6 +300,7 @@ class Speed_Booster_Pack {
 	 */
 	private function define_public_filters() {
 		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
+		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 	}
 
 	private function save_post_types() {
