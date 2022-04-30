@@ -1470,7 +1470,7 @@ class Speed_Booster_Pack_Admin {
 		            'title'      => __( 'WooCommerce Marketing', 'speed-booster-pack' ),
 		            'id'         => 'woocommerce_marketing',
 		            'type'       => 'switcher',
-		            'desc'       => __( 'Enable or disable WooCommerce marketing. Note that this will also disable coupons.', 'speed-booster-pack' ),
+		            'desc'       => __( 'Enable or disable WooCommerce marketing.', 'speed-booster-pack' ),
 		            'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'sbp_sanitize_boolean',
 		            'text_on'    => 'Enabled',
