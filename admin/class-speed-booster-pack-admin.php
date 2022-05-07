@@ -13,6 +13,10 @@
 // If this file is called directly, abort.
 use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Utils;
+use SpeedBooster\SBP_Advanced_Cache_Generator;
+use SpeedBooster\SBP_Cache;
+use SpeedBooster\SBP_LiteSpeed_Cache;
+
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -112,6 +116,56 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_loaded', [ $this, 'create_metaboxes' ] );
 	}
+
+    public static function set_up_defaults() {
+
+    	if( ! get_option( 'sbp_activation_defaults' ) ) { return; }
+
+        error_log( 'oldu valla' );
+
+        if ( sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' ) ) {
+
+            SBP_Cache::clear_total_cache();
+
+            error_log( 'clear_total_cache' );
+
+            SBP_Cache::set_wp_cache_constant( true );
+
+            error_log( 'set_wp_cache_constant' );
+
+            SBP_Cache::generate_htaccess();
+
+            error_log( 'generate_htaccess' );
+
+            $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file();
+            $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
+            if ( $advanced_cache_file_content ) {
+                file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
+            }
+
+            error_log( 'generate_advanced_cache_file' );
+
+        }
+
+        if ( sbp_get_option( 'module_caching_ls' ) && ! sbp_should_disable_feature( 'caching' ) ) {
+            SBP_LiteSpeed_Cache::insert_htaccess_rules();
+        }
+
+        delete_option( 'sbp_activation_defaults' );
+
+    }
+
+    public static function redirect() {
+
+        // Make sure it's the correct user
+        if ( intval( get_option( 'sbp_activation_redirect', false ) ) === wp_get_current_user()->ID ) {
+            // Make sure we don't redirect again after this one
+            delete_option( 'sbp_activation_redirect' );
+            wp_safe_redirect( admin_url( '/admin.php?page=sbp-settings' ) );
+            exit;
+        }
+        
+    }
 
 	/**
 	 * Register the stylesheets for the admin area.
@@ -619,6 +673,7 @@ class Speed_Booster_Pack_Admin {
 					'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
 					'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_boolean',
+					'default'    => true,
 				],
 				[
 					'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),

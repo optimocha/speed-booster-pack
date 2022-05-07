@@ -273,6 +273,8 @@ class Speed_Booster_Pack {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'set_up_defaults' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'redirect' );
 	}
 
 	/**
