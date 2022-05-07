@@ -121,29 +121,19 @@ class Speed_Booster_Pack_Admin {
 
     	if( ! get_option( 'sbp_activation_defaults' ) ) { return; }
 
-        error_log( 'oldu valla' );
-
         if ( sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' ) ) {
 
             SBP_Cache::clear_total_cache();
 
-            error_log( 'clear_total_cache' );
-
             SBP_Cache::set_wp_cache_constant( true );
 
-            error_log( 'set_wp_cache_constant' );
-
             SBP_Cache::generate_htaccess();
-
-            error_log( 'generate_htaccess' );
 
             $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file();
             $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
             if ( $advanced_cache_file_content ) {
                 file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
             }
-
-            error_log( 'generate_advanced_cache_file' );
 
         }
 
