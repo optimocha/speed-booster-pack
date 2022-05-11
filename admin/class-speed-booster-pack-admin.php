@@ -663,7 +663,7 @@ class Speed_Booster_Pack_Admin {
 					'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
 					'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_boolean',
-					'default'    => true,
+					// 'default'    => true,
 				],
 				[
 					'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
