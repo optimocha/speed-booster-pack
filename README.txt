@@ -110,6 +110,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **NEW**: New option called "Dequeue global styles".
 * **Improved**: Lots of refactoring to the `class-sbp-tweaks.php` file.
 * **Improved**: Removed unused helper functions.
+* **Fixed**: Full site editing related bug squashed.
 * **Fixed**: HTML minifier did a lot more damage than it did good, so we replaced it with an external class from github.com/mrclay/minify.
 * **Fixed**: Hooked our public-faced features to `init` instead of `template_redirect` so it's more compatible with other plugins.
 * **Fixed**: Reverted the `shutdown` hook as it did more damage than good.
