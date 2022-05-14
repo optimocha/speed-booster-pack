@@ -105,7 +105,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.2 =
 
-*Release Date: B_TODO*
+*Release Date: 14 May 2022*
 
 * **NEW**: New option called "Dequeue global styles".
 * **Improved**: Lots of refactoring to the `class-sbp-tweaks.php` file.
@@ -113,17 +113,17 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Fixed**: HTML minifier did a lot more damage than it did good, so we replaced it with an external class from github.com/mrclay/minify.
 * **Fixed**: Hooked our public-faced features to `init` instead of `template_redirect` so it's more compatible with other plugins.
 * **Fixed**: Reverted the `shutdown` hook as it did more damage than good.
-* **Fixed**: The PHP version warning is now dismissible.
+* **Fixed**: The PHP version warning (shown to PHP 5.x users) is now dismissible.
 
 = 4.5.1.1 =
 
-*Release Date: 24 April 2021*
+*Release Date: 24 April 2022*
 
 * **Fixed**: One more (tiny) fix to the deactivation survey.
 
 = 4.5.1 =
 
-*Release Date: 18 April 2021*
+*Release Date: 18 April 2022*
 
 * **NEW**: Simple warning notice about PHP version (when it's below 7.0).
 * **Fixed**: Deactivation survey didn't show the details textarea.
@@ -131,7 +131,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.0 =
 
-*Release Date: 14 April 2021*
+*Release Date: 14 April 2022*
 
 * **NEW - WooCommerce optimizations**: The "Special" tab is replaced with the "WooCommerce" tab with SEVEN WC-related optimizations, four of them brand new!
 * **NEW - Deactivation survey**: An optional survey added to the "Deactivate" button to get feedback from users leaving us, so we can improve SBP even further.
@@ -146,7 +146,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.4.1.1 =
 
-*Release Date: 12 March 2021*
+*Release Date: 12 March 2022*
 
 * **Improved**: Speed Booster Pack's wp-admin CSS file got a bit smaller.
 * **Improved**: Better onboarding with titles.
@@ -160,7 +160,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.4.0 =
 
-*Release Date: 05 February 2021*
+*Release Date: 05 February 2022*
 
 * **NEW - LiteSpeed Caching**: This experimental new feature connects to your LiteSpeed server and use LiteSpeed's caching structure. Since it's really new, be sure to test thoroughly and [kindly report any bugs to our GitHub page](https://github.com/optimocha/speed-booster-pack/issues/).
 * **Improved**: Better page caching by refactoring some of the code.
