@@ -13,6 +13,10 @@
 // If this file is called directly, abort.
 use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Utils;
+use SpeedBooster\SBP_Advanced_Cache_Generator;
+use SpeedBooster\SBP_Cache;
+use SpeedBooster\SBP_LiteSpeed_Cache;
+
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -112,6 +116,46 @@ class Speed_Booster_Pack_Admin {
 
 		add_action( 'csf_loaded', [ $this, 'create_metaboxes' ] );
 	}
+
+    public static function set_up_defaults() {
+
+    	if( ! get_option( 'sbp_activation_defaults' ) ) { return; }
+
+        if ( sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' ) ) {
+
+            SBP_Cache::clear_total_cache();
+
+            SBP_Cache::set_wp_cache_constant( true );
+
+            SBP_Cache::generate_htaccess();
+
+            $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file();
+            $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
+            if ( $advanced_cache_file_content ) {
+                file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
+            }
+
+        }
+
+        if ( sbp_get_option( 'module_caching_ls' ) && ! sbp_should_disable_feature( 'caching' ) ) {
+            SBP_LiteSpeed_Cache::insert_htaccess_rules();
+        }
+
+        delete_option( 'sbp_activation_defaults' );
+
+    }
+
+    public static function redirect() {
+
+        // Make sure it's the correct user
+        if ( intval( get_option( 'sbp_activation_redirect', false ) ) === wp_get_current_user()->ID ) {
+            // Make sure we don't redirect again after this one
+            delete_option( 'sbp_activation_redirect' );
+            wp_safe_redirect( admin_url( '/admin.php?page=sbp-settings' ) );
+            exit;
+        }
+        
+    }
 
 	/**
 	 * Register the stylesheets for the admin area.
@@ -414,6 +458,14 @@ class Speed_Booster_Pack_Admin {
 							'sanitize'   => 'sbp_sanitize_boolean',
 						],
 						[
+							'title'      => __( 'Dequeue "global styles"', 'speed-booster-pack' ),
+							'id'         => 'dequeue_global_styles',
+							'type'       => 'switcher',
+							'desc'       => __( 'With version 5.9, full site editing capabilities has been added to WordPress. However, the new structure has some "global styles" that isn\'t really needed for most themes and/or WordPress users. Enabling this will remove a big chunk of inline CSS that WordPress adds, plus some SVG definitions. If you don\'t know what this is, you can try enabling it and see if it affects your front-end.', 'speed-booster-pack' ),
+							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
+							'sanitize'   => 'sbp_sanitize_boolean',
+						],
+						[
 							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
 							'id'         => 'heartbeat_settings',
 							/* translators: 1. opening tag for the hyperlink to the Heartbeat API 2. closing tag for the hyperlink  */
@@ -611,6 +663,7 @@ class Speed_Booster_Pack_Admin {
 					'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
 					'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_boolean',
+					// 'default'    => true,
 				],
 				[
 					'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
@@ -1462,7 +1515,7 @@ class Speed_Booster_Pack_Admin {
 		            'title'      => __( 'WooCommerce Marketing', 'speed-booster-pack' ),
 		            'id'         => 'woocommerce_marketing',
 		            'type'       => 'switcher',
-		            'desc'       => __( 'Enable or disable WooCommerce marketing. Note that this will also disable coupons.', 'speed-booster-pack' ),
+		            'desc'       => __( 'Enable or disable WooCommerce marketing.', 'speed-booster-pack' ),
 		            'dependency' => [ 'module_woocommerce', '==', '1', '', 'visible' ],
 		            'sanitize'   => 'sbp_sanitize_boolean',
 		            'text_on'    => 'Enabled',

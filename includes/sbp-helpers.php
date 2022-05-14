@@ -392,12 +392,6 @@ if ( ! function_exists( 'sbp_sanitize_query_strings' ) ) {
 	}
 }
 
-if ( ! function_exists( 'sbp_sanitize_special_characters' ) ) {
-	function sbp_sanitize_special_characters( $param ) {
-		return filter_var( $param, FILTER_SANITIZE_SPECIAL_CHARS );
-	}
-}
-
 if ( ! function_exists( 'sbp_sanitize_boolean' ) ) {
 	function sbp_sanitize_boolean( $value ) {
 		return $value == '1' ? '1' : '0';
@@ -428,16 +422,6 @@ if ( ! function_exists( 'sbp_check_file_permissions' ) ) {
 			case "both":
 				return $wp_filesystem->is_writable( $file_path ) && $wp_filesystem->is_readable( $file_path );
 		}
-	}
-}
-
-if ( ! function_exists( 'sbp_sanitize_titles_in_array' ) ) {
-	function sbp_sanitize_titles_in_array( $array ) {
-		if ( is_array( $array ) ) {
-			return array_map( 'sanitize_title', $array );
-		}
-
-		return $array;
 	}
 }
 
@@ -473,14 +457,6 @@ if ( ! function_exists( 'sbp_proper_parse_str' ) ) {
 	}
 }
 
-if ( ! function_exists( 'sbp_get_public_post_types' ) ) {
-	function sbp_get_public_post_types() {
-		$post_types = get_option( 'sbp_public_post_types' );
-
-		return is_array( $post_types ) ? $post_types : [];
-	}
-}
-
 if ( ! function_exists( 'sbp_get_wp_config_path' ) ) {
 	function sbp_get_wp_config_path() {
 		if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
@@ -499,16 +475,4 @@ if ( ! function_exists( 'sbp_is_wp_config_writable' ) ) {
 
 		return file_exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file );
 	}
-}
-
-if ( ! function_exists( 'sbp_log' ) ) {
-
-	function sbp_log( $message ) {
-
-		if ( WP_DEBUG !== true ) { return; }
-
-		error_log( print_r( $message, true ) );
-
-	}
-
 }

@@ -39,21 +39,17 @@ class Speed_Booster_Pack_Activator {
 	 * @since    4.0.0
 	 */
 	public static function activate() {
-        if ( sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' ) ) {
-            SBP_Cache::clear_total_cache();
-            SBP_Cache::set_wp_cache_constant( true );
-            SBP_Cache::generate_htaccess();
 
-            $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file();
-            $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
-            if ( $advanced_cache_file_content ) {
-                file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
-            }
+        add_option( 'sbp_activation_defaults', true );
+
+        // Don't do redirects when multiple plugins are bulk activated
+        if (
+            ( isset( $_REQUEST['action'] ) && 'activate-selected' === $_REQUEST['action'] ) &&
+            ( isset( $_POST['checked'] ) && count( $_POST['checked'] ) > 1 ) ) {
+            return;
         }
+        add_option( 'sbp_activation_redirect', wp_get_current_user()->ID );
 
-		if ( sbp_get_option( 'module_caching_ls' ) && ! sbp_should_disable_feature( 'caching' ) ) {
-			SBP_LiteSpeed_Cache::insert_htaccess_rules();
-		}
 	}
 
 }

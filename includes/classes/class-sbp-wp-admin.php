@@ -308,7 +308,7 @@ class SBP_WP_Admin {
 
 		if ( version_compare( phpversion(), '7.0', '>=' ) ) { return; }
 
-		SBP_Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or ask your hosting company to do it).', 'speed-booster-pack' ) . '</p>', 'warning', false );
+		SBP_Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or ask your hosting company to do it).', 'speed-booster-pack' ) . '</p>', 'warning', true );
 
 	}
 
@@ -360,6 +360,7 @@ class SBP_WP_Admin {
 						' . __( 'Other (please specify below)', 'speed-booster-pack' ) . '
 					</label>
 					<label>
+						<p><strong>' . __( 'Useful, detailed feedback will be rewarded with up to €200 discounts in Optimocha services!', 'speed-booster-pack' ) . '</strong><br><a href="https://optimocha.com/feedback/?utm_source=speed-booster-pack-plugin&utm_medium=deactivation-survey&utm_campaign=rewards-for-feedback" rel="external noopener" target="_blank">' . __( 'Click here for more details.', 'speed-booster-pack' ) . '</a></p>
 						<textarea name="sbp_deactivation_description" class="widefat" placeholder="' . __( 'Details (optional)', 'speed-booster-pack' ) . '"></textarea>
 					</label>
 					<input type="hidden" name="sbp_site_url" value="' . site_url() . '" />

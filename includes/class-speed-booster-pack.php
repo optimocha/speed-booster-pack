@@ -273,6 +273,8 @@ class Speed_Booster_Pack {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'set_up_defaults' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'redirect' );
 	}
 
 	/**
@@ -288,9 +290,9 @@ class Speed_Booster_Pack {
 		
 		$plugin_public = new Speed_Booster_Pack_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 0 );
+		$this->loader->add_action( 'init', $plugin_public, 'template_redirect', 1 );
 
-		$this->loader->add_action( 'shutdown', $plugin_public, 'shutdown', PHP_INT_MAX );
+		// $this->loader->add_action( 'shutdown', $plugin_public, 'shutdown', PHP_INT_MAX );
 
 		$this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
 	}
@@ -300,6 +302,7 @@ class Speed_Booster_Pack {
 	 */
 	private function define_public_filters() {
 		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
+		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 	}
 
 	private function save_post_types() {
