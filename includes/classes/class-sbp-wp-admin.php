@@ -50,13 +50,13 @@ class SBP_WP_Admin {
 	public function add_admin_bar_links( \WP_Admin_Bar $admin_bar ) {
 		if ( current_user_can( 'manage_options' ) ) {
 
-			$admin_bar->add_menu( [
+			$admin_bar->add_node( [
 				'id'    => 'speed_booster_pack',
 				'title' => 'Speed Booster',
 				'href'  => admin_url( 'admin.php?page=sbp-settings' ),
 				'meta'  => [
 					'target' => '_self',
-					'html'   => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'admin/images/icon.svg") no-repeat 5px center;padding-left:25px;filter: brightness(0.7) sepia(1) hue-rotate(50deg) saturate(1.5);}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
+					'html'   => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'admin/images/icon.svg") no-repeat 5px center;padding-left:25px;}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
 				],
 			] );
 
