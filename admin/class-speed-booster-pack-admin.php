@@ -16,6 +16,7 @@ use SpeedBooster\SBP_Utils;
 use SpeedBooster\SBP_Advanced_Cache_Generator;
 use SpeedBooster\SBP_Cache;
 use SpeedBooster\SBP_LiteSpeed_Cache;
+use SpeedBooster\SBP_Settings;
 
 
 if ( ! defined( 'WPINC' ) ) {
@@ -163,14 +164,9 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_styles() {
+
 		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', [], $this->version );
-		if (
-			get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
-			( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
-			current_user_can( 'manage_options' )
-		) {
-			wp_enqueue_style( 'sbp_intro_css', SBP_URL . 'admin/css/intro.min.css', [], '5.0.0' );
-		}
+
 	}
 
 	/**
@@ -179,63 +175,15 @@ class Speed_Booster_Pack_Admin {
 	 * @since    4.0.0
 	 */
 	public function enqueue_scripts() {
-		if (
-			get_user_meta( get_current_user_id(), 'sbp_intro', true ) != true &&
-			( get_current_screen() && get_current_screen()->id == 'toplevel_page_sbp-settings' ) &&
-			current_user_can( 'manage_options' )
-		) {
-			wp_enqueue_script( 'sbp_intro_js', SBP_URL . 'admin/js/intro.min.js', [ 'jquery' ], '5.0.0' );
-			wp_enqueue_script( 'sbp_init_intro', SBP_URL . 'admin/js/init-intro.js', [ 'jquery' ], '5.0.0' );
-			wp_localize_script( 'sbp_intro_js',
-				'sbp_intro_translations',
-				[
-					/* translators: onboarding modal, first step title  */
-					'welcomeTitle'   => __( 'Welcome!', 'speed-booster-pack' ),
-					/* translators: onboarding modal, first step  */
-					'welcome'   => __( 'Welcome to Speed Booster Pack! We\'d like to give you a quick tour - feel free to close this box and look around the options yourself, or click Next to see our short intro.', 'speed-booster-pack' ),
-					/* translators: onboarding modal, second step title  */
-					'cachingTitle'   => __( 'Caching', 'speed-booster-pack' ),
-					/* translators: onboarding modal, second step  */
-					'caching'   => __( 'This is our caching tab. Here, you can set caching for your pages to immediately speed up your website.', 'speed-booster-pack' ),
-					/* translators: onboarding modal, third step title  */
-					'caching2Title'   => __( 'Module Toggles', 'speed-booster-pack' ),
-					/* translators: onboarding modal, third step  */
-					'caching2'  => __( 'Most tabs have module toggles like this. Turning on or off the module toggle enables or disables the whole module.', 'speed-booster-pack' ),
-					/* translators: onboarding modal, fourth step title  */
-					'generalTitle'   => __( 'General Settings', 'speed-booster-pack' ),
-					/* translators: onboarding modal, fourth step  */
-					'general'   => __( 'The "General" tab includes various tweaks to clean up and speed up things. You can also disable Speed Booster Pack features for certain user roles (e.g. subscribers or customers) if you need to.', 'speed-booster-pack' ),
-					/* translators: onboarding modal, fifth step title  */
-					'cdnTitle'   => __( 'CDN & Proxy Settings', 'speed-booster-pack' ),
-					/* translators: onboarding modal, fifth step  */
-					'cdn'       => __( 'The CDN & Proxy tab has three main settings: You can set a CDN domain to serve all your assets from, you can connect to your Cloudflare account to change your Cloudflare settings, and you can connect to your Sucuri account so you can clear your Sucuri cache automatically.', 'speed-booster-pack' ),
-					/* translators: onboarding modal, sixth step title  */
-					'cssTitle'   => __( 'CSS Settings', 'speed-booster-pack' ),
-					/* translators: onboarding modal, sixth step  */
-					'css'       => __( 'The Optimize CSS tab has some delicate settings which, if configured properly, can drastically improve your website performance. Be sure to follow the directions properly - especially the Critical CSS settings!', 'speed-booster-pack' ),
-					/* translators: onboarding modal, seventh step title  */
-					'assetsTitle'   => __( 'Assets Settings', 'speed-booster-pack' ),
-					/* translators: onboarding modal, seventh step  */
-					'assets'    => __( 'The Assets tab can improve your website performance using font optimization, lazy loading, asset preloading and JavaScript optimization. It\'s tempting to enable them all, but make sure you test each change thoroughly or else you can break your website! Think of these tools like powerful weapons which you can hurt yourself with.', 'speed-booster-pack' ),
-					/* translators: onboarding modal, last step title  */
-					'endTitle'   => __( 'Done!', 'speed-booster-pack' ),
-					/* translators: onboarding modal, last step  */
-					'end'       => __( 'That\'s it! Actually, that\'s not it - make sure you check the other tabs to see if you have more room to improve your website speed. Don\'t be afraid to experiment; even if you break something, resetting settings or simply deactivating Speed Booster Pack will undo everything.', 'speed-booster-pack' ),
-					/* translators: onboarding modal, "Next" label  */
-					'nextLabel' => __( 'Next', 'speed-booster-pack' ),
-					/* translators: onboarding modal, "Prev" label  */
-					'prevLabel' => __( 'Prev', 'speed-booster-pack' ),
-					/* translators: onboarding modal, "Done" label  */
-					'doneLabel' => __( 'Done', 'speed-booster-pack' ),
-				] );
-		}
 
 		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], $this->version );
+
 		wp_localize_script( $this->plugin_name,
 			'sbp_ajax_vars',
 			[
 				'nonce' => wp_create_nonce( 'sbp_ajax_nonce' ),
 			] );
+
 	}
 
 	public function get_woocommerce_options() {
@@ -297,33 +245,22 @@ class Speed_Booster_Pack_Admin {
 					'icon'   => 'fa fa-tachometer-alt',
 					'fields' => [
 
-						[
-							'type'    => 'heading',
-							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'Welcome to %s!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-						],
-						[
-							'type'    => 'content',
-							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things. Let\'s begin!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-						],
-						[
-							'type'    => 'subheading',
-							'content' => __( 'Heads up: This plugin is ALWAYS in beta!', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'content',
-							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
-							'content' => sprintf( __( 'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener" target="_blank">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener" target="_blank">GitHub</a>' ),
-						],
-						[
-							'type'    => 'subheading',
-							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'Features and benefits of %s', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-						],
+						SBP_Settings::content( 'heading', 'Welcome to %s!', [ SBP_PLUGIN_NAME ] ),
+
+						SBP_Settings::content( 'content', 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things. Let\'s begin!', [ SBP_PLUGIN_NAME ] ),
+
+						SBP_Settings::content( 'subheading', 'Heads up: This plugin is ALWAYS in beta!' ),
+
+						SBP_Settings::content(
+							'content',
+							'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.',
+							[ SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener" target="_blank">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener" target="_blank">GitHub</a>' ]
+						),
+
+						SBP_Settings::content( 'subheading', 'Features and benefits of %s', [ SBP_PLUGIN_NAME ] ),
+
 						[
 							'type'    => 'content',
-							/* translators: %s = Speed Booster Pack  */
 							'content' => '<p>' . __( 'Each module of this plugin has different sets of really cool features that can help speed up your website:', 'speed-booster-pack' ) . '</p>' . '<ul><li>' .
 							             '<strong>' . __( 'General', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module lets you tweak the WordPress core and your page sources by dequeueing core scripts/styles, decluttering &lt;head&gt;, optimizing revisions and the Heartbeat API and so on.', 'speed-booster-pack' ) . '</li><li>' .
 							             '<strong>' . __( 'Caching', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module caches your pages into static HTML files, greatly reducing database queries. It also helps browsers cache static assets more efficiently.', 'speed-booster-pack' ) . '</li><li>' .
@@ -333,19 +270,17 @@ class Speed_Booster_Pack_Admin {
 							             '<strong>' . __( 'And many more', 'speed-booster-pack' ) . '</strong>: ' . __( 'Lots and lots of other features (like Cloudflare integration and database cleanups) for you to get your website faster than ever!', 'speed-booster-pack' ) . '</li></ul>' .
 							             '<p>' . __( 'Feel free to experiment, and don\'t forget to create exclude rules when necessary!', 'speed-booster-pack' ) . '</p>',
 						],
-						[
-							'type'    => 'subheading',
-							'content' => __( 'Upcoming features', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'content',
-							/* translators: 1. opening tag for the newsletter hyperlink 2. closing tag for the hyperlink  */
-							'content' => sprintf( __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/go/subscribe">', '</a>' ),
-						],
-						[
-							'type'    => 'subheading',
-							'content' => __( 'That\'s it, enjoy!', 'speed-booster-pack' ),
-						],
+
+						SBP_Settings::content( 'subheading', 'Upcoming features' ),
+
+						SBP_Settings::content(
+							'content',
+							'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!',
+							[ '<a href="https://speedboosterpack.com/go/subscribe">', '</a>' ]
+						),
+
+						SBP_Settings::content( 'subheading', "That's it, enjoy!" ),
+
 						[
 							'type'    => 'content',
 							'content' => '<p>' . __( 'We really hope that you\'ll enjoy working with our plugin. Always remember that this is a powerful tool, and using powerful tools might hurt you if you\'re not careful. Have fun!', 'speed-booster-pack' ) . '</p>' .
@@ -354,15 +289,14 @@ class Speed_Booster_Pack_Admin {
 							             /* translators: 1. Speed Booster Pack 2. link to the plugin's reviews page on wp.org */
 							             '<p>' . sprintf( __( 'Almost forgot: If you like %1$s, it would mean a lot to us if you gave a fair rating on %2$s, because highly rated plugins are shown to more users on the WordPress plugin directory, meaning that we\'ll have no choice but to take better care of %1$s!', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">wordpress.org</a>' ) . '</p>',
 						],
-						[
-							'type'    => 'subheading',
-							'content' => __( 'If you\'re looking for professional help...', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'content',
-							/* translators: 1: plugin owner's name (Optimocha) 2: Speed Booster Pack (Speed Booster Pack) 3: hyperlink to the owner's website */
-							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (This experience is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_PLUGIN_NAME, '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
-						],
+
+						SBP_Settings::content( 'subheading', "If you're looking for professional help..." ),
+
+						SBP_Settings::content(
+							'content',
+							'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (This experience is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!',
+							[ SBP_OWNER_NAME, SBP_PLUGIN_NAME, '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ]
+						),
 
 					],
 				]
@@ -375,96 +309,64 @@ class Speed_Booster_Pack_Admin {
 				[
 					'title'  => __( 'General', 'speed-booster-pack' ),
 					'id'     => 'tweaks',
+					'class'  => 'tab-general',
 					'icon'   => 'fa fa-sliders-h',
 					'fields' => [
-						[
-							/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-							'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'General', 'speed-booster-pack' ),
-							'id'       => 'module_tweaks',
-							'class'    => 'module-tweaks',
-							'type'     => 'switcher',
-							'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-							'default'  => true,
-							'sanitize' => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Enable instant.page', 'speed-booster-pack' ),
-							'id'         => 'instant_page',
-							'type'       => 'switcher',
-							/* translators: %s = hyperlink to the instant.page website  */
-							'desc'       => sprintf( __( 'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', 'speed-booster-pack' ), '<a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a>' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Trim query strings', 'speed-booster-pack' ),
-							'id'         => 'trim_query_strings',
-							'type'       => 'switcher',
-							'desc'       => __( 'Removes the query strings (characters that come after the question mark) at the end of enqueued asset URLs.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Disable self pingbacks', 'speed-booster-pack' ),
-							'id'         => 'disable_self_pingbacks',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disabling this will prevent pinging this website to ping itself (its other posts etc.) during publishing, which will improve the speed of publishing posts or pages.', 'speed-booster-pack' ),
-							'default'    => true,
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue emoji scripts', 'speed-booster-pack' ),
-							'id'         => 'dequeue_emoji_scripts',
-							'type'       => 'switcher',
-							'desc'       => __( 'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, don\'t worry.', 'speed-booster-pack' ),
-							'default'    => true,
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue the post embed script', 'speed-booster-pack' ),
-							'id'         => 'disable_post_embeds',
-							'type'       => 'switcher',
-							'desc'       => __( 'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							/* translators: %s: <code>comment-reply.js</code>  */
-							'title'      => sprintf( __( 'Dequeue %s', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
-							/* translators: %s: <code>comment-reply.js</code>  */
-							'desc'       => sprintf( __( 'Disables the %s script.', 'speed-booster-pack' ), '<code>comment-reply.js</code>' ),
-							'id'         => 'dequeue_comment_reply_script',
-							'type'       => 'switcher',
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue Dashicons CSS', 'speed-booster-pack' ),
-							'id'         => 'dequeue_dashicons',
-							'type'       => 'switcher',
-							/* translators: 1. <strong> 2. </strong>  */
-							'desc'       => sprintf( __( 'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', 'speed-booster-pack' ), '<strong>', '</strong>' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue Gutenberg CSS', 'speed-booster-pack' ),
-							'id'         => 'dequeue_block_library',
-							'type'       => 'switcher',
-							'desc'       => __( 'If you\'re not using the block editor (Gutenberg) in your posts/pages, this is a safe setting to enable.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
-						[
-							'title'      => __( 'Dequeue "global styles"', 'speed-booster-pack' ),
-							'id'         => 'dequeue_global_styles',
-							'type'       => 'switcher',
-							'desc'       => __( 'With version 5.9, full site editing capabilities has been added to WordPress. However, the new structure has some "global styles" that isn\'t really needed for most themes and/or WordPress users. Enabling this will remove a big chunk of inline CSS that WordPress adds, plus some SVG definitions. If you don\'t know what this is, you can try enabling it and see if it affects your front-end.', 'speed-booster-pack' ),
-							'dependency' => [ 'module_tweaks', '==', '1', '', 'visible' ],
-							'sanitize'   => 'sbp_sanitize_boolean',
-						],
+
+						SBP_Settings::content( 'heading', 'Module: %s', [ __( 'General', 'speed-booster-pack' ) ] ),
+
+						SBP_Settings::switcher(
+							'Toggle module', 'module_tweaks', false,
+							'Enables or disables the whole module without resetting its settings.', [], '',
+							[ 'default' => true ],
+						),
+
+						SBP_Settings::switcher(
+							'Enable instant.page', 'instant_page', 'module_tweaks',
+							'Enqueues %s (locally), which basically boosts the speed of navigating through your whole website.', [ '<a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a>' ],
+						),
+
+						SBP_Settings::switcher(
+							'Trim query strings', 'trim_query_strings', 'module_tweaks',
+							'Removes the query strings (characters that come after the question mark) at the end of enqueued asset URLs.',
+						),
+
+						SBP_Settings::switcher(
+							'Disable self pingbacks', 'disable_self_pingbacks', 'module_tweaks',
+							'Disabling this will prevent pinging this website to ping itself (its other posts etc.) during publishing, which will improve the speed of publishing posts or pages.', [], '',
+							[ 'default' => true ],
+						),
+
+						SBP_Settings::switcher(
+							'Dequeue emoji scripts', 'dequeue_emoji_scripts', 'module_tweaks',
+							'Removes the unnecessary emoji scripts from your website front-end. Doesn\'t remove emojis, don\'t worry.', [], '',
+							[ 'default' => true ],
+						),
+
+						SBP_Settings::switcher(
+							'Dequeue the post embed script', 'disable_post_embeds', 'module_tweaks',
+							'Disables embedding posts from WordPress-based websites (including your own) which converts URLs into heavy iframes.',
+						),
+
+						SBP_Settings::switcher(
+							'Dequeue the comment reply script', 'dequeue_comment_reply_script', 'module_tweaks',
+							'Disables the %s script.', [ '<code>comment-reply.js</code>' ],
+						),
+
+						SBP_Settings::switcher(
+							'Dequeue Dashicons CSS', 'dequeue_dashicons', 'module_tweaks',
+							'Removes dashicons.css from your front-end for your visitors. Since Dashicons are required for the admin bar, %1$sdashicons.css will not be removed for logged-in users%2$s.', [ '<strong>', '</strong>' ],
+						),
+
+						SBP_Settings::switcher(
+							'Dequeue Gutenberg CSS', 'dequeue_block_library', 'module_tweaks',
+							'If you\'re not using the block editor (Gutenberg) in your posts/pages, this is a safe setting to enable.',
+						),
+
+						SBP_Settings::switcher(
+							'Dequeue "global styles"', 'dequeue_global_styles', 'module_tweaks',
+							'With version 5.9, full site editing capabilities has been added to WordPress. However, the new structure has some "global styles" that isn\'t really needed for most themes and/or WordPress users. Enabling this will remove a big chunk of inline CSS that WordPress adds, plus some SVG definitions. If you don\'t know what this is, you can try enabling it and see if it affects your front-end.',
+						),
 						[
 							'title'      => __( 'Heartbeat settings', 'speed-booster-pack' ),
 							'id'         => 'heartbeat_settings',
@@ -1419,7 +1321,7 @@ class Speed_Booster_Pack_Admin {
 					'after'    => '&nbsp;/',
 					'desc'     => __( 'Rewrites all asset URLs with the specified CDN domain. Enter the CDN domain without a protocol or a trailing slash; a relative protocol will be automatically added to all changed asset URLs.', 'speed-booster-pack' ),
 					'sanitize' => 'sbp_sanitize_url',
-					'dependency' => [ 'cdn_enable', '!=', '', '', 'visible' ],
+					'dependency' => [ 'cdn_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title'      => __( 'Included Directories', 'speed-booster-pack' ),
@@ -1427,7 +1329,7 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'code_editor',
 					'desc'       => __( 'Anything other than WordPress\'s existing directories should be entered here to be rewritten with the CDN domain. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize'   => 'sbp_sanitize_strip_tags',
-					'dependency' => [ 'cdn_enable', '!=', '', '', 'visible' ],
+					'dependency' => [ 'cdn_enable', '==', '1', '', 'visible' ],
 				],
 				[
 					'title'      => __( 'Excluded Extensions', 'speed-booster-pack' ),
@@ -1435,7 +1337,7 @@ class Speed_Booster_Pack_Admin {
 					'type'       => 'code_editor',
 					'desc'       => __( 'If you want to exclude certain file types, enter the extensions here. Separated by new lines.', 'speed-booster-pack' ),
 					'sanitize'   => 'sbp_sanitize_strip_tags',
-					'dependency' => [ 'cdn_enable', '!=', '', '', 'visible' ],
+					'dependency' => [ 'cdn_enable', '==', '1', '', 'visible' ],
 				],
 			],
 				$cloudflare_fields,
@@ -1456,12 +1358,9 @@ class Speed_Booster_Pack_Admin {
 
             if ( ! SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
                 $woocommerce_fields = [
-                    [
-                        'id'    => 'sbp_csp_warning',
-                        'type'  => 'submessage',
-                        'style' => 'warning',
-                        'content' => __( 'WooCommerce is not active right now, but you can still change the settings below.', 'speed-booster-pack' ),
-                    ]
+
+                    SBP_Settings::submessage( 'WooCommerce is not active right now, but you can still change the settings below.', 'warning' ),
+
                 ];
             }
 
