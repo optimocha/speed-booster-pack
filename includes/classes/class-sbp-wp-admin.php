@@ -168,7 +168,7 @@ class SBP_WP_Admin {
 			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>',
 			'success',
 			true,
-			'recurrent' );
+			'flash' );
 
 		// Set Localizer Cache Clear Notice
 		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
