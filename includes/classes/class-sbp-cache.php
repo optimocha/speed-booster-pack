@@ -105,6 +105,7 @@ class SBP_Cache extends SBP_Base_Cache {
 	 * @param $html
 	 */
 	private function create_cache_file( $html ) {
+    	if( empty( $html ) ) { return; }
 		$dir_path            = $this->get_cache_file_path();
 		$file_path           = $dir_path . $this->file_name;
 		$sbp_cache_signature = PHP_EOL . '<!-- Cached by Speed Booster Pack -->';
