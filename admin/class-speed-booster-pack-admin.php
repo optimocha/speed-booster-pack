@@ -147,6 +147,8 @@ class Speed_Booster_Pack_Admin {
 
     public static function redirect() {
 
+    	if( ! get_option( 'sbp_activation_redirect' ) ) { return; }
+
         // Make sure it's the correct user
         if ( intval( get_option( 'sbp_activation_redirect', false ) ) === wp_get_current_user()->ID ) {
             // Make sure we don't redirect again after this one
