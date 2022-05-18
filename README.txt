@@ -107,7 +107,6 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 *Release Date: 18 May 2022*
 
-* **Improved**: 
 * **Fixed**: JSON outputs had that extra HTML comment which broke more than a few things...
 * **Fixed**: On rare occasions, the cachefile was saved completely empty.
 * **Removed**: New users won't see an introduction popup because it's not the most pleasant way to greet a new user. Instead, we're going to update our dashboard text in the next version.
