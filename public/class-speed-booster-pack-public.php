@@ -57,12 +57,13 @@ class Speed_Booster_Pack_Public {
 	 * Basically a hook for functions which use output buffer
 	 */
 	public function template_redirect() {
-		// if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
+		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 		ob_start( [ $this, 'output_buffer' ] );
 	}
 
 	public function output_buffer( $html ) {
 		$html = apply_filters( 'sbp_output_buffer', $html );
+		if ( $_SERVER[ 'REQUEST_METHOD' ] != 'GET' ) { return $html; }
 		$html .= PHP_EOL . '<!-- Optimized by Speed Booster Pack v' . SBP_VERSION . ' -->';
 
 		return $html;

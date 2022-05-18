@@ -105,6 +105,7 @@ class SBP_Cache extends SBP_Base_Cache {
 	 * @param $html
 	 */
 	private function create_cache_file( $html ) {
+    	if( empty( $html ) ) { return; }
 		$dir_path            = $this->get_cache_file_path();
 		$file_path           = $dir_path . $this->file_name;
 		$sbp_cache_signature = PHP_EOL . '<!-- Cached by Speed Booster Pack -->';
@@ -334,140 +335,123 @@ class SBP_Cache extends SBP_Base_Cache {
 		$sbp_htaccess_block = '# BEGIN Speed Booster Pack
 # SBP ' . SBP_VERSION . '
 
-## SECTION: General stuff
+# Character encodings
+AddDefaultCharset utf-8
 
-# UTF-8 config
-  AddDefaultCharset UTF-8
-  <IfModule mod_mime.c>
-  AddCharset UTF-8 .appcache .bbaw .css .htc .ics .js .json .manifest .map .markdown .md .mjs .topojson .vtt .vcard .vcf .webmanifest .xloc
-  </IfModule>
-# FileETag config
-  <IfModule mod_headers.c>
-  Header unset ETag
-  </IfModule>
-  FileETag None
-# Cache-Control config
-  <FilesMatch "\.(html|htm|rtf|rtx|txt|xsd|xsl|xml|css|htc|js|asf|asx|wax|wmv|wmx|avi|bmp|class|divx|doc|docx|eot|exe|gif|gz|gzip|ico|jpg|jpeg|jpe|json|mdb|mid|midi|mov|qt|mp3|m4a|mp4|m4v|mpeg|mpg|mpe|mpp|otf|odb|odc|odf|odg|odp|ods|odt|ogg|pdf|png|pot|pps|ppt|pptx|ra|ram|svg|svgz|swf|tar|tif|tiff|ttf|ttc|wav|wma|wri|xla|xls|xlsx|xlt|xlw|zip)$">
-  <IfModule mod_headers.c>
-  Header unset Pragma
-  Header append Cache-Control "public"
-  </IfModule>
-  </FilesMatch>
-
-## SECTION: Compression (DEFLATE)
-
-<IfModule mod_deflate.c>
-<IfModule mod_setenvif.c>
+# ETags
 <IfModule mod_headers.c>
-SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
-RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
-SetEnvIfNoCase Request_URI \
-\.(?:gif|jpe?g|png|rar|zip|exe|flv|mov|wma|mp3|avi|swf|mp?g|mp4|webm|webp|pdf)$ no-gzip dont-vary
+    Header unset ETag
 </IfModule>
-</IfModule>
-<IfModule mod_filter.c>
-AddOutputFilterByType DEFLATE "application/atom+xml" \
-                              "application/javascript" \
-                              "application/json" \
-                              "application/ld+json" \
-                              "application/manifest+json" \
-                              "application/rdf+xml" \
-                              "application/rss+xml" \
-                              "application/schema+json" \
-                              "application/geo+json" \
-                              "application/vnd.ms-fontobject" \
-                              "application/wasm" \
-                              "application/x-font-ttf" \
-                              "application/x-javascript" \
-                              "application/x-web-app-manifest+json" \
-                              "application/xhtml+xml" \
-                              "application/xml" \
-                              "font/eot" \
-                              "font/opentype" \
-                              "font/otf" \
-                              "font/ttf" \
-                              "image/bmp" \
-                              "image/svg+xml" \
-                              "image/vnd.microsoft.icon" \
-                              "text/cache-manifest" \
-                              "text/calendar" \
-                              "text/css" \
-                              "text/html" \
-                              "text/javascript" \
-                              "text/plain" \
-                              "text/markdown" \
-                              "text/vcard" \
-                              "text/vnd.rim.location.xloc" \
-                              "text/vtt" \
-                              "text/x-component" \
-                              "text/x-cross-domain-policy" \
-                              "text/xml"
+FileETag None
 
-</IfModule>
-<IfModule mod_mime.c>
-AddEncoding gzip              svgz
-</IfModule>
+# Compression
+<IfModule mod_deflate.c>
+	<IfModule mod_setenvif.c>
+		<IfModule mod_headers.c>
+			SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+			RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+		</IfModule>
+	</IfModule>
+	<IfModule mod_filter.c>
+		AddOutputFilterByType DEFLATE "application/atom+xml" \
+									  "application/javascript" \
+									  "application/json" \
+									  "application/ld+json" \
+									  "application/manifest+json" \
+									  "application/rdf+xml" \
+									  "application/rss+xml" \
+									  "application/schema+json" \
+									  "application/geo+json" \
+									  "application/vnd.ms-fontobject" \
+									  "application/wasm" \
+									  "application/x-font-ttf" \
+									  "application/x-javascript" \
+									  "application/x-web-app-manifest+json" \
+									  "application/xhtml+xml" \
+									  "application/xml" \
+									  "font/eot" \
+									  "font/opentype" \
+									  "font/otf" \
+									  "font/ttf" \
+									  "image/bmp" \
+									  "image/svg+xml" \
+									  "image/vnd.microsoft.icon" \
+									  "image/x-icon" \
+									  "text/cache-manifest" \
+									  "text/calendar" \
+									  "text/css" \
+									  "text/html" \
+									  "text/javascript" \
+									  "text/plain" \
+									  "text/markdown" \
+									  "text/vcard" \
+									  "text/vnd.rim.location.xloc" \
+									  "text/vtt" \
+									  "text/x-component" \
+									  "text/x-cross-domain-policy" \
+									  "text/xml"
+	</IfModule>
+	<IfModule mod_mime.c>
+		AddEncoding gzip			  svgz
+	</IfModule>
 </IfModule>
 
-## SECTION: Cache expiration
-
+# Cache expiration
 <IfModule mod_expires.c>
-  ExpiresActive on
-  ExpiresDefault                                      "access plus 1 month"
-# HTML
-  ExpiresByType text/html                             "access plus 0 seconds"
-# CSS
-  ExpiresByType text/css                              "access plus 1 year"
-# JavaScript
-  ExpiresByType application/javascript                "access plus 1 year"
-  ExpiresByType application/x-javascript              "access plus 1 year"
-  ExpiresByType text/javascript                       "access plus 1 year"
-# Media files
-  ExpiresByType audio/ogg                             "access plus 1 month"
-  ExpiresByType image/bmp                             "access plus 1 month"
-  ExpiresByType image/gif                             "access plus 1 month"
-  ExpiresByType image/jpeg                            "access plus 1 month"
-  ExpiresByType image/png                             "access plus 1 month"
-  ExpiresByType image/apng                            "access plus 1 month"
-  ExpiresByType image/avif                            "access plus 1 month"
-  ExpiresByType image/avif-sequence                   "access plus 1 month"
-  ExpiresByType image/svg+xml                         "access plus 1 month"
-  ExpiresByType image/webp                            "access plus 1 month"
-  ExpiresByType video/mp4                             "access plus 1 month"
-  ExpiresByType video/ogg                             "access plus 1 month"
-  ExpiresByType video/webm                            "access plus 1 month"
-# Web fonts
-  ExpiresByType font/collection                       "access plus 1 month"
-  ExpiresByType application/vnd.ms-fontobject         "access plus 1 month"
-  ExpiresByType font/eot                              "access plus 1 month"
-  ExpiresByType font/opentype                         "access plus 1 month"
-  ExpiresByType font/otf                              "access plus 1 month"
-  ExpiresByType application/x-font-ttf                "access plus 1 month"
-  ExpiresByType font/ttf                              "access plus 1 month"
-  ExpiresByType application/font-woff                 "access plus 1 month"
-  ExpiresByType application/x-font-woff               "access plus 1 month"
-  ExpiresByType font/woff                             "access plus 1 month"
-  ExpiresByType application/font-woff2                "access plus 1 month"
-  ExpiresByType font/woff2                            "access plus 1 month"
-# Data interchange
-  ExpiresByType application/atom+xml                  "access plus 1 hour"
-  ExpiresByType application/rdf+xml                   "access plus 1 hour"
-  ExpiresByType application/rss+xml                   "access plus 1 hour"
-  ExpiresByType application/json                      "access plus 0 seconds"
-  ExpiresByType application/ld+json                   "access plus 0 seconds"
-  ExpiresByType application/schema+json               "access plus 0 seconds"
-  ExpiresByType application/geo+json                  "access plus 0 seconds"
-  ExpiresByType application/xml                       "access plus 0 seconds"
-  ExpiresByType text/calendar                         "access plus 0 seconds"
-  ExpiresByType text/xml                              "access plus 0 seconds"
-# Other
-  ExpiresByType image/vnd.microsoft.icon              "access plus 1 week"
-  ExpiresByType image/x-icon                          "access plus 1 week"
-  ExpiresByType text/x-cross-domain-policy            "access plus 1 week"
-  ExpiresByType application/manifest+json             "access plus 1 week"
-  ExpiresByType application/x-web-app-manifest+json   "access plus 0 seconds"
-  ExpiresByType text/cache-manifest                   "access plus 0 seconds"
+	ExpiresActive on
+	ExpiresDefault										"access plus 1 year"
+	ExpiresByType text/css								"access plus 1 year"
+	ExpiresByType application/atom+xml					"access plus 1 hour"
+	ExpiresByType application/rdf+xml					"access plus 1 hour"
+	ExpiresByType application/rss+xml					"access plus 1 hour"
+	ExpiresByType application/json						"access plus 0 seconds"
+	ExpiresByType application/ld+json					"access plus 0 seconds"
+	ExpiresByType application/schema+json				"access plus 0 seconds"
+	ExpiresByType application/geo+json					"access plus 0 seconds"
+	ExpiresByType application/xml						"access plus 0 seconds"
+	ExpiresByType text/calendar							"access plus 0 seconds"
+	ExpiresByType text/xml								"access plus 0 seconds"
+	ExpiresByType image/vnd.microsoft.icon				"access plus 1 week"
+	ExpiresByType image/x-icon							"access plus 1 week"
+	ExpiresByType text/html								"access plus 0 seconds"
+	ExpiresByType application/javascript				"access plus 1 year"
+	ExpiresByType application/x-javascript				"access plus 1 year"
+	ExpiresByType text/javascript						"access plus 1 year"
+	ExpiresByType application/manifest+json				"access plus 1 week"
+	ExpiresByType application/x-web-app-manifest+json   "access plus 0 seconds"
+	ExpiresByType text/cache-manifest					"access plus 0 seconds"
+	ExpiresByType text/markdown							"access plus 0 seconds"
+	ExpiresByType audio/ogg								"access plus 1 year"
+	ExpiresByType image/apng							"access plus 1 year"
+	ExpiresByType image/avif							"access plus 1 year"
+	ExpiresByType image/avif-sequence					"access plus 1 year"
+	ExpiresByType image/bmp								"access plus 1 year"
+	ExpiresByType image/gif								"access plus 1 year"
+	ExpiresByType image/jpeg							"access plus 1 year"
+	ExpiresByType image/jxl								"access plus 1 year"
+	ExpiresByType image/png								"access plus 1 year"
+	ExpiresByType image/svg+xml							"access plus 1 year"
+	ExpiresByType image/webp							"access plus 1 year"
+	ExpiresByType video/mp4								"access plus 1 year"
+	ExpiresByType video/ogg								"access plus 1 year"
+	ExpiresByType video/webm							"access plus 1 year"
+	ExpiresByType application/wasm						"access plus 1 year"
+	ExpiresByType font/collection						"access plus 1 year"
+	ExpiresByType application/vnd.ms-fontobject			"access plus 1 year"
+	ExpiresByType font/eot								"access plus 1 year"
+	ExpiresByType font/opentype							"access plus 1 year"
+	ExpiresByType font/otf								"access plus 1 year"
+	ExpiresByType application/x-font-ttf				"access plus 1 year"
+	ExpiresByType font/ttf								"access plus 1 year"
+	ExpiresByType application/font-woff					"access plus 1 year"
+	ExpiresByType application/x-font-woff				"access plus 1 year"
+	ExpiresByType font/woff								"access plus 1 year"
+	ExpiresByType application/font-woff2				"access plus 1 year"
+	ExpiresByType font/woff2							"access plus 1 year"
+	ExpiresByType text/x-cross-domain-policy			"access plus 1 week"
 </IfModule>
+
+# Ported from: https://github.com/h5bp/server-configs-apache
 
 # END Speed Booster Pack';
 

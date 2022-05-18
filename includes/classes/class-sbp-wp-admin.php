@@ -21,7 +21,6 @@ class SBP_WP_Admin {
 		add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 		add_action( 'admin_init', [ $this, 'upgrade_php_notice' ] );
 
-		add_action( 'wp_ajax_sbp_dismiss_intro', [ $this, 'dismiss_intro' ] );
 		add_action( 'wp_ajax_sbp_dismiss_ccm_backup', [ $this, 'dismiss_custom_code_manager_backup' ] );
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_deactivation_survey_scripts' ] );
@@ -50,13 +49,13 @@ class SBP_WP_Admin {
 	public function add_admin_bar_links( \WP_Admin_Bar $admin_bar ) {
 		if ( current_user_can( 'manage_options' ) ) {
 
-			$admin_bar->add_menu( [
+			$admin_bar->add_node( [
 				'id'    => 'speed_booster_pack',
 				'title' => 'Speed Booster',
 				'href'  => admin_url( 'admin.php?page=sbp-settings' ),
 				'meta'  => [
 					'target' => '_self',
-					'html'   => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'admin/images/icon.svg") no-repeat 5px center;padding-left:25px;filter: brightness(0.7) sepia(1) hue-rotate(50deg) saturate(1.5);}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
+					'html'   => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'admin/images/icon.svg?ver=' . SBP_VERSION . '") no-repeat 5px center;padding-left:25px;}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
 				],
 			] );
 
@@ -168,7 +167,7 @@ class SBP_WP_Admin {
 			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>',
 			'success',
 			true,
-			'recurrent' );
+			'flash' );
 
 		// Set Localizer Cache Clear Notice
 		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
@@ -310,10 +309,6 @@ class SBP_WP_Admin {
 
 		SBP_Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or ask your hosting company to do it).', 'speed-booster-pack' ) . '</p>', 'warning', true );
 
-	}
-
-	public function dismiss_intro() {
-		update_user_meta( get_current_user_id(), 'sbp_intro', true );
 	}
 
 	public function enqueue_deactivation_survey_scripts() {

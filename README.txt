@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, core web vitals, cache
 Requires at least: 4.6
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 4.5.2
+Stable tag: 4.5.3
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -102,6 +102,14 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.5.3 =
+
+*Release Date: 18 May 2022*
+
+* **Fixed**: JSON outputs had that extra HTML comment which broke more than a few things...
+* **Fixed**: On rare occasions, the cachefile was saved completely empty.
+* **Removed**: New users won't see an introduction popup because it's not the most pleasant way to greet a new user. Instead, we're going to update our dashboard text in the next version.
 
 = 4.5.2 =
 
