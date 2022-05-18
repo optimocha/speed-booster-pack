@@ -1555,7 +1555,6 @@ class Speed_Booster_Pack_Admin {
 								<li><a href="https://github.com/verlok/vanilla-lazyload" rel="external noopener" target="_blank">LazyLoad by Andrea Verlicchi</a></li>
 								<li><a href="https://github.com/deliciousbrains/wp-background-processing" rel="external noopener" target="_blank">WP Background Processing by Delicious Brains</a></li>
 								<li><a href="https://instant.page/" rel="external noopener" target="_blank">instant.page</a></li>
-								<li><a href="https://introjs.com/" rel="external noopener" target="_blank">intro.js</a></li>
 							</ul>',
 						],
 					],
