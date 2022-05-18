@@ -21,7 +21,6 @@ class SBP_WP_Admin {
 		add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 		add_action( 'admin_init', [ $this, 'upgrade_php_notice' ] );
 
-		add_action( 'wp_ajax_sbp_dismiss_intro', [ $this, 'dismiss_intro' ] );
 		add_action( 'wp_ajax_sbp_dismiss_ccm_backup', [ $this, 'dismiss_custom_code_manager_backup' ] );
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_deactivation_survey_scripts' ] );
@@ -310,10 +309,6 @@ class SBP_WP_Admin {
 
 		SBP_Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or ask your hosting company to do it).', 'speed-booster-pack' ) . '</p>', 'warning', true );
 
-	}
-
-	public function dismiss_intro() {
-		update_user_meta( get_current_user_id(), 'sbp_intro', true );
 	}
 
 	public function enqueue_deactivation_survey_scripts() {
