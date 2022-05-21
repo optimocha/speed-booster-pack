@@ -19,85 +19,26 @@
  * Copyright 2019-...  Optimocha (hey@optimocha.com)
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
- * Plugin name.
+ * Plugin constants.
  */
-define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' );
-
-/**
- * Current plugin version.
- */
-define( 'SBP_VERSION', '4.5.4' );
-
-/**
- * Plugin website URL.
- */
-define( 'SBP_PLUGIN_HOME', 'https://speedboosterpack.com/' );
-
-/**
- * Plugin owner's name.
- */
-define( 'SBP_OWNER_NAME', 'Optimocha' );
-
-/**
- * Plugin owner's website URL.
- */
-define( 'SBP_OWNER_HOME', 'https://optimocha.com/' );
-
-/**
- * Plugin URL
- */
-define( 'SBP_URL', plugin_dir_url( __FILE__ ) );
-
-/**
- * Plugin Path
- */
-define( 'SBP_PATH', realpath( dirname( __FILE__ ) ) . '/' );
-
-/**
- * Plugin includes path
- */
-define( 'SBP_INC_PATH', SBP_PATH . 'includes/' );
-
-/**
- * Plugin libraries path
- */
-define( 'SBP_LIB_PATH', SBP_PATH . 'vendor/' );
-
-/**
- * Cache directory path
- */
-define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' );
-
-/**
- * Cache directory URL
- */
-define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' );
-
-/**
- * Path for localized script files.
- */
-define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
-
-/**
- * URL for localized script files.
- */
-define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' );
-
-/**
- * Plugin basename.
- */
-define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
-
-/**
- * Migrator script version.
- */
-define( 'SBP_MIGRATOR_VERSION', '45000' );
+define( 'SBP_VERSION', '4.5.4' ); // plugin version
+define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' ); // plugin name
+define( 'SBP_PLUGIN_HOME', 'https://speedboosterpack.com/' ); // plugin home
+define( 'SBP_OWNER_NAME', 'Optimocha' ); // plugin owner name
+define( 'SBP_OWNER_HOME', 'https://optimocha.com/' ); // plugin owner home
+define( 'SBP_URL', plugin_dir_url( __FILE__ ) ); // plugin root URL
+define( 'SBP_PATH', realpath( dirname( __FILE__ ) ) . '/' ); // plugin root directory path
+define( 'SBP_INC_PATH', SBP_PATH . 'includes/' ); // plugin includes directory path
+define( 'SBP_LIB_PATH', SBP_PATH . 'vendor/' ); // plugin 3rd party directory path
+define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' ); // plugin cache directory path
+define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' ); // plugin cache directory URL
+define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' ); // plugin uploads path
+define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' ); // plugin uploads URL
+define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) ); // plugin basename
+define( 'SBP_MIGRATOR_VERSION', '45000' ); // plugin migrator version
 
 /**
  * Load all plugin options
