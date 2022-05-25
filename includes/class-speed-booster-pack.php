@@ -271,7 +271,7 @@ class Speed_Booster_Pack {
 	 */
 	private function define_admin_hooks() {
 
-		if ( ! is_admin() ) { return; }
+		if ( ! is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
