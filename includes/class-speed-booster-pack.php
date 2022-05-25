@@ -102,13 +102,23 @@ class Speed_Booster_Pack {
 		$this->load_dependencies();
 		$this->save_post_types();
 		$this->set_locale();
-		$this->init_modules();
 		$this->define_admin_hooks();
-		$this->define_public_hooks();
+
+		if ( $this->should_plugin_run() ) {
+			$this->init_modules();
+			$this->define_public_hooks();
+		}
 		
 	}
 
 	private function should_plugin_run() {
+
+		$login_path = parse_url( wp_login_url(), PHP_URL_PATH );
+
+		if( false !== stripos( $_SERVER[ 'REQUEST_URI' ], $login_path ) ) {
+			return false;
+		}
+
 		$query_strings_to_exclude = [
 			"sbp_disable"                   => "1", // speed booster pack
 			"elementor-preview"             => "elementor", // elementor
@@ -153,9 +163,6 @@ class Speed_Booster_Pack {
 	 * Every class has inner documentation.
 	 */
 	private function init_modules() {
-		if ( ! $this->should_plugin_run() ) {
-			return;
-		}
 		new SBP_WP_Admin();
 		new SBP_Database_Optimizer();
 		new SBP_Newsletter();
@@ -262,12 +269,16 @@ class Speed_Booster_Pack {
 
 		if ( ! is_admin() ) { return; }
 		
+		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
+		
 		$plugin_admin = new Speed_Booster_Pack_Admin( $this->plugin_name, SBP_VERSION );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'set_up_defaults' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'redirect' );
+
 	}
 
 	/**
@@ -291,8 +302,6 @@ class Speed_Booster_Pack {
 		
 		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
 
-		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
-
 	}
 
 	private function save_post_types() {
@@ -300,7 +309,7 @@ class Speed_Booster_Pack {
 			$post_types = array_keys( get_post_types( [ 'public' => true ] ) );
 			$saved_post_types = get_option( 'sbp_public_post_types' );
 
-			if ( ! $saved_post_types || $saved_post_types != $post_types ) {
+			if ( ! $saved_post_types || $saved_post_types != $post_types ) { 
 				update_option( 'sbp_public_post_types', $post_types );
 			}
 		});
