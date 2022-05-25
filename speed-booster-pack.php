@@ -116,9 +116,6 @@ function sbp_autoloader( $class_name ) {
  * @since    4.0.0
  */
 function run_speed_booster_pack() {
-	if ( preg_match( '/(_wp-|\.txt|\.pdf|\.xml|\.svg|\.ico|wp-json|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
-		return;
-	}
 
 	$plugin = new Speed_Booster_Pack();
 	$plugin->run();

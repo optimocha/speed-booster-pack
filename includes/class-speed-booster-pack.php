@@ -113,6 +113,10 @@ class Speed_Booster_Pack {
 
 	private function should_plugin_run() {
 
+		if ( preg_match( '/(_wp-|\.txt|\.pdf|\.xml|\.svg|\.ico|wp-json|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
+			return false;
+		}
+
 		$login_path = parse_url( wp_login_url(), PHP_URL_PATH );
 
 		if( false !== stripos( $_SERVER[ 'REQUEST_URI' ], $login_path ) ) {
@@ -268,7 +272,7 @@ class Speed_Booster_Pack {
 	private function define_admin_hooks() {
 
 		if ( ! is_admin() ) { return; }
-		
+
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
 		$plugin_admin = new Speed_Booster_Pack_Admin( $this->plugin_name, SBP_VERSION );
