@@ -147,7 +147,7 @@ class Speed_Booster_Pack_Admin {
 
     public static function redirect() {
 
-    	if( ! get_option( 'sbp_activation_redirect' ) ) { return; }
+    	if( ! get_option( 'sbp_activation_redirect' ) || ! current_user_can( 'manage_options' ) ) { return; }
 
         // Make sure it's the correct user
         if ( intval( get_option( 'sbp_activation_redirect', false ) ) === wp_get_current_user()->ID ) {

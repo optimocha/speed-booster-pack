@@ -19,7 +19,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		}
 
 		add_action( 'set_current_user', [ $this, 'run_class' ] );
-		add_action('wp_enqueue_scripts',[ $this, 'deregister_media_elements' ]);
+		add_action( 'wp_enqueue_scripts', [ $this, 'deregister_media_elements' ] );
 	}
 
 	public function run_class() {
@@ -34,7 +34,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	}
 
 	function add_lazy_load_script() {
-		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.7.0', true );
+		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.7.0' );
 		$lazy_loader_script = 'window.lazyLoadOptions = {
 					elements_selector: "[loading=lazy]"
 				};
@@ -76,8 +76,8 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	}
 
 	 function deregister_media_elements(){
-	   wp_deregister_script('wp-mediaelement');
-	   wp_deregister_style('wp-mediaelement');
+	   wp_deregister_script( 'wp-mediaelement' );
+	   wp_deregister_style( 'wp-mediaelement' );
 	}
 
 

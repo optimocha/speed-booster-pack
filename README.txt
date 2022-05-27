@@ -105,10 +105,12 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.4 =
 
-*Release Date: B_TODO*
+*Release Date: 27 May 2022*
 
-* **Fixed**: Small issue regarding an unintentional redirect. (Event Espresso users should update immediately.)
-* **Fixed**: 
+* **Improved**: Some code refactoring.
+* **Improved**: Lazy loading should perform even better now.
+* **Fixed**: Semi-important issue regarding an unintentional redirect.
+* **Fixed**: Some smaller, less-annoying bugs.
 
 = 4.5.3 =
 
