@@ -23,8 +23,6 @@ use SpeedBooster\SBP_CDN;
 use SpeedBooster\SBP_Compatibility_Checker;
 use SpeedBooster\SBP_Critical_CSS;
 use SpeedBooster\SBP_CSS_Minifier;
-// Z_TODO: Remove use
-use SpeedBooster\SBP_Custom_Code_Manager;
 use SpeedBooster\SBP_Database_Optimizer;
 use SpeedBooster\SBP_Image_Dimensions;
 use SpeedBooster\SBP_LiteSpeed_Cache;
@@ -97,23 +95,34 @@ class Speed_Booster_Pack {
 	 * @since    4.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'SBP_VERSION' ) ) {
-			$this->version = SBP_VERSION;
-		} else {
-			$this->version = '4.0.0';
-		}
+
+		$this->version = SBP_VERSION;
 		$this->plugin_name = 'speed-booster-pack';
 
 		$this->load_dependencies();
 		$this->save_post_types();
 		$this->set_locale();
-		$this->init_modules();
 		$this->define_admin_hooks();
-		$this->define_public_hooks();
-		$this->define_public_filters();
+
+		if ( $this->should_plugin_run() ) {
+			$this->init_modules();
+			$this->define_public_hooks();
+		}
+		
 	}
 
 	private function should_plugin_run() {
+
+		if ( preg_match( '/(_wp-|\.txt|\.pdf|\.xml|\.svg|\.ico|wp-json|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
+			return false;
+		}
+
+		$login_path = parse_url( wp_login_url(), PHP_URL_PATH );
+
+		if( false !== stripos( $_SERVER[ 'REQUEST_URI' ], $login_path ) ) {
+			return false;
+		}
+
 		$query_strings_to_exclude = [
 			"sbp_disable"                   => "1", // speed booster pack
 			"elementor-preview"             => "elementor", // elementor
@@ -158,9 +167,6 @@ class Speed_Booster_Pack {
 	 * Every class has inner documentation.
 	 */
 	private function init_modules() {
-		if ( ! $this->should_plugin_run() ) {
-			return;
-		}
 		new SBP_WP_Admin();
 		new SBP_Database_Optimizer();
 		new SBP_Newsletter();
@@ -178,8 +184,6 @@ class Speed_Booster_Pack {
 		new SBP_HTML_Minifier();
 		new SBP_Localize_Tracker();
 		new SBP_Woocommerce();
-		// Z_TODO: Remove instance
-		new SBP_Custom_Code_Manager();
 		new SBP_Cloudflare();
 		new SBP_Notice_Manager();
 		new SBP_Sucuri();
@@ -267,14 +271,18 @@ class Speed_Booster_Pack {
 	 */
 	private function define_admin_hooks() {
 
-		if ( ! is_admin() ) { return; }
+		if ( ! is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
+
+		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
-		$plugin_admin = new Speed_Booster_Pack_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Speed_Booster_Pack_Admin( $this->plugin_name, SBP_VERSION );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'set_up_defaults' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'redirect' );
+
 	}
 
 	/**
@@ -288,21 +296,16 @@ class Speed_Booster_Pack {
 
 		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 		
-		$plugin_public = new Speed_Booster_Pack_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Speed_Booster_Pack_Public( $this->plugin_name, SBP_VERSION );
 
 		$this->loader->add_action( 'init', $plugin_public, 'template_redirect', 1 );
 
 		// $this->loader->add_action( 'shutdown', $plugin_public, 'shutdown', PHP_INT_MAX );
 
 		$this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
-	}
-
-	/**
-	 * @since 4.1.2
-	 */
-	private function define_public_filters() {
+		
 		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
-		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
+
 	}
 
 	private function save_post_types() {
@@ -310,7 +313,7 @@ class Speed_Booster_Pack {
 			$post_types = array_keys( get_post_types( [ 'public' => true ] ) );
 			$saved_post_types = get_option( 'sbp_public_post_types' );
 
-			if ( ! $saved_post_types || $saved_post_types != $post_types ) {
+			if ( ! $saved_post_types || $saved_post_types != $post_types ) { 
 				update_option( 'sbp_public_post_types', $post_types );
 			}
 		});
@@ -326,17 +329,6 @@ class Speed_Booster_Pack {
 	}
 
 	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @return    string    The name of the plugin.
-	 * @since     4.0.0
-	 */
-	public function get_plugin_name() {
-		return $this->plugin_name;
-	}
-
-	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @return    Speed_Booster_Pack_Loader    Orchestrates the hooks of the plugin.
@@ -344,16 +336,6 @@ class Speed_Booster_Pack {
 	 */
 	public function get_loader() {
 		return $this->loader;
-	}
-
-	/**
-	 * Retrieve the version number of the plugin.
-	 *
-	 * @return    string    The version number of the plugin.
-	 * @since     4.0.0
-	 */
-	public function get_version() {
-		return $this->version;
 	}
 
 }
