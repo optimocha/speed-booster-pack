@@ -16,7 +16,7 @@ class SBP_WP_Admin {
 
 		add_action( 'admin_init', [ $this, 'set_notices' ] );
 		add_action( 'admin_init', [ $this, 'timed_notifications' ] );
-		add_action( 'admin_init', [ $this, 'welcome_notice' ] );
+		// add_action( 'admin_init', [ $this, 'welcome_notice' ] );
 		add_action( 'admin_init', [ $this, 'clear_custom_code_manager' ] );
 		add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 		add_action( 'admin_init', [ $this, 'upgrade_php_notice' ] );
@@ -307,15 +307,15 @@ class SBP_WP_Admin {
 
 	}
 
-	public function welcome_notice() {
+	// public function welcome_notice() {
 
-		SBP_Notice_Manager::display_notice( 'welcome_notice', sprintf( '<p>' . __( 'Thank you for installing %1$s! You can now visit the %2$ssettings page%3$s to start speeding up your website.', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, '<a href="' . admin_url( 'admin.php?page=sbp-settings&dismiss_welcome_notice=true' ) . '">', '</a>' ), 'success', true, 'one_time', 'plugins' );
+	// 	SBP_Notice_Manager::display_notice( 'welcome_notice', sprintf( '<p>' . __( 'Thank you for installing %1$s! You can now visit the %2$ssettings page%3$s to start speeding up your website.', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, '<a href="' . admin_url( 'admin.php?page=sbp-settings&dismiss_welcome_notice=true' ) . '">', '</a>' ), 'success', true, 'one_time', 'plugins' );
 
-		if ( isset( $_GET['dismiss_welcome_notice'] ) && $_GET['dismiss_welcome_notice'] == true ) {
-			SBP_Notice_Manager::dismiss_notice( 'welcome_notice' );
-		}
+	// 	if ( isset( $_GET['dismiss_welcome_notice'] ) && $_GET['dismiss_welcome_notice'] == true ) {
+	// 		SBP_Notice_Manager::dismiss_notice( 'welcome_notice' );
+	// 	}
 
-	}
+	// }
 
 	public function upgrade_php_notice() {
 
