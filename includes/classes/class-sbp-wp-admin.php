@@ -345,8 +345,7 @@ class SBP_WP_Admin {
 		
 		$email = (string) $current_user->user_email;
 
-		echo '
-		<div class="sbp-deactivation-survey">
+		echo '<div class="sbp-deactivation-survey">
 			<div class="sbp-survey-inner">
 				<h3>' . __( 'Sorry to see you go!', 'speed-booster-pack' ) . '</h3>
 				<h4>' . sprintf( __( 'We would appreciate if you let us know why you\'re deactivating %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</h4>
