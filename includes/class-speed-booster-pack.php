@@ -302,7 +302,7 @@ class Speed_Booster_Pack {
 
 		// $this->loader->add_action( 'shutdown', $plugin_public, 'shutdown', PHP_INT_MAX );
 
-		$this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
+		// $this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
 		
 		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
 
