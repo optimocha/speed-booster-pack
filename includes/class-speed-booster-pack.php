@@ -167,14 +167,20 @@ class Speed_Booster_Pack {
 	 * Every class has inner documentation.
 	 */
 	private function init_modules() {
+		
 		new SBP_WP_Admin();
 		new SBP_Database_Optimizer();
 		new SBP_Newsletter();
 		new SBP_Migrator();
+		new SBP_Compatibility_Checker();
+		new SBP_Cloudflare();
+		new SBP_Sucuri();
+		new SBP_Notice_Manager();
+		new SBP_Cache_Warmup();
+
 		new SBP_JS_Optimizer();
 		new SBP_Tweaks();
 		new SBP_Font_Optimizer();
-		new SBP_Compatibility_Checker();
 		new SBP_Preboost();
 		new SBP_CDN();
 		new SBP_Lazy_Loader();
@@ -184,12 +190,9 @@ class Speed_Booster_Pack {
 		new SBP_HTML_Minifier();
 		new SBP_Localize_Tracker();
 		new SBP_Woocommerce();
-		new SBP_Cloudflare();
-		new SBP_Notice_Manager();
-		new SBP_Sucuri();
-		new SBP_Cache_Warmup();
 		new SBP_Cache();
 		new SBP_LiteSpeed_Cache();
+
 	}
 
 	/**
