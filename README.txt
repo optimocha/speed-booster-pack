@@ -105,10 +105,10 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.5 =
 
-*Release Date: B_TODO*
+*Release Date: 05 June 2022*
 
-* **Improved**: 
-* **Fixed**: 
+* **Improved**: Refactoring of some old code.
+* **Fixed**: Various bug fixes.
 
 = 4.5.4 =
 
