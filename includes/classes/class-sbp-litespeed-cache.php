@@ -19,7 +19,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 			add_action( 'init', [ $this, 'set_headers' ] );
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
 			add_action( 'csf_sbp_options_saved', [ $this, 'send_clear_cache_header' ] );
-			// add_filter( 'sbp_output_buffer', [ $this, 'add_cache_signature' ] );
+			add_filter( 'sbp_output_buffer', [ $this, 'add_cache_signature' ] );
 			$this->clear_cache_hooks();
 		}
 	}
