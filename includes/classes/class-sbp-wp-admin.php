@@ -209,7 +209,7 @@ class SBP_WP_Admin {
 			'<p>' . sprintf( __( '%s will now send requests to your homepage and all the pages that are linked to in the homepage (including links in navigation menus) so they\'ll all be cached.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>',
 			'info',
 			true,
-			'recurrent' );
+			'flash' );
 
 	}
 
