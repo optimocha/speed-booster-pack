@@ -63,13 +63,13 @@ class Speed_Booster_Pack_Public {
 
 	public function output_buffer( $html ) {
 
-		if( is_embed() || $_SERVER[ 'REQUEST_METHOD' ] != 'GET' ) {
+		if( is_embed() || $_SERVER[ 'REQUEST_METHOD' ] != 'GET' || ! preg_match( '/<\/html>/i', $html ) ) {
 			return $html;
 		}
 
 		$html = apply_filters( 'sbp_output_buffer', $html );
 
-		// $html .= PHP_EOL . '<!-- Optimized by Speed Booster Pack v' . SBP_VERSION . ' -->';
+		$html .= PHP_EOL . '<!-- Optimized by Speed Booster Pack v' . SBP_VERSION . ' -->';
 
 		return $html;
 	}

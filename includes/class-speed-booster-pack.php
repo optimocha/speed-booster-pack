@@ -89,7 +89,7 @@ class Speed_Booster_Pack {
 
 	private function should_plugin_run() {
 
-		if ( preg_match( '/(_wp-|\.txt|\.pdf|\.xml|\.xsl|\.svg|\.ico|wp-json|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
+		if ( preg_match( '/(_wp-|\.txt|\.pdf|\.xml|\.xsl|\.svg|\.ico|\/wp-json|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
 			return false;
 		}
 
