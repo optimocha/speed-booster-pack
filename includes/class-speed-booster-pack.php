@@ -154,6 +154,21 @@ class Speed_Booster_Pack {
 		new SpeedBooster\SBP_Notice_Manager();
 		new SpeedBooster\SBP_Cache_Warmup();
 
+		new SpeedBooster\SBP_JS_Optimizer();
+		new SpeedBooster\SBP_Tweaks();
+		new SpeedBooster\SBP_Font_Optimizer();
+		new SpeedBooster\SBP_Preboost();
+		new SpeedBooster\SBP_CDN();
+		new SpeedBooster\SBP_Lazy_Loader();
+		new SpeedBooster\SBP_CSS_Minifier();
+		new SpeedBooster\SBP_Critical_CSS();
+		new SpeedBooster\SBP_Image_Dimensions();
+		new SpeedBooster\SBP_HTML_Minifier();
+		new SpeedBooster\SBP_Localize_Tracker();
+		new SpeedBooster\SBP_Woocommerce();
+		new SpeedBooster\SBP_Cache();
+		new SpeedBooster\SBP_LiteSpeed_Cache();
+
 	}
 
 	/**
@@ -259,21 +274,6 @@ class Speed_Booster_Pack {
 	private function define_public_hooks() {
 
 		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
-
-		new SpeedBooster\SBP_JS_Optimizer();
-		new SpeedBooster\SBP_Tweaks();
-		new SpeedBooster\SBP_Font_Optimizer();
-		new SpeedBooster\SBP_Preboost();
-		new SpeedBooster\SBP_CDN();
-		new SpeedBooster\SBP_Lazy_Loader();
-		new SpeedBooster\SBP_CSS_Minifier();
-		new SpeedBooster\SBP_Critical_CSS();
-		new SpeedBooster\SBP_Image_Dimensions();
-		new SpeedBooster\SBP_HTML_Minifier();
-		new SpeedBooster\SBP_Localize_Tracker();
-		new SpeedBooster\SBP_Woocommerce();
-		new SpeedBooster\SBP_Cache();
-		new SpeedBooster\SBP_LiteSpeed_Cache();
 		
 		$plugin_public = new Speed_Booster_Pack_Public( $this->plugin_name, SBP_VERSION );
 
