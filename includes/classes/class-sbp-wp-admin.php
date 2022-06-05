@@ -16,7 +16,7 @@ class SBP_WP_Admin {
 
 		add_action( 'admin_init', [ $this, 'set_notices' ] );
 		add_action( 'admin_init', [ $this, 'timed_notifications' ] );
-		add_action( 'admin_init', [ $this, 'welcome_notice' ] );
+		// add_action( 'admin_init', [ $this, 'welcome_notice' ] );
 		add_action( 'admin_init', [ $this, 'clear_custom_code_manager' ] );
 		add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 		add_action( 'admin_init', [ $this, 'upgrade_php_notice' ] );
@@ -27,26 +27,30 @@ class SBP_WP_Admin {
 
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
 		add_filter( 'plugin_action_links_' . SBP_PLUGIN_BASENAME, [ $this, 'settings_links' ], 10, 2 );
+
 	}
 
 	public function plugin_meta_links( $meta_fields, $file ) {
+
 		if ( SBP_PLUGIN_BASENAME == $file ) {
-			$plugin_url    = "https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post";
-			$meta_fields[] = "<a href='" . esc_url( $plugin_url ) . "' target='_blank' title='" . esc_html__( 'Rate Us',
-					'speed-booster-pack' ) . "'>
-            <i class='sbp-stars' style='position: relative; top: 3px;'>"
-			                 . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-			                 . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-			                 . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-			                 . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-			                 . "<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>"
-			                 . "</i></a>";
+
+			$pro_services_url = "https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post";
+			$pro_services_text = __( 'Pro Services', 'speed-booster-pack' );
+
+			$rate_us_url = "https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post";
+			$rate_us_text = __( 'Rate Us', 'speed-booster-pack' );
+			$star_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.8 1.2 6.9-6.2-3.2L5.8 21 7 14.1 2 9.3l6.9-1L12 2z"/></svg>';
+
+			$meta_fields[] =  "<a href='$pro_services_url' target='_blank' title='$pro_services_text' style='font-weight:bold;'>$pro_services_text</a> | $rate_us_text: <a href='$rate_us_url' target='_blank' title='$rate_us_text'><i class='sbp-stars' style='position: relative; top: 3px;'>$star_svg$star_svg$star_svg$star_svg$star_svg</i></a>";
+
 		}
 
 		return $meta_fields;
+
 	}
 
 	public function add_admin_bar_links( \WP_Admin_Bar $admin_bar ) {
+
 		if ( current_user_can( 'manage_options' ) ) {
 
 			$admin_bar->add_node( [
@@ -130,9 +134,11 @@ class SBP_WP_Admin {
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
 		}
+
 	}
 
 	public function set_notices() {
+
 		// Set Sucuri Notice
 		if ( $transient_value = get_transient( 'sbp_clear_sucuri_cache' ) ) {
 			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ', 'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
@@ -203,10 +209,12 @@ class SBP_WP_Admin {
 			'<p>' . sprintf( __( '%s will now send requests to your homepage and all the pages that are linked to in the homepage (including links in navigation menus) so they\'ll all be cached.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>',
 			'info',
 			true,
-			'recurrent' );
+			'flash' );
+
 	}
 
 	public function timed_notifications() {
+
 		$notices    = [
 			'sbp_rate_wp_org' => [
 				'show_after' => '+7 days',
@@ -233,16 +241,21 @@ class SBP_WP_Admin {
 				}
 			}
 		}
+
 	}
 
 	public function settings_links( $links ) {
-		$pro_link = ' <a href="https://optimocha.com/?ref=speed-booster-pack" target="_blank">Pro Services</a > ';
-		array_unshift( $links, $pro_link );
+
+		if ( is_array( $links ) ) {
+			$links['settings'] = '<a href="' . admin_url( 'admin.php?page=sbp-settings' ) . '">' .  __( 'Settings', 'speed-booster-pack' ) . '</a>';
+		}
 
 		return $links;
+
 	}
 
 	public function check_required_file_permissions() {
+
 		if ( get_current_screen()->id !== 'toplevel_page_sbp-settings' ) {
 			return;
 		}
@@ -291,17 +304,18 @@ class SBP_WP_Admin {
 
 			SBP_Notice_Manager::display_notice( 'permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings' );
 		}
-	}
-
-	public function welcome_notice() {
-
-		SBP_Notice_Manager::display_notice( 'welcome_notice', sprintf( '<p>' . __( 'Thank you for installing %1$s! You can now visit the %2$ssettings page%3$s to start speeding up your website.', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, '<a href="' . admin_url( 'admin.php?page=sbp-settings&dismiss_welcome_notice=true' ) . '">', '</a>' ), 'success', true, 'one_time', 'plugins' );
-
-		if ( isset( $_GET['dismiss_welcome_notice'] ) && $_GET['dismiss_welcome_notice'] == true ) {
-			SBP_Notice_Manager::dismiss_notice( 'welcome_notice' );
-		}
 
 	}
+
+	// public function welcome_notice() {
+
+	// 	SBP_Notice_Manager::display_notice( 'welcome_notice', sprintf( '<p>' . __( 'Thank you for installing %1$s! You can now visit the %2$ssettings page%3$s to start speeding up your website.', 'speed-booster-pack' ) . '</p>', SBP_PLUGIN_NAME, '<a href="' . admin_url( 'admin.php?page=sbp-settings&dismiss_welcome_notice=true' ) . '">', '</a>' ), 'success', true, 'one_time', 'plugins' );
+
+	// 	if ( isset( $_GET['dismiss_welcome_notice'] ) && $_GET['dismiss_welcome_notice'] == true ) {
+	// 		SBP_Notice_Manager::dismiss_notice( 'welcome_notice' );
+	// 	}
+
+	// }
 
 	public function upgrade_php_notice() {
 
@@ -312,6 +326,7 @@ class SBP_WP_Admin {
 	}
 
 	public function enqueue_deactivation_survey_scripts() {
+
 		if ( get_current_screen()->id === 'plugins' ) {
 			wp_enqueue_script( 'sbp_deactivation_survey', SBP_URL . '/admin/js/deactivation-survey.js', array(
 				'jquery'
@@ -321,15 +336,16 @@ class SBP_WP_Admin {
 
 			add_action( 'admin_footer', [ $this, 'deactivation_survey_modal' ] );
 		}
+
 	}
 
 	public function deactivation_survey_modal() {
+
 		$current_user = wp_get_current_user();
 		
 		$email = (string) $current_user->user_email;
 
-		echo '
-		<div class="sbp-deactivation-survey">
+		echo '<div class="sbp-deactivation-survey">
 			<div class="sbp-survey-inner">
 				<h3>' . __( 'Sorry to see you go!', 'speed-booster-pack' ) . '</h3>
 				<h4>' . sprintf( __( 'We would appreciate if you let us know why you\'re deactivating %s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</h4>
@@ -375,8 +391,8 @@ class SBP_WP_Admin {
 					</div>
 				</form>
 			</div>
-		</div>
-		';
+		</div>';
+
 	}
 
 	public function clear_custom_code_manager() {

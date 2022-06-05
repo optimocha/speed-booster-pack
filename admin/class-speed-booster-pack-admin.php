@@ -153,7 +153,7 @@ class Speed_Booster_Pack_Admin {
         if ( intval( get_option( 'sbp_activation_redirect', false ) ) === wp_get_current_user()->ID ) {
             // Make sure we don't redirect again after this one
             delete_option( 'sbp_activation_redirect' );
-            wp_safe_redirect( admin_url( '/admin.php?page=sbp-settings' ) );
+            wp_safe_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
             exit;
         }
         

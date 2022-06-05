@@ -17,30 +17,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-use SpeedBooster\SBP_Cache;
-use SpeedBooster\SBP_Cache_Warmup;
-use SpeedBooster\SBP_CDN;
-use SpeedBooster\SBP_Compatibility_Checker;
-use SpeedBooster\SBP_Critical_CSS;
-use SpeedBooster\SBP_CSS_Minifier;
-use SpeedBooster\SBP_Database_Optimizer;
-use SpeedBooster\SBP_Image_Dimensions;
-use SpeedBooster\SBP_LiteSpeed_Cache;
-use SpeedBooster\SBP_WP_Admin;
-use SpeedBooster\SBP_Font_Optimizer;
-use SpeedBooster\SBP_HTML_Minifier;
-use SpeedBooster\SBP_JS_Optimizer;
-use SpeedBooster\SBP_Lazy_Loader;
-use SpeedBooster\SBP_Localize_Tracker;
-use SpeedBooster\SBP_Migrator;
-use SpeedBooster\SBP_Newsletter;
-use SpeedBooster\SBP_Notice_Manager;
-use SpeedBooster\SBP_Preboost;
-use SpeedBooster\SBP_Woocommerce;
-use SpeedBooster\SBP_Cloudflare;
-use SpeedBooster\SBP_Sucuri;
-use SpeedBooster\SBP_Tweaks;
-
 /**
  * The core plugin class.
  *
@@ -113,7 +89,7 @@ class Speed_Booster_Pack {
 
 	private function should_plugin_run() {
 
-		if ( preg_match( '/(_wp-|\.txt|\.pdf|\.xml|\.svg|\.ico|wp-json|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
+		if ( preg_match( '/(_wp-|\.txt|\.pdf|\.xml|\.xsl|\.svg|\.ico|\/wp-json|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
 			return false;
 		}
 
@@ -167,29 +143,32 @@ class Speed_Booster_Pack {
 	 * Every class has inner documentation.
 	 */
 	private function init_modules() {
-		new SBP_WP_Admin();
-		new SBP_Database_Optimizer();
-		new SBP_Newsletter();
-		new SBP_Migrator();
-		new SBP_JS_Optimizer();
-		new SBP_Tweaks();
-		new SBP_Font_Optimizer();
-		new SBP_Compatibility_Checker();
-		new SBP_Preboost();
-		new SBP_CDN();
-		new SBP_Lazy_Loader();
-		new SBP_CSS_Minifier();
-		new SBP_Critical_CSS();
-		new SBP_Image_Dimensions();
-		new SBP_HTML_Minifier();
-		new SBP_Localize_Tracker();
-		new SBP_Woocommerce();
-		new SBP_Cloudflare();
-		new SBP_Notice_Manager();
-		new SBP_Sucuri();
-		new SBP_Cache_Warmup();
-		new SBP_Cache();
-		new SBP_LiteSpeed_Cache();
+
+		new SpeedBooster\SBP_WP_Admin();
+		new SpeedBooster\SBP_Database_Optimizer();
+		new SpeedBooster\SBP_Newsletter();
+		new SpeedBooster\SBP_Migrator();
+		new SpeedBooster\SBP_Compatibility_Checker();
+		new SpeedBooster\SBP_Cloudflare();
+		new SpeedBooster\SBP_Sucuri();
+		new SpeedBooster\SBP_Notice_Manager();
+		new SpeedBooster\SBP_Cache_Warmup();
+
+		new SpeedBooster\SBP_JS_Optimizer();
+		new SpeedBooster\SBP_Tweaks();
+		new SpeedBooster\SBP_Font_Optimizer();
+		new SpeedBooster\SBP_Preboost();
+		new SpeedBooster\SBP_CDN();
+		new SpeedBooster\SBP_Lazy_Loader();
+		new SpeedBooster\SBP_CSS_Minifier();
+		new SpeedBooster\SBP_Critical_CSS();
+		new SpeedBooster\SBP_Image_Dimensions();
+		new SpeedBooster\SBP_HTML_Minifier();
+		new SpeedBooster\SBP_Localize_Tracker();
+		new SpeedBooster\SBP_Woocommerce();
+		new SpeedBooster\SBP_Cache();
+		new SpeedBooster\SBP_LiteSpeed_Cache();
+
 	}
 
 	/**
@@ -298,11 +277,11 @@ class Speed_Booster_Pack {
 		
 		$plugin_public = new Speed_Booster_Pack_Public( $this->plugin_name, SBP_VERSION );
 
-		$this->loader->add_action( 'init', $plugin_public, 'template_redirect', 1 );
+		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 2 );
 
 		// $this->loader->add_action( 'shutdown', $plugin_public, 'shutdown', PHP_INT_MAX );
 
-		$this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
+		// $this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
 		
 		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
 

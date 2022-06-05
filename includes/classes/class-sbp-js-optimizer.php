@@ -109,6 +109,7 @@ class SBP_JS_Optimizer extends SBP_Abstract_Module {
 		'document.write',
 		'google_ad',
 		'<!--',
+		'![CDATA[',
 		'JS_Optimizer_Comment_Placeholder',
 		'window.lazyLoadOptions',
 		'data-noptimize',
