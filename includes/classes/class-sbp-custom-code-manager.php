@@ -7,8 +7,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Z_TODO: Remove The Class
-class SBP_Custom_Code_Manager extends SBP_Abstract_Module {
+class SBP_Custom_Code_Manager {
 
 	public function __construct() {
 		add_action( 'wp_ajax_sbp_clear_ccm', [ $this, 'clear_custom_codes' ] );
