@@ -13,8 +13,6 @@ PageSpeed optimization is vital for SEO: A faster website equals better conversi
 
 == Description ==
 
-WordPress is, hands down, the most popular content management system in the world. But like all giants, WordPress gets bigger and bigger every release; and it needs you to stay healthy and fast. Otherwise, your website can get slower and nobody likes slow websites. *NOBODY*. Not only your visitors hate your website, but also search engines (especially Google) penalizes you and drop your search engine rankings.
-
 Improving your site's speed will get you a better score on major speed testing services such as [Google PageSpeed](https://developers.google.com/speed/pagespeed/insights/), [GTmetrix](https://gtmetrix.com/), [Pingdom](https://tools.pingdom.com/), [WebPageTest](https://www.webpagetest.org/) and will also improve your overall site's usability. This will help Google and other search engines to rank your site higher in search results thus sending more traffic.
 
 **Speed Booster Pack** is maintained & operated by **[Optimocha](https://optimocha.com/)**, a company that offers special speed optimization services filled with people who *obsess* about speed!
@@ -27,7 +25,7 @@ You might lose more than half of your visitors if your website loads **slower th
 
 That's where Speed Booster Pack comes in: With its ever-evolving codebase, Speed Booster Pack aims to increase your site performance, page load times and PageSpeed (Lighthouse) scores! Optimocha, the company behind Speed Booster Pack, has a team with a pathological obsession for speed; so you can be sure that your site will be in good hands.
 
-### How to optimize PageSpeed scores with Speed Booster Pack
+### How to optimize PageSpeed Core Web Vitals metrics with Speed Booster Pack
 
 With our huge set of features, of course!
 
