@@ -398,57 +398,57 @@ FileETag None
 
 # Cache expiration
 <IfModule mod_expires.c>
+
 	ExpiresActive on
-	ExpiresDefault										"access plus 1 year"
-	ExpiresByType text/css								"access plus 1 year"
-	ExpiresByType application/atom+xml					"access plus 1 hour"
-	ExpiresByType application/rdf+xml					"access plus 1 hour"
-	ExpiresByType application/rss+xml					"access plus 1 hour"
-	ExpiresByType application/json						"access plus 0 seconds"
-	ExpiresByType application/ld+json					"access plus 0 seconds"
-	ExpiresByType application/schema+json				"access plus 0 seconds"
-	ExpiresByType application/geo+json					"access plus 0 seconds"
-	ExpiresByType application/xml						"access plus 0 seconds"
-	ExpiresByType text/calendar							"access plus 0 seconds"
-	ExpiresByType text/xml								"access plus 0 seconds"
-	ExpiresByType image/vnd.microsoft.icon				"access plus 1 week"
-	ExpiresByType image/x-icon							"access plus 1 week"
-	ExpiresByType text/html								"access plus 0 seconds"
-	ExpiresByType application/javascript				"access plus 1 year"
-	ExpiresByType application/x-javascript				"access plus 1 year"
-	ExpiresByType text/javascript						"access plus 1 year"
-	ExpiresByType application/manifest+json				"access plus 1 week"
-	ExpiresByType application/x-web-app-manifest+json   "access plus 0 seconds"
-	ExpiresByType text/cache-manifest					"access plus 0 seconds"
-	ExpiresByType text/markdown							"access plus 0 seconds"
-	ExpiresByType audio/ogg								"access plus 1 year"
-	ExpiresByType image/apng							"access plus 1 year"
-	ExpiresByType image/avif							"access plus 1 year"
-	ExpiresByType image/avif-sequence					"access plus 1 year"
-	ExpiresByType image/bmp								"access plus 1 year"
-	ExpiresByType image/gif								"access plus 1 year"
-	ExpiresByType image/jpeg							"access plus 1 year"
-	ExpiresByType image/jxl								"access plus 1 year"
-	ExpiresByType image/png								"access plus 1 year"
-	ExpiresByType image/svg+xml							"access plus 1 year"
-	ExpiresByType image/webp							"access plus 1 year"
-	ExpiresByType video/mp4								"access plus 1 year"
-	ExpiresByType video/ogg								"access plus 1 year"
-	ExpiresByType video/webm							"access plus 1 year"
-	ExpiresByType application/wasm						"access plus 1 year"
-	ExpiresByType font/collection						"access plus 1 year"
-	ExpiresByType application/vnd.ms-fontobject			"access plus 1 year"
-	ExpiresByType font/eot								"access plus 1 year"
-	ExpiresByType font/opentype							"access plus 1 year"
-	ExpiresByType font/otf								"access plus 1 year"
-	ExpiresByType application/x-font-ttf				"access plus 1 year"
-	ExpiresByType font/ttf								"access plus 1 year"
-	ExpiresByType application/font-woff					"access plus 1 year"
-	ExpiresByType application/x-font-woff				"access plus 1 year"
-	ExpiresByType font/woff								"access plus 1 year"
-	ExpiresByType application/font-woff2				"access plus 1 year"
-	ExpiresByType font/woff2							"access plus 1 year"
+
+	# Default: Fallback
+	ExpiresDefault									  "access plus 1 year"
+
+	# Specific: Assets
+	ExpiresByType image/vnd.microsoft.icon			  "access plus 1 week"
+	ExpiresByType image/x-icon						  "access plus 1 week"
+
+	# Specific: Manifests
+	ExpiresByType application/manifest+json			 "access plus 1 week"
+	ExpiresByType application/x-web-app-manifest+json   "access"
+	ExpiresByType text/cache-manifest				   "access"
+
+	# Specific: Data interchange
+	ExpiresByType application/atom+xml				  "access plus 1 hour"
+	ExpiresByType application/rdf+xml				   "access plus 1 hour"
+	ExpiresByType application/rss+xml				   "access plus 1 hour"
+
+	# Specific: Documents
+	ExpiresByType text/html							 "access"
+	ExpiresByType text/markdown						 "access"
+	ExpiresByType text/calendar						 "access"
+
+	# Specific: Other
 	ExpiresByType text/x-cross-domain-policy			"access plus 1 week"
+
+	# Generic: Data
+	ExpiresByType application/json					  "access"
+	ExpiresByType application/ld+json				   "access"
+	ExpiresByType application/schema+json			   "access"
+	ExpiresByType application/geo+json				  "access"
+	ExpiresByType application/xml					   "access"
+	ExpiresByType text/xml							  "access"
+
+	# Generic: WebAssembly
+	# ExpiresByType application/wasm					"access plus 1 year" # default
+
+	# Generic: Assets
+	# ExpiresByType application/javascript			  "access plus 1 year" # default
+	# ExpiresByType application/x-javascript			"access plus 1 year" # default
+	# ExpiresByType text/javascript					 "access plus 1 year" # default
+	# ExpiresByType text/css							"access plus 1 year" # default
+
+	# Generic: Medias
+	# ExpiresByType audio/*							 "access plus 1 year" # default
+	# ExpiresByType image/*							 "access plus 1 year" # default
+	# ExpiresByType video/*							 "access plus 1 year" # default
+	# ExpiresByType font/*							  "access plus 1 year" # default
+
 </IfModule>
 
 # Ported from: https://github.com/h5bp/server-configs-apache
