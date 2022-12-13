@@ -106,8 +106,9 @@ All the time! We're always looking for new ways to get this plugin to a better s
 *Release Date: B_TODO*
 
 * **Improved**: The scary dashboard text is, um, less scary now.
+* **Removed**: Deleted the migrator class and the deactivation survey.
 * **Fixed**: A small issue in the lazy load feature is fixed.
-* **Updated**: Updated default .htaccess content based on HTML5 Boilerplate (v6.0.0).
+* **Updated**: Updated default .htaccess content based on HTML5 Boilerplate v6.0.0.
 * **Updated**: Updated Codestar Framework to v2.2.9.
 
 = 4.5.5 =
