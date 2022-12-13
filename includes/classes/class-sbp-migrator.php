@@ -7,6 +7,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// obsolete, unused class
 class SBP_Migrator {
 	private $sbp_settings; // Old options
 	private $sbp_options; // New options
