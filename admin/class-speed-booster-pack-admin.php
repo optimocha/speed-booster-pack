@@ -254,21 +254,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things. Let\'s begin!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
-						],
-						[
-							'type'    => 'subheading',
-							'content' => __( 'Heads up: This plugin is ALWAYS in beta!', 'speed-booster-pack' ),
-						],
-						[
-							'type'    => 'content',
-							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
-							'content' => sprintf( __( 'We\'re constantly adding new features to %1$s, and improving existing ones. While it\'s safe to use on live websites, there are a lot of moving parts and there\'s a chance that it might cause conflicts. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener" target="_blank">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener" target="_blank">GitHub</a>' ),
-						],
-						[
-							'type'    => 'subheading',
-							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'Features and benefits of %s', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'content' => sprintf( __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
 						],
 						[
 							'type'    => 'content',
@@ -279,17 +265,17 @@ class Speed_Booster_Pack_Admin {
 							             '<strong>' . __( 'Optimize CSS', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module allows you to delay loading of your CSS files while injecting "critical CSS" to your pages, which will definitely improve your PageSpeed metrics.', 'speed-booster-pack' ) . '</li><li>' .
 							             '<strong>' . __( 'Assets', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module helps you optimize the static assets in your pages by minifying HTML, lazy loading media (images, videos and iframes), deferring JavaScript, optimizing Google fonts and preloading any asset you want.', 'speed-booster-pack' ) . '</li><li>' .
 							             '<strong>' . __( 'WooCommerce', 'speed-booster-pack' ) . '</strong>: ' . __( 'This module has optimizations specific to WooCommerce, speeding up your users\' shopping experience.', 'speed-booster-pack' ) . '</li><li>' .
-							             '<strong>' . __( 'And many more', 'speed-booster-pack' ) . '</strong>: ' . __( 'Lots and lots of other features (like Cloudflare integration and database cleanups) for you to get your website faster than ever!', 'speed-booster-pack' ) . '</li></ul>' .
-							             '<p>' . __( 'Feel free to experiment, and don\'t forget to create exclude rules when necessary!', 'speed-booster-pack' ) . '</p>',
+							             '<strong>' . __( 'And many more', 'speed-booster-pack' ) . '</strong>: ' . __( 'Lots and lots of other features (like Cloudflare integration and database engine conversion) for you to get your website faster than ever!', 'speed-booster-pack' ) . '</li></ul>',
 						],
 						[
-							'type'    => 'subheading',
-							'content' => __( 'Upcoming features', 'speed-booster-pack' ),
+							'type'    => 'content',
+							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
+							'content' => sprintf( __( 'Don\'t be afraid to tinker with the settings as you like, and disable any option or module if it causes any issues. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener" target="_blank">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener" target="_blank">GitHub</a>' ),
 						],
 						[
 							'type'    => 'content',
 							/* translators: 1. opening tag for the newsletter hyperlink 2. closing tag for the hyperlink  */
-							'content' => sprintf( __( 'Like we mentioned above, we\'re constantly working on making our plugin better on every release. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/go/subscribe">', '</a>' ),
+							'content' => sprintf( __( 'We\'re constantly adding new features to Speed Booster Pack, and improving existing ones. If you\'d like to be the first to know about improvements before they\'re released, plus more tips &amp; tricks about web performance optimization, %1$syou can sign up for our weekly newsletter here%2$s!', 'speed-booster-pack' ), '<a href="https://speedboosterpack.com/go/subscribe">', '</a>' ),
 						],
 						[
 							'type'    => 'subheading',
