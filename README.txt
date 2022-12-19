@@ -1,9 +1,9 @@
 === Speed Booster Pack ⚡ PageSpeed Optimization Suite ===
 Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
-Tags: speed, pagespeed, optimization, core web vitals, cache
+Tags: speed, pagespeed, optimization, core web vitals, caching
 Requires at least: 4.6
-Tested up to: 6.0
+Tested up to: 6.1
 Requires PHP: 5.6
 Stable tag: 4.5.6
 License: GPLv3 or later
@@ -105,7 +105,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 *Release Date: B_TODO*
 
-* **Improved**: The scary dashboard text is, um, less scary now.
+* **Improved**: The introductory text in the SBP dashboard is shorter and less scary now.
 * **Removed**: Deleted the migrator class and the deactivation survey.
 * **Fixed**: A small issue in the lazy load feature is fixed.
 * **Updated**: Updated default .htaccess content based on HTML5 Boilerplate v6.0.0.
