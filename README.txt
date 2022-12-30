@@ -103,7 +103,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.6 =
 
-*Release Date: B_TODO*
+*Release Date: 31 December 2022*
 
 * **Improved**: The introductory text in the SBP dashboard is shorter and less scary now.
 * **Removed**: Deleted the migrator class and the deactivation survey.
