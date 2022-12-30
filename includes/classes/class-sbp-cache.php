@@ -434,20 +434,17 @@ FileETag None
 	ExpiresByType application/xml					   "access"
 	ExpiresByType text/xml							  "access"
 
-	# Generic: WebAssembly
-	# ExpiresByType application/wasm					"access plus 1 year" # default
-
 	# Generic: Assets
-	# ExpiresByType application/javascript			  "access plus 1 year" # default
-	# ExpiresByType application/x-javascript			"access plus 1 year" # default
-	# ExpiresByType text/javascript					 "access plus 1 year" # default
-	# ExpiresByType text/css							"access plus 1 year" # default
+	ExpiresByType application/javascript			  "access plus 1 year"
+	ExpiresByType application/x-javascript			"access plus 1 year"
+	ExpiresByType text/javascript					 "access plus 1 year"
+	ExpiresByType text/css							"access plus 1 year"
 
 	# Generic: Medias
-	# ExpiresByType audio/*							 "access plus 1 year" # default
-	# ExpiresByType image/*							 "access plus 1 year" # default
-	# ExpiresByType video/*							 "access plus 1 year" # default
-	# ExpiresByType font/*							  "access plus 1 year" # default
+	ExpiresByType audio/*							 "access plus 1 year"
+	ExpiresByType image/*							 "access plus 1 year"
+	ExpiresByType video/*							 "access plus 1 year"
+	ExpiresByType font/*							  "access plus 1 year"
 
 </IfModule>
 
