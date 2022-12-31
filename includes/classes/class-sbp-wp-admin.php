@@ -27,6 +27,9 @@ class SBP_WP_Admin {
 
 		if ( SBP_PLUGIN_BASENAME == $file ) {
 
+			$report_a_bug_url = "https://optimocha.com/contact/?subject=Speed%20Booster%20Pack%20bug%20report";
+			$report_a_bug_text = __( 'Report a bug', 'speed-booster-pack' );
+
 			$pro_services_url = "https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post";
 			$pro_services_text = __( 'Pro Services', 'speed-booster-pack' );
 
@@ -34,7 +37,7 @@ class SBP_WP_Admin {
 			$rate_us_text = __( 'Rate Us', 'speed-booster-pack' );
 			$star_svg = '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.8 1.2 6.9-6.2-3.2L5.8 21 7 14.1 2 9.3l6.9-1L12 2z"/></svg>';
 
-			$meta_fields[] =  "<a href='$pro_services_url' target='_blank' title='$pro_services_text' style='font-weight:bold;'>$pro_services_text</a> | $rate_us_text: <a href='$rate_us_url' target='_blank' title='$rate_us_text'><i class='sbp-stars' style='position: relative; top: 3px;'>$star_svg$star_svg$star_svg$star_svg$star_svg</i></a>";
+			$meta_fields[] =  "<a href='$report_a_bug_url' target='_blank' title='$report_a_bug_text'>$report_a_bug_text</a> | <a href='$pro_services_url' target='_blank' title='$pro_services_text' style='font-weight:bold;'>$pro_services_text</a> | $rate_us_text: <a href='$rate_us_url' target='_blank' title='$rate_us_text'><i class='sbp-stars' style='position: relative; top: 3px;'>$star_svg$star_svg$star_svg$star_svg$star_svg</i></a>";
 
 		}
 
