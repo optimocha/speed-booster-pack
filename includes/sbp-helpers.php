@@ -174,23 +174,7 @@ if ( ! function_exists( 'sbp_posabs' ) ) {
 	}
 }
 
-if ( ! function_exists( 'sbp_clear_cdn_url' ) ) {
-	/**
-	 * Removes http(s?):// and trailing slash from the url
-	 *
-	 * @param $url
-	 *
-	 * @return string
-	 * @since 4.0.0
-	 *
-	 */
-	function sbp_clear_cdn_url( $url ) {
-		$url = str_replace( [ '"', "'" ], [ '', '' ], $url );
-
-		return preg_replace( "#^[^:/.]*[:/]+#i", "", rtrim( $url, '/' ) );
-	}
-}
-
+// TODO: use esc_url() instead
 if ( ! function_exists( 'sbp_sanitize_url' ) ) {
 	/**
 	 * @param $url
@@ -353,6 +337,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 	}
 }
 
+// TODO: use rawurlencode() instead (and rawurldecode() while retrieving)
 if ( ! function_exists( 'sbp_sanitize_caching_cookies' ) ) {
 	/**
 	 * Sanitizes excluded cookies for caching
@@ -392,6 +377,7 @@ if ( ! function_exists( 'sbp_sanitize_query_strings' ) ) {
 	}
 }
 
+// TODO: use boolval() instead
 if ( ! function_exists( 'sbp_sanitize_boolean' ) ) {
 	function sbp_sanitize_boolean( $value ) {
 		return $value == '1' ? '1' : '0';
