@@ -26,13 +26,30 @@ defined( 'ABSPATH' ) || exit;
  */
 define( 'SPEED_BOOSTER_PACK', [
     'version'       => '5.0.0',
+    'slug'          => 'speed-booster-pack',
+    'path'          => __DIR__,
     'basename'      => plugin_basename( __FILE__ ),
     'url'           => plugin_dir_url( __FILE__ ),
-    'path'          => plugin_dir_path( __FILE__ ),
-    'cache_dir'     => WP_CONTENT_DIR . '/cache/speed-booster/',
-    'uploads_dir'   => WP_CONTENT_DIR . '/uploads/speed-booster/',
-    'uploads_url'   => WP_CONTENT_URL . '/uploads/speed-booster/',
 ] );
+
+/*
+
+TODO: replace the following old constants with the new ones above (or remove unused constants) in the codebase.
+define( 'SBP_VERSION', '4.5.6' ); // plugin version
+define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' ); // plugin name
+define( 'SBP_OWNER_NAME', 'Optimocha' ); // plugin owner name
+define( 'SBP_OWNER_HOME', 'https://optimocha.com/' ); // plugin owner home
+define( 'SBP_URL', plugin_dir_url( __FILE__ ) ); // plugin root URL
+define( 'SBP_PATH', realpath( dirname( __FILE__ ) ) . '/' ); // plugin root directory path
+define( 'SBP_INC_PATH', SBP_PATH . 'includes/' ); // plugin includes directory path
+define( 'SBP_LIB_PATH', SBP_PATH . 'vendor/' ); // plugin 3rd party directory path
+define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' ); // plugin cache directory path
+define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' ); // plugin uploads path
+define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' ); // plugin uploads URL
+define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) ); // plugin basename
+define( 'SBP_MIGRATOR_VERSION', '45000' ); // plugin migrator version
+
+ */
 
 /**
  * Hooks to the `plugins_loaded` action.
@@ -46,7 +63,10 @@ add_action( 'plugins_loaded', function() {
      *
      * @since   5.0.0
      */
-    require_once SPEED_BOOSTER_PACK['path'] . 'includes/class-speed-booster-pack.php';
+    // TODO: maybe use __DIR__ ?
+    // TODO: we might not this line at all, as the autoloader might load the file
+    //       when the Speed_Booster_Pack class is called.
+    require_once SPEED_BOOSTER_PACK['path'] . 'inc/class-speed-booster-pack.php';
 
     /**
      * Registers the autoloader.
@@ -64,7 +84,8 @@ add_action( 'plugins_loaded', function() {
 
         $relative_class = substr( $class, $len );
 
-        $file = SPEED_BOOSTER_PACK['path'] . '/classes/' . str_replace('\\', '/', $relative_class) . '.php';
+        // TODO: maybe use __DIR__ ?
+        $file = SPEED_BOOSTER_PACK['path'] . 'inc/' . str_replace('\\', '/', $relative_class) . '.php';
 
         if ( file_exists( $file ) ) {
             require_once $file;
