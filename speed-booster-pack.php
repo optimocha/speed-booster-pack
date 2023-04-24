@@ -113,7 +113,7 @@ add_action( 'plugins_loaded', function() {
      *
      * @since   5.0.0
      */
-    $plugin = new Speed_Booster_Pack();
+    $plugin = new Core();
     $plugin->run();
 
 } );
