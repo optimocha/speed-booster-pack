@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
  * @since   5.0.0
  */
 define( 'SPEED_BOOSTER_PACK', [
-    'version'       => '5.0.0',
+    'version'       => '5.0.0-alpha',
     'slug'          => 'speed-booster-pack',
     'path'          => __DIR__,
     'basename'      => plugin_basename( __FILE__ ),
@@ -88,7 +88,7 @@ add_action( 'plugins_loaded', function() {
         $file = SPEED_BOOSTER_PACK['path'] . 'inc/' . str_replace('\\', '/', $relative_class) . '.php';
 
         if ( file_exists( $file ) ) {
-            require_once $file;
+            require $file;
         }
     });
 
