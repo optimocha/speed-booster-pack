@@ -66,7 +66,7 @@ add_action( 'plugins_loaded', function() {
     // TODO: maybe use __DIR__ ?
     // TODO: we might not this line at all, as the autoloader might load the file
     //       when the Speed_Booster_Pack class is called.
-    require_once SPEED_BOOSTER_PACK['path'] . 'inc/class-speed-booster-pack.php';
+    // require_once __DIR__ . 'inc/class-speed-booster-pack.php';
 
     /**
      * Registers the autoloader.
@@ -85,7 +85,7 @@ add_action( 'plugins_loaded', function() {
         $relative_class = substr( $class, $len );
 
         // TODO: maybe use __DIR__ ?
-        $file = SPEED_BOOSTER_PACK['path'] . 'inc/' . str_replace('\\', '/', $relative_class) . '.php';
+        $file = __DIR__ . 'inc/' . str_replace('\\', '/', $relative_class) . '.php';
 
         if ( file_exists( $file ) ) {
             require $file;
