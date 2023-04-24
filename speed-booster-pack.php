@@ -3,123 +3,148 @@
 /**
  *
  * @wordpress-plugin
- * Plugin Name:       Speed Booster Pack
- * Plugin URI:        https://speedboosterpack.com
- * Description:       PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize & cache your site with this smart plugin!
- * Version:           4.5.6
- * Author:            Optimocha
- * Author URI:        https://optimocha.com
- * License:           GPLv3 or later
- * License URI:       https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:       speed-booster-pack
+ * Plugin Name:     Speed Booster Pack
+ * Plugin URI:      https://speedboosterpack.com
+ * Description:     PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize & cache your site with this smart plugin!
+ * Version:         5.0.0
+ * Author:          Optimocha
+ * Author URI:      https://optimocha.com
+ * License:         GPLv3 or later
+ * License URI:     https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain:     speed-booster-pack
  *
- * Copyright 2015-2017 Tiguan (office@tiguandesign.com)
- * Copyright 05/05/2017 - 10/04/2017 ShortPixel (alex@shortpixel.com)
- * Copyright 2017-2019 MachoThemes (office@machothemes.com)
- * Copyright 2019-...  Optimocha (hey@optimocha.com)
  */
+
+namespace Optimocha\SpeedBooster;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Plugin constants.
- */
-define( 'SBP_VERSION', '4.5.6' ); // plugin version
-define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' ); // plugin name
-define( 'SBP_PLUGIN_HOME', 'https://speedboosterpack.com/' ); // plugin home
-define( 'SBP_OWNER_NAME', 'Optimocha' ); // plugin owner name
-define( 'SBP_OWNER_HOME', 'https://optimocha.com/' ); // plugin owner home
-define( 'SBP_URL', plugin_dir_url( __FILE__ ) ); // plugin root URL
-define( 'SBP_PATH', realpath( dirname( __FILE__ ) ) . '/' ); // plugin root directory path
-define( 'SBP_INC_PATH', SBP_PATH . 'includes/' ); // plugin includes directory path
-define( 'SBP_LIB_PATH', SBP_PATH . 'vendor/' ); // plugin 3rd party directory path
-define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' ); // plugin cache directory path
-define( 'SBP_CACHE_URL', WP_CONTENT_URL . '/cache/speed-booster/' ); // plugin cache directory URL
-define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' ); // plugin uploads path
-define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' ); // plugin uploads URL
-define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) ); // plugin basename
-define( 'SBP_MIGRATOR_VERSION', '45000' ); // plugin migrator version
-
-/**
- * Load all plugin options
- */
-if ( ! function_exists( 'sbp_get_option' ) ) {
-	/**
-	 * Returns the value of the option with given name, if option doesn't exists function returns the default value (from second variable)
-	 *
-	 * @param string $option
-	 * @param null $default
-	 *
-	 * @return mixed|null
-	 */
-	function sbp_get_option( $option = '', $default = null ) {
-		$sbp_options = get_option( 'sbp_options' );
-
-		return ( isset( $sbp_options[ $option ] ) ) ? $sbp_options[ $option ] : $default;
-	}
-}
-
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-speed-booster-pack-activator.php
- */
-function activate_speed_booster_pack() {
-	require_once SBP_INC_PATH . 'class-speed-booster-pack-activator.php';
-	Speed_Booster_Pack_Activator::activate();
-}
-
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-speed-booster-pack-deactivator.php
- */
-function deactivate_speed_booster_pack() {
-	require_once SBP_INC_PATH . 'class-speed-booster-pack-deactivator.php';
-	Speed_Booster_Pack_Deactivator::deactivate();
-}
-
-register_activation_hook( __FILE__, 'activate_speed_booster_pack' );
-register_deactivation_hook( __FILE__, 'deactivate_speed_booster_pack' );
-
-/**
- * The core plugin class that is used to define internationalization,
- * admin-specific hooks, and public-facing site hooks.
- */
-require SBP_INC_PATH . 'class-speed-booster-pack.php';
-
-/**
- * Autoload classes which has SpeedBooster namespace
+ * Defines plugin constants.
  *
- * @param $class_name
- *
- * @since 4.0.0
- *
+ * @since   5.0.0
  */
-spl_autoload_register( 'sbp_autoloader' );
-function sbp_autoloader( $class_name ) {
-	if ( false === strpos( $class_name, 'SpeedBooster\\' ) ) {
-		return;
-	}
-
-	$class_name = str_replace( 'SpeedBooster\\', '', $class_name );
-
-	// Make filename lower case, it's not necessary but do it just in "case" :P (Did you get the joke?)
-	$filename = strtolower( str_replace( '_', '-', $class_name ) );
-	$path     = SBP_INC_PATH . 'classes/class-' . $filename . '.php';
-	if ( file_exists( $path ) ) {
-		require_once( $path );
-	}
-}
+define( 'SPEED_BOOSTER_PACK', [
+    'version'       => '5.0.0',
+    'basename'      => plugin_basename( __FILE__ ),
+    'url'           => plugin_dir_url( __FILE__ ),
+    'path'          => plugin_dir_path( __FILE__ ),
+    'cache_dir'     => WP_CONTENT_DIR . '/cache/speed-booster/',
+    'uploads_dir'   => WP_CONTENT_DIR . '/uploads/speed-booster/',
+    'uploads_url'   => WP_CONTENT_URL . '/uploads/speed-booster/',
+] );
 
 /**
- * Begins execution of the plugin.
+ * Hooks to the `plugins_loaded` action.
  *
- * @since    4.0.0
+ * @since   5.0.0
  */
-function run_speed_booster_pack() {
+add_action( 'plugins_loaded', function() {
 
-	$plugin = new Speed_Booster_Pack();
-	$plugin->run();
+    /**
+     * Requires the main plugin class.
+     *
+     * @since   5.0.0
+     */
+    require_once SPEED_BOOSTER_PACK['path'] . 'includes/class-speed-booster-pack.php';
 
-}
+    /**
+     * Registers the autoloader.
+     *
+     * @since   5.0.0
+     */
+    spl_autoload_register( function ( $class ) {
 
-run_speed_booster_pack();
+        $prefix = 'Optimocha\\SpeedBooster\\';
+        $len = strlen( $prefix );
+
+        if ( strncmp( $prefix, $class, $len ) !== 0) {
+            return;
+        }
+
+        $relative_class = substr( $class, $len );
+
+        $file = SPEED_BOOSTER_PACK['path'] . '/classes/' . str_replace('\\', '/', $relative_class) . '.php';
+
+        if ( file_exists( $file ) ) {
+            require_once $file;
+        }
+    });
+
+    /**
+     * Registers the activation hook.
+     *
+     * @since   5.0.0
+     */
+    register_activation_hook( __FILE__, function() {
+        add_option( 'sbp_activated', true );
+    } );
+
+    /**
+     * Registers the deactivation hook.
+     *
+     * @since   5.0.0
+     */
+    register_deactivation_hook( __FILE__, [ 'Core', 'deactivate' ] );
+
+    /**
+     * Begins execution of the plugin.
+     *
+     * @since   5.0.0
+     */
+    $plugin = new Speed_Booster_Pack();
+    $plugin->run();
+
+} );
+
+//  CLASSES & METHODS:
+//      
+//  Core
+//      run (hook methods below, hooks in parantheses)
+//      activate (admin_init) // set defaults & redirect & delete option: sbp_activated
+//      upgrade_process (upgrader_process_complete) // add_option( 'sbp_upgraded', [ 'from' => 'x.y.z', 'to' => 'a.b.c' ] )
+//      upgrade (plugins_loaded) // otomatik de olabilir, çıkartılacak notice'teki linke tıklayarak da olabilir
+//      deactivate (register_deactivation_hook)
+//      load_plugin_textdomain (plugins_loaded)
+//      meta_links (plugin_row_meta)
+//      settings_links (plugin_action_links_ . SPEED_BOOSTER_PACK['basename'])
+//      enqueue_notices (admin_init)
+//      generate_options_page (admin_init) // csf hook'larını da bir yerlere sokuştur
+//      generate_meta_boxes (admin_init)
+//      generate_admin_bar_menu (admin_bar_menu)
+//      generate_dashboard_widget (wp_dashboard_setup)
+//      onboarding (admin_init)
+//      deactivation_survey (admin_init) // freemius varken gerekmeyecek
+//      enqueue_admin_css (admin_enqueue_scripts) // tüm wp-admin için (options harici)
+//      enqueue_admin_js (admin_enqueue_scripts) // tüm wp-admin için (options harici)
+//      simple_cron (admin_init) // option olarak kaydet, option içine timestamp kaydet, timestamp'e bakarak güncelle
+//          update_sitedata (simple_cron)
+//          update_server_tech (simple_cron)
+//          update_sbp_license (simple_cron)
+//          update_mothership_data (simple_cron)
+//      init_freemius (plugins_loaded) // sbp.php'den direkt çalıştırman gerekebilir. wpdirectory.net'te başka pluginleri incele
+//      check_debug_mode (???)
+//          
+//  Compatibility
+//      run (hook methods below, hooks in parantheses)
+//          add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
+//          add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
+//      check_plugin_compatibility (admin_init)
+//      check_theme_compatibility (admin_init)
+//      check_software_compatibility (admin_init)
+//      check_hosting_compatibility (admin_init)
+//      check_file_permissions (admin_init)
+//      
+//  Frontend
+//      run (hook methods below, hooks in parantheses)
+//      sbp_public (template_redirect) // do_action ( 'sbp_public' ); ayrıca wp-admin, feed, ajax, rest vb. kontrolünü unutma!
+//      maybe_disable_sbp_frontend (sbp_public)
+//      http_headers (send_headers)
+//      
+//  UTILITIES
+//      notice manager
+//      background worker
+//      file handler (crud)
+//      validate_option();
+//      sanitize_option();
+//      deactivation survey
