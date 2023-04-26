@@ -13,54 +13,31 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the public-facing stylesheet and JavaScript.
- *
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/public
  * @author     Optimocha <info@speedboosterpack.com>
  */
 class Speed_Booster_Pack_Public {
-
+	
 	/**
-	 * The ID of this plugin.
+	 * Starts output buffering for the HTML, and hooks to the `template_redirect` action.
 	 *
-	 * @since    4.0.0
-	 * @access   private
-	 * @var      string $plugin_name The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    4.0.0
-	 * @access   private
-	 * @var      string $version The current version of this plugin.
-	 */
-	private $version;
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @param string $plugin_name The name of the plugin.
-	 * @param string $version The version of this plugin.
-	 *
-	 * @since    4.0.0
-	 */
-	public function __construct( $plugin_name, $version ) {
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
-	}
-
-	/**
-	 * Basically a hook for functions which use output buffer
+	 * @return void
 	 */
 	public function template_redirect() {
+		
+		// TODO: probably delete the condition below, because it already exists in Core::should_plugin_run()
 		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 		ob_start( [ $this, 'output_buffer' ] );
-	}
 
+	}
+	
+	/**
+	 * Gets the HTML output of a page and applies a filter hook so Speed Booster Pack features can work with the HTML.
+	 *
+	 * @param  string $html
+	 * @return void
+	 */
 	public function output_buffer( $html ) {
 
 		if( is_embed() || $_SERVER[ 'REQUEST_METHOD' ] != 'GET' || ! preg_match( '/<\/html>/i', $html ) ) {
@@ -69,21 +46,9 @@ class Speed_Booster_Pack_Public {
 
 		$html = apply_filters( 'sbp_output_buffer', $html );
 
-		$html .= PHP_EOL . '<!-- Optimized by Speed Booster Pack v' . SBP_VERSION . ' -->';
+		$html = str_replace( '</head>', '<!-- Optimized by Speed Booster Pack v' . SPEED_BOOSTER_PACK['version'] . ' -->' . PHP_EOL . '</head>', $html );
 
 		return $html;
-	}
-
-	public function shutdown() {
-		if ( ob_get_length() != false ) {
-			ob_end_flush();
-		}
-	}
-
-	public function sbp_headers( $headers ) {
-		$headers['X-Powered-By'] = SBP_PLUGIN_NAME . ' v' . SBP_VERSION;
-
-		return $headers;
 	}
 
 }
