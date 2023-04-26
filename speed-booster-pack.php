@@ -3,15 +3,15 @@
 /**
  *
  * @wordpress-plugin
- * Plugin Name:     Speed Booster Pack
- * Plugin URI:      https://speedboosterpack.com
- * Description:     PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize & cache your site with this smart plugin!
- * Version:         5.0.0
- * Author:          Optimocha
- * Author URI:      https://optimocha.com
- * License:         GPLv3 or later
- * License URI:     https://www.gnu.org/licenses/gpl-3.0.html
- * Text Domain:     speed-booster-pack
+ * Plugin Name:	Speed Booster Pack
+ * Plugin URI:	https://speedboosterpack.com
+ * Description:	PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize & cache your site with this smart plugin!
+ * Version:		5.0.0
+ * Author:		Optimocha
+ * Author URI:	https://optimocha.com
+ * License:		GPLv3 or later
+ * License URI:	https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain:	speed-booster-pack
  *
  */
 
@@ -25,11 +25,11 @@ defined( 'ABSPATH' ) || exit;
  * @since   5.0.0
  */
 define( 'SPEED_BOOSTER_PACK', [
-    'version'       => '5.0.0-alpha',
-    'slug'          => 'speed-booster-pack',
-    'path'          => __DIR__,
-    'basename'      => plugin_basename( __FILE__ ),
-    'url'           => plugin_dir_url( __FILE__ ),
+	'version'       => '5.0.0-alpha',
+	'slug'          => 'speed-booster-pack',
+	'path'          => __DIR__,
+	'basename'      => plugin_basename( __FILE__ ),
+	'url'           => plugin_dir_url( __FILE__ ),
 ] );
 
 /*
@@ -58,63 +58,63 @@ define( 'SBP_MIGRATOR_VERSION', '45000' ); // plugin migrator version
  */
 add_action( 'plugins_loaded', function() {
 
-    /**
-     * Requires the main plugin class.
-     *
-     * @since   5.0.0
-     */
-    // TODO: maybe use __DIR__ ?
-    // TODO: we might not this line at all, as the autoloader might load the file
-    //       when the Speed_Booster_Pack class is called.
-    // require_once __DIR__ . 'inc/class-speed-booster-pack.php';
+	/**
+	 * Requires the main plugin class.
+	 *
+	 * @since   5.0.0
+	 */
+	// TODO: maybe use __DIR__ ?
+	// TODO: we might not this line at all, as the autoloader might load the file
+	//       when the Speed_Booster_Pack class is called.
+	// require_once __DIR__ . 'inc/class-speed-booster-pack.php';
 
-    /**
-     * Registers the autoloader.
-     *
-     * @since   5.0.0
-     */
-    spl_autoload_register( function ( $class ) {
+	/**
+	 * Registers the autoloader.
+	 *
+	 * @since   5.0.0
+	 */
+	spl_autoload_register( function ( $class ) {
 
-        $prefix = 'Optimocha\\SpeedBooster\\';
-        $len = strlen( $prefix );
+		$prefix = 'Optimocha\\SpeedBooster\\';
+		$len = strlen( $prefix );
 
-        if ( strncmp( $prefix, $class, $len ) !== 0) {
-            return;
-        }
+		if ( strncmp( $prefix, $class, $len ) !== 0) {
+			return;
+		}
 
-        $relative_class = substr( $class, $len );
+		$relative_class = substr( $class, $len );
 
-        // TODO: maybe use __DIR__ ?
-        $file = __DIR__ . 'inc/' . str_replace('\\', '/', $relative_class) . '.php';
+		// TODO: maybe use __DIR__ ?
+		$file = __DIR__ . 'inc/' . str_replace('\\', '/', $relative_class) . '.php';
 
-        if ( file_exists( $file ) ) {
-            require $file;
-        }
-    });
+		if ( file_exists( $file ) ) {
+			require $file;
+		}
+	});
 
-    /**
-     * Registers the activation hook.
-     *
-     * @since   5.0.0
-     */
-    register_activation_hook( __FILE__, function() {
-        add_option( 'sbp_activated', true );
-    } );
+	/**
+	 * Registers the activation hook.
+	 *
+	 * @since   5.0.0
+	 */
+	register_activation_hook( __FILE__, function() {
+		add_option( 'sbp_activated', true );
+	} );
 
-    /**
-     * Registers the deactivation hook.
-     *
-     * @since   5.0.0
-     */
-    register_deactivation_hook( __FILE__, [ 'Core', 'deactivate' ] );
+	/**
+	 * Registers the deactivation hook.
+	 *
+	 * @since   5.0.0
+	 */
+	register_deactivation_hook( __FILE__, [ 'Core', 'deactivate' ] );
 
-    /**
-     * Begins execution of the plugin.
-     *
-     * @since   5.0.0
-     */
-    $plugin = new Core();
-    $plugin->run();
+	/**
+	 * Begins execution of the plugin.
+	 *
+	 * @since   5.0.0
+	 */
+	$plugin = new Core();
+	$plugin->run();
 
 } );
 
