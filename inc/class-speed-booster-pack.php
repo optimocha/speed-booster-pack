@@ -22,9 +22,6 @@ defined( 'ABSPATH' ) || exit;
  * This is used to define internationalization, admin-specific hooks, and
  * public-facing site hooks.
  *
- * Also maintains the unique identifier of this plugin as well as the current
- * version of the plugin.
- *
  * @since      4.0.0
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/includes
@@ -43,24 +40,6 @@ class Speed_Booster_Pack {
 	protected $loader;
 
 	/**
-	 * The unique identifier of this plugin.
-	 *
-	 * @since    4.0.0
-	 * @access   protected
-	 * @var      string $plugin_name The string used to uniquely identify this plugin.
-	 */
-	protected $plugin_name;
-
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    4.0.0
-	 * @access   protected
-	 * @var      string $version The current version of the plugin.
-	 */
-	protected $version;
-
-	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -71,22 +50,19 @@ class Speed_Booster_Pack {
 	 */
 	public function __construct() {
 
-		$this->version = SBP_VERSION;
-		$this->plugin_name = 'speed-booster-pack';
-
 		$this->load_dependencies();
 		$this->save_post_types();
 		$this->set_locale();
 		$this->define_admin_hooks();
+		$this->define_public_hooks();
 
-		if ( $this->should_plugin_run() ) {
-			$this->init_modules();
-			$this->define_public_hooks();
-		}
-		
 	}
 
 	private function should_plugin_run() {
+
+		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) {
+			return false;
+		}
 
 		if ( preg_match( '/(_wp-|\.txt|\.pdf|\.xml|\.xsl|\.svg|\.ico|\/wp-json|\.gz|\/feed\/?)/', $_SERVER['REQUEST_URI'] ) ) {
 			return false;
@@ -138,39 +114,6 @@ class Speed_Booster_Pack {
 	}
 
 	/**
-	 * Instantiate all classes.
-	 * Every class has inner documentation.
-	 */
-	private function init_modules() {
-
-		new SpeedBooster\SBP_WP_Admin();
-		new SpeedBooster\SBP_Database_Optimizer();
-		new SpeedBooster\SBP_Newsletter();
-		// new SpeedBooster\SBP_Migrator();
-		new SpeedBooster\SBP_Compatibility_Checker();
-		new SpeedBooster\SBP_Cloudflare();
-		new SpeedBooster\SBP_Sucuri();
-		new SpeedBooster\SBP_Notice_Manager();
-		new SpeedBooster\SBP_Cache_Warmup();
-
-		new SpeedBooster\SBP_JS_Optimizer();
-		new SpeedBooster\SBP_Tweaks();
-		new SpeedBooster\SBP_Font_Optimizer();
-		new SpeedBooster\SBP_Preboost();
-		new SpeedBooster\SBP_CDN();
-		new SpeedBooster\SBP_Lazy_Loader();
-		new SpeedBooster\SBP_CSS_Minifier();
-		new SpeedBooster\SBP_Critical_CSS();
-		new SpeedBooster\SBP_Image_Dimensions();
-		new SpeedBooster\SBP_HTML_Minifier();
-		new SpeedBooster\SBP_Localize_Tracker();
-		new SpeedBooster\SBP_Woocommerce();
-		new SpeedBooster\SBP_Cache();
-		new SpeedBooster\SBP_LiteSpeed_Cache();
-
-	}
-
-	/**
 	 * Load the required dependencies for this plugin.
 	 *
 	 * Include the following files that make up the plugin:
@@ -190,35 +133,33 @@ class Speed_Booster_Pack {
 		/**
 		 * Composer autoload file.
 		 */
-		require_once SBP_PATH . 'vendor/autoload.php';
+		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/autoload.php';
 
 		/**
 		 * Load helper files
 		 */
-		require_once SBP_INC_PATH . 'sbp-helpers.php';
+		require_once SPEED_BOOSTER_PACK['path'] . '/inc/sbp-helpers.php';
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once SBP_INC_PATH . 'class-speed-booster-pack-loader.php';
-
+		// TODO: delete below, if the autotloader (probably) loads this file
+		// require_once SPEED_BOOSTER_PACK['path'] . '/inc/class-speed-booster-pack-loader.php';
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once SBP_INC_PATH . 'class-speed-booster-pack-i18n.php';
-
+		// require_once SPEED_BOOSTER_PACK['path'] . '/inc/class-speed-booster-pack-i18n.php';
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once SBP_PATH . 'admin/class-speed-booster-pack-admin.php';
-
+		// require_once SPEED_BOOSTER_PACK['path'] . '/inc/admin/class-speed-booster-pack-admin.php';
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once SBP_PATH . 'public/class-speed-booster-pack-public.php';
+		// require_once SPEED_BOOSTER_PACK['path'] . '/inc/public/class-speed-booster-pack-public.php';
 
 		$this->loader = new Speed_Booster_Pack_Loader();
 	}
@@ -236,7 +177,7 @@ class Speed_Booster_Pack {
 
 		$plugin_i18n = new Speed_Booster_Pack_i18n();
 
-		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+		$this->loader->add_action( 'plugins_loaded', [ 'Core', 'load_plugin_textdomain' ] );
 
 	}
 
@@ -253,7 +194,7 @@ class Speed_Booster_Pack {
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
-		$plugin_admin = new Speed_Booster_Pack_Admin( $this->plugin_name, SBP_VERSION );
+		$plugin_admin = new Speed_Booster_Pack_Admin( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['version'] );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -271,21 +212,18 @@ class Speed_Booster_Pack {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-
-		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 		
-		$plugin_public = new Speed_Booster_Pack_Public( $this->plugin_name, SBP_VERSION );
+		if ( ! $this->should_plugin_run() ) { return; }
+		
+		$plugin_public = new Speed_Booster_Pack_Public( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['version'] );
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 2 );
 
-		// $this->loader->add_action( 'shutdown', $plugin_public, 'shutdown', PHP_INT_MAX );
-
-		// $this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
-		
 		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
 
 	}
 
+	// TODO: don't run this on every admin init!
 	private function save_post_types() {
 		add_action('admin_init', function() {
 			$post_types = array_keys( get_post_types( [ 'public' => true ] ) );
@@ -304,16 +242,6 @@ class Speed_Booster_Pack {
 	 */
 	public function run() {
 		$this->loader->run();
-	}
-
-	/**
-	 * The reference to the class that orchestrates the hooks with the plugin.
-	 *
-	 * @return    Speed_Booster_Pack_Loader    Orchestrates the hooks of the plugin.
-	 * @since     4.0.0
-	 */
-	public function get_loader() {
-		return $this->loader;
 	}
 
 }
