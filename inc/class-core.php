@@ -114,6 +114,39 @@ class Core {
 	}
 
 	/**
+	 * TODO: remove this!
+	 * Instantiate all classes.
+	 * Every class has inner documentation.
+	 */
+	private function init_modules() {
+
+		new SpeedBooster\WP_Admin();
+		new SpeedBooster\Database_Optimizer();
+		new SpeedBooster\Newsletter();
+		new SpeedBooster\Migrator();
+		new SpeedBooster\Compatibility_Checker();
+		new SpeedBooster\Cloudflare();
+		new SpeedBooster\Sucuri();
+		new SpeedBooster\Notice_Manager();
+		new SpeedBooster\Cache_Warmup();
+		new SpeedBooster\JS_Optimizer();
+		new SpeedBooster\Tweaks();
+		new SpeedBooster\Font_Optimizer();
+		new SpeedBooster\Preboost();
+		new SpeedBooster\CDN();
+		new SpeedBooster\Lazy_Loader();
+		new SpeedBooster\CSS_Minifier();
+		new SpeedBooster\Critical_CSS();
+		new SpeedBooster\Image_Dimensions();
+		new SpeedBooster\HTML_Minifier();
+		new SpeedBooster\Localize_Tracker();
+		new SpeedBooster\Woocommerce();
+		new SpeedBooster\Cache();
+		new SpeedBooster\LiteSpeed_Cache();
+
+	}
+
+	/**
 	 * Load the required dependencies for this plugin.
 	 *
 	 * Include the following files that make up the plugin:
