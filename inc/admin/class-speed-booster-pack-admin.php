@@ -210,7 +210,7 @@ class Speed_Booster_Pack_Admin {
 			CSF::createOptions( $prefix,
 				[
 					// framework title
-					'framework_title' => 'Speed Booster Pack' . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . SBP_OWNER_NAME . '</a></small>',
+					'framework_title' => 'Speed Booster Pack' . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">Optimocha</a></small>',
 					'framework_class' => 'sbp-settings',
 
 					// menu settings
@@ -285,7 +285,7 @@ class Speed_Booster_Pack_Admin {
 							'type'    => 'content',
 							'content' => '<p>' . __( 'We really hope that you\'ll enjoy working with our plugin. Always remember that this is a powerful tool, and using powerful tools might hurt you if you\'re not careful. Have fun!', 'speed-booster-pack' ) . '</p>' .
 							             /* translators: %s = Optimocha */
-							             '<p style="font-style:italic;">' . sprintf( __( 'Your friends at %s', 'speed-booster-pack' ), SBP_OWNER_NAME ) . '</p>' .
+							             '<p style="font-style:italic;">' . sprintf( __( 'Your friends at %s', 'speed-booster-pack' ), 'Optimocha' ) . '</p>' .
 							             /* translators: 1. Speed Booster Pack 2. link to the plugin's reviews page on wp.org */
 							             '<p>' . sprintf( __( 'Almost forgot: If you like %1$s, it would mean a lot to us if you gave a fair rating on %2$s, because highly rated plugins are shown to more users on the WordPress plugin directory, meaning that we\'ll have no choice but to take better care of %1$s!', 'speed-booster-pack' ), 'Speed Booster Pack', '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">wordpress.org</a>' ) . '</p>',
 						],
@@ -296,7 +296,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1: plugin owner's name (Optimocha) 2: Speed Booster Pack (Speed Booster Pack) 3: hyperlink to the owner's website */
-							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (This experience is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, 'Speed Booster Pack', '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
+							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (This experience is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), 'Optimocha', 'Speed Booster Pack', '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">optimocha.com</a>' ),
 						],
 
 					],
@@ -1567,12 +1567,12 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'heading',
 							/* translators: %s = Optimocha  */
-							'content' => sprintf( __( 'About %s', 'speed-booster-pack' ), SBP_OWNER_NAME ),
+							'content' => sprintf( __( 'About %s', 'speed-booster-pack' ), 'Optimocha' ),
 						],
 						[
 							'type'    => 'content',
 							/* translators: 1. Optimocha 2. Speed Booster Pack  */
-							'content' => '<p>' . sprintf( __( 'We are %1$s, a small team of speed optimization experts. Along with hundreds of websites we finished optimizing, we acquired %2$s in 2019 and we\'re working hard to make this plugin the best speed optimization plugin for WordPress ever since!', 'speed-booster-pack' ), SBP_OWNER_NAME, 'Speed Booster Pack' ) . '</p><ul><li><a href="https://optimocha.com/speed-optimization-for-wordpress/" rel="external noopener" target="_blank">' .
+							'content' => '<p>' . sprintf( __( 'We are %1$s, a small team of speed optimization experts. Along with hundreds of websites we finished optimizing, we acquired %2$s in 2019 and we\'re working hard to make this plugin the best speed optimization plugin for WordPress ever since!', 'speed-booster-pack' ), 'Optimocha', 'Speed Booster Pack' ) . '</p><ul><li><a href="https://optimocha.com/speed-optimization-for-wordpress/" rel="external noopener" target="_blank">' .
 							             __( 'Visit our website', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/" rel="external noopener" target="_blank">' .
 							             __( 'Learn more about our tailored Complete Speed Optimization services', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/contact/" rel="external noopener" target="_blank">' .
 							             __( 'Contact us', 'speed-booster-pack' ) . '</a></li></ul>',

@@ -37,7 +37,7 @@ define( 'SPEED_BOOSTER_PACK', [
 TODO: replace the following old constants with the new ones above (or remove unused constants) in the codebase.
 define( 'SPEED_BOOSTER_PACK['version']', '4.5.6' ); // plugin version
 define( ''Speed Booster Pack'', 'Speed Booster Pack' ); // plugin name
-define( 'SBP_OWNER_NAME', 'Optimocha' ); // plugin owner name
+define( ''Optimocha'', 'Optimocha' ); // plugin owner name
 define( 'SBP_OWNER_HOME', 'https://optimocha.com/' ); // plugin owner home
 define( 'SBP_URL', plugin_dir_url( __FILE__ ) ); // plugin root URL
 define( 'SBP_PATH', realpath( dirname( __FILE__ ) ) . '/' ); // plugin root directory path
