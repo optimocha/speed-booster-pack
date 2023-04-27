@@ -10,17 +10,15 @@
  * @subpackage Speed_Booster_Pack/admin
  */
 
-// If this file is called directly, abort.
+namespace Optimocha\SpeedBooster;
+
 use SpeedBooster\SBP_Notice_Manager;
 use SpeedBooster\SBP_Utils;
 use SpeedBooster\SBP_Advanced_Cache_Generator;
 use SpeedBooster\SBP_Cache;
 use SpeedBooster\SBP_LiteSpeed_Cache;
 
-
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 /**
  * The admin-specific functionality of the plugin.

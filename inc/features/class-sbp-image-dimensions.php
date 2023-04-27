@@ -4,6 +4,8 @@ namespace Optimocha\SpeedBooster;
 
 use simplehtmldom\HtmlDocument;
 
+defined( 'ABSPATH' ) || exit;
+
 class SBP_Image_Dimensions extends SBP_Abstract_Module {
 	public function __construct() {
 		parent::__construct();

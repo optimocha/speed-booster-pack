@@ -2,10 +2,7 @@
 
 namespace Optimocha\SpeedBooster;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 class SBP_Woocommerce extends SBP_Abstract_Module {
 	public function __construct() {

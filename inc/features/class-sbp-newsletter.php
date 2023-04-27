@@ -2,10 +2,7 @@
 
 namespace Optimocha\SpeedBooster;
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+defined( 'ABSPATH' ) || exit;
 
 class SBP_Newsletter {
 	public function __construct() {

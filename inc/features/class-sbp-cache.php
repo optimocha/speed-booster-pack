@@ -4,10 +4,7 @@ namespace Optimocha\SpeedBooster;
 
 use SpeedBooster\SBP_Advanced_Cache_Generator;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 class SBP_Cache extends SBP_Base_Cache {
 	/**

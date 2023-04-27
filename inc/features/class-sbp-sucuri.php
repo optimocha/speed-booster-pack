@@ -2,12 +2,9 @@
 
 namespace Optimocha\SpeedBooster;
 
-// If this file is called directly, abort.
 use Automattic\WooCommerce\Admin\API\Reports\Variations\DataStore;
 
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 class SBP_Sucuri extends SBP_Abstract_Module {
 	public function __construct() {

@@ -2,10 +2,7 @@
 
 namespace Optimocha\SpeedBooster;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 class SBP_Compatibility_Checker extends SBP_Abstract_Module {
 	private $plugins_list = [

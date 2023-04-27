@@ -2,10 +2,7 @@
 
 namespace Optimocha\SpeedBooster;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 class SBP_Warmup_Process extends \WP_Background_Process {
 	protected $action = 'sbp_cache_warmup';

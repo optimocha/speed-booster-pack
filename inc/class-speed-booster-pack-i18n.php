@@ -13,10 +13,9 @@
  * @subpackage Speed_Booster_Pack/includes
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+namespace Optimocha\SpeedBooster;
+
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Define the internationalization functionality.

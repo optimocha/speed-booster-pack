@@ -4,10 +4,7 @@ namespace Optimocha\SpeedBooster;
 
 use SpeedBooster\SBP_HTML_Minify;
 
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 class SBP_HTML_Minifier extends SBP_Abstract_Module {
 	private $minify_css = true;

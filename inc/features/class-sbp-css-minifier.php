@@ -2,12 +2,9 @@
 
 namespace Optimocha\SpeedBooster;
 
-// If this file is called directly, abort.
 use simplehtmldom\HtmlDocument;
 
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 class SBP_CSS_Minifier extends SBP_Abstract_Module {
 	private $styles_list = [];

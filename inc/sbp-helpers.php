@@ -1,10 +1,10 @@
 <?php
 
+namespace Optimocha\SpeedBooster;
+
 use SpeedBooster\SBP_Utils;
 
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
+defined( 'ABSPATH' ) || exit;
 
 // TODO: replace it with the technique from wp-smushit/uninstall.php
 if ( ! function_exists( 'sbp_get_filesystem' ) ) {
