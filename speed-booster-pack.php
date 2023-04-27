@@ -59,16 +59,7 @@ define( 'SBP_MIGRATOR_VERSION', '45000' ); // plugin migrator version
 add_action( 'plugins_loaded', function() {
 
 	/**
-	 * Requires the main plugin class.
-	 *
-	 * @since   5.0.0
-	 */
-	// TODO: we might not this line at all, as the autoloader might load the file
-	//       when the Speed_Booster_Pack class is called.
-	// require_once __DIR__ . 'inc/class-speed-booster-pack.php';
-
-	/**
-	 * Registers the autoloader.
+	 * Registers the class autoloader.
 	 *
 	 * @since   5.0.0
 	 */
@@ -83,12 +74,19 @@ add_action( 'plugins_loaded', function() {
 
 		$relative_class = substr( $class, $len );
 
-		$file = __DIR__ . 'inc/' . str_replace('\\', '/', $relative_class) . '.php';
+		$file = __DIR__ . '/inc/' . str_replace('\\', '/', $relative_class) . '.php';
 
 		if ( file_exists( $file ) ) {
 			require $file;
 		}
 	});
+
+    /**
+     * Requires the file with the helper functions.
+     *
+     * @since   5.0.0
+     */
+    require __DIR__ . '/inc/sbp-helpers.php';
 
 	/**
 	 * Registers the activation hook.
