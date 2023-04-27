@@ -34,7 +34,7 @@ define( 'SPEED_BOOSTER_PACK', [
 
 /*
 
-TODO: replace the following old constants with the new ones above (or remove unused constants) in the codebase.
+TODO: replace the following old constants in the codebase:
 define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' ); // plugin cache directory path
 define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' ); // plugin uploads path
 define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' ); // plugin uploads URL
@@ -63,8 +63,8 @@ add_action( 'plugins_loaded', function() {
 		}
 
 		$relative_class = substr( $class, $len );
-
-		$file = __DIR__ . '/inc/' . str_replace('\\', '/', $relative_class) . '.php';
+		$filename = strtolower( str_replace(  [ '_', '\\' ], [ '-', '/' ], $relative_class ) );
+		$file = __DIR__ . "/inc/class-$filename.php";
 
 		if ( file_exists( $file ) ) {
 			require $file;
