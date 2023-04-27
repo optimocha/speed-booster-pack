@@ -166,7 +166,7 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, SBP_URL . 'admin/css/speed-booster-pack-admin.css', [], $this->version );
+		wp_enqueue_style( $this->plugin_name, SPEED_BOOSTER_PACK['url'] . 'admin/css/speed-booster-pack-admin.css', [], $this->version );
 
 	}
 
@@ -177,7 +177,7 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, SBP_URL . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], $this->version );
+		wp_enqueue_script( $this->plugin_name, SPEED_BOOSTER_PACK['url'] . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], $this->version );
 
 		wp_localize_script( $this->plugin_name,
 			'sbp_ajax_vars',
@@ -215,7 +215,7 @@ class Speed_Booster_Pack_Admin {
 
 					// menu settings
 					'menu_title'      => 'Speed Booster',
-					'menu_icon'       => SBP_URL . 'admin/images/icon.svg',
+					'menu_icon'       => SPEED_BOOSTER_PACK['url'] . 'admin/images/icon.svg',
 					'menu_slug'       => 'sbp-settings',
 					'menu_type'       => 'menu',
 					'menu_capability' => 'manage_options',
