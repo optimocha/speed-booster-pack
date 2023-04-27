@@ -38,7 +38,6 @@ class Speed_Booster_Pack_Deactivator {
 	 */
 	public static function deactivate() {
 		SBP_Cache::clear_total_cache();
-		SBP_WP_Config_Injector::remove_wp_config_lines();
 		SBP_Cache::set_wp_cache_constant( false );
 		SBP_Cache::clean_htaccess();
 		SBP_LiteSpeed_Cache::remove_htaccess_rules();
