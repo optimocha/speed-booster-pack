@@ -12,11 +12,11 @@
 
 namespace Optimocha\SpeedBooster\Admin;
 
-use SpeedBooster\SBP_Notice_Manager;
-use SpeedBooster\SBP_Utils;
-use SpeedBooster\SBP_Advanced_Cache_Generator;
-use SpeedBooster\SBP_Cache;
-use SpeedBooster\SBP_LiteSpeed_Cache;
+use SpeedBooster\Notice_Manager;
+use SpeedBooster\Utils;
+use SpeedBooster\Advanced_Cache_Generator;
+use SpeedBooster\Cache;
+use SpeedBooster\LiteSpeed_Cache;
 
 defined( 'ABSPATH' ) || exit;
 

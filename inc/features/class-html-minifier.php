@@ -2,7 +2,7 @@
 
 namespace Optimocha\SpeedBooster\Features;
 
-use SpeedBooster\SBP_HTML_Minify;
+use SpeedBooster\HTML_Minify;
 
 defined( 'ABSPATH' ) || exit;
 

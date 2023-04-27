@@ -2,7 +2,7 @@
 
 namespace Optimocha\SpeedBooster;
 
-use SpeedBooster\SBP_Utils;
+use SpeedBooster\Utils;
 
 defined( 'ABSPATH' ) || exit;
 

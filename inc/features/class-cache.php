@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-use SpeedBooster\SBP_Advanced_Cache_Generator;
+use SpeedBooster\Advanced_Cache_Generator;
 
 class Cache extends Base_Cache {
 	/**
