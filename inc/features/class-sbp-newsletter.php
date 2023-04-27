@@ -1,6 +1,6 @@
 <?php
 
-namespace SpeedBooster;
+namespace Optimocha\SpeedBooster;
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {

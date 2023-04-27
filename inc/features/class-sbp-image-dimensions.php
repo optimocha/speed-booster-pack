@@ -1,6 +1,6 @@
 <?php
 
-namespace SpeedBooster;
+namespace Optimocha\SpeedBooster;
 
 use simplehtmldom\HtmlDocument;
 

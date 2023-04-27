@@ -1,6 +1,6 @@
 <?php
 
-namespace SpeedBooster;
+namespace Optimocha\SpeedBooster;
 
 // If this file is called directly, abort.
 use simplehtmldom\HtmlDocument;

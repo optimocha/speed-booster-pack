@@ -1,6 +1,6 @@
 <?php
 
-namespace SpeedBooster;
+namespace Optimocha\SpeedBooster;
 
 class SBP_Base_Cache extends SBP_Abstract_Module {
 	protected $is_litespeed = false;
