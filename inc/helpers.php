@@ -6,6 +6,25 @@ use SpeedBooster\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Load all plugin options
+ */
+if ( ! function_exists( 'sbp_get_option' ) ) {
+	/**
+	 * Returns the value of the option with given name, if option doesn't exists function returns the default value (from second variable)
+	 *
+	 * @param string $option
+	 * @param null $default
+	 *
+	 * @return mixed|null
+	 */
+	function sbp_get_option( $option = '', $default = null ) {
+		$sbp_options = get_option( 'sbp_options' );
+
+		return ( isset( $sbp_options[ $option ] ) ) ? $sbp_options[ $option ] : $default;
+	}
+}
+
 // TODO: replace it with the technique from wp-smushit/uninstall.php
 if ( ! function_exists( 'sbp_get_filesystem' ) ) {
 	function sbp_get_filesystem() {
