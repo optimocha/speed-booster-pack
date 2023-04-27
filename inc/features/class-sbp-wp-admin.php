@@ -19,13 +19,13 @@ class SBP_WP_Admin {
 		add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 		add_action( 'admin_init', [ $this, 'upgrade_php_notice' ] );
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
-		add_filter( 'plugin_action_links_' . SBP_PLUGIN_BASENAME, [ $this, 'settings_links' ], 10, 2 );
+		add_filter( 'plugin_action_links_' . SPEED_BOOSTER_PACK['basename'], [ $this, 'settings_links' ], 10, 2 );
 
 	}
 
 	public function plugin_meta_links( $meta_fields, $file ) {
 
-		if ( SBP_PLUGIN_BASENAME == $file ) {
+		if ( SPEED_BOOSTER_PACK['basename'] == $file ) {
 
 			$report_a_bug_url = "https://optimocha.com/contact/?subject=Speed%20Booster%20Pack%20bug%20report";
 			$report_a_bug_text = __( 'Report a bug', 'speed-booster-pack' );

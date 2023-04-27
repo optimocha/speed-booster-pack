@@ -35,18 +35,10 @@ define( 'SPEED_BOOSTER_PACK', [
 /*
 
 TODO: replace the following old constants with the new ones above (or remove unused constants) in the codebase.
-define( 'SPEED_BOOSTER_PACK['version']', '4.5.6' ); // plugin version
-define( ''Speed Booster Pack'', 'Speed Booster Pack' ); // plugin name
-define( ''Optimocha'', 'Optimocha' ); // plugin owner name
-define( 'SBP_OWNER_HOME', 'https://optimocha.com/' ); // plugin owner home
-define( 'SPEED_BOOSTER_PACK['url']', plugin_dir_url( __FILE__ ) ); // plugin root URL
-define( 'SBP_PATH', realpath( dirname( __FILE__ ) ) . '/' ); // plugin root directory path
-define( 'SBP_INC_PATH', SBP_PATH . 'includes/' ); // plugin includes directory path
-define( 'SBP_LIB_PATH', SBP_PATH . 'vendor/' ); // plugin 3rd party directory path
 define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' ); // plugin cache directory path
 define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' ); // plugin uploads path
 define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' ); // plugin uploads URL
-define( 'SBP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) ); // plugin basename
+define( 'SPEED_BOOSTER_PACK['basename']', plugin_basename( __FILE__ ) ); // plugin basename
 define( 'SBP_MIGRATOR_VERSION', '45000' ); // plugin migrator version
 
  */
