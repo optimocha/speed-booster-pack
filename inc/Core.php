@@ -194,7 +194,7 @@ class Speed_Booster_Pack {
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
-		$plugin_admin = new Speed_Booster_Pack_Admin( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['version'] );
+		$plugin_admin = new Speed_Booster_Pack_Admin();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -215,7 +215,7 @@ class Speed_Booster_Pack {
 		
 		if ( ! $this->should_plugin_run() ) { return; }
 		
-		$plugin_public = new Speed_Booster_Pack_Public( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['version'] );
+		$plugin_public = new Speed_Booster_Pack_Public();
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 2 );
 
