@@ -6,6 +6,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// TODO: replace it with the technique from wp-smushit/uninstall.php
 if ( ! function_exists( 'sbp_get_filesystem' ) ) {
 	function sbp_get_filesystem() {
 		global $wp_filesystem;
