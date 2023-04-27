@@ -176,7 +176,7 @@ class Speed_Booster_Pack_Admin {
 	}
 
 	public function load_dependencies() {
-		require_once SBP_LIB_PATH . 'codestar-framework/codestar-framework.php';
+		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/codestar-framework/codestar-framework.php';
 	}
 
 	public function create_settings_page() {
