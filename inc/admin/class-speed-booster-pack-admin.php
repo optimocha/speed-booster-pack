@@ -210,7 +210,7 @@ class Speed_Booster_Pack_Admin {
 			CSF::createOptions( $prefix,
 				[
 					// framework title
-					'framework_title' => 'Speed Booster Pack' . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">Optimocha</a></small>',
+					'framework_title' => 'Speed Booster Pack' . ' <small>by <a href="https://optimocha.com/" rel="external noopener" target="_blank">Optimocha</a></small>',
 					'framework_class' => 'sbp-settings',
 
 					// menu settings
@@ -296,7 +296,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1: plugin owner's name (Optimocha) 2: Speed Booster Pack (Speed Booster Pack) 3: hyperlink to the owner's website */
-							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (This experience is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), 'Optimocha', 'Speed Booster Pack', '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">optimocha.com</a>' ),
+							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (This experience is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), 'Optimocha', 'Speed Booster Pack', '<a href="https://optimocha.com/" rel="external noopener" target="_blank">optimocha.com</a>' ),
 						],
 
 					],
