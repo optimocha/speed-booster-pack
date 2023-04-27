@@ -38,7 +38,6 @@ TODO: replace the following old constants with the new ones above (or remove unu
 define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' ); // plugin cache directory path
 define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' ); // plugin uploads path
 define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' ); // plugin uploads URL
-define( 'SPEED_BOOSTER_PACK['basename']', plugin_basename( __FILE__ ) ); // plugin basename
 define( 'SBP_MIGRATOR_VERSION', '45000' ); // plugin migrator version
 
  */
