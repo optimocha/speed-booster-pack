@@ -55,7 +55,7 @@ class SBP_WP_Admin {
 				'href'  => admin_url( 'admin.php?page=sbp-settings' ),
 				'meta'  => [
 					'target' => '_self',
-					'html'   => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'admin/images/icon.svg?ver=' . SBP_VERSION . '") no-repeat 5px center;padding-left:25px;}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
+					'html'   => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'admin/images/icon.svg?ver=' . SPEED_BOOSTER_PACK['version'] . '") no-repeat 5px center;padding-left:25px;}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
 				],
 			] );
 

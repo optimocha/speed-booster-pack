@@ -333,7 +333,7 @@ class SBP_Cache extends SBP_Base_Cache {
 		}
 
 		$sbp_htaccess_block = '# BEGIN Speed Booster Pack
-# SBP ' . SBP_VERSION . '
+# SBP ' . SPEED_BOOSTER_PACK['version'] . '
 
 # Character encodings
 AddDefaultCharset utf-8

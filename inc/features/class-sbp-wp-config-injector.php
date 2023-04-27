@@ -61,10 +61,10 @@ class SBP_WP_Config_Injector {
 		if ( $wp_filesystem->exists( $wp_config_file ) && $wp_filesystem->is_writable( $wp_config_file ) ) {
 			$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
 
-			if ( ! preg_match( '/\/\/ BEGIN SBP_WP_Config -' . SBP_VERSION . '-(.*?)\/\/ END SBP_WP_Config/si', $wp_config_content ) ) {
+			if ( ! preg_match( '/\/\/ BEGIN SBP_WP_Config -' . SPEED_BOOSTER_PACK['version'] . '-(.*?)\/\/ END SBP_WP_Config/si', $wp_config_content ) ) {
 				$wp_config_content = preg_replace( '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si', '', $wp_config_content );
 				foreach ( self::$wp_config_inject_content as $option_name => $include_file_path ) {
-					$modified_content = str_replace( '<?php', '<?php' . PHP_EOL . PHP_EOL . '// BEGIN SBP_WP_Config -' . SBP_VERSION . '- ' . $option_name . ' -' . PHP_EOL . 'include_once "' . $include_file_path . '";' . PHP_EOL . '// END SBP_WP_Config', $wp_config_content );
+					$modified_content = str_replace( '<?php', '<?php' . PHP_EOL . PHP_EOL . '// BEGIN SBP_WP_Config -' . SPEED_BOOSTER_PACK['version'] . '- ' . $option_name . ' -' . PHP_EOL . 'include_once "' . $include_file_path . '";' . PHP_EOL . '// END SBP_WP_Config', $wp_config_content );
 					$wp_filesystem->put_contents( $wp_config_file, $modified_content );
 				}
 			}
