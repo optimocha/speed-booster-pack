@@ -217,7 +217,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 
 	public function add_cache_signature( $html ) {
 		if ( SBP_Utils::is_litespeed() && sbp_get_option( 'module_caching_ls' ) ) {
-			$html .= '<!-- LiteSpeed cache managed by ' . SBP_PLUGIN_NAME . ' -->';
+			$html .= '<!-- LiteSpeed cache managed by Speed Booster Pack -->';
 		}
 
 		return $html;

@@ -140,7 +140,7 @@ class SBP_WP_Admin {
 			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ', 'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
 			SBP_Notice_Manager::display_notice( 'sbp_clear_sucuri_cache',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . $notice_message . '</p>',
+				'<p><strong>Speed Booster Pack:</strong> ' . $notice_message . '</p>',
 				$notice_type,
 				true,
 				'flash' );
@@ -159,14 +159,14 @@ class SBP_WP_Admin {
 			$notice_type    = '';
 		}
 		SBP_Notice_Manager::display_notice( 'sbp_notice_cloudflare',
-			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . $notice_message . '</p>',
+			'<p><strong>Speed Booster Pack:</strong> ' . $notice_message . '</p>',
 			$notice_type,
 			true,
 			'flash' );
 
 		// Set Cache Clear Notice
 		SBP_Notice_Manager::display_notice( 'sbp_notice_cache',
-			'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>',
+			'<p><strong>Speed Booster Pack:</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>',
 			'success',
 			true,
 			'flash' );
@@ -174,7 +174,7 @@ class SBP_WP_Admin {
 		// Set Localizer Cache Clear Notice
 		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_notice_tracker_localizer',
-				'<p><strong>' . SBP_PLUGIN_NAME . ':</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>',
+				'<p><strong>Speed Booster Pack:</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>',
 				'success',
 				true,
 				'flash' );
@@ -184,7 +184,7 @@ class SBP_WP_Admin {
 		if ( get_transient( 'sbp_advanced_cache_error' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_advanced_cache_error',
 				/* translators: %s: wp-content/advanced-cache.php */
-				'<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' . sprintf( __( '%s is not writable. Please check your file permissions, or some features might not work.', 'speed-booster-pack' ), '<code>wp-content/advanced-cache.php</code>' ) . '</p>',
+				'<p><strong>Speed Booster Pack</strong>: ' . sprintf( __( '%s is not writable. Please check your file permissions, or some features might not work.', 'speed-booster-pack' ), '<code>wp-content/advanced-cache.php</code>' ) . '</p>',
 				'error',
 				true,
 				'recurrent' );
@@ -194,7 +194,7 @@ class SBP_WP_Admin {
 		if ( get_transient( 'sbp_wp_config_error' ) ) {
 			SBP_Notice_Manager::display_notice( 'sbp_wp_config_error',
 				/* translators: %s: wp-config.php */
-				'<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' . sprintf( __( '%s is not writable. Please check your file permissions, or some features might not work.', 'speed-booster-pack' ), '<code>wp-config.php</code>' ) . '</p>',
+				'<p><strong>Speed Booster Pack</strong>: ' . sprintf( __( '%s is not writable. Please check your file permissions, or some features might not work.', 'speed-booster-pack' ), '<code>wp-config.php</code>' ) . '</p>',
 				'error',
 				true,
 				'recurrent' );
@@ -202,7 +202,7 @@ class SBP_WP_Admin {
 
 		// Warmup Started Notice
 		SBP_Notice_Manager::display_notice( 'sbp_warmup_started',
-			'<p>' . sprintf( __( '%s will now send requests to your homepage and all the pages that are linked to in the homepage (including links in navigation menus) so they\'ll all be cached.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ) . '</p>',
+			'<p>' . sprintf( __( '%s will now send requests to your homepage and all the pages that are linked to in the homepage (including links in navigation menus) so they\'ll all be cached.', 'speed-booster-pack' ), 'Speed Booster Pack' ) . '</p>',
 			'info',
 			true,
 			'flash' );
@@ -214,7 +214,7 @@ class SBP_WP_Admin {
 		$notices    = [
 			'sbp_rate_wp_org' => [
 				'show_after' => '+7 days',
-				'text'       => '<b>' . SBP_PLUGIN_NAME . ':</b> ' . sprintf( __( 'If you like our plugin, we would be so grateful if you could %1$sgive us a fair rating on wordpress.org%2$s.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">', '</a>' ),
+				'text'       => '<b>Speed Booster Pack:</b> ' . sprintf( __( 'If you like our plugin, we would be so grateful if you could %1$sgive us a fair rating on wordpress.org%2$s.', 'speed-booster-pack' ), '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/?rate=5#new-post" rel="noopener" target="_blank">', '</a>' ),
 			],
 		];
 
@@ -289,7 +289,7 @@ class SBP_WP_Admin {
 
 		if ( count( $permission_errors ) ) {
 			$notice_content = '<p>';
-			$notice_content .= __( sprintf( '%s needs write permissions for the following files/directories to work properly:', SBP_PLUGIN_NAME ), 'speed-booster' );
+			$notice_content .= __( sprintf( '%s needs write permissions for the following files/directories to work properly:', 'Speed Booster Pack' ), 'speed-booster' );
 			$notice_content .= '<ul>';
 			foreach ( $permission_errors as $key => $error ) {
 				$notice_content .= '<li>' . $key . ' (' . $error . ')</li>';
@@ -307,7 +307,7 @@ class SBP_WP_Admin {
 
 		if ( version_compare( phpversion(), '7.0', '>=' ) ) { return; }
 
-		SBP_Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>' . SBP_PLUGIN_NAME . '</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or ask your hosting company to do it).', 'speed-booster-pack' ) . '</p>', 'warning', true );
+		SBP_Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>Speed Booster Pack</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or ask your hosting company to do it).', 'speed-booster-pack' ) . '</p>', 'warning', true );
 
 	}
 

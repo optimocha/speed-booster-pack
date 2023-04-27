@@ -259,13 +259,13 @@ ga('send', 'pageview');";
 
 	public function check_migrate_notice() {
 		if ( get_transient( 'sbp_migrated_from_legacy' ) && current_user_can( 'manage_options' ) ) {
-			SBP_Notice_Manager::display_notice( 'sbp_migrated_from_legacy', '<p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), SBP_PLUGIN_NAME, admin_url( 'admin.php?page=sbp-settings' ) ) . '</p>' );
+			SBP_Notice_Manager::display_notice( 'sbp_migrated_from_legacy', '<p>' . sprintf( __( 'With the new version of %s, your settings are migrated to the plugin\'s new options framework. <a href="%s">Click here to review %1$s\'s options.</a>', 'speed-booster-pack' ), 'Speed Booster Pack', admin_url( 'admin.php?page=sbp-settings' ) ) . '</p>' );
 
 			return;
 		}
 
 		if ( get_transient( 'sbp_options_migrated' ) && current_user_can( 'manage_options' ) ) {
-			SBP_Notice_Manager::display_notice( 'sbp_database_migrated_' . SBP_MIGRATOR_VERSION, '<p>' . SBP_PLUGIN_NAME . ': ' . __( 'With version 4.2.0, we\'ve split the JavaScript optimization feature into two: Defer and move to footer. Check your JS optimization settings to ensure the settings are correct.', 'speed-booster-pack' ) . '</p>' );
+			SBP_Notice_Manager::display_notice( 'sbp_database_migrated_' . SBP_MIGRATOR_VERSION, '<p>Speed Booster Pack: ' . __( 'With version 4.2.0, we\'ve split the JavaScript optimization feature into two: Defer and move to footer. Check your JS optimization settings to ensure the settings are correct.', 'speed-booster-pack' ) . '</p>' );
 		}
 	}
 }

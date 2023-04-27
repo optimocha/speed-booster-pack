@@ -33,7 +33,7 @@ class SBP_Newsletter {
 
 	function my_admin_print_footer_scripts() {
 		$current_user    = wp_get_current_user();
-		$pointer_content = '<h3>' . SBP_PLUGIN_NAME . '</h3>';
+		$pointer_content = '<h3>Speed Booster Pack</h3>';
 		$pointer_content .= '<p>' . __( 'Subscribe to our newsletter with <strong>tens of thousands of users</strong>, and get infrequent email updates from our plugin <em>and</em> more performance tips &amp; tricks!', 'speed-booster-pack' ) . '</p>';
 		$pointer_content .= '<p class="sbp-subscription"><a href="https://speedboosterpack.com/go/subscribe" rel="external noopener" target="_blank" class="sbp-subscribe-button">' . __( 'Visit the subscription page', 'speed-booster-pack' ) . '</a></p>';
 		?>

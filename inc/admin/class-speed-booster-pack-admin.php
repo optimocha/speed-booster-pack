@@ -210,7 +210,7 @@ class Speed_Booster_Pack_Admin {
 			CSF::createOptions( $prefix,
 				[
 					// framework title
-					'framework_title' => SBP_PLUGIN_NAME . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . SBP_OWNER_NAME . '</a></small>',
+					'framework_title' => 'Speed Booster Pack' . ' <small>by <a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . SBP_OWNER_NAME . '</a></small>',
 					'framework_class' => 'sbp-settings',
 
 					// menu settings
@@ -233,7 +233,7 @@ class Speed_Booster_Pack_Admin {
 					'admin_bar_menu_priority' => 80,
 
 					/* translators: 1: plugin name 2: opening tag for the hyperlink 3: closing tag for the hyperlink  */
-					'footer_credit'           => sprintf( __( 'Thank you for using %1$s! If you like our plugin, be sure to %2$sleave a fair review%3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">', '</a>' ),
+					'footer_credit'           => sprintf( __( 'Thank you for using %1$s! If you like our plugin, be sure to %2$sleave a fair review%3$s.', 'speed-booster-pack' ), 'Speed Booster Pack', '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">', '</a>' ),
 				] );
 
 			/* BEGIN Section: Dashboard */
@@ -249,12 +249,12 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'heading',
 							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'Welcome to %s!', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'content' => sprintf( __( 'Welcome to %s!', 'speed-booster-pack' ), 'Speed Booster Pack' ),
 						],
 						[
 							'type'    => 'content',
 							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'content' => sprintf( __( 'Thank you for installing %s! We really hope you\'ll like our plugin and greatly benefit from it. On this page, you\'ll find a small introduction to the plugin\'s features, and a few other things.', 'speed-booster-pack' ), 'Speed Booster Pack' ),
 						],
 						[
 							'type'    => 'content',
@@ -270,7 +270,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. Speed Booster Pack 2. link to the speedboosterpack.com contact form 3. link to the GitHub page  */
-							'content' => sprintf( __( 'Don\'t be afraid to tinker with the settings as you like, and disable any option or module if it causes any issues. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://speedboosterpack.com/contact/" rel="external noopener" target="_blank">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener" target="_blank">GitHub</a>' ),
+							'content' => sprintf( __( 'Don\'t be afraid to tinker with the settings as you like, and disable any option or module if it causes any issues. After configuring %1$s, make sure you check your website as a visitor and confirm all\'s well. If you find a bug, you can let us know about it via our contact form on %2$s or create an issue on %3$s.', 'speed-booster-pack' ), 'Speed Booster Pack', '<a href="https://speedboosterpack.com/contact/" rel="external noopener" target="_blank">speedboosterpack.com</a>', '<a href="https://github.com/optimocha/speed-booster-pack/" rel="external noopener" target="_blank">GitHub</a>' ),
 						],
 						[
 							'type'    => 'content',
@@ -287,7 +287,7 @@ class Speed_Booster_Pack_Admin {
 							             /* translators: %s = Optimocha */
 							             '<p style="font-style:italic;">' . sprintf( __( 'Your friends at %s', 'speed-booster-pack' ), SBP_OWNER_NAME ) . '</p>' .
 							             /* translators: 1. Speed Booster Pack 2. link to the plugin's reviews page on wp.org */
-							             '<p>' . sprintf( __( 'Almost forgot: If you like %1$s, it would mean a lot to us if you gave a fair rating on %2$s, because highly rated plugins are shown to more users on the WordPress plugin directory, meaning that we\'ll have no choice but to take better care of %1$s!', 'speed-booster-pack' ), SBP_PLUGIN_NAME, '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">wordpress.org</a>' ) . '</p>',
+							             '<p>' . sprintf( __( 'Almost forgot: If you like %1$s, it would mean a lot to us if you gave a fair rating on %2$s, because highly rated plugins are shown to more users on the WordPress plugin directory, meaning that we\'ll have no choice but to take better care of %1$s!', 'speed-booster-pack' ), 'Speed Booster Pack', '<a href="https://wordpress.org/support/plugin/speed-booster-pack/reviews/#new-post" rel="external noopener" target="_blank">wordpress.org</a>' ) . '</p>',
 						],
 						[
 							'type'    => 'subheading',
@@ -296,7 +296,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1: plugin owner's name (Optimocha) 2: Speed Booster Pack (Speed Booster Pack) 3: hyperlink to the owner's website */
-							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (This experience is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_PLUGIN_NAME, '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
+							'content' => sprintf( __( 'As %1$s, we like to brag about completing hundreds of tailored speed optimization jobs for different websites. (This experience is actually the source of the know-how that helps %2$s get better on every release!) If you\'re willing to invest in speeding up your website, not just with %2$s but as a whole, feel free to contact us on %3$s and benefit from our expertise on speed optimization!', 'speed-booster-pack' ), SBP_OWNER_NAME, 'Speed Booster Pack', '<a href="' . SBP_OWNER_HOME . '" rel="external noopener" target="_blank">' . strtolower( SBP_OWNER_NAME ) . '.com</a>' ),
 						],
 
 					],
@@ -504,7 +504,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'id'          => 'roles_to_disable_sbp',
 							'type'        => 'select',
-							'title'       => sprintf( __( 'Roles to disable %s features', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'title'       => sprintf( __( 'Roles to disable %s features', 'speed-booster-pack' ), 'Speed Booster Pack' ),
 							'chosen'      => true,
 							'multiple'    => true,
 							'placeholder' => 'Select user role',
@@ -666,7 +666,7 @@ class Speed_Booster_Pack_Admin {
 					'class'   => $ls_caching_class,
 					'type'    => 'submessage',
 					'style'   => 'info',
-					'content' => sprintf( __( 'Because your server is using LiteSpeed, %s is currently handling its caching system.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+					'content' => sprintf( __( 'Because your server is using LiteSpeed, %s is currently handling its caching system.', 'speed-booster-pack' ), 'Speed Booster Pack' ),
 				],
 				[
 					'id'       => 'module_caching_ls',
@@ -754,7 +754,7 @@ class Speed_Booster_Pack_Admin {
 					[
 						'type'    => 'submessage',
 						'style'   => 'danger',
-						'content' => sprintf( __( '%1$s cache is enabled but the advanced-cache.php file is created by another plugin. Saving your settings now will overwrite %1$s\'s advanced-cache.php file. To fix this, you can either disable the other plugin\'s caching feature or ours.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+						'content' => sprintf( __( '%1$s cache is enabled but the advanced-cache.php file is created by another plugin. Saving your settings now will overwrite %1$s\'s advanced-cache.php file. To fix this, you can either disable the other plugin\'s caching feature or ours.', 'speed-booster-pack' ), 'Speed Booster Pack' ),
 					]
 				], $cache_fields );
 			}
@@ -1316,7 +1316,7 @@ class Speed_Booster_Pack_Admin {
 					'title'    => __( 'Connect to Sucuri', 'speed-booster-pack' ),
 					'id'       => 'sucuri_enable',
 					'type'     => 'switcher',
-					'desc'     => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+					'desc'     => sprintf( __( 'When you connect your Sucuri account, you\'ll be able to clear your Sucuri cache via your admin bar. Plus, every time %1$s\'s cache is cleared, Sucuri\'s cache will be cleared as well.', 'speed-booster-pack' ), 'Speed Booster Pack' ),
 					'sanitize' => 'sbp_sanitize_boolean',
 				],
 				[
@@ -1542,7 +1542,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'subheading',
 							/* translators: %s = Speed Booster Pack  */
-							'content' => sprintf( __( 'Backup %s Settings', 'speed-booster-pack' ), SBP_PLUGIN_NAME ),
+							'content' => sprintf( __( 'Backup %s Settings', 'speed-booster-pack' ), 'Speed Booster Pack' ),
 						],
 						[
 							'id'    => 'backup',
@@ -1572,7 +1572,7 @@ class Speed_Booster_Pack_Admin {
 						[
 							'type'    => 'content',
 							/* translators: 1. Optimocha 2. Speed Booster Pack  */
-							'content' => '<p>' . sprintf( __( 'We are %1$s, a small team of speed optimization experts. Along with hundreds of websites we finished optimizing, we acquired %2$s in 2019 and we\'re working hard to make this plugin the best speed optimization plugin for WordPress ever since!', 'speed-booster-pack' ), SBP_OWNER_NAME, SBP_PLUGIN_NAME ) . '</p><ul><li><a href="https://optimocha.com/speed-optimization-for-wordpress/" rel="external noopener" target="_blank">' .
+							'content' => '<p>' . sprintf( __( 'We are %1$s, a small team of speed optimization experts. Along with hundreds of websites we finished optimizing, we acquired %2$s in 2019 and we\'re working hard to make this plugin the best speed optimization plugin for WordPress ever since!', 'speed-booster-pack' ), SBP_OWNER_NAME, 'Speed Booster Pack' ) . '</p><ul><li><a href="https://optimocha.com/speed-optimization-for-wordpress/" rel="external noopener" target="_blank">' .
 							             __( 'Visit our website', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/" rel="external noopener" target="_blank">' .
 							             __( 'Learn more about our tailored Complete Speed Optimization services', 'speed-booster-pack' ) . '</a></li><li><a href="https://optimocha.com/contact/" rel="external noopener" target="_blank">' .
 							             __( 'Contact us', 'speed-booster-pack' ) . '</a></li></ul>',
@@ -1613,7 +1613,7 @@ class Speed_Booster_Pack_Admin {
 		if ( is_array( $public_post_types ) ) {
 			CSF::createMetabox( $metabox_prefix,
 				[
-					'title'     => SBP_PLUGIN_NAME,
+					'title'     => 'Speed Booster Pack',
 					'post_type' => $public_post_types,
 				]
 			);
@@ -1635,7 +1635,7 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'sbp_csp_warning',
 					'type'  => 'notice',
 					'style' => 'warning',
-					'title' => __( sprintf( 'Warning: Preloading isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
+					'title' => __( sprintf( 'Warning: Preloading isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=assets" target="_blank">', 'Speed Booster Pack', '</a>' ) ),
 				];
 			}
 			// END CONTENT SPECIFIC PRELOAD
@@ -1668,7 +1668,7 @@ class Speed_Booster_Pack_Admin {
 					'id'    => 'sbp_criticalcss_warning',
 					'type'  => 'notice',
 					'style' => 'warning',
-					'title' => __( sprintf( 'Warning: Critical CSS isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=optimize-css" target="_blank">', SBP_PLUGIN_NAME, '</a>' ) ),
+					'title' => __( sprintf( 'Warning: Critical CSS isn\'t active in %1$s%2$s settings.%3$s', '<a href="admin.php?page=sbp-settings#tab=optimize-css" target="_blank">', 'Speed Booster Pack', '</a>' ) ),
 				];
 			}
 			// END CONTENT SPECIFIC CRITICALCSS
