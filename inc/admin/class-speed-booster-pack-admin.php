@@ -35,24 +35,6 @@ if ( ! defined( 'WPINC' ) ) {
 class Speed_Booster_Pack_Admin {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    4.0.0
-	 * @access   private
-	 * @var      string $plugin_name The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    4.0.0
-	 * @access   private
-	 * @var      string $version The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * WooCommerce Tracking setting.
 	 *
 	 * @since    4.5.0
@@ -78,10 +60,8 @@ class Speed_Booster_Pack_Admin {
 	 *
 	 * @since    4.0.0
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct() {
 
-		$this->plugin_name = $plugin_name;
-		$this->version     = $version;
 		$this->woocommerce_analytics = 1;
 		$this->woocommerce_tracking  = 1;
 
@@ -166,7 +146,7 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, SPEED_BOOSTER_PACK['url'] . 'admin/css/speed-booster-pack-admin.css', [], $this->version );
+		wp_enqueue_style( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'admin/css/speed-booster-pack-admin.css', [], SPEED_BOOSTER_PACK['version'] );
 
 	}
 
@@ -177,9 +157,9 @@ class Speed_Booster_Pack_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, SPEED_BOOSTER_PACK['url'] . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], $this->version );
+		wp_enqueue_script( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], SPEED_BOOSTER_PACK['version'] );
 
-		wp_localize_script( $this->plugin_name,
+		wp_localize_script( SPEED_BOOSTER_PACK['slug'],
 			'sbp_ajax_vars',
 			[
 				'nonce' => wp_create_nonce( 'sbp_ajax_nonce' ),
