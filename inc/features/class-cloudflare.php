@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Cloudflare extendsAbstract_Module {
+class Cloudflare extends Abstract_Module {
 	private static $api_url = 'https://api.cloudflare.com/client/v4/zones/';
 	private static $action_paths = [
 		'check_credentials'               => '',

@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use SpeedBooster\SBP_Advanced_Cache_Generator;
 
-class Cache extendsBase_Cache {
+class Cache extends Base_Cache {
 	/**
 	 * Name of the cached file
 	 *

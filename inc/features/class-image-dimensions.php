@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use simplehtmldom\HtmlDocument;
 
-class Image_Dimensions extendsAbstract_Module {
+class Image_Dimensions extends Abstract_Module {
 	public function __construct() {
 		parent::__construct();
 

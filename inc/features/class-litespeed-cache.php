@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class LiteSpeed_Cache extendsBase_Cache {
+class LiteSpeed_Cache extends Base_Cache {
 	const ROOT_MARKER = 'SBP_LS_CACHE';
 
 	private $headers = [];

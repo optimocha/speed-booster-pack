@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Font_Optimizer extendsAbstract_Module {
+class Font_Optimizer extends Abstract_Module {
 	private $families = [];
 	private $subsets = [];
 	private $css2_families = [];

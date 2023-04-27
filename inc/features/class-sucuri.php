@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Automattic\WooCommerce\Admin\API\Reports\Variations\DataStore;
 
-class Sucuri extendsAbstract_Module {
+class Sucuri extends Abstract_Module {
 	public function __construct() {
 		if ( ! sbp_get_option( 'sucuri_enable' ) ) {
 			return;

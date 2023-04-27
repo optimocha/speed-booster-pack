@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Lazy_Loader extendsAbstract_Module {
+class Lazy_Loader extends Abstract_Module {
 
 	private $noscript_placeholder = '<!--SBP_NOSCRIPT_PLACEHOLDER-->';
 	

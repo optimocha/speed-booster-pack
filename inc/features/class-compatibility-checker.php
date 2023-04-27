@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Compatibility_Checker extendsAbstract_Module {
+class Compatibility_Checker extends Abstract_Module {
 	private $plugins_list = [
 		'wp-http-compression/wp-http-compression.php',
 		'wordpress-gzip-compression/ezgz.php',

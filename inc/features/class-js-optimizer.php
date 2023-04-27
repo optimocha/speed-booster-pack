@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
  * Class SBP_JS_Optimizer
  * @package SpeedBooster
  */
-class JS_Optimizer extendsAbstract_Module {
+class JS_Optimizer extends Abstract_Module {
 	/**
 	 * If script tag has any other type attribute except below types, it won't be optimized.
 	 */

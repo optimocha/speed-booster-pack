@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Base_Cache extendsAbstract_Module {
+class Base_Cache extends Abstract_Module {
 	protected $is_litespeed = false;
 
 	public function __construct() {

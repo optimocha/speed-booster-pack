@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Localize_Tracker extendsAbstract_Module {
+class Localize_Tracker extends Abstract_Module {
 	private $file_name = '';
 	private $dir_path = SBP_UPLOADS_DIR;
 	private $dir_url = SBP_UPLOADS_URL;
