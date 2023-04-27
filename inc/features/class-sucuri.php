@@ -4,8 +4,6 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-use Automattic\WooCommerce\Admin\API\Reports\Variations\DataStore;
-
 class Sucuri extends Abstract_Module {
 	public function __construct() {
 		if ( ! sbp_get_option( 'sucuri_enable' ) ) {
