@@ -120,29 +120,29 @@ class Core {
 	 */
 	private function init_modules() {
 
-		new SpeedBooster\WP_Admin();
-		new SpeedBooster\Database_Optimizer();
-		new SpeedBooster\Newsletter();
-		new SpeedBooster\Migrator();
-		new SpeedBooster\Compatibility_Checker();
-		new SpeedBooster\Cloudflare();
-		new SpeedBooster\Sucuri();
-		new SpeedBooster\Notice_Manager();
-		new SpeedBooster\Cache_Warmup();
-		new SpeedBooster\JS_Optimizer();
-		new SpeedBooster\Tweaks();
-		new SpeedBooster\Font_Optimizer();
-		new SpeedBooster\Preboost();
-		new SpeedBooster\CDN();
-		new SpeedBooster\Lazy_Loader();
-		new SpeedBooster\CSS_Minifier();
-		new SpeedBooster\Critical_CSS();
-		new SpeedBooster\Image_Dimensions();
-		new SpeedBooster\HTML_Minifier();
-		new SpeedBooster\Localize_Tracker();
-		new SpeedBooster\Woocommerce();
-		new SpeedBooster\Cache();
-		new SpeedBooster\LiteSpeed_Cache();
+		new Optimocha\SpeedBooster\WP_Admin();
+		new Optimocha\SpeedBooster\Database_Optimizer();
+		new Optimocha\SpeedBooster\Newsletter();
+		new Optimocha\SpeedBooster\Migrator();
+		new Optimocha\SpeedBooster\Compatibility_Checker();
+		new Optimocha\SpeedBooster\Cloudflare();
+		new Optimocha\SpeedBooster\Sucuri();
+		new Optimocha\SpeedBooster\Notice_Manager();
+		new Optimocha\SpeedBooster\Cache_Warmup();
+		new Optimocha\SpeedBooster\JS_Optimizer();
+		new Optimocha\SpeedBooster\Tweaks();
+		new Optimocha\SpeedBooster\Font_Optimizer();
+		new Optimocha\SpeedBooster\Preboost();
+		new Optimocha\SpeedBooster\CDN();
+		new Optimocha\SpeedBooster\Lazy_Loader();
+		new Optimocha\SpeedBooster\CSS_Minifier();
+		new Optimocha\SpeedBooster\Critical_CSS();
+		new Optimocha\SpeedBooster\Image_Dimensions();
+		new Optimocha\SpeedBooster\HTML_Minifier();
+		new Optimocha\SpeedBooster\Localize_Tracker();
+		new Optimocha\SpeedBooster\Woocommerce();
+		new Optimocha\SpeedBooster\Cache();
+		new Optimocha\SpeedBooster\LiteSpeed_Cache();
 
 	}
 
@@ -167,6 +167,13 @@ class Core {
 		 * Composer autoload file.
 		 */
 		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/autoload.php';
+
+		/**
+		 * Requires the file with the helper functions.
+		 *
+		 * @since   5.0.0
+		 */
+		require __DIR__ . '/inc/sbp-helpers.php';
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
