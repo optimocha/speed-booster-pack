@@ -219,7 +219,7 @@ class LiteSpeed_Cache extends Base_Cache {
 		return $html;
 	}
 
-	// B_TODO: We are currently not supporting this feature on LiteSpeed Cache
+	// TODO: We are currently not supporting this feature on LiteSpeed Cache
 //	public function clear_post_by_comment( $comment_id ) {
 //		$comment = get_comment( $comment_id );
 //
