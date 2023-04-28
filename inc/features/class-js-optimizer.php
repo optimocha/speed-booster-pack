@@ -186,8 +186,7 @@ class JS_Optimizer {
 	private $js_footer = false;
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		$this->js_optimize_strategy = sbp_get_option( 'js_optimize', 'off' );
 		$this->js_footer            = sbp_get_option( 'js_footer' );
 

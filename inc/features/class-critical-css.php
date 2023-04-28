@@ -12,8 +12,7 @@ class Critical_CSS {
 	];
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'enable_criticalcss' ) ) {
 			return;
 		}

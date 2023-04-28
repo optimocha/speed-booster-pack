@@ -15,8 +15,7 @@ class Cache extends Base_Cache {
 	private $file_name = 'index.html';
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) ) {
 			return;
 		}

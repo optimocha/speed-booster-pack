@@ -14,8 +14,7 @@ class HTML_Minifier {
 	private $html;
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'minify_html' ) ) {
 			return;
 		}

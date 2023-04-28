@@ -7,8 +7,7 @@ defined( 'ABSPATH' ) || exit;
 class Tweaks {
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_tweaks' ) ) {
 			return;
 		}

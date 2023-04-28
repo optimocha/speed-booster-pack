@@ -8,8 +8,7 @@ use simplehtmldom\HtmlDocument;
 
 class Image_Dimensions {
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'missing_image_dimensions' ) ) {
 			return;
 		}

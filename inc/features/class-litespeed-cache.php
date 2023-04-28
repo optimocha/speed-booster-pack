@@ -10,8 +10,7 @@ class LiteSpeed_Cache extends Base_Cache {
 	private $headers = [];
 
 	public function __construct() {
-		parent::__construct();
-		if ( SBP_Utils::is_litespeed() ) {
+				if ( SBP_Utils::is_litespeed() ) {
 			add_action( 'init', [ $this, 'clear_lscache_request' ] );
 			add_action( 'init', [ $this, 'set_headers' ] );
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );

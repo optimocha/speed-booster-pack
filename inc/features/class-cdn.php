@@ -13,8 +13,7 @@ class CDN {
 	private $site_url = null;
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'cdn_url' ) || ! sbp_get_option( 'cdn_enable' ) ) {
 			return;
 		}

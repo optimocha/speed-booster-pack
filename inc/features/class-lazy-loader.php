@@ -12,8 +12,7 @@ class Lazy_Loader {
 
 	public function __construct() {
 
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) || sbp_should_disable_feature( 'lazyload' ) ) {
 			return;
 		}

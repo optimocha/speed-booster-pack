@@ -15,8 +15,7 @@ class CSS_Minifier {
 	private $dom = null;
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_css' ) || ! sbp_get_option( 'css_inline' ) || sbp_get_option( 'enable_criticalcss' ) ) {
 			return;
 		}

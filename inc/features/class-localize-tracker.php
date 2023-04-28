@@ -14,8 +14,7 @@ class Localize_Tracker {
 	private $transient_name = '';
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'localize_tracking_scripts' ) ) {
 			return;
 		}

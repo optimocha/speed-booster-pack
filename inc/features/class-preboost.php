@@ -33,8 +33,7 @@ class Preboost {
 	private $appending_script = "";
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( is_array( sbp_get_option( 'preboost' ) ) && ( ! sbp_get_option( 'module_assets' ) ) ) {
 			return;
 		}

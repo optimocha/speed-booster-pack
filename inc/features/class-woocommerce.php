@@ -6,8 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 class Woocommerce {
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_woocommerce' ) ) {
 			return;
 		}

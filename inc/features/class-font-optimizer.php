@@ -11,8 +11,7 @@ class Font_Optimizer {
 	private $found_fonts = true;
 
 	public function __construct() {
-		parent::__construct();
-
+		
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'optimize_gfonts' ) ) {
 			return;
 		}
