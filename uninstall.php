@@ -115,7 +115,7 @@ foreach ( $users as $user ) {
 	delete_user_meta( $user->ID, 'sbp_intro' );
 }
 
-// B_TODO: let's make a tool called "Cleanup SBP metadata" in a future version
+// TODO: let's make a tool called "Cleanup SBP metadata" in a future version
 // $posts = new WP_Query([
 //     'post_type' => 'any',
 //     'meta_key' => 'sbp_post_meta',
@@ -123,19 +123,3 @@ foreach ( $users as $user ) {
 // foreach ($posts->get_posts() as $post) {
 //     delete_post_meta($post->ID, 'sbp_post_meta');
 // }
-
-// Delete injected lines from wp-config.php
-if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {
-	$wp_config_file = ABSPATH . 'wp-config.php';
-} else {
-	$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
-}
-
-$wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
-$config_regex = '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si';
-if ( preg_match( $config_regex, $wp_config_content ) ) {
-	if ($wp_filesystem->is_writable($wp_config_file)) {
-		$modified_wp_config_content = preg_replace( $config_regex, '', $wp_config_content );
-		$wp_filesystem->put_contents( $wp_config_file, $modified_wp_config_content );
-	}
-}
