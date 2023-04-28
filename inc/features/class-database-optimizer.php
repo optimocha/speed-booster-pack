@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || exit;
  * @package SpeedBooster
  * @since 4.2.0
  */
-class Database_Optimizer extends Abstract_Module {
+class Database_Optimizer {
 	/**
 	 * SBP_Database_Optimizer constructor.
 	 * @since 4.2.0

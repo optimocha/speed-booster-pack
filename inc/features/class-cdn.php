@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class CDN extends Abstract_Module {
+class CDN {
 
 	private $included_dirs = [];
 	private $excluded_extensions = [

@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use simplehtmldom\HtmlDocument;
 
-class Cache_Warmup extends Abstract_Module {
+class Cache_Warmup {
 	private $warmup_process;
 
 	public function __construct() {

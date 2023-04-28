@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use simplehtmldom\HtmlDocument;
 
-class CSS_Minifier extends Abstract_Module {
+class CSS_Minifier {
 	private $styles_list = [];
 	private $exceptions = [
 		'admin-bar',

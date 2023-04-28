@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Sucuri extends Abstract_Module {
+class Sucuri {
 	public function __construct() {
 		if ( ! sbp_get_option( 'sucuri_enable' ) ) {
 			return;

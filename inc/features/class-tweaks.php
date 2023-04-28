@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Tweaks extends Abstract_Module {
+class Tweaks {
 
 	public function __construct() {
 		parent::__construct();

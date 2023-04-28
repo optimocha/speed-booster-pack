@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Utils extends Abstract_Module {
+class Utils {
 	public static function explode_lines( $text, $unique = true ) {
 		if ( ! $text ) {
 			return [];

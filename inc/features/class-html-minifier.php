@@ -6,7 +6,7 @@ use SpeedBooster\HTML_Minify;
 
 defined( 'ABSPATH' ) || exit;
 
-class HTML_Minifier extends Abstract_Module {
+class HTML_Minifier {
 	private $minify_css = true;
 	private $minify_js = false;
 	private $remove_comments = true;

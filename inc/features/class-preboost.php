@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Preboost extends Abstract_Module {
+class Preboost {
 	private $extension_type_matches = [
 		'css'   => 'style',
 		'js'    => 'script',

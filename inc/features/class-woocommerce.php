@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Features;
 
 defined( 'ABSPATH' ) || exit;
 
-class Woocommerce extends Abstract_Module {
+class Woocommerce {
 	public function __construct() {
 		parent::__construct();
 
