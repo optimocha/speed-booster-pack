@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Optimize JavaScripts. Move JS files to footer or add defer attribute to all script tags.
  *
- * Class SBP_JS_Optimizer
+ * Class JS_Optimizer
  * @package SpeedBooster
  */
 class JS_Optimizer {
