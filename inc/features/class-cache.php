@@ -101,7 +101,7 @@ class Cache extends Base_Cache {
 	 * @param $html
 	 */
 	private function create_cache_file( $html ) {
-    	if( empty( $html ) ) { return; }
+		if( empty( $html ) ) { return; }
 		$dir_path            = $this->get_cache_file_path();
 		$file_path           = $dir_path . $this->file_name;
 		$sbp_cache_signature = PHP_EOL . '<!-- Cached by Speed Booster Pack -->';
@@ -500,23 +500,23 @@ FileETag None
 	}
 
 	private function clear_cache_hooks() {
-		add_action( '_core_updated_successfully', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
-		add_action( 'switch_theme', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
-		add_action( 'save_post', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
-		add_action( 'autoptimize_action_cachepurged', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
-		add_action( 'upgrader_process_complete', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
+		add_action( '_core_updated_successfully', [ $this, 'clear_total_cache' ] );
+		add_action( 'switch_theme', [ $this, 'clear_total_cache' ] );
+		add_action( 'save_post', [ $this, 'clear_total_cache' ] );
+		add_action( 'autoptimize_action_cachepurged', [ $this, 'clear_total_cache' ] );
+		add_action( 'upgrader_process_complete', [ $this, 'clear_total_cache' ] );
 		add_action( 'woocommerce_thankyou', [ $this, 'woocommerce_cache_clean' ] );
-		add_action( 'woocommerce_product_set_stock', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
-		add_action( 'woocommerce_product_set_stock_status', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
-		add_action( 'woocommerce_variation_set_stock', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
-		add_action( 'woocommerce_variation_set_stock_status', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
-		add_action( 'wp_update_nav_menu', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When a custom menu is update.
-		add_action( 'update_option_sidebars_widgets', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When you change the order of widgets.
-		add_action( 'update_option_category_base', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When category permalink prefix is update.
-		add_action( 'update_option_tag_base', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When tag permalink prefix is update.
-		add_action( 'permalink_structure_changed', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When permalink structure is update.
-		add_action( 'edited_terms', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When a term is updated.
-		add_action( 'customize_save', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When customizer is saved.
+		add_action( 'woocommerce_product_set_stock', [ $this, 'clear_total_cache' ] );
+		add_action( 'woocommerce_product_set_stock_status', [ $this, 'clear_total_cache' ] );
+		add_action( 'woocommerce_variation_set_stock', [ $this, 'clear_total_cache' ] );
+		add_action( 'woocommerce_variation_set_stock_status', [ $this, 'clear_total_cache' ] );
+		add_action( 'wp_update_nav_menu', [ $this, 'clear_total_cache' ] );  // When a custom menu is update.
+		add_action( 'update_option_sidebars_widgets', [ $this, 'clear_total_cache' ] );  // When you change the order of widgets.
+		add_action( 'update_option_category_base', [ $this, 'clear_total_cache' ] );  // When category permalink prefix is update.
+		add_action( 'update_option_tag_base', [ $this, 'clear_total_cache' ] );  // When tag permalink prefix is update.
+		add_action( 'permalink_structure_changed', [ $this, 'clear_total_cache' ] );  // When permalink structure is update.
+		add_action( 'edited_terms', [ $this, 'clear_total_cache' ] );  // When a term is updated.
+		add_action( 'customize_save', [ $this, 'clear_total_cache' ] );  // When customizer is saved.
 		add_action( 'comment_post', [ $this, 'comment_action' ] );
 		add_action(
 			'wp_trash_post',
@@ -527,15 +527,15 @@ FileETag None
 			}
 		);
 
-//		add_action( 'user_register', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When a user is added.
-//		add_action( 'profile_update', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When a user is updated.
-//		add_action( 'deleted_user', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When a user is deleted.
-//		add_action( 'create_term', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When a term is created.
-//		add_action( 'delete_term', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );  // When a term is deleted.
+//		add_action( 'user_register', [ $this, 'clear_total_cache' ] );  // When a user is added.
+//		add_action( 'profile_update', [ $this, 'clear_total_cache' ] );  // When a user is updated.
+//		add_action( 'deleted_user', [ $this, 'clear_total_cache' ] );  // When a user is deleted.
+//		add_action( 'create_term', [ $this, 'clear_total_cache' ] );  // When a term is created.
+//		add_action( 'delete_term', [ $this, 'clear_total_cache' ] );  // When a term is deleted.
 
 		if ( is_admin() ) {
-			add_action( 'wpmu_new_blog', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
-			add_action( 'delete_blog', 'Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
+			add_action( 'wpmu_new_blog', [ $this, 'clear_total_cache' ] );
+			add_action( 'delete_blog', [ $this, 'clear_total_cache' ] );
 			add_action( 'transition_comment_status', [ $this, 'comment_transition' ], 10, 3 );
 			add_action( 'edit_comment', [ $this, 'comment_action' ] );
 		}
