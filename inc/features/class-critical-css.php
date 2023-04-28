@@ -84,7 +84,7 @@ class Critical_CSS {
 		$dom->load( $html, true, false );
 
 		// Get excluded urls
-		$excluded_urls = SBP_Utils::explode_lines( sbp_get_option( 'criticalcss_excludes' ) );
+		$excluded_urls = Utils::explode_lines( sbp_get_option( 'criticalcss_excludes' ) );
 
 		// Find all links
 		$links = $dom->find( 'link[rel=stylesheet]' );

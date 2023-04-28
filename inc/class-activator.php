@@ -12,10 +12,6 @@
 
 namespace Optimocha\SpeedBooster;
 
-use SpeedBooster\Advanced_Cache_Generator;
-use SpeedBooster\Cache;
-use SpeedBooster\LiteSpeed_Cache;
-
 defined( 'ABSPATH' ) || exit;
 
 /**

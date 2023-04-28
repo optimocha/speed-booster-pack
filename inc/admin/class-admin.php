@@ -12,11 +12,11 @@
 
 namespace Optimocha\SpeedBooster\Admin;
 
-use SpeedBooster\Notice_Manager;
-use SpeedBooster\Utils;
-use SpeedBooster\Advanced_Cache_Generator;
-use SpeedBooster\Cache;
-use SpeedBooster\LiteSpeed_Cache;
+use Optimocha\SpeedBooster\Features\Notice_Manager;
+use Optimocha\SpeedBooster\Features\Utils;
+use Optimocha\SpeedBooster\Features\Advanced_Cache_Generator;
+use Optimocha\SpeedBooster\Features\Cache;
+use Optimocha\SpeedBooster\Features\LiteSpeed_Cache;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -68,21 +68,21 @@ class Admin {
 
 		add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
 
-		add_filter( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::options_saved_filter' );
+		add_filter( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Cache::options_saved_filter' );
 
-		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cache::options_saved_listener' );
+		add_action( 'csf_sbp_options_save_before', '\Optimocha\SpeedBooster\Features\Cache::options_saved_listener' );
 
-		add_action( 'csf_sbp_options_save_before', '\SpeedBooster\SBP_Cloudflare::update_cloudflare_settings' );
+		add_action( 'csf_sbp_options_save_before', '\Optimocha\SpeedBooster\Features\Cloudflare::update_cloudflare_settings' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Woocommerce::set_woocommerce_option_tracking' );
+		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Woocommerce::set_woocommerce_option_tracking' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Woocommerce::set_woocommerce_option_analytics' );
+		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Woocommerce::set_woocommerce_option_analytics' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::clear_total_cache' );
+		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_Cache::generate_htaccess' );
+		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Cache::generate_htaccess' );
 
-		add_action( 'csf_sbp_options_saved', '\SpeedBooster\SBP_LiteSpeed_Cache::insert_htaccess_rules' );
+		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\LiteSpeed_Cache::insert_htaccess_rules' );
 
 		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
 
@@ -99,13 +99,13 @@ class Admin {
 
         if ( sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' ) ) {
 
-            SBP_Cache::clear_total_cache();
+            Cache::clear_total_cache();
 
-            SBP_Cache::set_wp_cache_constant( true );
+            Cache::set_wp_cache_constant( true );
 
-            SBP_Cache::generate_htaccess();
+            Cache::generate_htaccess();
 
-            $advanced_cache_file_content = SBP_Advanced_Cache_Generator::generate_advanced_cache_file();
+            $advanced_cache_file_content = Advanced_Cache_Generator::generate_advanced_cache_file();
             $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
             if ( $advanced_cache_file_content ) {
                 file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
@@ -114,7 +114,7 @@ class Admin {
         }
 
         if ( sbp_get_option( 'module_caching_ls' ) && ! sbp_should_disable_feature( 'caching' ) ) {
-            SBP_LiteSpeed_Cache::insert_htaccess_rules();
+            LiteSpeed_Cache::insert_htaccess_rules();
         }
 
         delete_option( 'sbp_activation_defaults' );
@@ -165,9 +165,9 @@ class Admin {
 
 	public function get_woocommerce_options() {
 		
-		$this->woocommerce_analytics = \SpeedBooster\SBP_Woocommerce::get_woocommerce_option( 'woocommerce_analytics_enabled' );
+		$this->woocommerce_analytics = \Optimocha\SpeedBooster\Features\Woocommerce::get_woocommerce_option( 'woocommerce_analytics_enabled' );
 
-		$this->woocommerce_tracking  = \SpeedBooster\SBP_Woocommerce::get_woocommerce_option( 'woocommerce_allow_tracking' );
+		$this->woocommerce_tracking  = \Optimocha\SpeedBooster\Features\Woocommerce::get_woocommerce_option( 'woocommerce_allow_tracking' );
 
 	}
 
@@ -491,7 +491,7 @@ class Admin {
 			);
 			/* END Section: General */
 
-            $is_litespeed = SBP_Utils::is_litespeed();
+            $is_litespeed = Utils::is_litespeed();
 			$page_caching_class = $is_litespeed ? ' sbp-hidden ' : '';
 			$ls_caching_class   = $is_litespeed ? '' : ' sbp-hidden ';
 
@@ -836,7 +836,7 @@ class Admin {
 			];
 
 			// Check if WooCommerce active or not
-			if ( SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+			if ( Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 				$critical_css_fields[] = [
 					'title'  => 'is_shop',
 					'fields' => [
@@ -1365,7 +1365,7 @@ class Admin {
 			/* BEGIN Section: Woocommerce */
             $woocommerce_fields = [];
 
-            if ( ! SBP_Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+            if ( ! Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
                 $woocommerce_fields = [
                     [
                         'id'    => 'sbp_csp_warning',
@@ -1722,7 +1722,7 @@ class Admin {
 	}
 
 	public function modify_menu_title() {
-		$count = SBP_Notice_Manager::get_notice_count();
+		$count = Notice_Manager::get_notice_count();
 
 		if ( $count ) {
 			?>

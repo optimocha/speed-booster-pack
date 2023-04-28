@@ -10,7 +10,7 @@ class LiteSpeed_Cache extends Base_Cache {
 	private $headers = [];
 
 	public function __construct() {
-				if ( SBP_Utils::is_litespeed() ) {
+				if ( Utils::is_litespeed() ) {
 			add_action( 'init', [ $this, 'clear_lscache_request' ] );
 			add_action( 'init', [ $this, 'set_headers' ] );
 			add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
@@ -52,7 +52,7 @@ class LiteSpeed_Cache extends Base_Cache {
 	}
 
 	public static function insert_htaccess_rules() {
-		if ( ! SBP_Utils::is_litespeed() ) {
+		if ( ! Utils::is_litespeed() ) {
 			return;
 		}
 
@@ -100,11 +100,11 @@ class LiteSpeed_Cache extends Base_Cache {
 			$lines[] = '</IfModule>';
 		}
 
-		SBP_Utils::insert_to_htaccess( self::ROOT_MARKER, implode( PHP_EOL, $lines ) );
+		Utils::insert_to_htaccess( self::ROOT_MARKER, implode( PHP_EOL, $lines ) );
 	}
 
 	public static function remove_htaccess_rules() {
-		SBP_Utils::insert_to_htaccess( self::ROOT_MARKER, '' );
+		Utils::insert_to_htaccess( self::ROOT_MARKER, '' );
 	}
 
 	private function add_tags() {
@@ -212,7 +212,7 @@ class LiteSpeed_Cache extends Base_Cache {
 	}
 
 	public function add_cache_signature( $html ) {
-		if ( SBP_Utils::is_litespeed() && sbp_get_option( 'module_caching_ls' ) ) {
+		if ( Utils::is_litespeed() && sbp_get_option( 'module_caching_ls' ) ) {
 			$html .= '<!-- LiteSpeed cache managed by Speed Booster Pack -->';
 		}
 

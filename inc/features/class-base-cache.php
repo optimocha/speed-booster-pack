@@ -8,7 +8,7 @@ class Base_Cache {
 	protected $is_litespeed = false;
 
 	public function __construct() {
-		$this->is_litespeed = SBP_Utils::is_litespeed();
+		$this->is_litespeed = Utils::is_litespeed();
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Base_Cache {
 
 		if ( ! in_array( 'include_query_strings', $skipped_conditions ) ) {
 			if ( ! empty( $_GET ) ) {
-				$include_query_strings = SBP_Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
+				$include_query_strings = Utils::explode_lines( sbp_get_option( 'caching_include_query_strings' ) );
 
 				foreach ( $_GET as $key => $value ) {
 					if ( ! in_array( $key, $include_query_strings ) ) {
@@ -77,7 +77,7 @@ class Base_Cache {
 	private function check_excluded_urls() {
 		// Check for exclude URLs
 		if ( $exclude_urls = sbp_get_option( 'caching_' . ( $this->is_litespeed !== false ? 'ls_' : '' ) . 'exclude_urls' ) ) {
-			$exclude_urls   = array_map( 'trim', SBP_Utils::explode_lines( $exclude_urls ) );
+			$exclude_urls   = array_map( 'trim', Utils::explode_lines( $exclude_urls ) );
 			$exclude_urls[] = '/favicon.ico';
 			$current_url    = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 			$current_url = explode( '?', $current_url )[0];
@@ -94,7 +94,7 @@ class Base_Cache {
 			// Default Cookie Excludes
 			$cookies          = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_' ];
 			$excluded_cookies = sbp_get_option( 'caching_' . ( $this->is_litespeed !== false ? 'ls_' : '' ) . 'exclude_cookies' );
-			$excluded_cookies = SBP_Utils::explode_lines( $excluded_cookies );
+			$excluded_cookies = Utils::explode_lines( $excluded_cookies );
 			$cookies          = array_merge( $cookies, $excluded_cookies );
 
 			$cookies_regex = '/^(' . implode( '|', $cookies ) . ')/';

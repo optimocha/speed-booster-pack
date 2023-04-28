@@ -9,7 +9,7 @@ class Warmup_Process extends \WP_Background_Process {
 	private $begun = false;
 
 	protected function task( $item ) {
-		$item['url'] = SBP_Utils::clear_hashes_and_question_mark( $item['url'] );
+		$item['url'] = Utils::clear_hashes_and_question_mark( $item['url'] );
 
 		$options = isset( $item['options'] ) ? $item['options'] : [];
 		$args    = array_merge( [

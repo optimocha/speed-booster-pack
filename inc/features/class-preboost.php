@@ -77,13 +77,13 @@ class Preboost {
 	private function prepare_preload_tags() {
 		$urls = [];
 		if ( isset( sbp_get_option( 'preboost' )['preboost_include'] ) ) {
-			$urls = SBP_Utils::explode_lines( sbp_get_option( 'preboost' )['preboost_include'] );
+			$urls = Utils::explode_lines( sbp_get_option( 'preboost' )['preboost_include'] );
 		}
 
 		if ( is_singular() ) {
 			$content_specific_preload_rules = sbp_get_post_meta( get_the_ID(), 'sbp_preload' );
 			if ( $content_specific_preload_rules !== null ) {
-				$content_specific_preload_rules_array = SBP_Utils::explode_lines( $content_specific_preload_rules );
+				$content_specific_preload_rules_array = Utils::explode_lines( $content_specific_preload_rules );
 				$urls                                 = array_merge( $urls, $content_specific_preload_rules_array );
 			}
 		}
@@ -91,7 +91,7 @@ class Preboost {
 		if ( isset( $urls ) && count( $urls ) ) {
 			foreach ( $urls as $url ) {
 				$type                   = $this->get_type( $url );
-				$mime_type              = $this->get_mime_type( SBP_Utils::get_file_extension_from_url( $url ) );
+				$mime_type              = $this->get_mime_type( Utils::get_file_extension_from_url( $url ) );
 				$mime_type_attribute    = $mime_type ? " type='" . esc_attr( $mime_type ) . "' crossorigin" : '';
 				$link_tag               = "<link rel='preload' href='" . esc_url( $url ) . "' as='" . esc_attr( $type ) . "'$mime_type_attribute />";
 				$this->appending_script .= $link_tag . PHP_EOL;
@@ -100,7 +100,7 @@ class Preboost {
 	}
 
 	private function get_type( $url ) {
-		$extension = strtolower( SBP_Utils::get_file_extension_from_url( $url ) );
+		$extension = strtolower( Utils::get_file_extension_from_url( $url ) );
 		if ( array_key_exists( $extension, $this->extension_type_matches ) ) {
 			return $this->extension_type_matches[ $extension ];
 		}

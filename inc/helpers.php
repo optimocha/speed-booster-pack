@@ -2,7 +2,7 @@
 
 namespace Optimocha\SpeedBooster;
 
-use SpeedBooster\Utils;
+use Optimocha\SpeedBooster\Features\Utils;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -343,7 +343,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 	 */
 	function sbp_sanitize_caching_urls( $urls ) {
 		$urls = strip_tags( $urls );
-		$urls = SBP_Utils::explode_lines( $urls );
+		$urls = Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
 		foreach ( $urls as &$url ) {
 			$url = sbp_remove_leading_string( $url, 'https://' );
@@ -371,7 +371,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_cookies' ) ) {
 	function sbp_sanitize_caching_cookies( $urls ) {
 		$urls = strip_tags( $urls );
 		$urls = str_replace( [ '(', ')', '[', ']', '*', '$', '/', '|', '.' ], [ '', '', '', '', '', '', '', '', '\.' ], $urls );
-		$urls = SBP_Utils::explode_lines( $urls );
+		$urls = Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
 
 		return implode( PHP_EOL, $urls );
@@ -390,7 +390,7 @@ if ( ! function_exists( 'sbp_sanitize_query_strings' ) ) {
 	 */
 	function sbp_sanitize_query_strings( $urls ) {
 		$urls = strip_tags( $urls );
-		$urls = SBP_Utils::explode_lines( $urls );
+		$urls = Utils::explode_lines( $urls );
 		$urls = sbp_remove_duplicates_and_empty( $urls );
 
 		return implode( PHP_EOL, $urls );

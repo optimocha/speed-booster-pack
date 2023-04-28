@@ -204,9 +204,9 @@ class JS_Optimizer {
 			return $html;
 		}
 
-		$this->js_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_footer_exclude' ) ), $this->default_excludes );
-		$this->exclude_rules           = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
-		$this->include_rules           = array_merge( SBP_Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
+		$this->js_footer_exclude_rules = array_merge( Utils::explode_lines( sbp_get_option( 'js_footer_exclude' ) ), $this->default_excludes );
+		$this->exclude_rules           = array_merge( Utils::explode_lines( sbp_get_option( 'js_exclude' ) ), $this->default_excludes );
+		$this->include_rules           = array_merge( Utils::explode_lines( sbp_get_option( 'js_include' ) ), $this->default_includes );
 
 		if ( is_singular() ) {
 			$js_optimization_status = sbp_get_post_meta( get_the_ID(), 'js_optimize', 'main_setting' );
@@ -215,8 +215,8 @@ class JS_Optimizer {
 			if ( $js_optimization_status == 'off' || ( ! sbp_get_option( 'module_assets' ) && $js_optimization_status == 'main_setting' ) ) {
 				$this->js_optimize_strategy = 'off';
 			} elseif ( $js_optimization_status != 'main_setting' ) {
-				$this->exclude_rules        = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_exclude' ) ), $this->default_excludes );
-				$this->include_rules        = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_include' ) ), $this->default_includes );
+				$this->exclude_rules        = array_merge( Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_exclude' ) ), $this->default_excludes );
+				$this->include_rules        = array_merge( Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_include' ) ), $this->default_includes );
 				$this->js_optimize_strategy = sbp_get_post_meta( get_the_ID(), 'js_optimize' );
 			}
 
@@ -224,7 +224,7 @@ class JS_Optimizer {
 				$this->js_footer = false;
 			} elseif ( $js_footer_status == 'on' ) {
 				$this->js_footer               = true;
-				$this->js_footer_exclude_rules = array_merge( SBP_Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_footer_exclude' ) ), $this->default_excludes );
+				$this->js_footer_exclude_rules = array_merge( Utils::explode_lines( sbp_get_post_meta( get_the_ID(), 'js_footer_exclude' ) ), $this->default_excludes );
 			}
 		}
 

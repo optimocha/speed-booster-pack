@@ -100,7 +100,7 @@ class Lazy_Loader {
 
 		$this->replace_with_noscripts( $html );
 
-		$lazyload_exclusions = SBP_Utils::explode_lines( sbp_get_option( 'lazyload_exclude' ) );
+		$lazyload_exclusions = Utils::explode_lines( sbp_get_option( 'lazyload_exclude' ) );
 		// Add default lazyload exclusions
 		$default_lazyload_exclusions = [
 			'data-no-lazy',

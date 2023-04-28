@@ -65,14 +65,14 @@ class CDN {
 		];
 
 		$includes            = sbp_get_option( 'cdn_includes' );
-		$lines               = SBP_Utils::explode_lines( $includes, true );
+		$lines               = Utils::explode_lines( $includes, true );
 		$this->included_dirs = array_merge( $this->included_dirs, $lines );
 		$this->included_dirs = apply_filters( 'sbp_cdn_included_directories', $this->included_dirs );
 	}
 
 	private function set_excluded_extensions() {
 		$excludes                  = sbp_get_option( 'cdn_excludes' );
-		$lines                     = SBP_Utils::explode_lines( $excludes, true );
+		$lines                     = Utils::explode_lines( $excludes, true );
 		$this->excluded_extensions = array_merge( $this->excluded_extensions, $lines );
 		$this->excluded_extensions = apply_filters( 'sbp_cdn_excluded_extensions', $this->excluded_extensions );
 	}
@@ -117,7 +117,7 @@ class CDN {
 	}
 
 	private function is_excluded( $url ) {
-		$extension = SBP_Utils::get_file_extension_from_url( $url );
+		$extension = Utils::get_file_extension_from_url( $url );
 
 		return in_array( $extension, $this->excluded_extensions );
 	}

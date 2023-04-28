@@ -184,7 +184,7 @@ function sbp_explode_lines( $text ) {
 		$array_string      = '';
 		$excluded_cookies = self::$options['caching_exclude_cookies'];
 		if ( $excluded_cookies ) {
-			$cookies = SBP_Utils::explode_lines( $excluded_cookies );
+			$cookies = Utils::explode_lines( $excluded_cookies );
 			foreach ( $cookies as $cookie ) {
 				if ( $cookie ) {
 					$cookie      = addslashes( $cookie );

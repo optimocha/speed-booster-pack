@@ -58,7 +58,7 @@ class CSS_Minifier {
 	}
 
 	private function set_exceptions() {
-		$sbp_exceptions   = SBP_Utils::explode_lines( sbp_get_option( 'css_exclude' ) );
+		$sbp_exceptions   = Utils::explode_lines( sbp_get_option( 'css_exclude' ) );
 		$this->exceptions = array_merge( $sbp_exceptions, $this->exceptions );
 		$this->exceptions = array_merge( $this->exceptions, apply_filters( 'sbp_css_optimizer_exceptions', $this->exceptions ) );
 		$this->exceptions = array_unique( $this->exceptions );
@@ -102,7 +102,7 @@ class CSS_Minifier {
 
 		$prefix = 'http' . ( isset( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ? 's' : null );
 		$url    = substr( $url, 0, 2 ) == '//' ? $prefix . ':' . $url : $url;
-		$url    = SBP_Utils::clear_hashes_and_question_mark( $url );
+		$url    = Utils::clear_hashes_and_question_mark( $url );
 
 		$css = file_get_contents( $url );
 		if ( $css ) {

@@ -2,8 +2,6 @@
 
 namespace Optimocha\SpeedBooster\Features;
 
-use SpeedBooster\HTML_Minify;
-
 defined( 'ABSPATH' ) || exit;
 
 class HTML_Minifier {
@@ -30,7 +28,7 @@ class HTML_Minifier {
 
 	public function handle_html_minify( $html ) {
 		$this->html = $html;
-		return SBP_HTML_Minify::minify($html);
+		return HTML_Minify::minify($html);
 
 	}
 
