@@ -27,9 +27,7 @@ defined( 'ABSPATH' ) || exit;
 class Activator {
 
 	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
+	 * Adds the "sbp_activation_defaults" option to the options table.
 	 *
 	 * @since    4.0.0
 	 */

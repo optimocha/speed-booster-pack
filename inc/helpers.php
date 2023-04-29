@@ -2,9 +2,9 @@
 
 namespace Optimocha\SpeedBooster;
 
-use Optimocha\SpeedBooster\Features\Utils;
-
 defined( 'ABSPATH' ) || exit;
+
+use Optimocha\SpeedBooster\Features\Utils;
 
 /**
  * Load all plugin options

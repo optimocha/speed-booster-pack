@@ -12,13 +12,13 @@
 
 namespace Optimocha\SpeedBooster\Admin;
 
+defined( 'ABSPATH' ) || exit;
+
 use Optimocha\SpeedBooster\Features\Notice_Manager;
 use Optimocha\SpeedBooster\Features\Utils;
 use Optimocha\SpeedBooster\Features\Advanced_Cache_Generator;
 use Optimocha\SpeedBooster\Features\Cache;
 use Optimocha\SpeedBooster\Features\LiteSpeed_Cache;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * The admin-specific functionality of the plugin.

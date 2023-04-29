@@ -12,10 +12,10 @@
 
 namespace Optimocha\SpeedBooster;
 
+defined( 'ABSPATH' ) || exit;
+
 use Optimocha\SpeedBooster\Features\Cache;
 use Optimocha\SpeedBooster\Features\LiteSpeed_Cache;
-
-defined( 'ABSPATH' ) || exit;
 
 /**
  * Fired during plugin deactivation.
