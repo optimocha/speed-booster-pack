@@ -33,13 +33,11 @@ define( 'SPEED_BOOSTER_PACK', [
 ] );
 
 /*
-
 TODO: replace the following old constants in the codebase:
+ */
 define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' ); // plugin cache directory path
 define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' ); // plugin uploads path
 define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' ); // plugin uploads URL
-
- */
 
 /**
  * Hooks to the `plugins_loaded` action.
