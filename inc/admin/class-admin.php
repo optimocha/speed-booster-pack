@@ -93,6 +93,7 @@ class Admin {
 		add_action( 'csf_loaded', [ $this, 'create_metaboxes' ] );
 	}
 
+	// TODO: delete this obsolete method.
     public static function set_up_defaults() {
 
     	if( ! get_option( 'sbp_activation_defaults' ) ) { return; }
@@ -121,6 +122,7 @@ class Admin {
 
     }
 
+	// TODO: delete this obsolete method.
     public static function redirect() {
 
     	if( ! get_option( 'sbp_activation_redirect' ) || ! current_user_can( 'manage_options' ) ) { return; }

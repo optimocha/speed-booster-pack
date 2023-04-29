@@ -1,4 +1,4 @@
-<?php
+<?php // TODO: delete this obsolete file.
 
 /**
  * Fired during plugin activation

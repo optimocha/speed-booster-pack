@@ -58,6 +58,51 @@ class Core {
 
 	}
 
+	/**
+	 * Does stuff when the plugin is deactivated.
+	 *
+	 * @since    5.0.0
+	 */
+	public static function deactivate() {
+		Cache::set_wp_cache_constant( false );
+		Cache::clean_htaccess();
+		LiteSpeed_Cache::remove_htaccess_rules();
+		Cache::clear_total_cache();
+
+		$adv_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
+		if ( file_exists( $adv_cache_file ) ) {
+			unlink( $adv_cache_file );
+		}
+	}
+
+	// TODO: add inline doc.
+	// TODO: hook it to admin_init.
+    public static function activate() {
+
+		if( ! get_option( 'sbp_activated' ) ) { return; }
+
+        if ( sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' ) ) {
+
+            Cache::clear_total_cache();
+            Cache::set_wp_cache_constant( true );
+            Cache::generate_htaccess();
+
+            $advanced_cache_file_content = Advanced_Cache_Generator::generate_advanced_cache_file();
+            $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
+            if ( $advanced_cache_file_content ) {
+                file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
+            }
+
+        }
+
+        if ( sbp_get_option( 'module_caching_ls' ) && ! sbp_should_disable_feature( 'caching' ) ) {
+            LiteSpeed_Cache::insert_htaccess_rules();
+        }
+
+        delete_option( 'sbp_activated' );
+
+    }
+
 	private function should_plugin_run() {
 
 		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) {
