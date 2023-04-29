@@ -35,7 +35,7 @@ class Core {
 	 *
 	 * @since    4.0.0
 	 * @access   protected
-	 * @var      Speed_Booster_Pack_Loader $loader Maintains and registers all hooks for the plugin.
+	 * @var      Loader $loader Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -192,24 +192,16 @@ class Core {
 	}
 
 	/**
-	 * Load the required dependencies for this plugin.
+	 * Loads the required dependencies for this plugin.
 	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - Speed_Booster_Pack_Loader. Orchestrates the hooks of the plugin.
-	 * - Speed_Booster_Pack_i18n. Defines internationalization functionality.
-	 * - Speed_Booster_Pack_Admin. Defines all hooks for the admin area.
-	 * - Speed_Booster_Pack_Public. Defines all hooks for the public side of the site.
-	 *
-	 * Create an instance of the loader which will be used to register the hooks
-	 * with WordPress.
-	 *
-	 * @since    4.0.0
+	 * @since    5.0.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
 		/**
-		 * Composer autoload file.
+		 * Requires the Composer autoloader.
+		 *
+		 * @since   5.0.0
 		 */
 		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/autoload.php';
 
@@ -220,44 +212,20 @@ class Core {
 		 */
 		require __DIR__ . '/inc/sbp-helpers.php';
 
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		// TODO: delete below, if the autotloader (probably) loads this file
-		// require_once SPEED_BOOSTER_PACK['path'] . '/inc/class-speed-booster-pack-loader.php';
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		// require_once SPEED_BOOSTER_PACK['path'] . '/inc/class-speed-booster-pack-i18n.php';
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		// require_once SPEED_BOOSTER_PACK['path'] . '/inc/admin/class-speed-booster-pack-admin.php';
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		// require_once SPEED_BOOSTER_PACK['path'] . '/inc/public/class-speed-booster-pack-public.php';
-
-		$this->loader = new Speed_Booster_Pack_Loader();
+		$this->loader = new Loader();
 	}
 
 	/**
-	 * Define the locale for this plugin for internationalization.
-	 *
-	 * Uses the Speed_Booster_Pack_i18n class in order to set the domain and to register the hook
-	 * with WordPress.
+	 * Defines the locale for this plugin for internationalization.
 	 *
 	 * @since    4.0.0
 	 * @access   private
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Speed_Booster_Pack_i18n();
-
-		$this->loader->add_action( 'plugins_loaded', [ 'Core', 'load_plugin_textdomain' ] );
+		$this->loader->add_action( 'plugins_loaded', function() {
+			load_plugin_textdomain( 'speed-booster-pack' );
+		} );
 
 	}
 
@@ -274,7 +242,7 @@ class Core {
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
-		$plugin_admin = new Speed_Booster_Pack_Admin();
+		$plugin_admin = new Admin();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -295,7 +263,7 @@ class Core {
 		
 		if ( ! $this->should_plugin_run() ) { return; }
 		
-		$plugin_public = new Speed_Booster_Pack_Public();
+		$plugin_public = new Frontend();
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 2 );
 
