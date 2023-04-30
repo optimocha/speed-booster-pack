@@ -144,7 +144,7 @@ class Admin {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'inc/admin/css/speed-booster-pack-admin.css', [], SPEED_BOOSTER_PACK['version'] );
+		wp_enqueue_style( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'assets/sbp-admin.css', [], SPEED_BOOSTER_PACK['version'] );
 
 	}
 
@@ -155,13 +155,9 @@ class Admin {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'inc/admin/js/speed-booster-pack-admin.js', [ 'jquery' ], SPEED_BOOSTER_PACK['version'] );
+		wp_enqueue_script( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'assets/sbp-admin.js', [ 'jquery' ], SPEED_BOOSTER_PACK['version'] );
 
-		wp_localize_script( SPEED_BOOSTER_PACK['slug'],
-			'sbp_ajax_vars',
-			[
-				'nonce' => wp_create_nonce( 'sbp_ajax_nonce' ),
-			] );
+		wp_localize_script( SPEED_BOOSTER_PACK['slug'], 'sbp_ajax_vars', [ 'nonce' => wp_create_nonce( 'sbp_ajax_nonce' ), ] );
 
 	}
 
@@ -193,7 +189,7 @@ class Admin {
 
 					// menu settings
 					'menu_title'      => 'Speed Booster',
-					'menu_icon'       => SPEED_BOOSTER_PACK['url'] . 'inc/admin/images/icon.svg',
+					'menu_icon'       => SPEED_BOOSTER_PACK['url'] . 'assets/sbp-icon.svg?ver=' . SPEED_BOOSTER_PACK['version'],
 					'menu_slug'       => 'sbp-settings',
 					'menu_type'       => 'menu',
 					'menu_capability' => 'manage_options',
