@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
  * @since      4.0.0
  * @package    Speed_Booster_Pack
  * @subpackage Speed_Booster_Pack/includes
- * @author     Optimocha <info@speedboosterpack.com>
+ * @author     Optimocha
  */
 class Core {
 
