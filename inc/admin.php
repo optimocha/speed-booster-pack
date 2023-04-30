@@ -10,7 +10,7 @@
  * @subpackage Speed_Booster_Pack/admin
  */
 
-namespace Optimocha\SpeedBooster\Admin;
+namespace Optimocha\SpeedBooster;
 
 defined( 'ABSPATH' ) || exit;
 

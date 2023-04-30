@@ -242,7 +242,7 @@ class Core {
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
-		$plugin_admin = new Admin\Admin();
+		$plugin_admin = new Admin();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -263,7 +263,7 @@ class Core {
 		
 		if ( ! $this->should_plugin_run() ) { return; }
 		
-		$plugin_public = new Frontend\Frontend();
+		$plugin_public = new Frontend();
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 2 );
 
