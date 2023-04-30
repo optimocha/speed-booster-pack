@@ -1,5 +1,11 @@
 <?php
 
+//	TODO:
+//		run (hook methods below, hooks in parantheses)
+//		sbp_public (template_redirect) // do_action ( 'sbp_public' ); ayrıca wp-admin, feed, ajax, rest vb. kontrolünü unutma!
+//		maybe_disable_sbp_frontend (sbp_public)
+//		http_headers (send_headers)
+
 /**
  * The public-facing functionality of the plugin.
  *

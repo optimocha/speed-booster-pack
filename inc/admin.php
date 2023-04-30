@@ -1,5 +1,15 @@
 <?php
 
+//	TODO:
+//		append_to_plugin_description (plugin_row_meta)
+//		add_settings_link (plugin_action_links_ . SPEED_BOOSTER_PACK['basename'])
+//		enqueue_notices (admin_init)
+//		enqueue_admin_assets (admin_enqueue_scripts) // tüm wp-admin için (options harici css&js)
+//		generate_options_page (admin_init) // csf hook'larını da bir yerlere sokuştur
+//		generate_meta_boxes (admin_init)
+//		generate_admin_bar_menu (admin_bar_menu)
+//		generate_dashboard_widget (wp_dashboard_setup)
+
 /**
  * The admin-specific functionality of the plugin.
  *

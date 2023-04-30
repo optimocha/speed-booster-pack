@@ -22,7 +22,6 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Defines plugin constants.
  *
- * @var array
  * @since	5.0.0
  */
 define( 'SPEED_BOOSTER_PACK', [
@@ -96,51 +95,9 @@ add_action( 'plugins_loaded', function() {
 
 } );
 
-//	CLASSES & METHODS:
-//		
-//	Core
-//		run (hook methods below, hooks in parantheses)
-//		activate (admin_init) // set defaults & redirect & delete option: sbp_activated
-//		upgrade_process (upgrader_process_complete) // add_option( 'sbp_upgraded', [ 'from' => 'x.y.z', 'to' => 'a.b.c' ] )
-//		upgrade (plugins_loaded) // otomatik de olabilir, çıkartılacak notice'teki linke tıklayarak da olabilir
-//		deactivate (register_deactivation_hook)
-//		load_plugin_textdomain (plugins_loaded)
-//		meta_links (plugin_row_meta)
-//		settings_links (plugin_action_links_ . SPEED_BOOSTER_PACK['basename'])
-//		enqueue_notices (admin_init)
-//		generate_options_page (admin_init) // csf hook'larını da bir yerlere sokuştur
-//		generate_meta_boxes (admin_init)
-//		generate_admin_bar_menu (admin_bar_menu)
-//		generate_dashboard_widget (wp_dashboard_setup)
-//		onboarding (admin_init)
-//		deactivation_survey (admin_init) // freemius varken gerekmeyecek
-//		enqueue_admin_css (admin_enqueue_scripts) // tüm wp-admin için (options harici)
-//		enqueue_admin_js (admin_enqueue_scripts) // tüm wp-admin için (options harici)
-//		simple_cron (admin_init) // option olarak kaydet, option içine timestamp kaydet, timestamp'e bakarak güncelle
-//			update_sitedata (simple_cron)
-//			update_server_tech (simple_cron)
-//			update_sbp_license (simple_cron)
-//			update_mothership_data (simple_cron)
-//		init_freemius (plugins_loaded) // sbp.php'den direkt çalıştırman gerekebilir. wpdirectory.net'te başka pluginleri incele
-//		check_debug_mode (???)
-//			
-//	Compatibility
-//		run (hook methods below, hooks in parantheses)
-//			add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
-//			add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
-//		check_plugin_compatibility (admin_init)
-//		check_theme_compatibility (admin_init)
-//		check_software_compatibility (admin_init)
-//		check_hosting_compatibility (admin_init)
-//		check_file_permissions (admin_init)
-//		
-//	Frontend
-//		run (hook methods below, hooks in parantheses)
-//		sbp_public (template_redirect) // do_action ( 'sbp_public' ); ayrıca wp-admin, feed, ajax, rest vb. kontrolünü unutma!
-//		maybe_disable_sbp_frontend (sbp_public)
-//		http_headers (send_headers)
-//		
+//	TODO:
 //	UTILITIES
+//		check_debug_mode (???)
 //		notice manager
 //		background worker
 //		file handler (crud)

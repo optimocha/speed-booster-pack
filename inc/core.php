@@ -1,4 +1,14 @@
 <?php
+
+//	TODO:
+//		run (hook methods below, hooks in parantheses)
+//		load_plugin_textdomain (plugins_loaded)
+//		activate (admin_init) // set defaults & redirect & delete option: sbp_activated
+//		deactivate (register_deactivation_hook)
+//		upgrade (upgrader_process_complete) // add_option( 'sbp_upgraded', [ 'from' => 'x.y.z', 'to' => 'a.b.c' ] )
+//		upgrade_process (plugins_loaded) // otomatik de olabilir, çıkartılacak notice'teki linke tıklayarak da olabilir
+//		onboarding (admin_init)
+
 /**
  * The file that defines the core plugin class
  *
@@ -208,6 +218,13 @@ class Core {
 		 * @since   5.0.0
 		 */
 		require SPEED_BOOSTER_PACK['path'] . '/inc/helpers.php';
+
+		/**
+		 * Requires the file with the helper functions.
+		 *
+		 * @since   5.0.0
+		 */
+		require SPEED_BOOSTER_PACK['path'] . '/inc/freemius.php';
 
 		$this->loader = new Loader();
 	}
