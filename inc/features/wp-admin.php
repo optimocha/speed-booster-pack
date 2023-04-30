@@ -261,14 +261,14 @@ class WP_Admin {
 			$wp_config_path = dirname( ABSPATH ) . '/wp-config.php';
 		}
 
-		$upload_dir          = wp_upload_dir()['basedir'];
+		$upload_dir          = wp_get_upload_dir()['basedir'];
 		$advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
 
 		$check_list = [
 			'WordPress root directory'           => ABSPATH,
 			'wp-content directory'               => WP_CONTENT_DIR,
 			'WordPress uploads directory'        => $upload_dir,
-			'SBP uploads directory'              => SBP_UPLOADS_DIR,
+			'SBP uploads directory'              => $upload_dir . '/speed-booster/',
 			'wp-config.php file'                 => $wp_config_path,
 			'wp-content/advanced-cache.php file' => $advanced_cache_path,
 		];

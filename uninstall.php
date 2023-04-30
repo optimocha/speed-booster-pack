@@ -13,14 +13,6 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	die;
 }
 
-if ( ! defined( 'SBP_CACHE_DIR' ) ) {
-	define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' );
-}
-
-if ( ! defined( 'SBP_UPLOADS_DIR' ) ) {
-	define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' );
-}
-
 // Delete Directory Function
 function delete_dir( $dir ) {
 	if ( ! is_dir( $dir ) ) {
@@ -55,8 +47,8 @@ function delete_dir( $dir ) {
 delete_option( 'sbp_options' );
 delete_option( 'sbp_notice_error' );
 delete_option( 'sbp_transient_error' );
-delete_dir( SBP_CACHE_DIR );
-delete_dir( SBP_UPLOADS_DIR );
+delete_dir( WP_CONTENT_DIR . '/cache/speed-booster/' );
+delete_dir( wp_get_upload_dir()['basedir'] . '/speed-booster/' );
 
 // Clear htaccess
 global $wp_filesystem;

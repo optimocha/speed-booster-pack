@@ -25,19 +25,13 @@ defined( 'ABSPATH' ) || exit;
  * @since	5.0.0
  */
 define( 'SPEED_BOOSTER_PACK', [
-	'version'	=> '5.0.0-alpha',
-	'slug'		=> 'speed-booster-pack',
-	'path'		=> __DIR__,
-	'basename'	=> plugin_basename( __FILE__ ),
-	'url'		=> plugin_dir_url( __FILE__ ),
+	'version'		=> '5.0.0-alpha',
+	'slug'			=> 'speed-booster-pack',
+	'path'			=> __DIR__,
+	'basename'		=> plugin_basename( __FILE__ ),
+	'url'			=> plugin_dir_url( __FILE__ ),
+	'cache_path'	=> WP_CONTENT_DIR . '/cache/speed-booster/',
 ] );
-
-/*
-TODO: replace the following old constants in the codebase:
- */
-define( 'SBP_CACHE_DIR', WP_CONTENT_DIR . '/cache/speed-booster/' ); // plugin cache directory path
-define( 'SBP_UPLOADS_DIR', WP_CONTENT_DIR . '/uploads/speed-booster/' ); // plugin uploads path
-define( 'SBP_UPLOADS_URL', WP_CONTENT_URL . '/uploads/speed-booster/' ); // plugin uploads URL
 
 /**
  * Hooks to the `plugins_loaded` action.

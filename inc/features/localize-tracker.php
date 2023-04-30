@@ -6,8 +6,10 @@ defined( 'ABSPATH' ) || exit;
 
 class Localize_Tracker {
 	private $file_name = '';
-	private $dir_path = SBP_UPLOADS_DIR;
-	private $dir_url = SBP_UPLOADS_URL;
+	// TODO: test if these are still working
+	private $uploads_dir = wp_get_upload_dir();
+	private $dir_path = $this->uploads_dir['basedir'] . '/speed-booster/';
+	private $dir_url = $this->uploads_dir['baseurl'] . '/speed-booster/';
 	private $analytics_url = 'https://www.google-analytics.com/analytics.js';
 	private $gtm_url = 'https://www.googletagmanager.com/gtm.js?id=';
 	private $gtag_url = 'https://www.googletagmanager.com/gtag/js?id=';
@@ -172,10 +174,11 @@ class Localize_Tracker {
 		return true;
 	}
 
+	// TODO: test if this is still working
 	public static function refresh_analytics_dir() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_refresh_localized_analytics' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_refresh_localized_analytics' ) ) {
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
-			sbp_delete_dir_recursively( SBP_UPLOADS_DIR );
+			sbp_delete_dir_recursively( $this->dir_path );
 			set_transient( 'sbp_notice_tracker_localizer', '1', 60 );
 			wp_safe_redirect( $redirect_url );
 			exit;
