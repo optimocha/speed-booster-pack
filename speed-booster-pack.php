@@ -22,6 +22,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Defines plugin constants.
  *
+ * @var array
  * @since	5.0.0
  */
 define( 'SPEED_BOOSTER_PACK', [
