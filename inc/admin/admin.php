@@ -144,7 +144,7 @@ class Admin {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'admin/css/speed-booster-pack-admin.css', [], SPEED_BOOSTER_PACK['version'] );
+		wp_enqueue_style( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'inc/admin/css/speed-booster-pack-admin.css', [], SPEED_BOOSTER_PACK['version'] );
 
 	}
 
@@ -155,7 +155,7 @@ class Admin {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'admin/js/speed-booster-pack-admin.js', [ 'jquery' ], SPEED_BOOSTER_PACK['version'] );
+		wp_enqueue_script( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'inc/admin/js/speed-booster-pack-admin.js', [ 'jquery' ], SPEED_BOOSTER_PACK['version'] );
 
 		wp_localize_script( SPEED_BOOSTER_PACK['slug'],
 			'sbp_ajax_vars',
@@ -185,7 +185,7 @@ class Admin {
 			$prefix = 'sbp_options';
 
 			// Create options
-			CSF::createOptions( $prefix,
+			\CSF::createOptions( $prefix,
 				[
 					// framework title
 					'framework_title' => 'Speed Booster Pack' . ' <small>by <a href="https://optimocha.com/" rel="external noopener" target="_blank">Optimocha</a></small>',
@@ -193,7 +193,7 @@ class Admin {
 
 					// menu settings
 					'menu_title'      => 'Speed Booster',
-					'menu_icon'       => SPEED_BOOSTER_PACK['url'] . 'admin/images/icon.svg',
+					'menu_icon'       => SPEED_BOOSTER_PACK['url'] . 'inc/admin/images/icon.svg',
 					'menu_slug'       => 'sbp-settings',
 					'menu_type'       => 'menu',
 					'menu_capability' => 'manage_options',
@@ -215,7 +215,7 @@ class Admin {
 				] );
 
 			/* BEGIN Section: Dashboard */
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'Dashboard', 'speed-booster-pack' ),
@@ -283,7 +283,7 @@ class Admin {
 			/* END Section: Dashboard */
 
 			/* BEGIN Section: General */
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'General', 'speed-booster-pack' ),
@@ -737,7 +737,7 @@ class Admin {
 				], $cache_fields );
 			}
 
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'Caching', 'speed-booster-pack' ),
@@ -877,7 +877,7 @@ class Admin {
 				];
 			}
 
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'Optimize CSS', 'speed-booster-pack' ),
@@ -1132,7 +1132,7 @@ class Admin {
 				],
 			];
 
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'Assets', 'speed-booster-pack' ),
@@ -1353,7 +1353,7 @@ class Admin {
 			],
 				$cloudflare_fields,
 				$sucuri_fields );
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				array(
 					'title'  => __( 'CDN & Proxy', 'speed-booster-pack' ),
@@ -1462,7 +1462,7 @@ class Admin {
 	            ],
             ] );
 
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				[
 					'title'  => 'WooCommerce',
@@ -1474,7 +1474,7 @@ class Admin {
 			/* END Section: WooCommerce */
 
 			/** BEGIN Section: Database Optimization */
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'Optimize Database', 'speed-booster-pack' ),
@@ -1510,7 +1510,7 @@ class Admin {
 			/** END Section: Database Optimization */
 
 			/* BEGIN Section: Tools */
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				array(
 					'title'  => __( 'Tools', 'speed-booster-pack' ),
@@ -1533,7 +1533,7 @@ class Admin {
 			/* END Section: Tools */
 
 			/* BEGIN Section: About */
-			CSF::createSection(
+			\CSF::createSection(
 				$prefix,
 				[
 					'title'  => __( 'About', 'speed-booster-pack' ),
@@ -1589,7 +1589,7 @@ class Admin {
 		$metabox_prefix    = 'sbp_post_meta';
 		$public_post_types = get_option( 'sbp_public_post_types' );
 		if ( is_array( $public_post_types ) ) {
-			CSF::createMetabox( $metabox_prefix,
+			\CSF::createMetabox( $metabox_prefix,
 				[
 					'title'     => 'Speed Booster Pack',
 					'post_type' => $public_post_types,
@@ -1716,7 +1716,7 @@ class Admin {
 			];
 			// END CONTENT SPECIFIC JS MOVE TO FOOTER
 
-			CSF::createSection( $metabox_prefix,
+			\CSF::createSection( $metabox_prefix,
 				array(
 					'fields' => $meta_fields,
 				) );

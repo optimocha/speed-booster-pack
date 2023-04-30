@@ -62,7 +62,7 @@ add_action( 'plugins_loaded', function() {
 
 		$relative_class = substr( $class, $len );
 		$filename = strtolower( str_replace( [ '_', '\\' ], [ '-', '/' ], $relative_class ) );
-		$file = __DIR__ . "/inc/class-$filename.php";
+		$file = __DIR__ . "/inc/$filename.php";
 
 		if ( file_exists( $file ) ) {
 			require $file;

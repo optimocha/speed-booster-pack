@@ -1,7 +1,5 @@
 <?php
 
-namespace Optimocha\SpeedBooster;
-
 defined( 'ABSPATH' ) || exit;
 
 use Optimocha\SpeedBooster\Features\Utils;

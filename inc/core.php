@@ -54,6 +54,7 @@ class Core {
 		$this->save_post_types();
 		$this->set_locale();
 		$this->define_admin_hooks();
+		$this->init_modules();
 		$this->define_public_hooks();
 
 	}
@@ -165,29 +166,28 @@ class Core {
 	 */
 	private function init_modules() {
 
-		new Optimocha\SpeedBooster\WP_Admin();
-		new Optimocha\SpeedBooster\Database_Optimizer();
-		new Optimocha\SpeedBooster\Newsletter();
-		new Optimocha\SpeedBooster\Migrator();
-		new Optimocha\SpeedBooster\Compatibility_Checker();
-		new Optimocha\SpeedBooster\Cloudflare();
-		new Optimocha\SpeedBooster\Sucuri();
-		new Optimocha\SpeedBooster\Notice_Manager();
-		new Optimocha\SpeedBooster\Cache_Warmup();
-		new Optimocha\SpeedBooster\JS_Optimizer();
-		new Optimocha\SpeedBooster\Tweaks();
-		new Optimocha\SpeedBooster\Font_Optimizer();
-		new Optimocha\SpeedBooster\Preboost();
-		new Optimocha\SpeedBooster\CDN();
-		new Optimocha\SpeedBooster\Lazy_Loader();
-		new Optimocha\SpeedBooster\CSS_Minifier();
-		new Optimocha\SpeedBooster\Critical_CSS();
-		new Optimocha\SpeedBooster\Image_Dimensions();
-		new Optimocha\SpeedBooster\HTML_Minifier();
-		new Optimocha\SpeedBooster\Localize_Tracker();
-		new Optimocha\SpeedBooster\Woocommerce();
-		new Optimocha\SpeedBooster\Cache();
-		new Optimocha\SpeedBooster\LiteSpeed_Cache();
+		new \Optimocha\SpeedBooster\Features\WP_Admin();
+		new \Optimocha\SpeedBooster\Features\Database_Optimizer();
+		new \Optimocha\SpeedBooster\Features\Newsletter();
+		new \Optimocha\SpeedBooster\Features\Compatibility_Checker();
+		new \Optimocha\SpeedBooster\Features\Cloudflare();
+		new \Optimocha\SpeedBooster\Features\Sucuri();
+		new \Optimocha\SpeedBooster\Features\Notice_Manager();
+		new \Optimocha\SpeedBooster\Features\Cache_Warmup();
+		new \Optimocha\SpeedBooster\Features\JS_Optimizer();
+		new \Optimocha\SpeedBooster\Features\Tweaks();
+		new \Optimocha\SpeedBooster\Features\Font_Optimizer();
+		new \Optimocha\SpeedBooster\Features\Preboost();
+		new \Optimocha\SpeedBooster\Features\CDN();
+		new \Optimocha\SpeedBooster\Features\Lazy_Loader();
+		new \Optimocha\SpeedBooster\Features\CSS_Minifier();
+		new \Optimocha\SpeedBooster\Features\Critical_CSS();
+		new \Optimocha\SpeedBooster\Features\Image_Dimensions();
+		new \Optimocha\SpeedBooster\Features\HTML_Minifier();
+		new \Optimocha\SpeedBooster\Features\Localize_Tracker();
+		new \Optimocha\SpeedBooster\Features\Woocommerce();
+		new \Optimocha\SpeedBooster\Features\Cache();
+		new \Optimocha\SpeedBooster\Features\LiteSpeed_Cache();
 
 	}
 
@@ -210,7 +210,7 @@ class Core {
 		 *
 		 * @since   5.0.0
 		 */
-		require __DIR__ . '/inc/sbp-helpers.php';
+		require SPEED_BOOSTER_PACK['path'] . '/inc/helpers.php';
 
 		$this->loader = new Loader();
 	}
@@ -223,7 +223,7 @@ class Core {
 	 */
 	private function set_locale() {
 
-		$this->loader->add_action( 'plugins_loaded', function() {
+		add_action( 'plugins_loaded', function() {
 			load_plugin_textdomain( 'speed-booster-pack' );
 		} );
 
@@ -242,7 +242,7 @@ class Core {
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
-		$plugin_admin = new Admin();
+		$plugin_admin = new Admin\Admin();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -263,7 +263,7 @@ class Core {
 		
 		if ( ! $this->should_plugin_run() ) { return; }
 		
-		$plugin_public = new Frontend();
+		$plugin_public = new Frontend\Frontend();
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 2 );
 
