@@ -8,7 +8,6 @@
  * @since      4.0.0
  *
  * @package    Speed_Booster_Pack
- * @subpackage Speed_Booster_Pack/inc
  */
 
 namespace Optimocha\SpeedBooster;
@@ -23,7 +22,6 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since      4.0.0
  * @package    Speed_Booster_Pack
- * @subpackage Speed_Booster_Pack/inc
  * @author     Optimocha
  */
 class Core {
