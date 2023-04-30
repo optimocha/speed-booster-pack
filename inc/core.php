@@ -166,28 +166,28 @@ class Core {
 	 */
 	private function init_modules() {
 
-		new \Optimocha\SpeedBooster\Features\WP_Admin();
-		new \Optimocha\SpeedBooster\Features\Database_Optimizer();
-		new \Optimocha\SpeedBooster\Features\Newsletter();
-		new \Optimocha\SpeedBooster\Features\Compatibility_Checker();
-		new \Optimocha\SpeedBooster\Features\Cloudflare();
-		new \Optimocha\SpeedBooster\Features\Sucuri();
-		new \Optimocha\SpeedBooster\Features\Notice_Manager();
-		new \Optimocha\SpeedBooster\Features\Cache_Warmup();
-		new \Optimocha\SpeedBooster\Features\JS_Optimizer();
-		new \Optimocha\SpeedBooster\Features\Tweaks();
-		new \Optimocha\SpeedBooster\Features\Font_Optimizer();
-		new \Optimocha\SpeedBooster\Features\Preboost();
-		new \Optimocha\SpeedBooster\Features\CDN();
-		new \Optimocha\SpeedBooster\Features\Lazy_Loader();
-		new \Optimocha\SpeedBooster\Features\CSS_Minifier();
-		new \Optimocha\SpeedBooster\Features\Critical_CSS();
-		new \Optimocha\SpeedBooster\Features\Image_Dimensions();
-		new \Optimocha\SpeedBooster\Features\HTML_Minifier();
-		new \Optimocha\SpeedBooster\Features\Localize_Tracker();
-		new \Optimocha\SpeedBooster\Features\Woocommerce();
-		new \Optimocha\SpeedBooster\Features\Cache();
-		new \Optimocha\SpeedBooster\Features\LiteSpeed_Cache();
+		new Features\WP_Admin();
+		new Features\Database_Optimizer();
+		new Features\Newsletter();
+		new Features\Compatibility_Checker();
+		new Features\Cloudflare();
+		new Features\Sucuri();
+		new Features\Notice_Manager();
+		new Features\Cache_Warmup();
+		new Features\JS_Optimizer();
+		new Features\Tweaks();
+		new Features\Font_Optimizer();
+		new Features\Preboost();
+		new Features\CDN();
+		new Features\Lazy_Loader();
+		new Features\CSS_Minifier();
+		new Features\Critical_CSS();
+		new Features\Image_Dimensions();
+		new Features\HTML_Minifier();
+		new Features\Localize_Tracker();
+		new Features\Woocommerce();
+		new Features\Cache();
+		new Features\LiteSpeed_Cache();
 
 	}
 
