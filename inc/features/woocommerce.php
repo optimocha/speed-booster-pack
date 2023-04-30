@@ -16,7 +16,7 @@ class Woocommerce {
 
 	public function run_class() {
 
-		if ( ! $this->should_sbp_run || ! Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
+		if ( ! Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			return;
 		}
 

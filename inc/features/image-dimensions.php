@@ -17,9 +17,7 @@ class Image_Dimensions {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			add_filter( 'sbp_output_buffer', [ $this, 'specify_missing_dimensions' ] );
-		}
+		add_filter( 'sbp_output_buffer', [ $this, 'specify_missing_dimensions' ] );
 	}
 
 	public function specify_missing_dimensions( $html ) {

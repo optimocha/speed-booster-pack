@@ -42,16 +42,14 @@ class Preboost {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			$preboost = sbp_get_option( 'preboost' );
+		$preboost = sbp_get_option( 'preboost' );
 
-			if ( isset( $preboost['preboost_enable'] ) && $preboost['preboost_enable'] ) {
-				add_action( 'wp_head', [ $this, 'add_preload_tags' ], 1 );
-			}
+		if ( isset( $preboost['preboost_enable'] ) && $preboost['preboost_enable'] ) {
+			add_action( 'wp_head', [ $this, 'add_preload_tags' ], 1 );
+		}
 
-			if ( isset( $preboost['preboost_featured_image'] ) && $preboost['preboost_featured_image'] ) {
-				add_action( 'wp_head', [ $this, 'add_featured_image_preload_tag' ], 1 );
-			}
+		if ( isset( $preboost['preboost_featured_image'] ) && $preboost['preboost_featured_image'] ) {
+			add_action( 'wp_head', [ $this, 'add_featured_image_preload_tag' ], 1 );
 		}
 	}
 

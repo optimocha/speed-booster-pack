@@ -21,9 +21,7 @@ class Critical_CSS {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			add_filter( 'sbp_output_buffer', [ $this, 'handle_criticalcss' ] );
-		}
+		add_filter( 'sbp_output_buffer', [ $this, 'handle_criticalcss' ] );
 	}
 
 	public function handle_criticalcss( $html ) {

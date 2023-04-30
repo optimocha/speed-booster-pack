@@ -24,13 +24,11 @@ class CSS_Minifier {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			$this->dom = new HtmlDocument();
+		$this->dom = new HtmlDocument();
 
-			$this->set_exceptions();
+		$this->set_exceptions();
 
-			add_filter( 'sbp_output_buffer', [ $this, 'print_styles' ] );
-		}
+		add_filter( 'sbp_output_buffer', [ $this, 'print_styles' ] );
 	}
 
 	public function print_styles( $html ) {

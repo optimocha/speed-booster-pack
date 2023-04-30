@@ -23,11 +23,8 @@ class Localize_Tracker {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			add_action( 'admin_init', [ $this, 'refresh_analytics_dir' ] );
-
-			add_filter( 'sbp_output_buffer', [ $this, 'replace_url' ] );
-		}
+		add_action( 'admin_init', [ $this, 'refresh_analytics_dir' ] );
+		add_filter( 'sbp_output_buffer', [ $this, 'replace_url' ] );
 	}
 
 	public function replace_url( $html ) {

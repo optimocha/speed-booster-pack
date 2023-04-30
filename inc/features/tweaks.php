@@ -17,8 +17,6 @@ class Tweaks {
 
 	public function run_class() {
 
-		if ( ! $this->should_sbp_run ) { return; }
-
 		$this->trim_query_strings();
 		$this->dequeue_emoji_scripts();
 		$this->disable_self_pingbacks();

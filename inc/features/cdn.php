@@ -22,13 +22,11 @@ class CDN {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			$this->site_url = get_site_url( get_current_blog_id() ); // For Multisite
-			$this->set_included_dirs();
-			$this->set_excluded_extensions();
+		$this->site_url = get_site_url( get_current_blog_id() ); // For Multisite
+		$this->set_included_dirs();
+		$this->set_excluded_extensions();
 
-			add_filter( 'sbp_output_buffer', [ $this, 'run_rewriter' ] );
-		}
+		add_filter( 'sbp_output_buffer', [ $this, 'run_rewriter' ] );
 	}
 
 	public function run_rewriter( $html ) {

@@ -23,17 +23,13 @@ class Lazy_Loader {
 
 	public function run_class() {
 
-		if ( $this->should_sbp_run ) {
+		add_action( 'wp_enqueue_scripts', [ $this, 'add_lazy_load_script' ] );
 
-			add_action( 'wp_enqueue_scripts', [ $this, 'add_lazy_load_script' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'deregister_media_elements' ] );
 
-			add_action( 'wp_enqueue_scripts', [ $this, 'deregister_media_elements' ] );
+		add_filter( 'script_loader_tag', [ $this, 'add_attribute_to_tag' ], 10, 2 );
 
-			add_filter( 'script_loader_tag', [ $this, 'add_attribute_to_tag' ], 10, 2 );
-
-			add_filter( 'sbp_output_buffer', [ $this, 'lazy_load_handler' ] );
-
-		}
+		add_filter( 'sbp_output_buffer', [ $this, 'lazy_load_handler' ] );
 
 	}
 

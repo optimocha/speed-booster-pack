@@ -21,9 +21,7 @@ class HTML_Minifier {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			add_filter( 'sbp_output_buffer', [ $this, 'handle_html_minify' ], 11 );
-		}
+        add_filter( 'sbp_output_buffer', [ $this, 'handle_html_minify' ], 11 );
 	}
 
 	public function handle_html_minify( $html ) {

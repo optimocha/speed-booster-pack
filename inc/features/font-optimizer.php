@@ -20,9 +20,7 @@ class Font_Optimizer {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			add_filter( 'sbp_output_buffer', [ $this, 'process_google_fonts' ], 10 );
-		}
+		add_filter( 'sbp_output_buffer', [ $this, 'process_google_fonts' ], 10 );
 	}
 
 	public function process_google_fonts( $html ) {

@@ -194,9 +194,7 @@ class JS_Optimizer {
 	}
 
 	public function run_class() {
-		if ( $this->should_sbp_run ) {
-			add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
-		}
+		add_filter( 'sbp_output_buffer', [ $this, 'optimize_scripts' ] );
 	}
 
 	public function optimize_scripts( $html ) {
