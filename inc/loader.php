@@ -3,7 +3,6 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https://optimocha.com
  * @since      4.0.0
  *
  * @package    Speed_Booster_Pack
