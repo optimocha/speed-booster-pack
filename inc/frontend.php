@@ -5,7 +5,7 @@
  *
  * @since      4.0.0
  *
- * @package    Speed_Booster_Pack
+ * @package    Optimocha\SpeedBooster
  */
 
 namespace Optimocha\SpeedBooster;
@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * The public-facing functionality of the plugin.
  *
- * @package    Speed_Booster_Pack
+ * @package    Optimocha\SpeedBooster
  * @author     Optimocha
  */
 class Frontend {

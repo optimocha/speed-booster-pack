@@ -7,7 +7,7 @@
  *
  * @since      4.0.0
  *
- * @package    Speed_Booster_Pack
+ * @package    Optimocha\SpeedBooster
  */
 
 namespace Optimocha\SpeedBooster;
@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
  * public-facing site hooks.
  *
  * @since      4.0.0
- * @package    Speed_Booster_Pack
+ * @package    Optimocha\SpeedBooster
  * @author     Optimocha
  */
 class Core {

@@ -5,7 +5,7 @@
  *
  * @since      4.0.0
  *
- * @package    Speed_Booster_Pack
+ * @package    Optimocha\SpeedBooster
  */
 
 // If uninstall not called from WordPress, then exit.

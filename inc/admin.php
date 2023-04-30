@@ -5,7 +5,7 @@
  *
  * @since      4.0.0
  *
- * @package    Speed_Booster_Pack
+ * @package    Optimocha\SpeedBooster
  */
 
 namespace Optimocha\SpeedBooster;
@@ -24,7 +24,7 @@ use Optimocha\SpeedBooster\Features\LiteSpeed_Cache;
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Speed_Booster_Pack
+ * @package    Optimocha\SpeedBooster
  * @author     Optimocha
  */
 class Admin {

@@ -5,7 +5,7 @@
  *
  * @since      4.0.0
  *
- * @package    Speed_Booster_Pack
+ * @package    Optimocha\SpeedBooster
  */
 
 namespace Optimocha\SpeedBooster;
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Speed_Booster_Pack
+ * @package    Optimocha\SpeedBooster
  * @author     Optimocha
  */
 class Loader {
