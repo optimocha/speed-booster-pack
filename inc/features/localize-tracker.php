@@ -7,19 +7,27 @@ defined( 'ABSPATH' ) || exit;
 class Localize_Tracker {
 	private $file_name = '';
 	// TODO: test if these are still working
-	private $uploads_dir = wp_get_upload_dir();
-	private $dir_path = $this->uploads_dir['basedir'] . '/speed-booster/';
-	private $dir_url = $this->uploads_dir['baseurl'] . '/speed-booster/';
-	private $analytics_url = 'https://www.google-analytics.com/analytics.js';
-	private $gtm_url = 'https://www.googletagmanager.com/gtm.js?id=';
-	private $gtag_url = 'https://www.googletagmanager.com/gtag/js?id=';
-	private $transient_name = '';
+	private $uploads_dir;
+	private $dir_path;
+	private $dir_url;
+	private $analytics_url;
+	private $gtm_url;
+	private $gtag_url;
+	private $transient_name;
 
 	public function __construct() {
 		
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'localize_tracking_scripts' ) ) {
 			return;
 		}
+
+		$this->uploads_dir = wp_get_upload_dir();
+		$this->dir_path = $this->uploads_dir['basedir'] . '/speed-booster/';
+		$this->dir_url = $this->uploads_dir['baseurl'] . '/speed-booster/';
+		$this->analytics_url = 'https://www.google-analytics.com/analytics.js';
+		$this->gtm_url = 'https://www.googletagmanager.com/gtm.js?id=';
+		$this->gtag_url = 'https://www.googletagmanager.com/gtag/js?id=';
+		$this->transient_name = '';
 
 		add_action( 'set_current_user', [ $this, 'run_class' ] );
 	}
@@ -175,7 +183,7 @@ class Localize_Tracker {
 	}
 
 	// TODO: test if this is still working
-	public static function refresh_analytics_dir() {
+	public function refresh_analytics_dir() {
 		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_refresh_localized_analytics' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_refresh_localized_analytics' ) ) {
 			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
 			sbp_delete_dir_recursively( $this->dir_path );

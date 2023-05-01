@@ -170,7 +170,7 @@ class Core {
 		new Features\WP_Admin();
 		new Features\Database_Optimizer();
 		new Features\Newsletter();
-		new Features\Compatibility_Checker();
+		new Compatibility();
 		new Features\Cloudflare();
 		new Features\Sucuri();
 		new Features\Notice_Manager();
