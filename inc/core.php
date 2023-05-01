@@ -12,9 +12,6 @@
 /**
  * The file that defines the core plugin class
  *
- * A class definition that includes attributes and functions used across both the
- * public-facing side of the site and the admin area.
- *
  * @since      4.0.0
  *
  * @package    Optimocha\SpeedBooster
@@ -26,9 +23,6 @@ defined( 'ABSPATH' ) || exit;
 
 /**
  * The core plugin class.
- *
- * This is used to define internationalization, admin-specific hooks, and
- * public-facing site hooks.
  *
  * @since      4.0.0
  * @package    Optimocha\SpeedBooster
