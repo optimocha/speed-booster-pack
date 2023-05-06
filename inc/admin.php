@@ -70,26 +70,25 @@ class Admin {
 		$this->woocommerce_analytics = 1;
 		$this->woocommerce_tracking  = 1;
 
-
 		$this->load_dependencies();
 
 		add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
 
-		add_filter( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Cache::options_saved_filter' );
+		add_filter( 'csf_sbp_options_saved', 'Cache::options_saved_filter' );
 
-		add_action( 'csf_sbp_options_save_before', '\Optimocha\SpeedBooster\Features\Cache::options_saved_listener' );
+		add_action( 'csf_sbp_options_save_before', 'Cache::options_saved_listener' );
 
-		add_action( 'csf_sbp_options_save_before', '\Optimocha\SpeedBooster\Features\Cloudflare::update_cloudflare_settings' );
+		add_action( 'csf_sbp_options_save_before', 'Cloudflare::update_cloudflare_settings' );
 
-		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Woocommerce::set_woocommerce_option_tracking' );
+		add_action( 'csf_sbp_options_saved', 'Woocommerce::set_woocommerce_option_tracking' );
 
-		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Woocommerce::set_woocommerce_option_analytics' );
+		add_action( 'csf_sbp_options_saved', 'Woocommerce::set_woocommerce_option_analytics' );
 
-		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Cache::clear_total_cache' );
+		add_action( 'csf_sbp_options_saved', 'Cache::clear_total_cache' );
 
-		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\Cache::generate_htaccess' );
+		add_action( 'csf_sbp_options_saved', 'Cache::generate_htaccess' );
 
-		add_action( 'csf_sbp_options_saved', '\Optimocha\SpeedBooster\Features\LiteSpeed_Cache::insert_htaccess_rules' );
+		add_action( 'csf_sbp_options_saved', 'LiteSpeed_Cache::insert_htaccess_rules' );
 
 		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
 
@@ -100,67 +99,14 @@ class Admin {
 		add_action( 'csf_loaded', [ $this, 'create_metaboxes' ] );
 	}
 
-	// TODO: delete this obsolete method.
-    public static function set_up_defaults() {
-
-    	if( ! get_option( 'sbp_activation_defaults' ) ) { return; }
-
-        if ( sbp_get_option( 'module_caching' ) && ! sbp_should_disable_feature( 'caching' ) ) {
-
-            Cache::clear_total_cache();
-
-            Cache::set_wp_cache_constant( true );
-
-            Cache::generate_htaccess();
-
-            $advanced_cache_file_content = Advanced_Cache_Generator::generate_advanced_cache_file();
-            $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
-            if ( $advanced_cache_file_content ) {
-                file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
-            }
-
-        }
-
-        if ( sbp_get_option( 'module_caching_ls' ) && ! sbp_should_disable_feature( 'caching' ) ) {
-            LiteSpeed_Cache::insert_htaccess_rules();
-        }
-
-        delete_option( 'sbp_activation_defaults' );
-
-    }
-
-	// TODO: delete this obsolete method.
-    public static function redirect() {
-
-    	if( ! get_option( 'sbp_activation_redirect' ) || ! current_user_can( 'manage_options' ) ) { return; }
-
-        // Make sure it's the correct user
-        if ( intval( get_option( 'sbp_activation_redirect', false ) ) === wp_get_current_user()->ID ) {
-            // Make sure we don't redirect again after this one
-            delete_option( 'sbp_activation_redirect' );
-            wp_safe_redirect( admin_url( 'admin.php?page=sbp-settings' ) );
-            exit;
-        }
-        
-    }
-
 	/**
-	 * Register the stylesheets for the admin area.
+	 * Enqueues necessary CSS & JS for the admin area.
 	 *
-	 * @since    4.0.0
+	 * @since    5.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_admin_assets() {
 
 		wp_enqueue_style( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'assets/sbp-admin.css', [], SPEED_BOOSTER_PACK['version'] );
-
-	}
-
-	/**
-	 * Register the JavaScript for the admin area.
-	 *
-	 * @since    4.0.0
-	 */
-	public function enqueue_scripts() {
 
 		wp_enqueue_script( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'assets/sbp-admin.js', [ 'jquery' ], SPEED_BOOSTER_PACK['version'] );
 
