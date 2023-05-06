@@ -192,77 +192,6 @@ if ( ! function_exists( 'sbp_posabs' ) ) {
 	}
 }
 
-// TODO: use esc_url() instead
-if ( ! function_exists( 'sbp_sanitize_url' ) ) {
-	/**
-	 * @param $url
-	 *
-	 * @return mixed|string|void
-	 *
-	 * Modified version of WordPress's esc_url function
-	 */
-	function sbp_sanitize_url( $url ) {
-		$original_url = $url;
-
-		if ( '' === $url ) {
-			return $url;
-		}
-
-		$url = str_replace( [ ' ', '"', "'" ], [ '%20', '%22', '%27' ], ltrim( $url ) );
-		$url = preg_replace( '|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\[\]\\x80-\\xff]|i', '', $url );
-
-		if ( '' === $url ) {
-			return $url;
-		}
-
-		if ( 0 !== stripos( $url, 'mailto:' ) ) {
-			$strip = array( '%0d', '%0a', '%0D', '%0A' );
-			$url   = _deep_replace( $strip, $url );
-		}
-
-		$url = str_replace( ';//', '://', $url );
-
-		if ( ( false !== strpos( $url, '[' ) ) || ( false !== strpos( $url, ']' ) ) ) {
-
-			$parsed = wp_parse_url( $url );
-			$front  = '';
-
-			if ( isset( $parsed['scheme'] ) ) {
-				$front .= $parsed['scheme'] . '://';
-			} elseif ( '/' === $url[0] ) {
-				$front .= '//';
-			}
-
-			if ( isset( $parsed['user'] ) ) {
-				$front .= $parsed['user'];
-			}
-
-			if ( isset( $parsed['pass'] ) ) {
-				$front .= ':' . $parsed['pass'];
-			}
-
-			if ( isset( $parsed['user'] ) || isset( $parsed['pass'] ) ) {
-				$front .= '@';
-			}
-
-			if ( isset( $parsed['host'] ) ) {
-				$front .= $parsed['host'];
-			}
-
-			if ( isset( $parsed['port'] ) ) {
-				$front .= ':' . $parsed['port'];
-			}
-
-			$end_dirty = str_replace( $front, '', $url );
-			$end_clean = str_replace( array( '[', ']' ), array( '%5B', '%5D' ), $end_dirty );
-			$url       = str_replace( $end_dirty, $end_clean, $url );
-
-		}
-
-		return $url;
-	}
-}
-
 if ( ! function_exists( 'sbp_clear_http' ) ) {
 	/**
 	 * Removes http:// from the url
@@ -348,7 +277,7 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 			$url = sbp_remove_leading_string( $url, 'http://' );
 			$url = sbp_remove_leading_string( $url, '//' );
 			$url = rtrim( $url, '/' );
-			$url = sbp_sanitize_url( $url );
+			$url = esc_url( $url );
 		}
 
 		return implode( PHP_EOL, $urls );

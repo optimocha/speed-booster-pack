@@ -1280,7 +1280,7 @@ class Admin {
 					'before'   => 'http(s)://&nbsp;',
 					'after'    => '&nbsp;/',
 					'desc'     => __( 'Rewrites all asset URLs with the specified CDN domain. Enter the CDN domain without a protocol or a trailing slash; a relative protocol will be automatically added to all changed asset URLs.', 'speed-booster-pack' ),
-					'sanitize' => 'sbp_sanitize_url',
+					'sanitize' => 'esc_url',
 					'dependency' => [ 'cdn_enable', '!=', '', '', 'visible' ],
 				],
 				[
