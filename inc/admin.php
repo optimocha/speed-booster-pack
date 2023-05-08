@@ -70,8 +70,6 @@ class Admin {
 		$this->woocommerce_analytics = 1;
 		$this->woocommerce_tracking  = 1;
 
-		$this->load_dependencies();
-
 		add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
 
 		add_filter( 'csf_sbp_options_saved', 'Cache::options_saved_filter' );
@@ -92,9 +90,6 @@ class Admin {
 
 		add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
 
-		add_action( 'csf_loaded', [ $this, 'create_settings_page' ] );
-
-		add_action( 'csf_loaded', [ $this, 'create_metaboxes' ] );
 	}
 
 	/**
@@ -119,10 +114,6 @@ class Admin {
 
 		$this->woocommerce_tracking  = ( get_option( 'woocommerce_allow_tracking' ) === 'yes' ) ? 1 : 0;
 
-	}
-
-	public function load_dependencies() {
-		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/codestar-framework/codestar-framework.php';
 	}
 
 	public function create_settings_page() {

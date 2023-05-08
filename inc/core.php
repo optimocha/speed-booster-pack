@@ -241,11 +241,15 @@ class Core {
 
 		if ( ! is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 
+		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/codestar-framework/codestar-framework.php';
+
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
 		$plugin_admin = new Admin();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_admin_assets' );
+		$this->loader->add_action( 'csf_loaded', $plugin_admin, 'create_settings_page' );
+		$this->loader->add_action( 'csf_loaded', $plugin_admin, 'create_metaboxes' );
 
 	}
 
