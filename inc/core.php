@@ -50,14 +50,12 @@ class Core {
 	 * @since    4.0.0
 	 */
 	public function __construct() {
-
 		$this->load_dependencies();
 		$this->save_post_types();
-		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->init_modules();
 		$this->define_public_hooks();
-
+		add_action( 'plugins_loaded', 'load_plugin_textdomain' );		
 	}
 
 	/**
@@ -70,7 +68,6 @@ class Core {
 		Cache::clean_htaccess();
 		LiteSpeed_Cache::remove_htaccess_rules();
 		Cache::clear_total_cache();
-
 		$adv_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
 		if ( file_exists( $adv_cache_file ) ) {
 			unlink( $adv_cache_file );
@@ -229,12 +226,8 @@ class Core {
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function set_locale() {
-
-		add_action( 'plugins_loaded', function() {
-			load_plugin_textdomain( 'speed-booster-pack' );
-		} );
-
+	private function load_plugin_textdomain() {
+		load_plugin_textdomain( 'speed-booster-pack' );
 	}
 
 	/**
@@ -277,6 +270,7 @@ class Core {
 
 	// TODO: don't run this on every admin init!
 	private function save_post_types() {
+		// add_action('load-toplevel_page_sbp-settings', function() {
 		add_action('admin_init', function() {
 			$post_types = array_keys( get_post_types( [ 'public' => true ] ) );
 			$saved_post_types = get_option( 'sbp_public_post_types' );
