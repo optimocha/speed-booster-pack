@@ -127,7 +127,7 @@ class Admin {
 
 	public function create_settings_page() {
 		// Check core class for avoid errors
-		if ( class_exists( 'CSF' ) ) { return; }
+		if ( ! class_exists( 'CSF' ) ) { return; }
 
 		// Set a unique slug-like ID
 		$prefix = 'sbp_options';
