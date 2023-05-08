@@ -80,9 +80,7 @@ class Admin {
 
 		add_action( 'csf_sbp_options_save_before', 'Cloudflare::update_cloudflare_settings' );
 
-		add_action( 'csf_sbp_options_saved', 'Woocommerce::set_woocommerce_option_tracking' );
-
-		add_action( 'csf_sbp_options_saved', 'Woocommerce::set_woocommerce_option_analytics' );
+		add_action( 'csf_sbp_options_saved', 'Woocommerce::set_woocommerce_optimizations' );
 
 		add_action( 'csf_sbp_options_saved', 'Cache::clear_total_cache' );
 
@@ -114,11 +112,12 @@ class Admin {
 
 	}
 
+	// TODO: test this changed function
 	public function get_woocommerce_options() {
 		
-		$this->woocommerce_analytics = \Optimocha\SpeedBooster\Features\Woocommerce::get_woocommerce_option( 'woocommerce_analytics_enabled' );
+		$this->woocommerce_analytics = ( get_option( 'woocommerce_analytics_enabled' ) === 'yes' ) ? 1 : 0;
 
-		$this->woocommerce_tracking  = \Optimocha\SpeedBooster\Features\Woocommerce::get_woocommerce_option( 'woocommerce_allow_tracking' );
+		$this->woocommerce_tracking  = ( get_option( 'woocommerce_allow_tracking' ) === 'yes' ) ? 1 : 0;
 
 	}
 
