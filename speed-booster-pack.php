@@ -46,18 +46,12 @@ add_action( 'plugins_loaded', function() {
 	 * @since	5.0.0
 	 */
 	spl_autoload_register( function ( $class ) {
-
 		$prefix = 'Optimocha\\SpeedBooster\\';
 		$len = strlen( $prefix );
-
-		if ( strncmp( $prefix, $class, $len ) !== 0) {
-			return;
-		}
-
+		if ( strncmp( $prefix, $class, $len ) !== 0) { return; }
 		$relative_class = substr( $class, $len );
 		$filename = strtolower( str_replace( [ '_', '\\' ], [ '-', '/' ], $relative_class ) );
 		$file = __DIR__ . "/inc/$filename.php";
-
 		if ( file_exists( $file ) ) {
 			require $file;
 		}
