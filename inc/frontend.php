@@ -26,6 +26,32 @@ defined( 'ABSPATH' ) || exit;
  * @author     Optimocha
  */
 class Frontend {
+
+	public function check_user_roles() {
+
+		$sbp_disabled_roles = sbp_get_option( 'roles_to_disable_sbp' );
+		if ( ! $sbp_disabled_roles ) { return false; }
+
+		$user               = wp_get_current_user();
+		$roles              = $user->roles;
+		if ( ! $roles ) { return false; }
+
+		foreach ( $roles as $role ) {
+			if ( in_array( $role, $sbp_disabled_roles ) ) {
+				return true;
+				break;
+			}
+		}
+
+	}
+
+	public function disable_sbp_frontend() {
+
+		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return true; }
+
+		if ( true === $this->check_user_roles() ) { return true; }
+
+	}
 	
 	/**
 	 * Starts output buffering for the HTML, and hooks to the `template_redirect` action.
@@ -34,8 +60,8 @@ class Frontend {
 	 */
 	public function template_redirect() {
 		
-		// TODO: probably delete the condition below, because it already exists in Core::should_plugin_run()
-		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
+		if( true === $this->disable_sbp_frontend() ) { return; }
+		
 		ob_start( [ $this, 'output_buffer' ] );
 
 	}
