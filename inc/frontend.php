@@ -1,9 +1,10 @@
 <?php
 
 //	TODO:
+//		disable features per user role HERE!
 //		run (hook methods below, hooks in parantheses)
 //		sbp_public (template_redirect) // do_action ( 'sbp_public' ); ayrıca wp-admin, feed, ajax, rest vb. kontrolünü unutma!
-//		maybe_disable_sbp_frontend (sbp_public)
+//		maybe_disable_sbp_frontend (sbp_public) // core'daki should_plugin_run() metodu buraya
 //		http_headers (send_headers)
 
 /**
