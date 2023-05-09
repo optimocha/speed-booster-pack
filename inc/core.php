@@ -59,23 +59,10 @@ class Core {
 	}
 
 	/**
-	 * Does stuff when the plugin is deactivated.
+	 * Does stuff when the plugin is activated.
 	 *
 	 * @since    5.0.0
 	 */
-	public static function deactivate() {
-		Cache::set_wp_cache_constant( false );
-		Cache::clean_htaccess();
-		LiteSpeed_Cache::remove_htaccess_rules();
-		Cache::clear_total_cache();
-		$adv_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
-		if ( file_exists( $adv_cache_file ) ) {
-			unlink( $adv_cache_file );
-		}
-	}
-
-	// TODO: add inline doc.
-	// TODO: hook it to admin_init.
     public static function activate() {
 
 		if( ! get_option( 'sbp_activated' ) ) { return; }
@@ -99,9 +86,37 @@ class Core {
         }
 
         delete_option( 'sbp_activated' );
+		// TODO: hook it to admin_init.
 
     }
 
+	/**
+	 * Does stuff when the plugin is deactivated.
+	 *
+	 * @since    5.0.0
+	 */
+	public static function deactivate() {
+		Cache::set_wp_cache_constant( false );
+		Cache::clean_htaccess();
+		LiteSpeed_Cache::remove_htaccess_rules();
+		Cache::clear_total_cache();
+		$adv_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
+		if ( file_exists( $adv_cache_file ) ) {
+			unlink( $adv_cache_file );
+		}
+	}
+
+	/**
+	 * Does stuff when the plugin is upgraded.
+	 *
+	 * @since    5.0.0
+	 */
+	public static function upgrade() {
+		// TODO: populate this method.
+		// idea: https://wordpress.stackexchange.com/questions/25910/uninstall-activate-deactivate-a-plugin-typical-features-how-to/25979#25979
+	}
+
+	// TODO: move this into frontend.php
 	private function should_plugin_run() {
 
 		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) {
@@ -158,9 +173,7 @@ class Core {
 	}
 
 	/**
-	 * TODO: remove this!
-	 * Instantiate all classes.
-	 * Every class has inner documentation.
+	 * TODO: Instantiate these classes in frontend.php
 	 */
 	private function init_modules() {
 
@@ -223,7 +236,7 @@ class Core {
 	/**
 	 * Defines the locale for this plugin for internationalization.
 	 *
-	 * @since    4.0.0
+	 * @since    5.0.0
 	 * @access   private
 	 */
 	private function load_plugin_textdomain() {
@@ -241,6 +254,7 @@ class Core {
 
 		if ( ! is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 
+		// TODO: hook it to admin_init
 		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/codestar-framework/codestar-framework.php';
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
