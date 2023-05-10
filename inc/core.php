@@ -1,13 +1,13 @@
 <?php
 
 //	TODO:
-//		run (hook methods below, hooks in parantheses)
-//		load_plugin_textdomain (plugins_loaded)
-//		activate (admin_init) // set defaults & redirect & delete option: sbp_activated
-//		deactivate (register_deactivation_hook)
-//		upgrade (upgrader_process_complete) // add_option( 'sbp_upgraded', [ 'from' => 'x.y.z', 'to' => 'a.b.c' ] )
-//		upgrade_process (plugins_loaded) // otomatik de olabilir, çıkartılacak notice'teki linke tıklayarak da olabilir
 //		onboarding (admin_init)
+//	?	run (hook methods below, hooks in parantheses)
+//	+	load_plugin_textdomain (plugins_loaded)
+//	+	activate (admin_init) // set defaults & redirect & delete option: sbp_activated
+//	+	deactivate (register_deactivation_hook)
+//	+	upgrade (upgrader_process_complete) // add_option( 'sbp_upgraded', [ 'from' => 'x.y.z', 'to' => 'a.b.c' ] )
+//	+	upgrade_process (plugins_loaded) // otomatik de olabilir, çıkartılacak notice'teki linke tıklayarak da olabilir
 
 /**
  * The file that defines the core plugin class
@@ -28,7 +28,7 @@ defined( 'ABSPATH' ) || exit;
  * @package    Optimocha\SpeedBooster
  * @author     Optimocha
  */
-class Core {
+final class Core {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -41,6 +41,14 @@ class Core {
 	protected $loader;
 
 	/**
+	 * The main options array of the plugin.
+	 *
+	 * @since    5.0.0
+	 * @access   protected
+	 */
+	protected $options;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -50,12 +58,23 @@ class Core {
 	 * @since    4.0.0
 	 */
 	public function __construct() {
+
+		$this->options = get_option( 'sbp_options' );
+
 		$this->load_dependencies();
-		$this->save_post_types();
-		$this->define_admin_hooks();
 		$this->init_modules();
 		$this->define_public_hooks();
-		add_action( 'plugins_loaded', 'load_plugin_textdomain' );		
+
+		add_action( 'plugins_loaded', [ $this, 'load_plugin_textdomain' ] );
+		add_action( 'upgrader_process_complete', [ $this, 'upgrade' ] );
+		add_action( 'admin_init', [ $this, 'upgrade_process' ] );
+		add_action( 'admin_init', [ $this, 'activate' ] );
+		add_action( 'admin_init', [ $this, 'define_admin_hooks' ] );
+		
+		// TODO: don't run this on every admin init!
+		// this should run only in post/cpt edit screens & maybe the sbp settings page (load-toplevel_page_sbp-settings)
+		add_action( 'admin_init', [ $this, 'save_post_types' ] );
+
 	}
 
 	/**
@@ -86,7 +105,6 @@ class Core {
         }
 
         delete_option( 'sbp_activated' );
-		// TODO: hook it to admin_init.
 
     }
 
@@ -107,11 +125,29 @@ class Core {
 	}
 
 	/**
-	 * Does stuff when the plugin is upgraded.
+	 * Adds the sbp_upgraded option to the _options table.
 	 *
 	 * @since    5.0.0
 	 */
 	public static function upgrade() {
+		
+		$sbp_upgraded = get_option( 'sbp_upgraded', null );
+
+		if( ! isset( $sbp_upgraded ) ) { return; }
+
+		$old_version = $sbp_upgraded[ 'from' ];
+		$new_version = SPEED_BOOSTER_PACK[ 'version' ];
+
+		add_option( 'sbp_upgraded', [ 'from' => $old_version, 'to' => $new_version ] );
+
+	}
+
+	/**
+	 * Does stuff when the plugin is upgraded.
+	 *
+	 * @since    5.0.0
+	 */
+	public static function upgrade_process() {
 		// TODO: populate this method.
 		// idea: https://wordpress.stackexchange.com/questions/25910/uninstall-activate-deactivate-a-plugin-typical-features-how-to/25979#25979
 	}
@@ -177,10 +213,10 @@ class Core {
 	 */
 	private function init_modules() {
 
+		new Compatibility();
 		new Features\WP_Admin();
 		new Features\Database_Optimizer();
 		new Features\Newsletter();
-		new Compatibility();
 		new Features\Cloudflare();
 		new Features\Sucuri();
 		new Features\Notice_Manager();
@@ -209,6 +245,7 @@ class Core {
 	 * @access   private
 	 */
 	private function load_dependencies() {
+
 		/**
 		 * Requires the Composer autoloader.
 		 *
@@ -231,6 +268,7 @@ class Core {
 		require SPEED_BOOSTER_PACK['path'] . '/inc/freemius.php';
 
 		$this->loader = new Loader();
+
 	}
 
 	/**
@@ -254,7 +292,6 @@ class Core {
 
 		if ( ! is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 
-		// TODO: hook it to admin_init
 		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/codestar-framework/codestar-framework.php';
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
@@ -286,17 +323,15 @@ class Core {
 
 	}
 
-	// TODO: don't run this on every admin init!
 	private function save_post_types() {
-		// add_action('load-toplevel_page_sbp-settings', function() {
-		add_action('admin_init', function() {
-			$post_types = array_keys( get_post_types( [ 'public' => true ] ) );
-			$saved_post_types = get_option( 'sbp_public_post_types' );
 
-			if ( ! $saved_post_types || $saved_post_types != $post_types ) { 
-				update_option( 'sbp_public_post_types', $post_types );
-			}
-		});
+		$post_types = array_keys( get_post_types( [ 'public' => true ] ) );
+		$saved_post_types = get_option( 'sbp_public_post_types' );
+
+		if ( $saved_post_types && $saved_post_types == $post_types ) { return; }
+		
+		update_option( 'sbp_public_post_types', $post_types );
+
 	}
 
 	/**
