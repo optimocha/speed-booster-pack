@@ -14,7 +14,6 @@ class WP_Admin {
 		add_action( 'admin_init', [ $this, 'set_notices' ] );
 		add_action( 'admin_init', [ $this, 'timed_notifications' ] );
 		add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
-		add_action( 'admin_init', [ $this, 'upgrade_php_notice' ] );
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
 		add_filter( 'plugin_action_links_' . SPEED_BOOSTER_PACK['basename'], [ $this, 'settings_links' ], 10, 2 );
 
@@ -297,14 +296,6 @@ class WP_Admin {
 
 			Notice_Manager::display_notice( 'permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings' );
 		}
-
-	}
-
-	public function upgrade_php_notice() {
-
-		if ( version_compare( phpversion(), '7.0', '>=' ) ) { return; }
-
-		Notice_Manager::display_notice( 'upgrade_php_notice', '<p><strong>Speed Booster Pack</strong>: ' .  __( 'You are using a really old PHP version! In a few months, Speed Booster Pack will stop working with PHP versions below 7.0, so we highly recommend you update PHP to the latest version (or ask your hosting company to do it).', 'speed-booster-pack' ) . '</p>', 'warning', true );
 
 	}
 
