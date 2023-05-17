@@ -19,7 +19,7 @@ if ( ! function_exists( 'sbp_get_option' ) ) {
 	function sbp_get_option( $option = '', $default = null ) {
 		$sbp_options = get_option( 'sbp_options' );
 
-		return ( isset( $sbp_options[ $option ] ) ) ? $sbp_options[ $option ] : $default;
+		return $sbp_options[ $option ] ?? $default;
 	}
 }
 
