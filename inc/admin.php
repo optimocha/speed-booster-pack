@@ -575,7 +575,7 @@ class Admin {
 								sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
 				'default'    => 'utm_source',
 				'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-				'sanitize'   => 'sbp_sanitize_query_strings',
+				'sanitize'   => 'esc_url',
 			],
 			// LS CACHE
 			[
@@ -649,7 +649,7 @@ class Admin {
 				'desc'       => __( 'Enter one query string per line to cache URLs with those query strings. The cachefiles will be the same with the caches of the same page without any query string.', 'speed-booster-pack' ),
 				'default'    => implode( PHP_EOL, $ls_query_string_defaults ),
 				'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-				'sanitize'   => 'sbp_sanitize_query_strings',
+				'sanitize'   => 'esc_url',
 			],
 		];
 

@@ -284,25 +284,6 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 	}
 }
 
-if ( ! function_exists( 'sbp_sanitize_query_strings' ) ) {
-	/**
-	 * Sanitizes included query strings for caching
-	 *
-	 * @param $urls
-	 *
-	 * @return string
-	 * @since 4.2.0
-	 *
-	 */
-	function sbp_sanitize_query_strings( $urls ) {
-		$urls = strip_tags( $urls );
-		$urls = Utils::explode_lines( $urls );
-		$urls = sbp_remove_duplicates_and_empty( $urls );
-
-		return implode( PHP_EOL, $urls );
-	}
-}
-
 // TODO: use boolval() instead
 if ( ! function_exists( 'sbp_sanitize_boolean' ) ) {
 	function sbp_sanitize_boolean( $value ) {
