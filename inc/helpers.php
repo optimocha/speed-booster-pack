@@ -284,27 +284,6 @@ if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
 	}
 }
 
-// TODO: use rawurlencode() instead (and rawurldecode() while retrieving)
-if ( ! function_exists( 'sbp_sanitize_caching_cookies' ) ) {
-	/**
-	 * Sanitizes excluded cookies for caching
-	 *
-	 * @param $urls
-	 *
-	 * @return string
-	 * @since 4.2.0
-	 *
-	 */
-	function sbp_sanitize_caching_cookies( $urls ) {
-		$urls = strip_tags( $urls );
-		$urls = str_replace( [ '(', ')', '[', ']', '*', '$', '/', '|', '.' ], [ '', '', '', '', '', '', '', '', '\.' ], $urls );
-		$urls = Utils::explode_lines( $urls );
-		$urls = sbp_remove_duplicates_and_empty( $urls );
-
-		return implode( PHP_EOL, $urls );
-	}
-}
-
 if ( ! function_exists( 'sbp_sanitize_query_strings' ) ) {
 	/**
 	 * Sanitizes included query strings for caching

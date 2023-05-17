@@ -563,7 +563,7 @@ class Admin {
 				'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
 				'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
 				'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-				'sanitize'   => 'sbp_sanitize_caching_cookies',
+				'sanitize'   => 'esc_html',
 			],
 			[
 				'id'         => 'caching_include_query_strings',
@@ -639,7 +639,7 @@ class Admin {
 				'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
 				'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
 				'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-				'sanitize'   => 'sbp_sanitize_caching_cookies',
+				'sanitize'   => 'esc_html',
     		],
 			[
 				'id'         => 'caching_ls_include_query_strings',
