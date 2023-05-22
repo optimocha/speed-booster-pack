@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => '__root__',
+        'pretty_version' => '1.0.0+no-version-set',
+        'version' => '1.0.0.0',
+        'reference' => NULL,
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => '1.0.0+no-version-set',
+            'version' => '1.0.0.0',
+            'reference' => NULL,
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'deliciousbrains/wp-background-processing' => array(
+            'pretty_version' => '1.1.0',
+            'version' => '1.1.0.0',
+            'reference' => 'd5ef95cecba7f792ddca3e3bd70ebfb90dc4996d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../deliciousbrains/wp-background-processing',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'simplehtmldom/simplehtmldom' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '31ce157e7ba0c6ca35f94faedf031a945c3f6427',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../simplehtmldom/simplehtmldom',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);
