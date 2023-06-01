@@ -9,6 +9,12 @@ Stable tag: 5.0.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
+TODO:
+- Update short description
+- Update long description
+- Update headers
+- Update readme
+
 PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize your Core Web Vitals metrics (CLS, LCP, TBT) today!
 
 == Description ==
