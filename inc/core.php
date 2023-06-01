@@ -100,10 +100,6 @@ final class Core {
 
         }
 
-        if ( sbp_get_option( 'module_caching_ls' ) && ! sbp_should_disable_feature( 'caching' ) ) {
-            LiteSpeed_Cache::insert_htaccess_rules();
-        }
-
         delete_option( 'sbp_activated' );
 
     }
@@ -116,7 +112,6 @@ final class Core {
 	public static function deactivate() {
 		Cache::set_wp_cache_constant( false );
 		Cache::clean_htaccess();
-		LiteSpeed_Cache::remove_htaccess_rules();
 		Cache::clear_total_cache();
 		$adv_cache_file = WP_CONTENT_DIR . '/advanced-cache.php';
 		if ( file_exists( $adv_cache_file ) ) {
@@ -234,7 +229,6 @@ final class Core {
 		new Features\Localize_Tracker();
 		new Features\Woocommerce();
 		new Features\Cache();
-		new Features\LiteSpeed_Cache();
 
 	}
 

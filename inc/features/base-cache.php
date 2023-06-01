@@ -5,12 +5,6 @@ namespace Optimocha\SpeedBooster\Features;
 defined( 'ABSPATH' ) || exit;
 
 class Base_Cache {
-	protected $is_litespeed = false;
-
-	public function __construct() {
-		$this->is_litespeed = Utils::is_litespeed();
-	}
-
 	/**
 	 * Decides to run cache or not.
 	 *
@@ -76,7 +70,7 @@ class Base_Cache {
 
 	private function check_excluded_urls() {
 		// Check for exclude URLs
-		if ( $exclude_urls = sbp_get_option( 'caching_' . ( $this->is_litespeed !== false ? 'ls_' : '' ) . 'exclude_urls' ) ) {
+		if ( $exclude_urls = sbp_get_option( 'caching_exclude_urls' ) ) {
 			$exclude_urls   = array_map( 'trim', Utils::explode_lines( $exclude_urls ) );
 			$exclude_urls[] = '/favicon.ico';
 			$current_url    = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -93,7 +87,7 @@ class Base_Cache {
 		if ( ! empty( $_COOKIE ) ) {
 			// Default Cookie Excludes
 			$cookies          = [ 'comment_author_', 'wordpress_logged_in_', 'wp-postpass_' ];
-			$excluded_cookies = sbp_get_option( 'caching_' . ( $this->is_litespeed !== false ? 'ls_' : '' ) . 'exclude_cookies' );
+			$excluded_cookies = sbp_get_option( 'caching_exclude_cookies' );
 			$excluded_cookies = Utils::explode_lines( $excluded_cookies );
 			$cookies          = array_merge( $cookies, $excluded_cookies );
 

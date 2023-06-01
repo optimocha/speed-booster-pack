@@ -26,7 +26,6 @@ use Optimocha\SpeedBooster\Features\Notice_Manager;
 use Optimocha\SpeedBooster\Features\Utils;
 use Optimocha\SpeedBooster\Features\Advanced_Cache_Generator;
 use Optimocha\SpeedBooster\Features\Cache;
-use Optimocha\SpeedBooster\Features\LiteSpeed_Cache;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -83,8 +82,6 @@ class Admin {
 		add_action( 'csf_sbp_options_saved', 'Cache::clear_total_cache' );
 
 		add_action( 'csf_sbp_options_saved', 'Cache::generate_htaccess' );
-
-		add_action( 'csf_sbp_options_saved', 'LiteSpeed_Cache::insert_htaccess_rules' );
 
 		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
 
@@ -432,84 +429,11 @@ class Admin {
 		);
 		/* END Section: General */
 
-		$is_litespeed = Utils::is_litespeed();
-		$page_caching_class = $is_litespeed ? ' sbp-hidden ' : '';
-		$ls_caching_class   = $is_litespeed ? '' : ' sbp-hidden ';
-
-		$ls_query_string_defaults = [
-			'name',
-			'fbclid',
-			'gclid',
-			'gclsrc',
-			'utm_content',
-			'utm_term',
-			'utm_campaign',
-			'utm_medium',
-			'utm_source',
-			'utm_id',
-			'_ga',
-			'mc_cid',
-			'mc_eid',
-			'_bta_tid',
-			'_bta_c',
-			'trk_contact',
-			'trk_msg',
-			'trk_module',
-			'trk_sid',
-			'gdfms',
-			'gdftrk',
-			'gdffi',
-			'_ke',
-			'redirect_log_mongo_id',
-			'redirect_mongo_id',
-			'sb_referer_host',
-			'mkwid',
-			'pcrid',
-			'ef_id',
-			's_kwcid',
-			'msclkid',
-			'dm_i',
-			'epik',
-			'pk_campaign',
-			'pk_kwd',
-			'pk_keyword',
-			'piwik_campaign',
-			'piwik_kwd',
-			'piwik_keyword',
-			'mtm_campaign',
-			'mtm_keyword',
-			'mtm_source',
-			'mtm_medium',
-			'mtm_content',
-			'mtm_cid',
-			'mtm_group',
-			'mtm_placement',
-			'matomo_campaign',
-			'matomo_keyword',
-			'matomo_source',
-			'matomo_medium',
-			'matomo_content',
-			'matomo_cid',
-			'matomo_group',
-			'matomo_placement',
-			'hsa_cam',
-			'hsa_grp',
-			'hsa_mt',
-			'hsa_src',
-			'hsa_ad',
-			'hsa_acc',
-			'hsa_net',
-			'hsa_kw',
-			'hsa_tgt',
-			'hsa_ver',
-			'_branch_match_id'
-		];
-
 		/* BEGIN Section: Caching */
 		$cache_fields = [
 			[
 				'id'       => 'module_caching',
-				'class'    => 'module-caching' . $page_caching_class,
+				'class'    => 'module-caching',
 				'type'     => 'switcher',
 				/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
 				'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'Caching', 'speed-booster-pack' ),
@@ -519,7 +443,6 @@ class Admin {
 			],
 			[
 				'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
-				'class'      => $page_caching_class,
 				'id'         => 'caching_expiry',
 				'type'       => 'spinner',
 				'min'        => '1',
@@ -531,7 +454,6 @@ class Admin {
 			],
 			[
 				'id'         => 'caching_separate_mobile',
-				'class'      => $page_caching_class,
 				'type'       => 'switcher',
 				'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
 				'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
@@ -540,7 +462,6 @@ class Admin {
 			],
 			[
 				'id'         => 'caching_warmup_after_clear',
-				'class'      => $page_caching_class,
 				'type'       => 'switcher',
 				'title'      => __( 'Warm up cache on clear', 'speed-booster-pack' ),
 				'desc'       => __( 'Creates cache files for the front page and all pages that are linked from the front page, each time the cache is cleared. Note that even though you don\'t turn this option on, you can manually warm up the cache from your admin bar.', 'speed-booster-pack' ),
@@ -549,7 +470,7 @@ class Admin {
 			],
 			[
 				'id'         => 'caching_exclude_urls',
-				'class'      => 'caching-exclude-urls' . $page_caching_class,
+				'class'      => 'caching-exclude-urls',
 				'type'       => 'code_editor',
 				'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
 				'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
@@ -558,7 +479,7 @@ class Admin {
 			],
 			[
 				'id'         => 'caching_exclude_cookies',
-				'class'      => 'caching-exclude-cookies' . $page_caching_class,
+				'class'      => 'caching-exclude-cookies',
 				'type'       => 'code_editor',
 				'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
 				'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
@@ -567,7 +488,7 @@ class Admin {
 			],
 			[
 				'id'         => 'caching_include_query_strings',
-				'class'      => 'caching-include-query-strings' . $page_caching_class,
+				'class'      => 'caching-include-query-strings',
 				'type'       => 'code_editor',
 				'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
 				'desc'       => __( 'Enter one query string per line to cache URLs with those query strings.', 'speed-booster-pack' ) . '<br />' .
@@ -575,80 +496,6 @@ class Admin {
 								sprintf( __( 'For example, after adding "foo" to the list, %1$sexample.com/blog-post/?foo=bar%2$s will be cached.', 'speed-booster-pack' ), '<code>', '</code>' ),
 				'default'    => 'utm_source',
 				'dependency' => [ 'module_caching', '==', '1', '', 'visible' ],
-				'sanitize'   => 'esc_url',
-			],
-			// LS CACHE
-			[
-				'id'      => 'ls_cache_info',
-				'class'   => $ls_caching_class,
-				'type'    => 'submessage',
-				'style'   => 'info',
-				'content' => sprintf( __( 'Because your server is using LiteSpeed, %s is currently handling its caching system.', 'speed-booster-pack' ), 'Speed Booster Pack' ),
-			],
-			[
-				'id'       => 'module_caching_ls',
-				'class'    => 'module-caching' . $ls_caching_class,
-				'type'     => 'switcher',
-				/* translators: used like "Enable/Disable XXX" where "XXX" is the module name. */
-				'title'    => __( 'Enable/Disable', 'speed-booster-pack' ) . ' ' . __( 'LiteSpeed Cache', 'speed-booster-pack' ),
-				'label'    => __( 'Enables or disables the whole module without resetting its settings.', 'speed-booster-pack' ),
-				'sanitize' => 'sbp_sanitize_boolean',
-			],
-			[
-				'id'         => 'caching_ls_cache_logged_in_users',
-				'title'      => __( 'Cache logged in users', 'speed-booster-pack' ),
-				'desc'       => __( 'Enable cache for logged in users.', 'speed-booster-pack' ),
-				'class'      => $ls_caching_class,
-				'type'       => 'switcher',
-				'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-			],
-			[
-				'id'         => 'caching_ls_expiry',
-				'title'      => __( 'Cache expiry time', 'speed-booster-pack' ),
-				'class'      => $ls_caching_class,
-				'type'       => 'spinner',
-				'min'        => '1',
-				'unit'       => __( 'hours', 'speed-booster-pack' ),
-				'desc'       => __( 'How many hours to expire a cached page (1 or higher). Expired cache files are regenerated automatically.', 'speed-booster-pack' ),
-				'default'    => '10',
-				'sanitize'   => 'sbp_posabs',
-				'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-			],
-			[
-				'id'         => 'caching_ls_separate_mobile',
-				'class'      => $ls_caching_class,
-				'type'       => 'switcher',
-				'title'      => __( 'Separate mobile cache', 'speed-booster-pack' ),
-				'desc'       => __( 'Creates separate cache files for mobile and desktop. Useful if you have mobile-specific plugins or themes. Not necessary if you have a responsive theme.', 'speed-booster-pack' ),
-				'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-				'sanitize'   => 'sbp_sanitize_boolean',
-			],
-			[
-				'id'         => 'caching_ls_exclude_urls',
-				'class'      => 'caching-exclude-urls' . $ls_caching_class,
-				'type'       => 'code_editor',
-				'title'      => __( 'Exclude URLs', 'speed-booster-pack' ),
-				'desc'       => __( 'Enter one URL per line to exclude them from caching. Cart and Checkout pages of WooCommerce are always excluded, so you don\'t have to set them in here.', 'speed-booster-pack' ),
-				'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-				'sanitize'   => 'sbp_sanitize_caching_urls',
-			],
-    		[
-				'id'         => 'caching_ls_exclude_cookies',
-				'class'      => 'caching-exclude-cookies' . $ls_caching_class,
-				'type'       => 'code_editor',
-				'title'      => __( 'Exclude Cookies', 'speed-booster-pack' ),
-				'desc'       => __( 'Enter one cookie per line to exclude them from caching.', 'speed-booster-pack' ),
-				'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
-				'sanitize'   => 'esc_html',
-    		],
-			[
-				'id'         => 'caching_ls_include_query_strings',
-				'class'      => 'caching-include-query-strings' . $ls_caching_class,
-				'type'       => 'code_editor',
-				'title'      => __( 'Cached query strings', 'speed-booster-pack' ),
-				'desc'       => __( 'Enter one query string per line to cache URLs with those query strings. The cachefiles will be the same with the caches of the same page without any query string.', 'speed-booster-pack' ),
-				'default'    => implode( PHP_EOL, $ls_query_string_defaults ),
-				'dependency' => [ 'module_caching_ls', '==', '1', '', 'visible' ],
 				'sanitize'   => 'esc_url',
 			],
 		];
