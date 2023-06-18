@@ -2,7 +2,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-use Optimocha\SpeedBooster\Features\Utils;
+use Optimocha\SpeedBooster\Utils;
 
 /**
  * Load all plugin options

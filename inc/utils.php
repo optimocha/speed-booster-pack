@@ -1,6 +1,6 @@
 <?php
 
-namespace Optimocha\SpeedBooster\Features;
+namespace Optimocha\SpeedBooster;
 
 defined( 'ABSPATH' ) || exit;
 

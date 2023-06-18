@@ -48,6 +48,7 @@ define( 'SPEED_BOOSTER_PACK', [
 	'cache_path'	=> WP_CONTENT_DIR . '/cache/speed-booster/',
 ] );
 
+// TODO: replace it with composer psr-4 autoloader, then require vendor/autoload here
 /**
  * Registers the class autoloader.
  *
@@ -64,6 +65,13 @@ spl_autoload_register( function ( $class ) {
 		require $file;
 	}
 });
+
+/**
+ * Requires the Composer autoloader.
+ *
+ * @since   5.0.0
+ */
+require_once __DIR__ . '/vendor/autoload.php';
 
 /**
  * Registers the activation hook.

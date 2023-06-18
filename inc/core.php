@@ -204,31 +204,32 @@ final class Core {
 	}
 
 	/**
-	 * TODO: Instantiate these classes in frontend.php
+	 * TODO: Instantiate classes in frontend.php and backend.php
 	 */
 	private function init_modules() {
 
 		new Compatibility();
-		new Features\WP_Admin();
-		new Features\Database_Optimizer();
-		new Features\Newsletter();
-		new Features\Cloudflare();
-		new Features\Sucuri();
-		new Features\Notice_Manager();
-		new Features\Cache_Warmup();
-		new Features\JS_Optimizer();
-		new Features\Tweaks();
-		new Features\Font_Optimizer();
-		new Features\Preboost();
-		new Features\CDN();
-		new Features\Lazy_Loader();
-		new Features\CSS_Minifier();
-		new Features\Critical_CSS();
-		new Features\Image_Dimensions();
-		new Features\HTML_Minifier();
-		new Features\Localize_Tracker();
-		new Features\Woocommerce();
-		new Features\Cache();
+		new Backend\WP_Admin();
+		new Backend\Notice_Manager();
+		new Backend\Newsletter();
+
+		new Frontend\Database_Optimizer();
+		new Frontend\Cloudflare();
+		new Frontend\Sucuri();
+		new Frontend\Cache_Warmup();
+		new Frontend\JS_Optimizer();
+		new Frontend\Tweaks();
+		new Frontend\Font_Optimizer();
+		new Frontend\Preboost();
+		new Frontend\CDN();
+		new Frontend\Lazy_Loader();
+		new Frontend\CSS_Minifier();
+		new Frontend\Critical_CSS();
+		new Frontend\Image_Dimensions();
+		new Frontend\HTML_Minifier();
+		new Frontend\Localize_Tracker();
+		new Frontend\Woocommerce();
+		new Frontend\Cache();
 
 	}
 
@@ -239,13 +240,6 @@ final class Core {
 	 * @access   private
 	 */
 	private function load_dependencies() {
-
-		/**
-		 * Requires the Composer autoloader.
-		 *
-		 * @since   5.0.0
-		 */
-		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/autoload.php';
 
 		/**
 		 * Requires the file with the helper functions.
@@ -290,7 +284,7 @@ final class Core {
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		
-		$plugin_admin = new Admin();
+		$plugin_admin = new Backend();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_admin_assets' );
 		$this->loader->add_action( 'csf_loaded', $plugin_admin, 'create_settings_page' );

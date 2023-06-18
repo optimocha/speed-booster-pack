@@ -1,10 +1,10 @@
 <?php
 
-namespace Optimocha\SpeedBooster\Features;
+namespace Optimocha\SpeedBooster\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
-use Optimocha\SpeedBooster\Features\Advanced_Cache_Generator;
+use Optimocha\SpeedBooster\Frontend\Advanced_Cache_Generator;
 
 class Cache {
 	/**

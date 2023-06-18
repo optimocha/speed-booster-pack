@@ -22,10 +22,10 @@ namespace Optimocha\SpeedBooster;
 
 defined( 'ABSPATH' ) || exit;
 
-use Optimocha\SpeedBooster\Features\Notice_Manager;
-use Optimocha\SpeedBooster\Features\Utils;
-use Optimocha\SpeedBooster\Features\Advanced_Cache_Generator;
-use Optimocha\SpeedBooster\Features\Cache;
+use Optimocha\SpeedBooster\Utils;
+use Optimocha\SpeedBooster\Backend\Notice_Manager;
+use Optimocha\SpeedBooster\Frontend\Advanced_Cache_Generator;
+use Optimocha\SpeedBooster\Frontend\Cache;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -36,7 +36,7 @@ use Optimocha\SpeedBooster\Features\Cache;
  * @package    Optimocha\SpeedBooster
  * @author     Optimocha
  */
-class Admin {
+class Backend {
 
 	/**
 	 * WooCommerce Tracking setting.
