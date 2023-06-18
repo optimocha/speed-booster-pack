@@ -48,24 +48,6 @@ define( 'SPEED_BOOSTER_PACK', [
 	'cache_path'	=> WP_CONTENT_DIR . '/cache/speed-booster/',
 ] );
 
-// TODO: replace it with composer psr-4 autoloader, then require vendor/autoload here
-/**
- * Registers the class autoloader.
- *
- * @since	5.0.0
- */
-spl_autoload_register( function ( $class ) {
-	$prefix = 'Optimocha\\SpeedBooster\\';
-	$len = strlen( $prefix );
-	if ( strncmp( $prefix, $class, $len ) !== 0) { return; }
-	$relative_class = substr( $class, $len );
-	$filename = strtolower( str_replace( [ '_', '\\' ], [ '-', '/' ], $relative_class ) );
-	$file = __DIR__ . "/inc/$filename.php";
-	if ( file_exists( $file ) ) {
-		require $file;
-	}
-});
-
 /**
  * Requires the Composer autoloader.
  *

@@ -3,6 +3,12 @@
     "simplehtmldom/simplehtmldom": "dev-master",
     "deliciousbrains/wp-background-processing": "^1.0"
   },
+  "autoload": {
+      "psr-4": {
+          "Optimocha\\SpeedBooster\\": "inc/"
+      },
+      "files": ["freemius.php", "helpers.php"]
+  },
   "minimum-stability": "dev",
   "prefer-stable": true
 }

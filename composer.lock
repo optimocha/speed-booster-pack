@@ -62,12 +62,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/simplehtmldom/simplehtmldom.git",
-                "reference": "31ce157e7ba0c6ca35f94faedf031a945c3f6427"
+                "reference": "b8d048e46b7f1964c28ea041d39ccb1d05f9a0ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simplehtmldom/simplehtmldom/zipball/31ce157e7ba0c6ca35f94faedf031a945c3f6427",
-                "reference": "31ce157e7ba0c6ca35f94faedf031a945c3f6427",
+                "url": "https://api.github.com/repos/simplehtmldom/simplehtmldom/zipball/b8d048e46b7f1964c28ea041d39ccb1d05f9a0ed",
+                "reference": "b8d048e46b7f1964c28ea041d39ccb1d05f9a0ed",
                 "shasum": ""
             },
             "require": {
@@ -75,13 +75,17 @@
                 "php": ">=5.6"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6 || ^7"
+                "dealerdirect/phpcodesniffer-composer-installer": "*",
+                "phpcompatibility/php-compatibility": "^9",
+                "phpunit/phpunit": "^6 || ^7",
+                "squizlabs/php_codesniffer": "^2"
             },
             "suggest": {
                 "ext-curl": "Needed to support cURL downloads in class HtmlWeb",
                 "ext-mbstring": "Allows better decoding for multi-byte documents",
                 "ext-openssl": "Allows loading HTTPS pages when using cURL"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "classmap": [
@@ -89,8 +93,7 @@
                 ],
                 "exclude-from-classmap": [
                     "/example/",
-                    "/manual/",
-                    "/testcase/",
+                    "/docs/",
                     "/tests/",
                     "simple_html_dom.php"
                 ]
@@ -123,7 +126,13 @@
                 "php",
                 "simplehtmldom"
             ],
-            "time": "2019-12-06T18:20:19+00:00"
+            "support": {
+                "issues": "https://sourceforge.net/p/simplehtmldom/bugs/",
+                "rss": "https://sourceforge.net/p/simplehtmldom/news/feed.rss",
+                "source": "https://sourceforge.net/p/simplehtmldom/repository/",
+                "wiki": "https://simplehtmldom.sourceforge.io/docs/"
+            },
+            "time": "2022-04-25T19:21:05+00:00"
         }
     ],
     "packages-dev": [],
