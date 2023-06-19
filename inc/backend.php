@@ -40,6 +40,24 @@ use Optimocha\SpeedBooster\Frontend\Cache;
 class Backend {
 
 	/**
+	 * The loader that's responsible for maintaining and registering all hooks that power
+	 * the plugin.
+	 *
+	 * @since    4.0.0
+	 * @access   protected
+	 * @var      Loader $loader Maintains and registers all hooks for the plugin.
+	 */
+	protected $loader;
+
+	/**
+	 * The main options array of the plugin.
+	 *
+	 * @since    5.0.0
+	 * @access   protected
+	 */
+	protected $options;
+
+	/**
 	 * WooCommerce Tracking setting.
 	 *
 	 * @since    4.5.0
@@ -58,14 +76,14 @@ class Backend {
 	private $woocommerce_analytics;
 
 	/**
-	 * Initialize the class and set its properties.
+	 * Defines the backend class constructor.
 	 *
-	 * @param string $plugin_name The name of this plugin.
-	 * @param string $version The version of this plugin.
-	 *
-	 * @since    4.0.0
+	 * @since    5.0.0
 	 */
-	public function __construct() {
+	public function __construct( $options, $loader ) {
+
+		$this->options = $options;
+		$this->loader = $loader;
 
 		$this->woocommerce_analytics = 1;
 		$this->woocommerce_tracking  = 1;

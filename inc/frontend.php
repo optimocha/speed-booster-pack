@@ -27,6 +27,36 @@ defined( 'ABSPATH' ) || exit;
  */
 class Frontend {
 
+	/**
+	 * The loader that's responsible for maintaining and registering all hooks that power
+	 * the plugin.
+	 *
+	 * @since    4.0.0
+	 * @access   protected
+	 * @var      Loader $loader Maintains and registers all hooks for the plugin.
+	 */
+	protected $loader;
+
+	/**
+	 * The main options array of the plugin.
+	 *
+	 * @since    5.0.0
+	 * @access   protected
+	 */
+	protected $options;
+
+	/**
+	 * Defines the frontend class constructor.
+	 *
+	 * @since    5.0.0
+	 */
+	public function __construct( $options, $loader ) {
+
+		$this->options = $options;
+		$this->loader = $loader;
+
+	}
+
 	public function check_user_roles() {
 
 		$sbp_disabled_roles = sbp_get_option( 'roles_to_disable_sbp' );
