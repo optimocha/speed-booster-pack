@@ -88,23 +88,23 @@ class Backend {
 		$this->woocommerce_analytics = 1;
 		$this->woocommerce_tracking  = 1;
 
-		add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
+		$this->loader->add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
 
-		add_filter( 'csf_sbp_options_saved', 'Cache::options_saved_filter' );
+		$this->loader->add_filter( 'csf_sbp_options_saved', 'Cache::options_saved_filter' );
 
-		add_action( 'csf_sbp_options_save_before', 'Cache::options_saved_listener' );
+		$this->loader->add_action( 'csf_sbp_options_save_before', 'Cache::options_saved_listener' );
 
-		add_action( 'csf_sbp_options_save_before', 'Cloudflare::update_cloudflare_settings' );
+		$this->loader->add_action( 'csf_sbp_options_save_before', 'Cloudflare::update_cloudflare_settings' );
 
-		add_action( 'csf_sbp_options_saved', 'Woocommerce::set_woocommerce_optimizations' );
+		$this->loader->add_action( 'csf_sbp_options_saved', 'Woocommerce::set_woocommerce_optimizations' );
 
-		add_action( 'csf_sbp_options_saved', 'Cache::clear_total_cache' );
+		$this->loader->add_action( 'csf_sbp_options_saved', 'Cache::clear_total_cache' );
 
-		add_action( 'csf_sbp_options_saved', 'Cache::generate_htaccess' );
+		$this->loader->add_action( 'csf_sbp_options_saved', 'Cache::generate_htaccess' );
 
-		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
+		$this->loader->add_action( 'admin_enqueue_scripts', 'add_thickbox' );
 
-		add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
+		$this->loader->add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
 
 	}
 
