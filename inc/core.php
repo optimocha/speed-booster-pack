@@ -1,7 +1,6 @@
 <?php
 
 //	TODO:
-//		onboarding (admin_init)
 //	?	run (hook methods below, hooks in parantheses)
 //	+	load_plugin_textdomain (plugins_loaded)
 //	+	activate (admin_init) // set defaults & redirect & delete option: sbp_activated
@@ -61,7 +60,7 @@ final class Core {
 
 		$this->options = get_option( 'sbp_options' );
 
-		$this->load_dependencies();
+		$this->loader = new Loader();
 		$this->init_modules();
 		$this->define_public_hooks();
 
@@ -230,32 +229,6 @@ final class Core {
 		new Frontend\Localize_Tracker();
 		new Frontend\Woocommerce();
 		new Frontend\Cache();
-
-	}
-
-	/**
-	 * Loads the required dependencies for this plugin.
-	 *
-	 * @since    5.0.0
-	 * @access   private
-	 */
-	private function load_dependencies() {
-
-		/**
-		 * Requires the file with the helper functions.
-		 *
-		 * @since   5.0.0
-		 */
-		require SBP_PATH . '/inc/helpers.php';
-
-		/**
-		 * Requires the file with the helper functions.
-		 *
-		 * @since   5.0.0
-		 */
-		require SBP_PATH . '/inc/freemius.php';
-
-		$this->loader = new Loader();
 
 	}
 

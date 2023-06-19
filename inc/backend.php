@@ -1,6 +1,7 @@
 <?php
 
 //	TODO:
+//		onboarding (admin_init)
 //		append_to_plugin_description (plugin_row_meta)
 //		add_settings_link (plugin_action_links_ . SBP_BASENAME)
 //		enqueue_notices (admin_init)
