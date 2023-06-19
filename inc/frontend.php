@@ -80,7 +80,7 @@ class Frontend {
 
 		$html = apply_filters( 'sbp_output_buffer', $html );
 
-		$html = str_replace( '</head>', '<!-- Optimized by Speed Booster Pack v' . SPEED_BOOSTER_PACK['version'] . ' -->' . PHP_EOL . '</head>', $html );
+		$html = str_replace( '</head>', '<!-- Optimized by Speed Booster Pack v' . SBP_VERSION . ' -->' . PHP_EOL . '</head>', $html );
 
 		return $html;
 	}

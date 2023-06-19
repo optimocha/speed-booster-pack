@@ -15,13 +15,13 @@ class WP_Admin {
 		add_action( 'admin_init', [ $this, 'timed_notifications' ] );
 		add_action( 'admin_head', [ $this, 'check_required_file_permissions' ] );
 		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta_links' ], 10, 2 );
-		add_filter( 'plugin_action_links_' . SPEED_BOOSTER_PACK['basename'], [ $this, 'settings_links' ], 10, 2 );
+		add_filter( 'plugin_action_links_' . SBP_BASENAME, [ $this, 'settings_links' ], 10, 2 );
 
 	}
 
 	public function plugin_meta_links( $meta_fields, $file ) {
 
-		if ( SPEED_BOOSTER_PACK['basename'] == $file ) {
+		if ( SBP_BASENAME == $file ) {
 
 			$report_a_bug_url = "https://optimocha.com/contact/?subject=Speed%20Booster%20Pack%20bug%20report";
 			$report_a_bug_text = __( 'Report a bug', 'speed-booster-pack' );
@@ -51,7 +51,7 @@ class WP_Admin {
 				'href'  => admin_url( 'admin.php?page=sbp-settings' ),
 				'meta'  => [
 					'target' => '_self',
-					'html'   => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SPEED_BOOSTER_PACK['url'] . 'assets/sbp-icon.svg?ver=' . SPEED_BOOSTER_PACK['version'] . '") no-repeat 5px center;padding-left:25px;}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
+					'html'   => '<style>#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item{background:url("' . SBP_URL . 'assets/sbp-icon.svg?ver=' . SBP_VERSION . '") no-repeat 5px center;padding-left:25px;}#wpadminbar #wp-admin-bar-speed_booster_pack .ab-item:hover{color:white;}</style>',
 				],
 			] );
 

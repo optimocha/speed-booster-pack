@@ -35,7 +35,7 @@ class Lazy_Loader {
 
 	function add_lazy_load_script() {
 
-		wp_enqueue_script( 'sbp-lazy-load', SPEED_BOOSTER_PACK['url'] . 'assets/lazyload.js', false, '17.7.0', true );
+		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'assets/lazyload.js', false, '17.7.0', true );
 
 		$lazy_loader_script = 'window.lazyLoadOptions = {
 					elements_selector: "[loading=lazy]"

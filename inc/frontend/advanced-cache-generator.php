@@ -99,7 +99,7 @@ if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
 }
 
 // output cached file
-header("X-Powered-By: Speed Booster Pack v' . SPEED_BOOSTER_PACK['version'] . '");
+header("X-Powered-By: Speed Booster Pack v' . SBP_VERSION . '");
 readfile( $cache_file_path );
 exit;
 

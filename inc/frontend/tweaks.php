@@ -287,7 +287,7 @@ class Tweaks {
 
 	public function instant_page_handle() {
 
-		wp_enqueue_script( 'sbp-ins-page', SPEED_BOOSTER_PACK['url'] . 'assets/inspage.js', false, '5.1.0', true );
+		wp_enqueue_script( 'sbp-ins-page', SBP_URL . 'assets/inspage.js', false, '5.1.0', true );
 
 	}
 

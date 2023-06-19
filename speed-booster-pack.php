@@ -39,14 +39,12 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since	5.0.0
  */
-define( 'SPEED_BOOSTER_PACK', [
-	'version'		=> '5.0.0-alpha',
-	'slug'			=> 'speed-booster-pack',
-	'path'			=> __DIR__,
-	'basename'		=> plugin_basename( __FILE__ ),
-	'url'			=> plugin_dir_url( __FILE__ ),
-	'cache_path'	=> WP_CONTENT_DIR . '/cache/speed-booster/',
-] );
+define( 'SBP_VERSION', '5.0.0-alpha' );
+define( 'SBP_SLUG', 'speed-booster-pack' );
+define( 'SBP_PATH', __DIR__ );
+define( 'SBP_BASENAME', plugin_basename( __FILE__ ) );
+define( 'SBP_URL', plugin_dir_url( __FILE__ ) );
+define( 'SBP_CACHE_PATH', WP_CONTENT_DIR . '/cache/speed-booster/' );
 
 /**
  * Requires the Composer autoloader.

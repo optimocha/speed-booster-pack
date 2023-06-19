@@ -131,7 +131,7 @@ final class Core {
 		if( ! isset( $sbp_upgraded ) ) { return; }
 
 		$old_version = $sbp_upgraded[ 'from' ];
-		$new_version = SPEED_BOOSTER_PACK[ 'version' ];
+		$new_version = SBP_VERSION;
 
 		add_option( 'sbp_upgraded', [ 'from' => $old_version, 'to' => $new_version ] );
 
@@ -246,14 +246,14 @@ final class Core {
 		 *
 		 * @since   5.0.0
 		 */
-		require SPEED_BOOSTER_PACK['path'] . '/inc/helpers.php';
+		require SBP_PATH . '/inc/helpers.php';
 
 		/**
 		 * Requires the file with the helper functions.
 		 *
 		 * @since   5.0.0
 		 */
-		require SPEED_BOOSTER_PACK['path'] . '/inc/freemius.php';
+		require SBP_PATH . '/inc/freemius.php';
 
 		$this->loader = new Loader();
 
@@ -280,7 +280,7 @@ final class Core {
 
 		if ( ! is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 
-		require_once SPEED_BOOSTER_PACK['path'] . '/vendor/codestar-framework/codestar-framework.php';
+		require_once SBP_PATH . '/vendor/codestar-framework/codestar-framework.php';
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 		

@@ -143,7 +143,7 @@ class Cache {
 	 */
 	public static function clear_total_cache() {
 		do_action( 'sbp_before_cache_clear' );
-		sbp_delete_dir_recursively( SPEED_BOOSTER_PACK['cache_path'] );
+		sbp_delete_dir_recursively( SBP_CACHE_PATH );
 		if ( sbp_get_option( 'caching_warmup_after_clear' ) && sbp_get_option( 'module_caching' ) ) {
 			$warmup = new Cache_Warmup();
 			$warmup->start_process();
@@ -217,9 +217,9 @@ class Cache {
 	 * @return string
 	 */
 	private function get_cache_file_path( $post_url = null, $is_mobile = false ) {
-		$cache_dir = SPEED_BOOSTER_PACK['cache_path'];
+		$cache_dir = SBP_CACHE_PATH;
 		if ( ( wp_is_mobile() && sbp_get_option( 'caching_separate_mobile' ) ) || true === $is_mobile ) {
-			$cache_dir = SPEED_BOOSTER_PACK['cache_path'] . 'mobile';
+			$cache_dir = SBP_CACHE_PATH . 'mobile';
 		}
 
 		$path = sprintf(
@@ -425,7 +425,7 @@ class Cache {
 		}
 
 		$sbp_htaccess_block = '# BEGIN Speed Booster Pack
-# SBP ' . SPEED_BOOSTER_PACK['version'] . '
+# SBP ' . SBP_VERSION . '
 
 # Character encodings
 AddDefaultCharset utf-8

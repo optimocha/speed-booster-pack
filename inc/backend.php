@@ -2,7 +2,7 @@
 
 //	TODO:
 //		append_to_plugin_description (plugin_row_meta)
-//		add_settings_link (plugin_action_links_ . SPEED_BOOSTER_PACK['basename'])
+//		add_settings_link (plugin_action_links_ . SBP_BASENAME)
 //		enqueue_notices (admin_init)
 //		enqueue_admin_assets (admin_enqueue_scripts) // tüm wp-admin için (options harici css&js)
 //		generate_options_page (admin_init) // csf hook'larını da bir yerlere sokuştur
@@ -96,11 +96,11 @@ class Backend {
 	 */
 	public function enqueue_admin_assets() {
 
-		wp_enqueue_style( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'assets/sbp-admin.css', [], SPEED_BOOSTER_PACK['version'] );
+		wp_enqueue_style( SBP_SLUG, SBP_URL . 'assets/sbp-admin.css', [], SBP_VERSION );
 
-		wp_enqueue_script( SPEED_BOOSTER_PACK['slug'], SPEED_BOOSTER_PACK['url'] . 'assets/sbp-admin.js', [ 'jquery' ], SPEED_BOOSTER_PACK['version'] );
+		wp_enqueue_script( SBP_SLUG, SBP_URL . 'assets/sbp-admin.js', [ 'jquery' ], SBP_VERSION );
 
-		wp_localize_script( SPEED_BOOSTER_PACK['slug'], 'sbp_ajax_vars', [ 'nonce' => wp_create_nonce( 'sbp_ajax_nonce' ), ] );
+		wp_localize_script( SBP_SLUG, 'sbp_ajax_vars', [ 'nonce' => wp_create_nonce( 'sbp_ajax_nonce' ), ] );
 
 	}
 
@@ -129,7 +129,7 @@ class Backend {
 
 				// menu settings
 				'menu_title'      => 'Speed Booster',
-				'menu_icon'       => SPEED_BOOSTER_PACK['url'] . 'assets/sbp-icon.svg?ver=' . SPEED_BOOSTER_PACK['version'],
+				'menu_icon'       => SBP_URL . 'assets/sbp-icon.svg?ver=' . SBP_VERSION,
 				'menu_slug'       => 'sbp-settings',
 				'menu_type'       => 'menu',
 				'menu_capability' => 'manage_options',
