@@ -4,6 +4,8 @@ namespace Optimocha\SpeedBooster\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
+use Optimocha\SpeedBooster\Utils;
+
 class Advanced_Cache_Generator {
 	private static $options = [];
 
