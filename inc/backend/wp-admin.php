@@ -4,6 +4,8 @@ namespace Optimocha\SpeedBooster\Backend;
 
 defined( 'ABSPATH' ) || exit;
 
+use Optimocha\SpeedBooster\Frontend\Cloudflare;
+
 class WP_Admin {
 	public function __construct() {
 
