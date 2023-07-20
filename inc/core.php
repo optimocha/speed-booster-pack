@@ -20,6 +20,9 @@ namespace Optimocha\SpeedBooster;
 
 defined( 'ABSPATH' ) || exit;
 
+use Optimocha\SpeedBooster\Frontend\Cache;
+use Optimocha\SpeedBooster\Frontend\Advanced_Cache_Generator;
+
 /**
  * The core plugin class.
  *
@@ -69,7 +72,7 @@ final class Core {
 		add_action( 'admin_init', [ $this, 'upgrade_process' ] );
 		add_action( 'admin_init', [ $this, 'activate' ] );
 		add_action( 'admin_init', [ $this, 'define_admin_hooks' ] );
-		
+
 		// TODO: don't run this on every admin init!
 		// this should run only in post/cpt edit screens & maybe the sbp settings page (load-toplevel_page_sbp-settings)
 		add_action( 'admin_init', [ $this, 'save_post_types' ] );
@@ -124,7 +127,7 @@ final class Core {
 	 * @since    5.0.0
 	 */
 	public static function upgrade() {
-		
+
 		$sbp_upgraded = get_option( 'sbp_upgraded', null );
 
 		if( ! isset( $sbp_upgraded ) ) { return; }
@@ -194,7 +197,7 @@ final class Core {
 		if (
 			class_exists( 'Brizy_Editor' )
 			&&
-			( isset( $_GET[ Brizy_Editor::prefix( '-edit' ) ] ) || isset( $_GET[ Brizy_Editor::prefix( '-edit-iframe' ) ] ) )
+			( isset( $_GET[ \Brizy_Editor::prefix( '-edit' ) ] ) || isset( $_GET[ \Brizy_Editor::prefix( '-edit-iframe' ) ] ) )
 		) {
 			return false;
 		}
@@ -256,8 +259,8 @@ final class Core {
 		require_once SBP_PATH . '/vendor/codestar-framework/codestar-framework.php';
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
-		
-		$plugin_admin = new Backend();
+
+		$plugin_admin = new Backend( $this->options, $this->loader );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_admin_assets' );
 		$this->loader->add_action( 'csf_loaded', $plugin_admin, 'create_settings_page' );
@@ -273,10 +276,10 @@ final class Core {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		
+
 		if ( ! $this->should_plugin_run() ) { return; }
-		
-		$plugin_public = new Frontend();
+
+		$plugin_public = new Frontend( $this->options, $this->loader );
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 2 );
 
@@ -290,7 +293,7 @@ final class Core {
 		$saved_post_types = get_option( 'sbp_public_post_types' );
 
 		if ( $saved_post_types && $saved_post_types == $post_types ) { return; }
-		
+
 		update_option( 'sbp_public_post_types', $post_types );
 
 	}
