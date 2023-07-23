@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
-use Optimocha\SpeedBooster\Frontend\Advanced_Cache_Generator;
+use Optimocha\SpeedBooster\Frontend\AdvancedCacheGenerator;
 
 class Cache {
 	/**
@@ -15,7 +15,7 @@ class Cache {
 	private $file_name = 'index.html';
 
 	public function __construct() {
-		
+
 		if ( ! sbp_get_option( 'module_caching' ) || sbp_should_disable_feature( 'caching' ) ) {
 			return;
 		}
@@ -28,7 +28,7 @@ class Cache {
 		// Handle The Cache
 		add_filter( 'sbp_output_buffer', [ $this, 'handle_cache' ], 1000 );
 	}
-	
+
 	/**
 	 * Decides to run cache or not.
 	 *
@@ -50,14 +50,14 @@ class Cache {
 			return true;
 		}
 
-		// Woocommerce checkout check
+		// WooCommerce checkout check
 		if ( function_exists( 'is_checkout' ) ) {
 			if ( is_checkout() ) {
 				return true;
 			}
 		}
 
-		// Woocommerce cart check
+		// WooCommerce cart check
 		if ( function_exists( 'is_cart' ) ) {
 			if ( is_cart() ) {
 				return true;
@@ -145,7 +145,7 @@ class Cache {
 		do_action( 'sbp_before_cache_clear' );
 		sbp_delete_dir_recursively( SBP_CACHE_PATH );
 		if ( sbp_get_option( 'caching_warmup_after_clear' ) && sbp_get_option( 'module_caching' ) ) {
-			$warmup = new Cache_Warmup();
+			$warmup = new CacheWarmup();
 			$warmup->start_process();
 			unset( $warmup );
 		}
@@ -323,7 +323,7 @@ class Cache {
 
 		// Delete or recreate advanced-cache.php
 		if ( $saved_data['module_caching'] ) {
-			$advanced_cache_file_content = Advanced_Cache_Generator::generate_advanced_cache_file( $saved_data );
+			$advanced_cache_file_content = AdvancedCacheGenerator::generate_advanced_cache_file( $saved_data );
 			if ( $advanced_cache_file_content ) {
 				Cache::set_wp_cache_constant( true );
 

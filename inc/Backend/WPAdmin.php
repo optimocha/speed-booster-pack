@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Optimocha\SpeedBooster\Frontend\Cloudflare;
 
-class WP_Admin {
+class WPAdmin {
 	public function __construct() {
 
 		add_action( 'admin_bar_menu', [ $this, 'add_admin_bar_links' ], 90 );
@@ -137,7 +137,7 @@ class WP_Admin {
 		if ( $transient_value = get_transient( 'sbp_clear_sucuri_cache' ) ) {
 			$notice_message = $transient_value == '1' ? __( 'Sucuri cache cleared.', 'speed-booster-pack' ) : __( 'Error occured while clearing Sucuri cache. ', 'speed-booster-pack' ) . get_transient( 'sbp_sucuri_error' );
 			$notice_type    = $transient_value == '1' ? 'success' : 'error';
-			Notice_Manager::display_notice( 'sbp_clear_sucuri_cache',
+			Notices::display_notice( 'sbp_clear_sucuri_cache',
 				'<p><strong>Speed Booster Pack:</strong> ' . $notice_message . '</p>',
 				$notice_type,
 				true,
@@ -156,14 +156,14 @@ class WP_Admin {
 			$notice_message = '';
 			$notice_type    = '';
 		}
-		Notice_Manager::display_notice( 'sbp_notice_cloudflare',
+		Notices::display_notice( 'sbp_notice_cloudflare',
 			'<p><strong>Speed Booster Pack:</strong> ' . $notice_message . '</p>',
 			$notice_type,
 			true,
 			'flash' );
 
 		// Set Cache Clear Notice
-		Notice_Manager::display_notice( 'sbp_notice_cache',
+		Notices::display_notice( 'sbp_notice_cache',
 			'<p><strong>Speed Booster Pack:</strong> ' . __( 'Cache cleared.', 'speed-booster-pack' ) . '</p>',
 			'success',
 			true,
@@ -171,7 +171,7 @@ class WP_Admin {
 
 		// Set Localizer Cache Clear Notice
 		if ( get_transient( 'sbp_notice_tracker_localizer' ) ) {
-			Notice_Manager::display_notice( 'sbp_notice_tracker_localizer',
+			Notices::display_notice( 'sbp_notice_tracker_localizer',
 				'<p><strong>Speed Booster Pack:</strong> ' . __( 'Localized scripts are cleared.', 'speed-booster-pack' ) . '</p>',
 				'success',
 				true,
@@ -180,7 +180,7 @@ class WP_Admin {
 
 		// Advanced Cache File Error
 		if ( get_transient( 'sbp_advanced_cache_error' ) ) {
-			Notice_Manager::display_notice( 'sbp_advanced_cache_error',
+			Notices::display_notice( 'sbp_advanced_cache_error',
 				/* translators: %s: wp-content/advanced-cache.php */
 				'<p><strong>Speed Booster Pack</strong>: ' . sprintf( __( '%s is not writable. Please check your file permissions, or some features might not work.', 'speed-booster-pack' ), '<code>wp-content/advanced-cache.php</code>' ) . '</p>',
 				'error',
@@ -190,7 +190,7 @@ class WP_Admin {
 
 		// WP-Config File Error
 		if ( get_transient( 'sbp_wp_config_error' ) ) {
-			Notice_Manager::display_notice( 'sbp_wp_config_error',
+			Notices::display_notice( 'sbp_wp_config_error',
 				/* translators: %s: wp-config.php */
 				'<p><strong>Speed Booster Pack</strong>: ' . sprintf( __( '%s is not writable. Please check your file permissions, or some features might not work.', 'speed-booster-pack' ), '<code>wp-config.php</code>' ) . '</p>',
 				'error',
@@ -199,7 +199,7 @@ class WP_Admin {
 		}
 
 		// Warmup Started Notice
-		Notice_Manager::display_notice( 'sbp_warmup_started',
+		Notices::display_notice( 'sbp_warmup_started',
 			'<p>' . sprintf( __( '%s will now send requests to your homepage and all the pages that are linked to in the homepage (including links in navigation menus) so they\'ll all be cached.', 'speed-booster-pack' ), 'Speed Booster Pack' ) . '</p>',
 			'info',
 			true,
@@ -222,7 +222,7 @@ class WP_Admin {
 				$notice_meta = get_user_meta( get_current_user_id(), $meta_key, true );
 				if ( ! $notice_meta ) {
 					if ( isset( $notice['depends_on'] ) && $notice['depends_on'] ) {
-						if ( Notice_Manager::has_dismissed( $notice['depends_on'] ) ) {
+						if ( Notices::has_dismissed( $notice['depends_on'] ) ) {
 							update_user_meta( get_current_user_id(), $meta_key, strtotime( $notice['show_after'] ) );
 						}
 					} else {
@@ -230,7 +230,7 @@ class WP_Admin {
 					}
 				} else {
 					if ( $notice_meta <= time() ) {
-						Notice_Manager::display_notice( $notice_key, '<p>' . $notice['text'] . '</p>', 'info', true, 'one_time', 'toplevel_page_sbp-settings' );
+						Notices::display_notice( $notice_key, '<p>' . $notice['text'] . '</p>', 'info', true, 'one_time', 'toplevel_page_sbp-settings' );
 					}
 				}
 			}
@@ -296,7 +296,7 @@ class WP_Admin {
 			$notice_content .= '<a href="https://www.wpbeginner.com/beginners-guide/how-to-fix-file-and-folder-permissions-error-in-wordpress/" target="_blank">' . __( 'Here\'s a tutorial on how to change file/directory permissions.', 'speed-booster' ) . '</a>';
 			$notice_content .= '</p>';
 
-			Notice_Manager::display_notice( 'permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings' );
+			Notices::display_notice( 'permission_errors', $notice_content, 'warning', false, 'recurrent', 'toplevel_page_sbp-settings' );
 		}
 
 	}

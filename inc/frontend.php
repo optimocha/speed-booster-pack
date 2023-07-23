@@ -82,20 +82,20 @@ class Frontend {
 		if ( true === $this->check_user_roles() ) { return true; }
 
 	}
-	
+
 	/**
 	 * Starts output buffering for the HTML, and hooks to the `template_redirect` action.
 	 *
 	 * @return void
 	 */
 	public function template_redirect() {
-		
+
 		if( true === $this->disable_sbp_frontend() ) { return; }
-		
+
 		ob_start( [ $this, 'output_buffer' ] );
 
 	}
-	
+
 	/**
 	 * Gets the HTML output of a page and applies a filter hook so Speed Booster Pack features can work with the HTML.
 	 *

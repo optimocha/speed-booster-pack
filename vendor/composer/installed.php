@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'deliciousbrains/wp-background-processing' => array(
-            'pretty_version' => '1.1.0',
-            'version' => '1.1.0.0',
-            'reference' => 'd5ef95cecba7f792ddca3e3bd70ebfb90dc4996d',
+            'pretty_version' => '1.1.1',
+            'version' => '1.1.1.0',
+            'reference' => 'ebbed762c42e70e76573ffbd36e591378ba5f2ee',
             'type' => 'library',
             'install_path' => __DIR__ . '/../deliciousbrains/wp-background-processing',
             'aliases' => array(),

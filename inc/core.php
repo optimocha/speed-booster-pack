@@ -21,7 +21,7 @@ namespace Optimocha\SpeedBooster;
 defined( 'ABSPATH' ) || exit;
 
 use Optimocha\SpeedBooster\Frontend\Cache;
-use Optimocha\SpeedBooster\Frontend\Advanced_Cache_Generator;
+use Optimocha\SpeedBooster\Frontend\AdvancedCacheGenerator;
 
 /**
  * The core plugin class.
@@ -66,12 +66,13 @@ final class Core {
 		$this->loader = new Loader();
 		$this->init_modules();
 		$this->define_public_hooks();
+		$this->define_admin_hooks();
 
 		add_action( 'plugins_loaded', [ $this, 'load_plugin_textdomain' ] );
 		add_action( 'upgrader_process_complete', [ $this, 'upgrade' ] );
 		add_action( 'admin_init', [ $this, 'upgrade_process' ] );
 		add_action( 'admin_init', [ $this, 'activate' ] );
-		add_action( 'admin_init', [ $this, 'define_admin_hooks' ] );
+		// add_action( 'admin_init', [ $this, 'define_admin_hooks' ] );
 
 		// TODO: don't run this on every admin init!
 		// this should run only in post/cpt edit screens & maybe the sbp settings page (load-toplevel_page_sbp-settings)
@@ -94,7 +95,7 @@ final class Core {
             Cache::set_wp_cache_constant( true );
             Cache::generate_htaccess();
 
-            $advanced_cache_file_content = Advanced_Cache_Generator::generate_advanced_cache_file();
+            $advanced_cache_file_content = AdvancedCacheGenerator::generate_advanced_cache_file();
             $advanced_cache_path = WP_CONTENT_DIR . '/advanced-cache.php';
             if ( $advanced_cache_file_content ) {
                 file_put_contents( $advanced_cache_path, $advanced_cache_file_content );
@@ -211,26 +212,25 @@ final class Core {
 	private function init_modules() {
 
 		new Compatibility();
-		new Backend\WP_Admin();
-		new Backend\Notice_Manager();
+		new Backend\WPAdmin();
+		new Backend\Notices();
 		new Backend\Newsletter();
 
-		new Frontend\Database_Optimizer();
+		new Frontend\DatabaseOptimizer();
 		new Frontend\Cloudflare();
 		new Frontend\Sucuri();
-		new Frontend\Cache_Warmup();
-		new Frontend\JS_Optimizer();
+		new Frontend\CacheWarmup();
+		new Frontend\JSOptimizer();
 		new Frontend\Tweaks();
-		new Frontend\Font_Optimizer();
+		new Frontend\FontOptimizer();
 		new Frontend\Preboost();
 		new Frontend\CDN();
-		new Frontend\Lazy_Loader();
-		new Frontend\CSS_Minifier();
-		new Frontend\Critical_CSS();
-		new Frontend\Image_Dimensions();
-		new Frontend\HTML_Minifier();
-		new Frontend\Localize_Tracker();
-		new Frontend\Woocommerce();
+		new Frontend\LazyLoader();
+		new Frontend\CSSMinifier();
+		new Frontend\CriticalCSS();
+		new Frontend\ImageDimensions();
+		new Frontend\HTMLMinifier();
+		new Frontend\WooCommerce();
 		new Frontend\Cache();
 
 	}
@@ -252,7 +252,7 @@ final class Core {
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function define_admin_hooks() {
+	public function define_admin_hooks() {
 
 		if ( ! is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 
@@ -275,7 +275,7 @@ final class Core {
 	 * @since    4.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
+	public function define_public_hooks() {
 
 		if ( ! $this->should_plugin_run() ) { return; }
 
@@ -287,7 +287,7 @@ final class Core {
 
 	}
 
-	private function save_post_types() {
+	public function save_post_types() {
 
 		$post_types = array_keys( get_post_types( [ 'public' => true ] ) );
 		$saved_post_types = get_option( 'sbp_public_post_types' );

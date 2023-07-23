@@ -4,8 +4,8 @@ namespace Optimocha\SpeedBooster\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
-class Warmup_Process extends \WP_Background_Process {
-	protected $action = 'sbp_cache_warmup';
+class WarmupProcess extends \WP_Background_Process {
+	protected $action = 'sbp_CacheWarmup';
 	private $begun = false;
 
 	protected function task( $item ) {

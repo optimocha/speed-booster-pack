@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
-class Font_Optimizer {
+class FontOptimizer {
 	private $families = [];
 	private $subsets = [];
 	private $css2_families = [];

@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use Optimocha\SpeedBooster\Utils;
 
-class Advanced_Cache_Generator {
+class AdvancedCacheGenerator {
 	private static $options = [];
 
 	public static function generate_advanced_cache_file( $options = [] ) {

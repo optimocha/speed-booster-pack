@@ -24,8 +24,8 @@ namespace Optimocha\SpeedBooster;
 defined( 'ABSPATH' ) || exit;
 
 use Optimocha\SpeedBooster\Utils;
-use Optimocha\SpeedBooster\Backend\Notice_Manager;
-use Optimocha\SpeedBooster\Frontend\Advanced_Cache_Generator;
+use Optimocha\SpeedBooster\Backend\Notices;
+use Optimocha\SpeedBooster\Frontend\AdvancedCacheGenerator;
 use Optimocha\SpeedBooster\Frontend\Cache;
 
 /**
@@ -88,23 +88,23 @@ class Backend {
 		$this->woocommerce_analytics = 1;
 		$this->woocommerce_tracking  = 1;
 
-		$this->loader->add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
+		add_action( 'woocommerce_loaded', [ $this, 'get_woocommerce_options' ] );
 
-		$this->loader->add_filter( 'csf_sbp_options_saved', 'Cache::options_saved_filter' );
+		add_filter( 'csf_sbp_options_saved', 'Optimocha\SpeedBooster\Frontend\Cache::options_saved_filter' );
 
-		$this->loader->add_action( 'csf_sbp_options_save_before', 'Cache::options_saved_listener' );
+		add_action( 'csf_sbp_options_save_before', 'Optimocha\SpeedBooster\Frontend\Cache::options_saved_listener' );
 
-		$this->loader->add_action( 'csf_sbp_options_save_before', 'Cloudflare::update_cloudflare_settings' );
+		add_action( 'csf_sbp_options_save_before', 'Optimocha\SpeedBooster\Frontend\Cloudflare::update_cloudflare_settings' );
 
-		$this->loader->add_action( 'csf_sbp_options_saved', 'Woocommerce::set_woocommerce_optimizations' );
+		add_action( 'csf_sbp_options_saved', 'Optimocha\SpeedBooster\Frontend\WooCommerce::set_woocommerce_optimizations' );
 
-		$this->loader->add_action( 'csf_sbp_options_saved', 'Cache::clear_total_cache' );
+		add_action( 'csf_sbp_options_saved', 'Optimocha\SpeedBooster\Frontend\Cache::clear_total_cache' );
 
-		$this->loader->add_action( 'csf_sbp_options_saved', 'Cache::generate_htaccess' );
+		add_action( 'csf_sbp_options_saved', 'Optimocha\SpeedBooster\Frontend\Cache::generate_htaccess' );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', 'add_thickbox' );
+		add_action( 'admin_enqueue_scripts', 'add_thickbox' );
 
-		$this->loader->add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
+		add_action( 'admin_print_footer_scripts', [ $this, 'modify_menu_title' ] );
 
 	}
 
@@ -125,7 +125,7 @@ class Backend {
 
 	// TODO: test this changed function
 	public function get_woocommerce_options() {
-		
+
 		$this->woocommerce_analytics = ( get_option( 'woocommerce_analytics_enabled' ) === 'yes' ) ? 1 : 0;
 
 		$this->woocommerce_tracking  = ( get_option( 'woocommerce_allow_tracking' ) === 'yes' ) ? 1 : 0;
@@ -1169,7 +1169,7 @@ class Backend {
 		);
 		/* END Section: CDN & Proxy */
 
-		/* BEGIN Section: Woocommerce */
+		/* BEGIN Section: WooCommerce */
     	$woocommerce_fields = [];
 
 		if ( ! Utils::is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
@@ -1529,7 +1529,7 @@ class Backend {
 	}
 
 	public function modify_menu_title() {
-		$count = Notice_Manager::get_notice_count();
+		$count = Notices::get_notice_count();
 
 		if ( $count ) {
 			?>
@@ -1546,4 +1546,4 @@ class Backend {
 			);
 		}
 	}
-}	
+}

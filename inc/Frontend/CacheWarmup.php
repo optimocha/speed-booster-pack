@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use simplehtmldom\HtmlDocument;
 
-class Cache_Warmup {
+class CacheWarmup {
 	private $warmup_process;
 
 	public function __construct() {
@@ -14,7 +14,7 @@ class Cache_Warmup {
 			return;
 		}
 
-		$this->warmup_process = new Warmup_Process();
+		$this->warmup_process = new WarmupProcess();
 
 		add_action( 'init', [ $this, 'handle_warmup_request' ] );
 	}
@@ -110,7 +110,7 @@ class Cache_Warmup {
 				}
 			}
 
-			$urls = apply_filters( 'sbp_cache_warmup_urls', $urls );
+			$urls = apply_filters( 'sbp_CacheWarmup_urls', $urls );
 
 			foreach ( $urls as $url ) {
 				$this->warmup_process->push_to_queue( [

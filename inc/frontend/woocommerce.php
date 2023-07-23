@@ -4,7 +4,9 @@ namespace Optimocha\SpeedBooster\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
-class Woocommerce {
+use Optimocha\SpeedBooster\Utils;
+
+class WooCommerce {
 	public function __construct() {
 
 		add_action( 'set_current_user', [ $this, 'run_class' ] );
@@ -33,9 +35,9 @@ class Woocommerce {
 	 * Removes WooCommerce scripts from non-woocommerce pages
 	 */
 	public function optimize_nonwc_pages_handle() {
-		
+
 		if ( ! sbp_get_option( 'woocommerce_optimize_nonwc_pages' ) ) { return; }
-		
+
 		if ( is_woocommerce() || is_cart() || is_checkout() ) { return; }
 
 		// dequeue WooCommerce styles
@@ -102,7 +104,7 @@ class Woocommerce {
 	}
 
 	public function remove_marketing() {
-		
+
 		add_filter( 'woocommerce_marketing_menu_items', '__return_empty_array' );
 
 		add_filter( 'woocommerce_admin_features', function ( $features ) {
@@ -112,13 +114,13 @@ class Woocommerce {
 				} )
 			);
 		} );
-		
+
 	}
 
 	private function set_action_scheduler_period() {
 
 		return DAY_IN_SECONDS * sbp_get_option( 'woocommerce_action_scheduler_period', 7 );
-	
+
 	}
 
 	public static function set_woocommerce_optimizations( $saved_data ) {

@@ -7,7 +7,7 @@
       "psr-4": {
           "Optimocha\\SpeedBooster\\": "inc/"
       },
-      "files": ["freemius.php", "helpers.php"]
+      "files": ["inc/freemius.php", "inc/helpers.php"]
   },
   "minimum-stability": "dev",
   "prefer-stable": true

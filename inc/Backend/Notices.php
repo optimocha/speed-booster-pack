@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Backend;
 
 defined( 'ABSPATH' ) || exit;
 
-class Notice_Manager {
+class Notices {
 	/**
 	 * Number of notices.
 	 *

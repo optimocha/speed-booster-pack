@@ -4,7 +4,7 @@ namespace Optimocha\SpeedBooster\Frontend;
 
 defined( 'ABSPATH' ) || exit;
 
-class HTML_Minifier {
+class HTMLMinifier {
 	private $minify_css = true;
 	private $minify_js = false;
 	private $remove_comments = true;

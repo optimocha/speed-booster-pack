@@ -7,10 +7,10 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Optimize JavaScripts. Move JS files to footer or add defer attribute to all script tags.
  *
- * Class JS_Optimizer
+ * Class JSOptimizer
  * @package SpeedBooster
  */
-class JS_Optimizer {
+class JSOptimizer {
 	/**
 	 * If script tag has any other type attribute except below types, it won't be optimized.
 	 */
@@ -107,7 +107,7 @@ class JS_Optimizer {
 		'google_ad',
 		'<!--',
 		'![CDATA[',
-		'JS_Optimizer_Comment_Placeholder',
+		'JSOptimizer_Comment_Placeholder',
 		'window.lazyLoadOptions',
 		'data-noptimize',
 		'data-sbp-skip',
@@ -153,7 +153,7 @@ class JS_Optimizer {
 	 * Placeholder for comment lines
 	 * @var string $comment_placeholder
 	 */
-	private $comment_placeholder = '<!-- SBP/JS_Optimizer_Comment_Placeholder -->';
+	private $comment_placeholder = '<!-- SBP/JSOptimizer_Comment_Placeholder -->';
 
 	/**
 	 * JavaScript exclusion rules

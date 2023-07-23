@@ -5,13 +5,13 @@ namespace Optimocha\SpeedBooster\Frontend;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Class Database_Optimizer
+ * Class DatabaseOptimizer
  * @package SpeedBooster
  * @since 4.2.0
  */
-class Database_Optimizer {
+class DatabaseOptimizer {
 	/**
-	 * Database_Optimizer constructor.
+	 * DatabaseOptimizer constructor.
 	 * @since 4.2.0
 	 */
 	public function __construct() {

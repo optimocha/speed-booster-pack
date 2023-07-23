@@ -6,6 +6,6 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    '7e5e2f7a37e15b506027dd81f8d0a938' => $baseDir . '/freemius.php',
-    '2dcc1fe700145c8f64875eb0ae323e56' => $baseDir . '/helpers.php',
+    '2729eca295122d5d438a88d04b126dc2' => $baseDir . '/inc/freemius.php',
+    '09ee39cc50cf6f073bd6e590392ba7f2' => $baseDir . '/inc/helpers.php',
 );

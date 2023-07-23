@@ -7,8 +7,8 @@ namespace Composer\Autoload;
 class ComposerStaticInitc77a129bcd35be69c439b7d915bd8e6b
 {
     public static $files = array (
-        '7e5e2f7a37e15b506027dd81f8d0a938' => __DIR__ . '/../..' . '/freemius.php',
-        '2dcc1fe700145c8f64875eb0ae323e56' => __DIR__ . '/../..' . '/helpers.php',
+        '2729eca295122d5d438a88d04b126dc2' => __DIR__ . '/../..' . '/inc/freemius.php',
+        '09ee39cc50cf6f073bd6e590392ba7f2' => __DIR__ . '/../..' . '/inc/helpers.php',
     );
 
     public static $prefixLengthsPsr4 = array (

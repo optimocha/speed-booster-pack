@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use simplehtmldom\HtmlDocument;
 
-class Critical_CSS {
+class CriticalCSS {
 	private $excluded_handles = [
 		'admin-bar-css',
 	];

@@ -6,7 +6,7 @@ defined( 'ABSPATH' ) || exit;
 
 use simplehtmldom\HtmlDocument;
 
-class Image_Dimensions {
+class ImageDimensions {
 	public function __construct() {
 		
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'missing_image_dimensions' ) ) {
