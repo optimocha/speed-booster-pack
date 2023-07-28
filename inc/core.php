@@ -69,6 +69,7 @@ final class Core {
 		$this->define_admin_hooks();
 
 		add_action( 'plugins_loaded', [ $this, 'load_plugin_textdomain' ] );
+		// TODO: upgrader_process_complete hook'una bağlanan metodun admin_init'e hook'lanan başka bir metoda bağlı çalışması lazımmış: https://wordpress.stackexchange.com/a/408306
 		add_action( 'upgrader_process_complete', [ $this, 'upgrade' ] );
 		add_action( 'admin_init', [ $this, 'upgrade_process' ] );
 		add_action( 'admin_init', [ $this, 'activate' ] );
