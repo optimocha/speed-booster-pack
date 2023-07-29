@@ -7,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
 class Tweaks {
 
 	public function __construct() {
-		
+
 		if ( ! sbp_get_option( 'module_tweaks' ) ) {
 			return;
 		}
@@ -135,7 +135,7 @@ class Tweaks {
 	private function dequeue_dashicons() {
 
 		if ( ! sbp_get_option( 'dequeue_dashicons' ) ) { return; }
-		
+
 		add_action( 'wp_enqueue_scripts', [ $this, 'dequeue_dashicons_handle' ] );
 
 	}
@@ -143,7 +143,7 @@ class Tweaks {
 	public function dequeue_dashicons_handle() {
 
 		if ( is_user_logged_in() ) { return; }
-		
+
 		wp_deregister_style( 'dashicons' );
 
 	}
@@ -165,7 +165,7 @@ class Tweaks {
 		$autosave_interval = sbp_get_option( 'autosave_interval' );
 
 		if ( empty( $autosave_interval ) || ! (int) $autosave_interval || defined( 'AUTOSAVE_INTERVAL' ) ) { return; }
-		
+
 		define( 'AUTOSAVE_INTERVAL', sbp_get_option( 'autosave_interval' ) * 60 );
 
 	}
@@ -173,7 +173,7 @@ class Tweaks {
 	private function dequeue_block_library() {
 
 		if ( ! sbp_get_option( 'dequeue_block_library' ) ) { return; }
-		
+
 		add_action( 'wp_enqueue_scripts', [ $this, 'dequeue_block_library_handle' ] );
 
 	}
@@ -188,7 +188,7 @@ class Tweaks {
 	private function dequeue_global_styles() {
 
 		if ( ! sbp_get_option( 'dequeue_global_styles' ) ) { return; }
-		
+
 		add_action( 'init', [ $this, 'dequeue_global_styles_handle' ], 9999 );
 
 	}
