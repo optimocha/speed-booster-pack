@@ -150,9 +150,10 @@ final class Core {
 	public static function upgrade_process() {
 		// TODO: populate this method.
 		// idea: https://wordpress.stackexchange.com/questions/25910/uninstall-activate-deactivate-a-plugin-typical-features-how-to/25979#25979
+		// idea: https://dream-encode.com/determining-when-a-wordpress-plugin-or-theme-is-updated/
 	}
 
-	// TODO: move this into frontend.php
+	// TODO: move this into helpers.php or Utils.php
 	private function should_plugin_run() {
 
 		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) {
