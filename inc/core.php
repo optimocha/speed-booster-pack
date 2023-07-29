@@ -132,12 +132,13 @@ final class Core {
 
 		$sbp_upgraded = get_option( 'sbp_upgraded', null );
 
-		if( ! isset( $sbp_upgraded ) ) { return; }
-
-		$old_version = $sbp_upgraded[ 'from' ];
+		$old_version = '0.0';
+		if( isset( $sbp_upgraded ) ) {
+			$old_version = $sbp_upgraded[ 'from' ];
+		}
 		$new_version = SBP_VERSION;
 
-		add_option( 'sbp_upgraded', [ 'from' => $old_version, 'to' => $new_version ] );
+		update_option( 'sbp_upgraded', [ 'from' => $old_version, 'to' => $new_version ] );
 
 	}
 
