@@ -1,0 +1,157 @@
+/**
+ * 12. Responsive
+ */
+@media only screen and (max-width:1200px){
+
+  .sbpopt-metabox{
+
+    .sbpopt-field{
+
+      .sbpopt-title{
+        float: none;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      .sbpopt-fieldset{
+        float: none;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width:782px){
+
+  .sbpopt-header-inner{
+    text-align: center;
+
+    h1{
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+
+  .sbpopt-form-result{
+    float: none;
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .sbpopt-search,
+  .sbpopt-header-right,
+  .sbpopt-header-left{
+    width: 100%;
+  }
+
+  .sbpopt-search{
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .sbpopt-footer{
+    text-align: center;
+  }
+
+  .sbpopt-buttons{
+    float: none;
+  }
+
+  .sbpopt-copyright{
+    float: none;
+    margin-top: 10px;
+  }
+
+  .sbpopt-nav,
+  .sbpopt-expand-all,
+  .sbpopt-reset-section,
+  .sbpopt-nav-background{
+    display: none !important;
+  }
+
+  .sbpopt-nav-normal + .sbpopt-content{
+    margin-left: 0;
+  }
+
+  .sbpopt-section-title,
+  .sbpopt-section{
+    display: block !important;
+  }
+
+  .sbpopt-field{
+
+    .sbpopt-title{
+      float: none;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .sbpopt-fieldset{
+      float: none;
+      width: 100%;
+    }
+  }
+
+  .sbpopt-field-color{
+
+    .button.wp-picker-clear{
+      padding: 0 8px;
+      line-height: 2.14285714;
+      min-height: 32px;
+    }
+  }
+
+  .sbpopt-profile-options,
+  .sbpopt-taxonomy-edit-fields{
+
+    > .sbpopt-field{
+
+      > .sbpopt-title{
+        float: none;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      > .sbpopt-fieldset{
+        float: none;
+        width: 100%;
+      }
+    }
+  }
+
+  .sbpopt-nav-menu-options{
+
+    > .sbpopt-fields{
+      margin-left: -10px;
+      margin-right: -10px;
+
+      > .sbpopt-field{
+        padding: 10px;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 782px) {
+
+  .sbpopt-modal{
+
+    .sbpopt-modal-inner{
+      width: 90%;
+    }
+  }
+}
+
+@media only screen and (max-height: 750px) {
+
+  .sbpopt-modal{
+
+    .sbpopt-modal-inner{
+      height: auto;
+    }
+
+    .sbpopt-modal-content{
+      height: calc(100vh - 200px);
+    }
+  }
+}

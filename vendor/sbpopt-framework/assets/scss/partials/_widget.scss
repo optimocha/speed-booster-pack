@@ -1,0 +1,67 @@
+/**
+ * 04. Widget
+ */
+.sbpopt-widgets{
+
+  > .sbpopt-field{
+    position: relative;
+    top: -1px;
+    margin-left: -15px;
+    margin-right: -15px;
+    padding: 12px 15px;
+
+    .sbpopt-title{
+      float: none;
+      width: 100%;
+      margin-bottom: 5px;
+    }
+
+    .sbpopt-fieldset{
+      float: none;
+      width: 100%;
+    }
+  }
+
+  .sbpopt-field-text input{
+    width: 100%;
+  }
+
+  .sbpopt-field-notice .sbpopt-notice{
+    padding: 15px;
+  }
+}
+
+.control-section{
+
+  .sbpopt-widgets{
+
+    > .sbpopt-field{
+      margin-left: -10px;
+      margin-right: -10px;
+      padding: 10px 12px;
+    }
+  }
+}
+
+.wp-block{
+
+  .sbpopt-widgets{
+    font-size: 13px;
+
+    > .sbpopt-field{
+      margin-left: -10px;
+      margin-right: -10px;
+
+      .button-primary{
+        color: #fff;
+      }
+
+      > .sbpopt-title{
+
+        > h4{
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}

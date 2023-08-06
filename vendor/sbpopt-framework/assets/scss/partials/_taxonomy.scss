@@ -1,0 +1,114 @@
+/**
+ * 06. Taxonomy
+ */
+.sbpopt-taxonomy{
+  max-width: 95%;
+
+  > .sbpopt-field{
+    border-top: none !important;
+  }
+
+  > .sbpopt-field-heading{
+    font-size: 1.1em;
+    padding: 20px !important;
+    border: 1px solid #ddd;
+  }
+
+  > .sbpopt-field-subheading{
+    font-size: 12px;
+    padding: 15px !important;
+    border: 1px solid #ddd;
+  }
+
+  > .sbpopt-field-submessage{
+
+    .sbpopt-submessage{
+      padding: 15px;
+      border-left-width: 1px;
+      border-left-style: solid;
+      border-right-width: 1px;
+      border-right-style: solid;
+    }
+  }
+
+  > .sbpopt-field-notice{
+    background-color: transparent;
+  }
+
+  .sbpopt-section-title{
+    display: block;
+    padding: 15px ;
+    background-color: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+  }
+}
+
+.sbpopt-taxonomy-add-fields{
+
+  > .sbpopt-field{
+    padding: 8px 0;
+
+    > .sbpopt-title{
+      float: none;
+      width: 100%;
+      padding: 2px 2px 4px 0;
+
+      h4{
+        font-size: 12px;
+        font-weight: normal;
+      }
+    }
+
+    > .sbpopt-fieldset{
+      float: none;
+      width: 100%;
+
+      > .sbpopt-help{
+        right: -5px;
+      }
+    }
+  }
+
+  + p.submit{
+    margin-top: 0;
+  }
+}
+
+.sbpopt-taxonomy-edit-fields{
+
+  > .sbpopt-field{
+    padding: 20px 0;
+
+    > .sbpopt-title{
+      width: 200px;
+
+      h4{
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.3;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+
+    > .sbpopt-fieldset{
+      width: calc(100% - 220px);
+
+      > .sbpopt-help{
+        top: -5px;
+        right: -5px;
+      }
+    }
+  }
+
+  > .sbpopt-field-submessage{
+    margin: 20px 0;
+  }
+
+  > .sbpopt-field-subheading,
+  > .sbpopt-field-heading{
+    margin: 20px 0;
+    border: 1px solid #ddd;
+  }
+}

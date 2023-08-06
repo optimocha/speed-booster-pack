@@ -1,0 +1,185 @@
+/**
+ * 05. Widget
+ */
+.control-section{
+
+  .sbpopt-field{
+    padding: 0;
+
+    .sbpopt-title{
+      float: none;
+      width: 100%;
+      margin-bottom: 6px;
+
+      h4{
+        display: block;
+        font-size: 13px;
+        line-height: 1;
+        font-weight: 600;
+        color: inherit;
+      }
+    }
+
+    .sbpopt-fieldset{
+      float: none;
+      width: 100%;
+    }
+  }
+
+  .sbpopt-help{
+    top: -5px;
+    right: -5px;
+  }
+
+  .sbpopt-field-select select{
+    width: 100%;
+  }
+
+  .sbpopt-field-heading{
+    color: inherit;
+    font-size: 14px;
+    line-height: 1em;
+    margin-right: -15px;
+    margin-left: -15px;
+    padding: 15px;
+  }
+
+  .sbpopt-field-subheading{
+    color: inherit;
+    font-size: 11px;
+    margin-right: -15px;
+    margin-left: -15px;
+    padding: 10px 15px;
+  }
+
+  .sbpopt-subtitle-text{
+    margin-top: 4px;
+    font-size: 12px;
+  }
+
+  .sbpopt-field-submessage .sbpopt-submessage{
+    margin-right: -15px;
+    margin-left: -15px;
+    padding: 15px;
+  }
+
+  .sbpopt-fieldset{
+
+    .sbpopt-field-submessage .sbpopt-submessage,
+    .sbpopt-field-heading,
+    .sbpopt-field-subheading{
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  .sbpopt-field-date,
+  .sbpopt-field-datetime{
+
+    label{
+      display: block;
+    }
+
+    .sbpopt--to{
+      margin-top: 4px;
+      margin-left: 0;
+    }
+  }
+
+  .sbpopt-field-sorter{
+
+    ul li{
+      padding: 5px;
+    }
+
+    .sbpopt-modules{
+      float: none;
+      width: 100%;
+    }
+
+    .sbpopt-modules:first-child{
+      padding-right: 0;
+      padding-bottom: 15px;
+    }
+  }
+
+  .sbpopt-field-background{
+
+    .sbpopt--background-attributes{
+      flex-direction: column;
+    }
+  }
+
+  .sbpopt-field-spacing{
+    input{
+      width: 90px;
+    }
+  }
+
+  .sbpopt-field-border{
+
+    .sbpopt--input{
+      flex: 1 50%;
+    }
+
+    input,
+    select{
+      width: 100%;
+    }
+  }
+
+  .sbpopt-field-spinner{
+    input{
+      width: 50px;
+    }
+  }
+
+  .sbpopt-field-number{
+
+    .sbpopt--wrap{
+      width: 100%;
+    }
+  }
+
+  .sbpopt-field-backup{
+
+    .sbpopt-export-data{
+      display: none;
+    }
+  }
+
+  .sbpopt-field-fieldset{
+
+    .sbpopt-fieldset-content{
+      border-color: #e5e5e5;
+    }
+  }
+
+  .sbpopt-tabbed-content,
+  .sbpopt-sortable-content,
+  .sbpopt-repeater-content,
+  .sbpopt-fieldset-content,
+  .sbpopt-cloneable-content,
+  .sbpopt-accordion-content{
+
+    > .sbpopt-field{
+      padding: 10px;
+
+      .sbpopt-title{
+        margin-bottom: 5px;
+      }
+
+      h4{
+        font-size: 12px;
+      }
+    }
+  }
+
+  .sbpopt-depend-hidden.sbpopt-depend-on{
+    display: none !important;
+  }
+
+  .sbpopt-depend-visible.sbpopt-depend-on{
+    border-top: 0 !important;
+  }
+}

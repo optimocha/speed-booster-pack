@@ -1,0 +1,728 @@
+/**
+ *
+ * ---------------------------------------------------------
+ * SBPOPT FRAMEWORK RTL CSS MAP
+ * ---------------------------------------------------------
+ *
+ * 01. Base
+ *     01. 01. Header
+ *     01. 02. Header Buttons
+ *     01. 03. Navigation
+ *     01. 04. Content
+ *     01. 05. Section
+ *     01. 06. Show All Settings
+ *     01. 07. Search Input
+ *     01. 08. Copyright
+ *     01. 09. Metabox
+ * 02. Fields
+ *     02. 01. Field: typography
+ *     02. 02. Field: checkbox, radio
+ *     02. 03. Field: switcher
+ *     02. 04. Field: upload
+ *     02. 05. Field: group
+ *     02. 06. Field: repeater
+ *     02. 07. Field: help
+ *     02. 08. Field: icon
+ *     02. 09. Field: gallery
+ *     02. 10. Field: sorter
+ *     02. 11. Field: tabbed
+ *     02. 12. Field: media
+ *     02. 13. Field: notice
+ *     02. 14. Field: border, spacing, dimensions
+ *     02. 15. Field: background
+ *     02. 16. Field: spinner
+ *     02. 17. Field: slider
+ *     02. 18. Field: button_set
+ *     02. 19. Field: link_color
+ *     02. 20. Field: color_group
+ *     02. 21. Field: palette
+ *     02. 22. Field: accordion
+ *     02. 23. Field: date
+ *     02. 24. Field: map
+ *     02. 25. Field: sortable
+ *     02. 26. Field: number
+ * 03. Taxonomy
+ * 04. Profile
+ * 05. Nav Menu
+ * 06. Modal
+ * 07. Customizer
+ * 08. Responsive
+ * 09. Others
+ *
+ * ---------------------------------------------------------
+ *
+ */
+
+/**
+ * 01. Base
+ */
+.sbpopt-options{
+  margin-left: 20px;
+  margin-right: 0;
+}
+
+/**
+ * 01. 01. Header
+ */
+.sbpopt-header{
+  h1{
+    float: right;
+  }
+
+  fieldset{
+    float: left;
+  }
+}
+
+/**
+ * 01. 02. Header Buttons
+ */
+.sbpopt-buttons{
+  float: left;
+  direction: ltr;
+}
+
+.sbpopt-header-left{
+  float: right;
+}
+
+.sbpopt-header-right{
+  float: left;
+}
+
+/**
+ * 01. 03. Navigation
+ */
+.sbpopt-nav{
+  float: right;
+
+  ul{
+    clear: right;
+
+    li{
+      .sbpopt-active:after{
+        right: auto;
+        left: 0;
+        border-left-color: #fff;
+        border-right-color: transparent;
+      }
+
+      .sbpopt-arrow:after{
+        content: "\f053";
+        right: auto;
+        left: 10px;
+      }
+
+      &.sbpopt-tab-expanded .sbpopt-arrow:after{
+        transform: rotate(-90deg);
+      }
+    }
+
+    ul{
+      li{
+        a{
+          padding-right: 25px;
+          padding-left: 15px;
+        }
+      }
+
+      &:before{
+        left: auto;
+        right: 15px;
+      }
+    }
+  }
+
+  .sbpopt-tab-icon{
+    margin-left: 5px;
+    margin-right: 0;
+  }
+}
+
+.sbpopt-nav-background{
+  left: auto;
+  right: 0;
+}
+
+/**
+ * 01. 04. Content
+ */
+.sbpopt-content{
+  margin-left: 0;
+  margin-right: 225px;
+}
+
+/**
+ * 01. 05. Section
+ */
+.sbpopt-sections{
+  float: right;
+}
+
+/**
+ * 01. 06. Show all options
+ */
+.sbpopt-show-all .sbpopt-content{
+  margin-right: 0;
+  overflow: hidden;
+}
+
+.sbpopt-expand-all{
+  float: right;
+  right: auto;
+  left: 40px;
+  margin-right: 0;
+  margin-left: 4px;
+}
+
+/**
+ * 01. 07. Search Input
+ */
+.sbpopt-search{
+  float: right;
+
+  input{
+    margin: 0 0 0 5px;
+  }
+}
+
+/**
+ * 01. 08. Copyright
+ */
+.sbpopt-copyright{
+  float: right;
+}
+
+/**
+ * 01. 09. Metabox
+ */
+.sbpopt-metabox{
+  margin: -6px -12px -12px -12px;
+
+  .sbpopt-section-title{
+    padding: 20px;
+  }
+}
+
+.sbpopt-section-title{
+
+  .sbpopt-section-icon{
+    margin-left: 5px;
+    margin-right: 0;
+  }
+}
+
+/**
+ * 02. Fields
+ */
+.sbpopt-field{
+
+  .sbpopt-title{
+    float: right;
+  }
+
+  .sbpopt-fieldset{
+    float: left;
+  }
+}
+
+.sbpopt-pseudo-field{
+  padding: 0 0 0 5px !important;
+}
+
+/**
+ * 02. 01. Field: typography
+ */
+.sbpopt-field-typography{
+
+  select{
+    margin: 0;
+    width: 100%;
+  }
+
+  .sbpopt--blocks-inputs{
+    .sbpopt--blocks{
+      flex-direction: row-reverse;
+    }
+  }
+
+  .sbpopt--unit{
+    left: 4px;
+    right: auto;
+  }
+}
+
+/**
+ * 02. 02. Field: checkbox, radio
+ */
+.sbpopt-field-checkbox,
+.sbpopt-field-radio{
+
+  ul ul li{
+    margin-left: 0;
+    margin-right: 8px;
+
+    &:first-child{
+      margin-right: 0;
+    }
+  }
+
+  .sbpopt--inline-list li{
+    margin-right: 0;
+    margin-left: 15px;
+  }
+
+  .sbpopt--text{
+    margin-left: 0;
+    margin-right: 5px;
+  }
+}
+
+/**
+ * 02. 03. Field: switcher
+ */
+.sbpopt-field-switcher{
+
+  .sbpopt--switcher{
+    float: right;
+  }
+
+  .sbpopt--label{
+    float: right;
+    margin-left: 0;
+    margin-right: 5px;
+  }
+}
+
+/**
+ * 02. 04. Field: upload
+ */
+.sbpopt-field-upload{
+
+  .sbpopt--remove,
+  .sbpopt--button{
+    margin-left: 0;
+    margin-right: 5px;
+  }
+}
+
+/**
+ * 02. 05. Field: group
+ */
+.sbpopt-field-group{
+
+  .sbpopt-cloneable-title{
+    padding: 15px 10px 15px 65px;
+  }
+
+  .sbpopt-cloneable-helper{
+    right: auto;
+    left: 10px;
+  }
+}
+
+/**
+ * 02. 06. Field: repeater
+ */
+.sbpopt-field-repeater{
+
+  .sbpopt-repeater-helper{
+    border-left: 0;
+    border-right: 1px solid #eee;
+  }
+}
+
+/**
+ * 02. 07. Field: help
+ */
+.sbpopt-help{
+  right: auto;
+  left: 5px;
+}
+
+/**
+ * 02. 08. Field: icon
+ */
+.sbpopt-field-icon{
+
+  .button{
+    margin-right: 0;
+    margin-left: 5px;
+  }
+
+  .sbpopt-icon-preview i{
+    margin-right: 0;
+    margin-left: 5px;
+  }
+}
+
+/**
+ * 02. 09. Field: gallery
+ */
+.sbpopt-field-gallery{
+
+  ul li{
+    margin-right: 0;
+    margin-left: 5px;
+  }
+
+  .button{
+    margin-right: 0;
+    margin-left: 5px;
+  }
+}
+
+/**
+ * 02. 11. Field: tabbed
+ */
+.sbpopt-field-tabbed{
+
+  .sbpopt-tabbed-nav{
+
+    .sbpopt--icon{
+      padding-right: 0;
+      padding-left: 5px;
+    }
+
+    a{
+      margin-right: 0;
+      margin-left: 5px;
+    }
+  }
+}
+
+/**
+ * 02. 12. Field: media
+ */
+.sbpopt-field-media{
+
+  .button{
+    margin-left: 0;
+    margin-right: 7px;
+  }
+
+  .hidden + .button{
+    margin-right: 0;
+  }
+}
+
+/**
+ * 02. 13. Field: notice
+ */
+.sbpopt-notice{
+  border-left: none;
+  border-right-style: solid;
+  border-right-width: 4px;
+}
+
+/**
+ * 02. 14. Field: border, spacing, dimensions
+ */
+.sbpopt-field-dimensions,
+.sbpopt-field-spacing,
+.sbpopt-field-border{
+
+  .sbpopt--input,
+  .sbpopt-fieldset{
+    direction: ltr;
+  }
+
+  .sbpopt--inputs,
+  .sbpopt--color{
+    float: right;
+  }
+
+  .sbpopt--color{
+    margin-right: 4px;
+    direction: rtl;
+  }
+}
+
+/**
+ * 02. 15. Field: background
+ */
+.sbpopt-field-background{
+
+  .sbpopt--block{
+    float: right;
+  }
+
+  .sbpopt--select,
+  .sbpopt--media{
+    padding-right: 0;
+  }
+
+  .sbpopt--title{
+    margin-right: 0;
+    margin-left: 5px;
+  }
+}
+
+/**
+ * 02. 16. Field: spinner
+ */
+.sbpopt-field-spinner{
+
+  .sbpopt--spin{
+    float: right;
+    direction: ltr;
+  }
+}
+
+/**
+ * 02. 17. Field: slider
+ */
+.sbpopt-field-slider{
+
+  .sbpopt-slider-ui{
+    direction: ltr;
+    margin-right: 0;
+    margin-left: 15px;
+  }
+
+  .sbpopt--input{
+    direction: ltr;
+  }
+}
+
+/**
+ * 02. 18. Field: button_set
+ */
+.sbpopt-field-button_set{
+
+  .sbpopt--button-group{
+    float: right;
+  }
+}
+
+/**
+ * 02. 19. Field: link_color
+ */
+.sbpopt-field-link_color{
+
+  .sbpopt--left{
+    float: right;
+    margin-right: 0;
+    margin-left: 10px;
+  }
+}
+
+/**
+ * 02. 20. Field: color_group
+ */
+.sbpopt-field-color_group{
+
+  .sbpopt--left{
+    float: right;
+    margin-right: 0;
+    margin-left: 10px;
+  }
+}
+
+/**
+ * 02. 21. Field: palette
+ */
+.sbpopt-field-palette{
+
+  .sbpopt--palette{
+    margin-right: 0;
+    margin-left: 10px;
+  }
+}
+
+/**
+ * 02. 22. Field: accordion
+ */
+.sbpopt-field-accordion{
+
+  .sbpopt--icon{
+    margin-right: 0;
+    margin-left: 2px;
+  }
+}
+
+/**
+ * 02. 23. Field: date
+ */
+.sbpopt-field-date{
+
+  .sbpopt--to {
+    margin-left: 0;
+    margin-right: 7px;
+  }
+}
+
+/**
+ * 02. 24. Field: map
+ */
+.sbpopt-field-map{
+
+  .sbpopt--map-input:last-child {
+    padding-left: 0;
+    padding-right: 10px;
+  }
+}
+
+/**
+ * 02. 25. Field: sortable
+ */
+.sbpopt-field-sortable{
+
+  .sbpopt-sortable-helper{
+    border-left: none;
+    border-right: 1px solid #eee;
+  }
+}
+
+/**
+ * 02. 26. Field: number
+ */
+.sbpopt-field-number{
+
+  .sbpopt--wrap{
+    float: right;
+  }
+
+  .sbpopt--unit{
+    left: 4px;
+    right: auto;
+  }
+}
+
+/**
+ * 03. Taxonomy
+ */
+.sbpopt-taxonomy-add-fields{
+  margin-right: 0;
+  margin-left: 30px;
+
+  .sbpopt-field > .sbpopt-fieldset > .sbpopt-help{
+    left: -5px;
+    right: auto;
+  }
+}
+
+.sbpopt-taxonomy-edit-fields{
+  margin-right: 0;
+  margin-left: 35px;
+
+  .sbpopt-field > .sbpopt-fieldset > .sbpopt-help{
+    right: auto;
+    left: -5px;
+  }
+}
+
+/**
+ * 04. Profile
+ */
+.sbpopt-profile-options{
+
+  > h2 > .fa{
+    padding-right: 0;
+    padding-left: 7px;
+  }
+
+  > .sbpopt-field{
+
+    > .sbpopt-fieldset{
+
+      > .sbpopt-help{
+        left: -5px;
+        right: auto;
+      }
+    }
+  }
+}
+
+/**
+ * 05. Nav Menu
+ */
+.sbpopt-nav-menu-options{
+
+  > .sbpopt-fields{
+    margin-left: 0;
+    margin-right: -10px;
+  }
+}
+
+.sbpopt-nav-menu-title {
+  padding-left: 14px;
+  padding-right: 12px;
+}
+
+.sbpopt-nav-menu-icon{
+  margin-right: 0;
+  margin-left: 5px;
+}
+
+/**
+ * 06. Modal
+ */
+.sbpopt-modal-content{
+
+  .sbpopt-field{
+    padding: 15px 15px 15px 30px;
+  }
+}
+
+.sbpopt-modal-title{
+  padding: 0 16px 0 36px;
+}
+
+.sbpopt-modal-close{
+  right: auto;
+  left: 0;
+}
+
+/**
+ * 07. Customizer
+ */
+.control-section{
+
+  .sbpopt-field{
+
+    .sbpopt-fieldset{
+      margin-right: 0;
+    }
+  }
+}
+
+/**
+ * 08. Responsive
+ */
+@media only screen and (max-width:1200px){
+  .sbpopt-metabox .sbpopt-field .sbpopt-fieldset{
+    margin-left: 0;
+  }
+}
+
+@media only screen and (max-width:782px){
+  .sbpopt .sbpopt-fieldset,
+  .sbpopt .sbpopt-content{
+    margin-right: 0;
+  }
+}
+
+/**
+ * 09. Others
+ */
+.sbpopt-field{
+
+  .sbpopt--transparent-slider{
+    margin-left: 0;
+    margin-right: 2px;
+
+    .ui-slider-handle{
+      margin: 0 -11px;
+    }
+  }
+
+  .sbpopt--transparent-offset{
+    background-position: center right;
+  }
+
+  .sbpopt--transparent-text{
+    right: auto;
+    left: 10px;
+  }
+}
