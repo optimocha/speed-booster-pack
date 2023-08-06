@@ -7,7 +7,7 @@
       "psr-4": {
           "Optimocha\\SpeedBooster\\": "inc/"
       },
-      "files": ["inc/Freemius.php", "inc/Helpers.php"]
+      "files": ["inc/Freemius.php", "inc/Helpers.php", "vendor/sbpopt-framework/sbpopt-framework.php"]
   },
   "minimum-stability": "dev",
   "prefer-stable": true

@@ -259,8 +259,6 @@ final class Core {
 
 		if ( ! is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 
-		require_once SBP_PATH . '/vendor/codestar-framework/codestar-framework.php';
-
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
 
 		$plugin_admin = new Backend( $this->options, $this->loader );

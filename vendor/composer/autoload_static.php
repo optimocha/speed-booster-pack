@@ -9,6 +9,7 @@ class ComposerStaticInitc77a129bcd35be69c439b7d915bd8e6b
     public static $files = array (
         '2153990738c308e6f6662bc9ab8dc8d2' => __DIR__ . '/../..' . '/inc/Freemius.php',
         '476e52d1d4c543e741906482d6c426fa' => __DIR__ . '/../..' . '/inc/Helpers.php',
+        '73d8a5e455d8b5608a24fb3d22fa3793' => __DIR__ . '/..' . '/sbpopt-framework/sbpopt-framework.php',
     );
 
     public static $prefixLengthsPsr4 = array (
