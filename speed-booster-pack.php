@@ -1,9 +1,9 @@
 <?php
 
 //	TODO:
+//	+ remove unused classes from setup class
+//	+ change how sbpopt-framework inits
 //	- replace codestar-framework with sbptopt-framework
-//	- remove unused classes from setup class
-//	- change how sbpopt-framework inits
 //	- add sbpopt-framework via composer
 //	UTILITIES
 //		check_debug_mode (???)
