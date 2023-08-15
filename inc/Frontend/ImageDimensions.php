@@ -36,8 +36,10 @@ class ImageDimensions {
 					$image_path = ABSPATH . $path;
 					if ( file_exists( $image_path ) ) {
 						$sizes = getimagesize( $image_path );
-						$image->width = $sizes[0];
-						$image->height = $sizes[1];
+						if( is_array( $sizes ) ) {
+							$image->width = $sizes[0];
+							$image->height = $sizes[1];
+						}
 					}
 				}
 			}
