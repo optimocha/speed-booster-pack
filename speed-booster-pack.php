@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Plugin constants.
  */
-define( 'SBP_VERSION', '4.5.6' ); // plugin version
+define( 'SBP_VERSION', '4.5.7' ); // plugin version
 define( 'SBP_PLUGIN_NAME', 'Speed Booster Pack' ); // plugin name
 define( 'SBP_PLUGIN_HOME', 'https://speedboosterpack.com/' ); // plugin home
 define( 'SBP_OWNER_NAME', 'Optimocha' ); // plugin owner name
