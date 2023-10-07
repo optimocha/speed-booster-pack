@@ -103,9 +103,10 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.7 =
 
-*Release Date: TODO 2023*
+*Release Date: TODO October 2023*
 
-* **TODO**: TODO
+* **Removed**: Deleted unnecessary HTTP header addition in the advanced-cache.php file.
+* **Fixed**: A small issue in the "set image dimensions" feature is fixed.
 
 = 4.5.6 =
 
