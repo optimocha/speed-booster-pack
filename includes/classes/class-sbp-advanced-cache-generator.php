@@ -102,7 +102,6 @@ if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
 }
 
 // output cached file
-header("X-Powered-By: ' . SBP_PLUGIN_NAME . ' v' . SBP_VERSION . '");
 readfile( $cache_file_path );
 exit;
 
