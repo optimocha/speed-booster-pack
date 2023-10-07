@@ -34,10 +34,10 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 		if ( is_embed() ) {
 			return $html;
 		}
-		
+
 		$html = $this->process_google_fonts_api( $html );
 		$html = $this->process_new_google_fonts_api( $html );
-		
+
 		if ( ! $this->found_fonts ) {
 			return $html;
 		}
@@ -51,7 +51,7 @@ class SBP_Font_Optimizer extends SBP_Abstract_Module {
 
 	public function process_google_fonts_api( $html ) {
 		preg_match_all( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/is", $html, $matches );
-		if ( ! isset( $matches[1] ) || empty( $matches[1] ) ) {			
+		if ( ! isset( $matches[1] ) || empty( $matches[1] ) ) {
 			$this->found_fonts = false;
 			return $html;
 		}
