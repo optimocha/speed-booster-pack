@@ -103,7 +103,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.7 =
 
-*Release Date: TODO October 2023*
+*Release Date: 20 October 2023*
 
 * **Improved**: Tested with the latest WordPress version.
 * **Removed**: Deleted unnecessary HTTP header addition in the advanced-cache.php file.
