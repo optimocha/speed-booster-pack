@@ -8,10 +8,13 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class SBP_Lazy_Loader extends SBP_Abstract_Module {
+
 	private $noscript_placeholder = '<!--SBP_NOSCRIPT_PLACEHOLDER-->';
+	
 	private $noscripts = [];
 
 	public function __construct() {
+
 		parent::__construct();
 
 		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) || sbp_should_disable_feature( 'lazyload' ) ) {
@@ -19,22 +22,29 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		}
 
 		add_action( 'set_current_user', [ $this, 'run_class' ] );
-		add_action( 'wp_enqueue_scripts', [ $this, 'deregister_media_elements' ] );
+
 	}
 
 	public function run_class() {
+
 		if ( $this->should_sbp_run ) {
+
 			add_action( 'wp_enqueue_scripts', [ $this, 'add_lazy_load_script' ] );
 
-			// We need async attribute on lazyload file
+			add_action( 'wp_enqueue_scripts', [ $this, 'deregister_media_elements' ] );
+
 			add_filter( 'script_loader_tag', [ $this, 'add_attribute_to_tag' ], 10, 2 );
 
 			add_filter( 'sbp_output_buffer', [ $this, 'lazy_load_handler' ] );
+
 		}
+
 	}
 
 	function add_lazy_load_script() {
-		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.7.0' );
+
+		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'public/js/lazyload.js', false, '17.7.0', true );
+
 		$lazy_loader_script = 'window.lazyLoadOptions = {
 					elements_selector: "[loading=lazy]"
 				};
@@ -71,17 +81,23 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 					},  
 					false
 				);';
+
 		$lazy_loader_script = apply_filters( 'sbp_lazyload_script', $lazy_loader_script );
+
 		wp_add_inline_script( 'sbp-lazy-load', $lazy_loader_script );
+
 	}
 
-	 function deregister_media_elements(){
+	 function deregister_media_elements() {
+
 	   wp_deregister_script( 'wp-mediaelement' );
 	   wp_deregister_style( 'wp-mediaelement' );
+
 	}
 
 
 	function lazy_load_handler( $html ) {
+
 		if ( is_embed() != false ) {
 			return $html;
 		}
@@ -133,6 +149,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 
 		// Process all elements marked as to be changed
 		foreach ( $elements_to_be_changed as $element ) {
+
 			// Change src with placeholder
 			$newElement = preg_replace(
 				"/<(img|source|iframe)(.*?) (src=)(.*?)>/is",
@@ -160,19 +177,23 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			$newElement = str_replace( 'http://', '//', $newElement );
 
 			$html = str_replace( $element, $newElement, $html );
+
 		}
 
 		$this->add_noscripts( $html );
 
 		return $html;
+
 	}
 
 	public function add_attribute_to_tag( $tag, $handle ) {
+
 		if ( 'sbp-lazy-load' !== $handle ) {
 			return $tag;
 		}
 
-		return str_replace( ' src=', ' async src=', $tag ); // defer the script
+		return str_replace( ' src=', ' async src=', $tag );
+
 	}
 
 	/**
@@ -183,12 +204,17 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	 * @return mixed
 	 */
 	private function replace_with_noscripts( &$html ) {
+
 		$regex = '/<noscript(.*?)>(.*?)<\/noscript>/si';
+
 		preg_match_all( $regex, $html, $matches );
+
 		$this->noscripts = $matches[0];
+
 		if ( count( $this->noscripts ) > 0 ) {
 			$html = preg_replace( $regex, $this->noscript_placeholder, $html );
 		}
+
 	}
 
 	/**
@@ -197,11 +223,17 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 	 * @param $html
 	 */
 	private function add_noscripts( &$html ) {
+
 		foreach ( $this->noscripts as $noscript ) {
+
 			$pos = strpos( $html, $this->noscript_placeholder );
+
 			if ( false !== $pos ) {
 				$html = substr_replace( $html, $noscript, $pos, strlen( $this->noscript_placeholder ) );
 			}
+
 		}
+
 	}
+
 }

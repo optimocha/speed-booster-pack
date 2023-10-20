@@ -36,9 +36,12 @@ class SBP_Image_Dimensions extends SBP_Abstract_Module {
 					$path = sbp_remove_leading_string( $src, $site_url );
 					$image_path = ABSPATH . $path;
 					if ( file_exists( $image_path ) ) {
+						// https://developer.wordpress.org/reference/functions/file_is_valid_image/
 						$sizes = getimagesize( $image_path );
-						$image->width = $sizes[0];
-						$image->height = $sizes[1];
+						if( isset( $sizes[1] ) ) {
+							$image->width = $sizes[0];
+							$image->height = $sizes[1];
+						}
 					}
 				}
 			}

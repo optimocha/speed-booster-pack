@@ -147,7 +147,7 @@ class Speed_Booster_Pack {
 		new SpeedBooster\SBP_WP_Admin();
 		new SpeedBooster\SBP_Database_Optimizer();
 		new SpeedBooster\SBP_Newsletter();
-		new SpeedBooster\SBP_Migrator();
+		// new SpeedBooster\SBP_Migrator();
 		new SpeedBooster\SBP_Compatibility_Checker();
 		new SpeedBooster\SBP_Cloudflare();
 		new SpeedBooster\SBP_Sucuri();

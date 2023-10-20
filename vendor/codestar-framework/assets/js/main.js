@@ -245,7 +245,7 @@
   $.fn.csf_page_templates = function() {
     if ( this.length ) {
 
-      $(document).on('change', '.editor-page-attributes__template select, #page_template', function() {
+      $(document).on('change', '.editor-page-attributes__template select, #page_template, .edit-post-post-status + div select', function() {
 
         var maybe_value = $(this).val() || 'default';
 
@@ -3126,6 +3126,40 @@
   };
 
   //
+  // Helper Check/Uncheck All
+  //
+  $.fn.csf_checkbox_all = function() {
+    return this.each( function() {
+
+      var $this = $(this);
+
+      $this.on('click', function() {
+
+        var $inputs = $this.closest('.csf-field-checkbox').find(':input'),
+            uncheck = false;
+
+        $inputs.each(function() {
+          if ( ! $(this).prop('checked') ) {
+            uncheck = true;
+          }
+        });
+
+        if ( uncheck ) {
+          $inputs.prop('checked', 'checked');
+          $inputs.attr('checked', 'checked');
+        } else {
+          $inputs.prop('checked', '');
+          $inputs.removeAttr('checked');
+        }
+
+        $inputs.first().trigger('change');
+
+      });
+
+    });
+  };
+
+  //
   // Siblings
   //
   $.fn.csf_siblings = function() {
@@ -3429,6 +3463,7 @@
 
         // Field Checkbox
         $this.children('.csf-field-checkbox').find('.csf-checkbox').csf_checkbox();
+        $this.children('.csf-field-checkbox').find('.csf-checkbox-all').csf_checkbox_all();
 
         // Field Siblings
         $this.children('.csf-field-button_set').find('.csf-siblings').csf_siblings();

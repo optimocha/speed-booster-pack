@@ -1,19 +1,17 @@
 === Speed Booster Pack ⚡ PageSpeed Optimization Suite ===
 Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
-Tags: speed, pagespeed, optimization, core web vitals, cache
+Tags: speed, pagespeed, optimization, core web vitals, caching
 Requires at least: 4.6
-Tested up to: 6.0
+Tested up to: 6.4
 Requires PHP: 5.6
-Stable tag: 4.5.5
+Stable tag: 4.5.7
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 PageSpeed optimization is vital for SEO: A faster website equals better conversions. Optimize your Core Web Vitals metrics (CLS, LCP, TBT) today!
 
 == Description ==
-
-WordPress is, hands down, the most popular content management system in the world. But like all giants, WordPress gets bigger and bigger every release; and it needs you to stay healthy and fast. Otherwise, your website can get slower and nobody likes slow websites. *NOBODY*. Not only your visitors hate your website, but also search engines (especially Google) penalizes you and drop your search engine rankings.
 
 Improving your site's speed will get you a better score on major speed testing services such as [Google PageSpeed](https://developers.google.com/speed/pagespeed/insights/), [GTmetrix](https://gtmetrix.com/), [Pingdom](https://tools.pingdom.com/), [WebPageTest](https://www.webpagetest.org/) and will also improve your overall site's usability. This will help Google and other search engines to rank your site higher in search results thus sending more traffic.
 
@@ -27,7 +25,7 @@ You might lose more than half of your visitors if your website loads **slower th
 
 That's where Speed Booster Pack comes in: With its ever-evolving codebase, Speed Booster Pack aims to increase your site performance, page load times and PageSpeed (Lighthouse) scores! Optimocha, the company behind Speed Booster Pack, has a team with a pathological obsession for speed; so you can be sure that your site will be in good hands.
 
-### How to optimize PageSpeed scores with Speed Booster Pack
+### How to optimize PageSpeed Core Web Vitals metrics with Speed Booster Pack
 
 With our huge set of features, of course!
 
@@ -102,6 +100,24 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.5.7 =
+
+*Release Date: 20 October 2023*
+
+* **Improved**: Tested with the latest WordPress version.
+* **Removed**: Deleted unnecessary HTTP header addition in the advanced-cache.php file.
+* **Fixed**: A small issue in the "set image dimensions" feature is fixed.
+
+= 4.5.6 =
+
+*Release Date: 19 January 2023*
+
+* **Improved**: The introductory text in the SBP dashboard is shorter and less scary now.
+* **Removed**: Deleted the migrator class and the deactivation survey.
+* **Fixed**: A small issue in the lazy load feature is fixed.
+* **Updated**: Updated default .htaccess content based on HTML5 Boilerplate v6.0.0.
+* **Updated**: Updated Codestar Framework to v2.2.9.
 
 = 4.5.5 =
 
