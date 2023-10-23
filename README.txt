@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, core web vitals, caching
 Requires at least: 4.6
 Tested up to: 6.4
 Requires PHP: 5.6
-Stable tag: 4.5.7
+Stable tag: 4.5.8
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -13,13 +13,13 @@ PageSpeed optimization is vital for SEO: A faster website equals better conversi
 
 == Description ==
 
-Improving your site's speed will get you a better score on major speed testing services such as [Google PageSpeed](https://developers.google.com/speed/pagespeed/insights/), [GTmetrix](https://gtmetrix.com/), [Pingdom](https://tools.pingdom.com/), [WebPageTest](https://www.webpagetest.org/) and will also improve your overall site's usability. This will help Google and other search engines to rank your site higher in search results thus sending more traffic.
+Improving your site's speed will get you a better score on major speed testing services such as [Google PageSpeed](https://pagespeed.web.dev/), [GTmetrix](https://gtmetrix.com/), [Pingdom](https://tools.pingdom.com/), [WebPageTest](https://www.webpagetest.org/) and will also improve your overall site's usability. This will help Google and other search engines to rank your site higher in search results thus sending more traffic.
 
 **Speed Booster Pack** is maintained & operated by **[Optimocha](https://optimocha.com/)**, a company that offers special speed optimization services filled with people who *obsess* about speed!
 
 ### Benefits of Speed Booster Pack
 
-Each second of delay can cause up to 20% loss in conversion rates ([source: Google](https://web.dev/why-speed-matters/)). "Conversion" means *converting* visitors to something more than a "visitor": leads, customers, subscribers, followers... you name it.
+Each second of delay can cause up to 20% loss in conversion rates ([source: Google](https://web.dev/articles/why-speed-matters)). "Conversion" means *converting* visitors to something more than a "visitor": leads, customers, subscribers, followers... you name it.
 
 You might lose more than half of your visitors if your website loads **slower than three seconds**! ([source: Google again](https://www.blog.google/products/admanager/the-need-for-mobile-speed/)) More than half of your potential customers might get back to the search results page and navigate to your competitor. This is a huge problem, and it's hugely overlooked among other SEO-related concerns. People don't realize how important speed is, in the eyes of search engines.
 
@@ -29,12 +29,12 @@ That's where Speed Booster Pack comes in: With its ever-evolving codebase, Speed
 
 With our huge set of features, of course!
 
-🌟 **Core Web Vitals**: Speed Booster Pack is made to improve your [Largest Contentful Paint (LCP)](https://web.dev/lcp/), [Total Blocking Time (TBT)](https://web.dev/tbt/) and [Cumulative Layout Shift (CLS)](https://web.dev/cls/) metrics, which are also known together as [Core Web Vitals](https://web.dev/vitals/). (Officially, TBT is not among of the Core Web Vitals metrics but [First Input Delay (FID)](https://web.dev/fid/) is. However, Google [recommends using TBT instead of FID](https://web.dev/vitals/#lab-tools-to-measure-core-web-vitals).) With the right configuration, you can get your PageSpeed scores higher than ever!
+🌟 **Core Web Vitals**: Speed Booster Pack is made to improve your [Largest Contentful Paint (LCP)](https://web.dev/articles/lcp), [Total Blocking Time (TBT)](https://web.dev/articles/tbt) and [Cumulative Layout Shift (CLS)](https://web.dev/articles/cls) metrics, which are also known together as [Core Web Vitals](https://web.dev/articles/vitals). (Officially, TBT is not among of the Core Web Vitals metrics but [First Input Delay (FID)](https://web.dev/articles/fid) is. However, Google [recommends using TBT instead of FID](https://web.dev/articles/vitals#lab_tools_to_measure_core_web_vitals).) With the right configuration, you can get your PageSpeed scores higher than ever!
 🌟 **Caching**: Cache your pages into static HTML files, reduce database queries, get a faster website almost immediately. What's not to love about caching?
 ⭐ **Optimize Google Fonts**: Did you know that there are better ways to load Google fonts? We like to brag about finding one of the best ways.
 🌟 **Lazy Load**: It's a disheartening issue that page speed tools encourage laziness... Just kidding, we love being lazy. And search engines will love your pages when you enable lazy loading for images, videos and iframes (except for the above-the-fold stuff, trust us).
 🌟 **Optimize JavaScript**: You know that totally-not-cryptic "Remove Render-Blocking JavaScript" recommendation? Speed Booster Pack can help defer them all until after the whole HTML is rendered, or at least move all scripts to footer. Works like a charm.
-🌟 **Optimize CSS**: Who needs all those different CSS files when you can inline them all into your page source? Especially when your CSS footprint is so small? Moreover, you can use the "[Critical CSS](https://web.dev/extract-critical-css/)" feature to essentially lazy-load all your CSS except for the CSS for above-the-fold.
+🌟 **Optimize CSS**: Who needs all those different CSS files when you can inline them all into your page source? Especially when your CSS footprint is so small? Moreover, you can use the "[Critical CSS](https://web.dev/articles/extract-critical-css)" feature to essentially lazy-load all your CSS except for the CSS for above-the-fold.
 🌟 **Preload Assets**: Have some fonts that load in all your pages, or a script, or some CSS files? Preloading them will help modern browsers serve your pages way faster!
 🌟 **WooCommerce Optimizations**: Disable cart fragments, change Action Scheduler's retention period, disable things like WooCommerce Marketing and WooCommerce Analytics... and more to come!
 🌟 **Dequeue Core Scripts/Styles**: Dashicons, jQuery Migrate, emoji script, post embed script... If you don't need them, you can now choose to prevent them from loading in the first place... which can get you to the first place on your Google SERPs.
@@ -100,6 +100,14 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.5.8 =
+
+*Release Date: TODO TODO 2023*
+
+* **Improved**: 
+* **Removed**: 
+* **Fixed**: 
 
 = 4.5.7 =
 
