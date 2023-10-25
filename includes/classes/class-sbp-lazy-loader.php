@@ -10,7 +10,7 @@ if ( ! defined( 'WPINC' ) ) {
 class SBP_Lazy_Loader extends SBP_Abstract_Module {
 
 	private $noscript_placeholder = '<!--SBP_NOSCRIPT_PLACEHOLDER-->';
-	
+
 	private $noscripts = [];
 
 	public function __construct() {
@@ -64,7 +64,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 							            }
 							            imgs = mutation.addedNodes[i].getElementsByTagName(\'img\');
 							            iframes = mutation.addedNodes[i].getElementsByTagName(\'iframe\');
-							
+
 							            if (0 === imgs.length && 0 === iframes.length) {
 							                return;
 							            }
@@ -72,13 +72,13 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 							        }
 							    });
 							});
-							
+
 							var b = document.getElementsByTagName("body")[0];
 							var config = {childList: true, subtree: true};
-							
+
 							observer.observe(b, config);
 						}
-					},  
+					},
 					false
 				);';
 

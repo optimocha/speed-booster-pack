@@ -84,7 +84,7 @@ class Speed_Booster_Pack {
 			$this->init_modules();
 			$this->define_public_hooks();
 		}
-		
+
 	}
 
 	private function should_plugin_run() {
@@ -253,7 +253,7 @@ class Speed_Booster_Pack {
 		if ( ! is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
 
 		add_filter( 'rocket_plugins_to_deactivate', '__return_empty_array' );
-		
+
 		$plugin_admin = new Speed_Booster_Pack_Admin( $this->plugin_name, SBP_VERSION );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -274,7 +274,7 @@ class Speed_Booster_Pack {
 	private function define_public_hooks() {
 
 		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return; }
-		
+
 		$plugin_public = new Speed_Booster_Pack_Public( $this->plugin_name, SBP_VERSION );
 
 		$this->loader->add_action( 'template_redirect', $plugin_public, 'template_redirect', 2 );
@@ -282,7 +282,7 @@ class Speed_Booster_Pack {
 		// $this->loader->add_action( 'shutdown', $plugin_public, 'shutdown', PHP_INT_MAX );
 
 		// $this->loader->add_filter( 'wp_headers', $plugin_public, 'sbp_headers' );
-		
+
 		add_filter( 'aioseo_flush_output_buffer', '__return_false' );
 
 	}
@@ -292,7 +292,7 @@ class Speed_Booster_Pack {
 			$post_types = array_keys( get_post_types( [ 'public' => true ] ) );
 			$saved_post_types = get_option( 'sbp_public_post_types' );
 
-			if ( ! $saved_post_types || $saved_post_types != $post_types ) { 
+			if ( ! $saved_post_types || $saved_post_types != $post_types ) {
 				update_option( 'sbp_public_post_types', $post_types );
 			}
 		});

@@ -36,7 +36,7 @@ class SBP_LiteSpeed_Cache extends SBP_Base_Cache {
 				'title'  => __( 'Clear LiteSpeed Cache', 'speed-booster-pack' ),
 				'href'   => $clear_lscache_url,
 			];
-			
+
 			if ( sbp_get_option( 'module_caching_ls' ) ) {
 				$admin_bar->add_node( $sbp_admin_menu );
 			}
