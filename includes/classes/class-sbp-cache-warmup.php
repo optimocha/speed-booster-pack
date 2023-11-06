@@ -33,6 +33,8 @@ class SBP_Cache_Warmup extends SBP_Abstract_Module {
 	}
 
 	public function start_process() {
+		do_action( 'sbp_before_cache_warmup' );
+
 		$urls = $this->get_urls_to_warmup();
 		if ( $urls ) {
 			foreach ( $urls as $item ) {
