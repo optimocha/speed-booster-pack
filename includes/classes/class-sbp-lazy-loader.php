@@ -158,11 +158,11 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			);
 
 			// change srcset
-			$newElement = preg_replace(
-				"/<(img|source|iframe)(.*?) (srcset=)(.*?)>/is",
-				'<$1$2 $3"' . $placeholder . '" data-$3$4>',
-				$newElement
-			);
+			// $newElement = preg_replace(
+			// 	"/<(img|source|iframe)(.*?) (srcset=)(.*?)>/is",
+			// 	'<$1$2 $3"' . $placeholder . '" data-$3$4>',
+			// 	$newElement
+			// );
 
 			// add loading attribute, but only if the tag doesn't have one
 			if ( ! strpos( $newElement, 'loading=' ) ) {
