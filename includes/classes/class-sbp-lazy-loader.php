@@ -84,7 +84,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 
 		$lazy_loader_script = apply_filters( 'sbp_lazyload_script', $lazy_loader_script );
 
-		wp_add_inline_script( 'sbp-lazy-load', $lazy_loader_script );
+		wp_add_inline_script( 'sbp-lazy-load', $lazy_loader_script, 'before' );
 
 	}
 
