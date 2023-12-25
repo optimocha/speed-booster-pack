@@ -10,6 +10,8 @@
 if ( ! class_exists( 'CSF_Abstract' ) ) {
   abstract class CSF_Abstract {
 
+  	public $field = array(); public $unique = ''; public $value = ''; public $parent = ''; public $where = '';
+
     public $abstract   = '';
     public $output_css = '';
 

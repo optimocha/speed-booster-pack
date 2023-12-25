@@ -9,7 +9,8 @@
  */
 if ( ! class_exists( 'CSF_Metabox' ) ) {
   class CSF_Metabox extends CSF_Abstract{
-
+  	public $post_formats   = '';
+  	public $page_templates = '';
     // constans
     public $unique         = '';
     public $abstract       = 'metabox';
