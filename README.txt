@@ -105,9 +105,15 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 *Release Date: TODO TODO 2023*
 
-* **Improved**: 
-* **Removed**: 
-* **Fixed**: 
+* **Improved**: Code refactoring, cleanups and readability improvements.
+* **Removed**: The class-sbp-custom-code-manager.php file is unused and deleted.
+* **Fixed**: Small update (for newer versions of PHP) in the SimpleHtmlDom library.
+* **Fixed**: Small update (for newer versions of PHP) in the Codestar Framework.
+* **Fixed**: Lazy loader's inlined script is now loading before the lazyload.js file.
+* **Fixed**: Lazy loader has a placeholder image that doesn't cause CLS issues.
+* **Fixed**: Lazy loader doesn't add a `data-srcset` attribute as it's not necessary.
+* **Fixed**: Cloudflare integration doesn't cause fatal errors if cURL isn't installed.
+* **Fixed**: The cache warmup feature now clears the whole cache before, well, warming up the cache.
 
 = 4.5.7 =
 
