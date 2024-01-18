@@ -103,7 +103,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.8 =
 
-*Release Date: TODO TODO 2023*
+*Release Date: 19 January 2024*
 
 * **Improved**: Code refactoring, cleanups and readability improvements.
 * **Removed**: The class-sbp-custom-code-manager.php file is unused and deleted.
