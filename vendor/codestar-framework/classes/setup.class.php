@@ -12,7 +12,7 @@ if ( ! class_exists( 'CSF_Setup' ) ) {
 
     // Default constants
     public static $premium  = true;
-    public static $version  = '2.2.9';
+    public static $version  = '2.3.1';
     public static $dir      = '';
     public static $url      = '';
     public static $css      = '';
