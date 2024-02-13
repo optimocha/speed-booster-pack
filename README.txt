@@ -1,7 +1,7 @@
 === Speed Booster Pack ⚡ PageSpeed Optimization Suite ===
 Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
-Tags: speed, pagespeed, optimization, core web vitals, caching
+Tags: speed, pagespeed, optimization, core web vitals, cache, lcp, cls, inp, fid, tbt
 Requires at least: 4.6
 Tested up to: 6.4
 Requires PHP: 5.6
@@ -29,15 +29,15 @@ That's where Speed Booster Pack comes in: With its ever-evolving codebase, Speed
 
 With our huge set of features, of course!
 
-🌟 **Core Web Vitals**: Speed Booster Pack is made to improve your [Largest Contentful Paint (LCP)](https://web.dev/articles/lcp), [Total Blocking Time (TBT)](https://web.dev/articles/tbt) and [Cumulative Layout Shift (CLS)](https://web.dev/articles/cls) metrics, which are also known together as [Core Web Vitals](https://web.dev/articles/vitals). (Officially, TBT is not among of the Core Web Vitals metrics but [First Input Delay (FID)](https://web.dev/articles/fid) is. However, Google [recommends using TBT instead of FID](https://web.dev/articles/vitals#lab_tools_to_measure_core_web_vitals).) With the right configuration, you can get your PageSpeed scores higher than ever!
-🌟 **Caching**: Cache your pages into static HTML files, reduce database queries, get a faster website almost immediately. What's not to love about caching?
+⭐ **Core Web Vitals**: Speed Booster Pack is made to improve your [Largest Contentful Paint (LCP)](https://web.dev/articles/lcp), [Interaction to Next Paint (INP)](https://web.dev/articles/inp) and [Cumulative Layout Shift (CLS)](https://web.dev/articles/cls) metrics, which are also known together as [Core Web Vitals](https://web.dev/articles/vitals). (The [First Input Delay (FID)](https://web.dev/articles/fid) metric is being replaced by INP, but Speed Booster Pack also improves FID and its lab counterpart, [Total Blocking Time (TBT)](https://web.dev/articles/tbt/).) With the right configuration, you can get your PageSpeed scores higher than ever!
+⭐ **Caching**: Cache your pages into static HTML files, reduce database queries, get a faster website almost immediately. What's not to love about caching?
 ⭐ **Optimize Google Fonts**: Did you know that there are better ways to load Google fonts? We like to brag about finding one of the best ways.
-🌟 **Lazy Load**: It's a disheartening issue that page speed tools encourage laziness... Just kidding, we love being lazy. And search engines will love your pages when you enable lazy loading for images, videos and iframes (except for the above-the-fold stuff, trust us).
-🌟 **Optimize JavaScript**: You know that totally-not-cryptic "Remove Render-Blocking JavaScript" recommendation? Speed Booster Pack can help defer them all until after the whole HTML is rendered, or at least move all scripts to footer. Works like a charm.
-🌟 **Optimize CSS**: Who needs all those different CSS files when you can inline them all into your page source? Especially when your CSS footprint is so small? Moreover, you can use the "[Critical CSS](https://web.dev/articles/extract-critical-css)" feature to essentially lazy-load all your CSS except for the CSS for above-the-fold.
-🌟 **Preload Assets**: Have some fonts that load in all your pages, or a script, or some CSS files? Preloading them will help modern browsers serve your pages way faster!
-🌟 **WooCommerce Optimizations**: Disable cart fragments, change Action Scheduler's retention period, disable things like WooCommerce Marketing and WooCommerce Analytics... and more to come!
-🌟 **Dequeue Core Scripts/Styles**: Dashicons, jQuery Migrate, emoji script, post embed script... If you don't need them, you can now choose to prevent them from loading in the first place... which can get you to the first place on your Google SERPs.
+⭐ **Lazy Load**: It's a disheartening issue that page speed tools encourage laziness... Just kidding, we love being lazy. And search engines will love your pages when you enable lazy loading for images, videos and iframes (except for the above-the-fold stuff, trust us).
+⭐ **Optimize JavaScript**: You know that totally-not-cryptic "Remove Render-Blocking JavaScript" recommendation? Speed Booster Pack can help defer them all until after the whole HTML is rendered, or at least move all scripts to footer. Works like a charm.
+⭐ **Optimize CSS**: Who needs all those different CSS files when you can inline them all into your page source? Especially when your CSS footprint is so small? Moreover, you can use the "[Critical CSS](https://web.dev/articles/extract-critical-css)" feature to essentially lazy-load all your CSS except for the CSS for above-the-fold.
+⭐ **Preload Assets**: Have some fonts that load in all your pages, or a script, or some CSS files? Preloading them will help modern browsers serve your pages way faster!
+⭐ **WooCommerce Optimizations**: Disable cart fragments, change Action Scheduler's retention period, disable things like WooCommerce Marketing and WooCommerce Analytics... and more to come!
+⭐ **Dequeue Core Scripts/Styles**: Dashicons, jQuery Migrate, emoji script, post embed script... If you don't need them, you can now choose to prevent them from loading in the first place... which can get you to the first place on your Google SERPs.
 ⭐ **Localize Google Analytics & Tag Manager**: Tracker scripts aren't the worst things that'll slow your pages down, but they cause the most "recommendations". Localizing Google Analytics and/or Google Tag Manager is a good idea to speed up your website then, right? Right?
 ⭐ **Enable CDN**: Integrate your content delivery network to your website by rewriting all static asset URLs with your CDN domain.
 ⭐ **Cloudflare & Sucuri Integration**: Connect to your Cloudflare or Sucuri account so you can clear your cache every time your page cache is cleared.
@@ -103,7 +103,7 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 = 4.5.8 =
 
-*Release Date: 19 January 2024*
+*Release Date: 13 February 2024*
 
 * **Improved**: Code refactoring, cleanups and readability improvements.
 * **Removed**: The class-sbp-custom-code-manager.php file is unused and deleted.
