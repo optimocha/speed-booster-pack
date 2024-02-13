@@ -3,8 +3,6 @@
 namespace SpeedBooster;
 
 // If this file is called directly, abort.
-use Automattic\WooCommerce\Admin\API\Reports\Variations\DataStore;
-
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }

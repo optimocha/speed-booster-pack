@@ -151,7 +151,7 @@ class SBP_Cloudflare extends SBP_Abstract_Module {
 				'content_type' => 'Content-Type: application/json',
 			];
 
-			if ( ! function_exists( 'curl_init' ) ) {
+			if ( ! function_exists( 'curl_init' ) || ! function_exists( 'curl_exec' ) || ! function_exists( 'curl_setopt' ) || ! function_exists( 'curl_close' ) ) {
 				return [
 					'success' => false,
 					'errors'  => [ __( 'Curl is not enabled in your hosting.', 'speed-booster-pack' ) ],

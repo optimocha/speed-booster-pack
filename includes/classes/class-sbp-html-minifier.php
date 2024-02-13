@@ -65,6 +65,11 @@ class SBP_HTML_Minify
     protected $_jsCleanComments = true;
 
     /**
+     * @var boolean
+     */
+    protected $_html = true;
+
+    /**
      * "Minify" an HTML page
      *
      * @param string $html

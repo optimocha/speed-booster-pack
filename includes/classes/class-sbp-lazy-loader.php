@@ -10,7 +10,7 @@ if ( ! defined( 'WPINC' ) ) {
 class SBP_Lazy_Loader extends SBP_Abstract_Module {
 
 	private $noscript_placeholder = '<!--SBP_NOSCRIPT_PLACEHOLDER-->';
-	
+
 	private $noscripts = [];
 
 	public function __construct() {
@@ -64,7 +64,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 							            }
 							            imgs = mutation.addedNodes[i].getElementsByTagName(\'img\');
 							            iframes = mutation.addedNodes[i].getElementsByTagName(\'iframe\');
-							
+
 							            if (0 === imgs.length && 0 === iframes.length) {
 							                return;
 							            }
@@ -72,19 +72,19 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 							        }
 							    });
 							});
-							
+
 							var b = document.getElementsByTagName("body")[0];
 							var config = {childList: true, subtree: true};
-							
+
 							observer.observe(b, config);
 						}
-					},  
+					},
 					false
 				);';
 
 		$lazy_loader_script = apply_filters( 'sbp_lazyload_script', $lazy_loader_script );
 
-		wp_add_inline_script( 'sbp-lazy-load', $lazy_loader_script );
+		wp_add_inline_script( 'sbp-lazy-load', $lazy_loader_script, 'before' );
 
 	}
 
@@ -119,7 +119,7 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			'images.dmca.com/Badges/',
 		];
 		$lazyload_exclusions         = apply_filters( 'sbp_lazyload_exclusions', array_merge( $lazyload_exclusions, $default_lazyload_exclusions ) );
-		$placeholder                 = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+		$placeholder                 = "data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org/2000/svg' style='width:auto;height:auto'%2F%3E";
 
 		// Find all images
 		preg_match_all( '/<(img|source|video|iframe)(.*?) (src=)[\'|"](.*?)[\'|"](.*?)>/is', $html, $resource_elements );
@@ -158,11 +158,11 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			);
 
 			// change srcset
-			$newElement = preg_replace(
-				"/<(img|source|iframe)(.*?) (srcset=)(.*?)>/is",
-				'<$1$2 $3"' . $placeholder . '" data-$3$4>',
-				$newElement
-			);
+			// $newElement = preg_replace(
+			// 	"/<(img|source|iframe)(.*?) (srcset=)(.*?)>/is",
+			// 	'<$1$2 $3"' . $placeholder . '" data-$3$4>',
+			// 	$newElement
+			// );
 
 			// add loading attribute, but only if the tag doesn't have one
 			if ( ! strpos( $newElement, 'loading=' ) ) {

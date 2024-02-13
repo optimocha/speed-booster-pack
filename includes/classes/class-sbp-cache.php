@@ -504,6 +504,7 @@ FileETag None
 	}
 
 	private function clear_cache_hooks() {
+		add_action( 'sbp_before_cache_warmup', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( '_core_updated_successfully', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'switch_theme', 'SpeedBooster\SBP_Cache::clear_total_cache' );
 		add_action( 'save_post', 'SpeedBooster\SBP_Cache::clear_total_cache' );

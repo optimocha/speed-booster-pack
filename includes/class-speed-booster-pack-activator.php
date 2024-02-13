@@ -10,10 +10,6 @@
  * @subpackage Speed_Booster_Pack/includes
  */
 
-use SpeedBooster\SBP_Advanced_Cache_Generator;
-use SpeedBooster\SBP_Cache;
-use SpeedBooster\SBP_LiteSpeed_Cache;
-
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
