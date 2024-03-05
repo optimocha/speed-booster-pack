@@ -412,35 +412,35 @@ if ( ! function_exists( 'sbp_check_file_permissions' ) ) {
 }
 
 if ( ! function_exists( 'sbp_proper_parse_str' ) ) {
-	function sbp_proper_parse_str( $str ) {
-		# result array
-		$arr = array();
+function sbp_proper_parse_str( $str ) {
+	# result array
+	$arr = array();
 
-		# split on outer delimiter
-		$pairs = explode( '&', $str );
+	# split on outer delimiter
+	$pairs = explode( '&', $str );
 
-		# loop through each pair
-		foreach ( $pairs as $i ) {
-			# split into name and value
-			list( $name, $value ) = explode( '=', $i, 2 );
+	# loop through each pair
+	foreach ( $pairs as $i ) {
+		# split into name and value
+		list( $name, $value ) = explode( '=', $i, 2 );
 
-			# if name already exists
-			if ( isset( $arr[ $name ] ) ) {
-				# stick multiple values into an array
-				if ( is_array( $arr[ $name ] ) ) {
-					$arr[ $name ][] = $value;
-				} else {
-					$arr[ $name ] = array( $arr[ $name ], $value );
-				}
-			} # otherwise, simply stick it in a scalar
-			else {
-				$arr[ $name ] = $value;
+		# if name already exists
+		if ( isset( $arr[ $name ] ) ) {
+			# stick multiple values into an array
+			if ( is_array( $arr[ $name ] ) ) {
+				$arr[ $name ][] = $value;
+			} else {
+				$arr[ $name ] = array( $arr[ $name ], $value );
 			}
+		} # otherwise, simply stick it in a scalar
+		else {
+			$arr[ $name ] = $value;
 		}
-
-		# return result array
-		return $arr;
 	}
+
+	# return result array
+	return $arr;
+}
 }
 
 if ( ! function_exists( 'sbp_get_wp_config_path' ) ) {
@@ -456,9 +456,9 @@ if ( ! function_exists( 'sbp_get_wp_config_path' ) ) {
 }
 
 if ( ! function_exists( 'sbp_is_wp_config_writable' ) ) {
-	function sbp_is_wp_config_writable() {
+	function sbp_is_wp_config_writable(): bool {
 		$wp_config_file = sbp_get_wp_config_path();
 
-		return file_exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file );
+		return file_exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file, 'write' );
 	}
 }
