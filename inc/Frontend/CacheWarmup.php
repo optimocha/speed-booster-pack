@@ -2,133 +2,138 @@
 
 namespace Optimocha\SpeedBooster\Frontend;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
+use Optimocha\SpeedBooster\Utils;
 use simplehtmldom\HtmlDocument;
 
-class CacheWarmup {
-	private $warmup_process;
+class CacheWarmup
+{
+    private $warmup_process;
 
-	public function __construct() {
-		if ( ! sbp_get_option( 'module_caching' ) ) {
-			return;
-		}
+    public function __construct()
+    {
+        if (!sbp_get_option('module_caching')) {
+            return;
+        }
 
-		$this->warmup_process = new WarmupProcess();
+        $this->warmup_process = new WarmupProcess();
 
-		add_action( 'init', [ $this, 'handle_warmup_request' ] );
-	}
+        add_action('init', [$this, 'handle_warmup_request']);
+    }
 
-	public function handle_warmup_request() {
-		if ( isset( $_GET['sbp_action'] ) && $_GET['sbp_action'] == 'sbp_warmup_cache' && current_user_can( 'manage_options' ) && isset( $_GET['sbp_nonce'] ) && wp_verify_nonce( $_GET['sbp_nonce'], 'sbp_warmup_cache' ) ) {
-			$this->start_process();
-			set_transient( 'sbp_warmup_started', 1 );
-			$redirect_url = remove_query_arg( [ 'sbp_action', 'sbp_nonce' ] );
-			wp_safe_redirect( $redirect_url );
-			exit;
-		}
-	}
+    public function handle_warmup_request()
+    {
+        if (($_GET['sbp_action'] ?? '') === 'sbp_warmup_cache' && current_user_can('manage_options') && wp_verify_nonce($_GET['sbp_nonce'] ?? '', 'sbp_warmup_cache')) {
+            $this->start_process();
+            set_transient('sbp_warmup_started', 1);
+            $redirect_url = remove_query_arg(['sbp_action', 'sbp_nonce']);
+            Utils::wp_safe_redirect($redirect_url);
+        }
+    }
 
-	public function start_process() {
-		$urls = $this->get_urls_to_warmup();
-		if ( $urls ) {
-			foreach ( $urls as $item ) {
-				$this->warmup_process->push_to_queue( $item );
-			}
-			set_transient( 'sbp_warmup_process', 0 );
-			$this->warmup_process->save()->dispatch();
-		}
-	}
+    public function start_process()
+    {
+        $urls = $this->get_urls_to_warmup();
+        if ($urls) {
+            foreach ($urls as $item) {
+                $this->warmup_process->push_to_queue($item);
+            }
+            set_transient('sbp_warmup_process', 0);
+            $this->warmup_process->save()->dispatch();
+        }
+    }
 
-	private function get_urls_to_warmup() {
-		$home_url = get_home_url();
+    private function get_urls_to_warmup()
+    {
+        $home_url = get_home_url();
 
-		$remote_get_args = [
-			'timeout'    => 5,
-			'user-agent' => 'Speed Booster Pack/Cache Warmup',
-			'sslverify'  => false,
-		];
+        $remote_get_args = [
+            'timeout' => 5,
+            'user-agent' => 'Speed Booster Pack/Cache Warmup',
+            'sslverify' => false,
+        ];
 
-		$response = wp_remote_get( $home_url, $remote_get_args );
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			return false;
-		} else {
-			$urls         = [];
-			$exclude_urls = Utils::explode_lines( sbp_get_option( 'caching_exclude_urls' ) );
+        $response = wp_remote_get($home_url, $remote_get_args);
+        if (wp_remote_retrieve_response_code($response) !== 200) {
+            return false;
+        }
 
-			// Add WooCommerce pages to excluded urls
-			if ( function_exists( 'wc_get_checkout_url' ) ) {
-				$checkout_url = wc_get_checkout_url();
-				$exclude_urls[] = rtrim( parse_url( $checkout_url, PHP_URL_HOST ) . parse_url( $checkout_url, PHP_URL_PATH ), '/' );
-			}
+        $urls = [];
+        $exclude_urls = Utils::explode_lines(sbp_get_option('caching_exclude_urls'));
 
-			if ( function_exists( 'wc_get_cart_url' ) ) {
-				$cart_url = wc_get_cart_url();
-				$exclude_urls[] = rtrim( parse_url( $cart_url, PHP_URL_HOST ) . parse_url( $cart_url, PHP_URL_PATH ), '/' );
-			}
+        // Add WooCommerce pages to excluded urls
+        if (function_exists('wc_get_checkout_url')) {
+            $checkout_url = wc_get_checkout_url();
+            $exclude_urls[] = rtrim(parse_url($checkout_url, PHP_URL_HOST) . parse_url($checkout_url, PHP_URL_PATH), '/');
+        }
 
-			$body         = wp_remote_retrieve_body( $response );
-			$dom          = new HtmlDocument();
-			$dom->load( $body, true, false );
+        if (function_exists('wc_get_cart_url')) {
+            $cart_url = wc_get_cart_url();
+            $exclude_urls[] = rtrim(parse_url($cart_url, PHP_URL_HOST) . parse_url($cart_url, PHP_URL_PATH), '/');
+        }
 
-			foreach ( $dom->find( 'a' ) as $anchor_tag ) {
-				$href = $anchor_tag->href;
+        $body = wp_remote_retrieve_body($response);
+        $dom = new HtmlDocument();
+        $dom->load($body, true, false);
 
-				// Excluded URL's
-				$current_url = rtrim( parse_url( $href, PHP_URL_HOST ) . parse_url( $href, PHP_URL_PATH ), '/' );
-				if ( count( $exclude_urls ) > 0 && in_array( $current_url, $exclude_urls ) ) {
-					continue;
-				}
+        foreach ($dom->find('a') as $anchor_tag) {
+            $href = $anchor_tag->href;
 
-				if ( substr( $href, 0, 1 ) == '#' ) {
-					continue;
-				}
+            // Excluded URL's
+            $current_url = rtrim(parse_url($href, PHP_URL_HOST) . parse_url($href, PHP_URL_PATH), '/');
+            if (count($exclude_urls) > 0 && in_array($current_url, $exclude_urls)) {
+                continue;
+            }
 
-				$remote_url_host = wp_parse_url( $href, PHP_URL_HOST );
-				$home_url_host   = wp_parse_url( $home_url, PHP_URL_HOST );
+            if (substr($href, 0, 1) == '#') {
+                continue;
+            }
 
-				// Check if relative url or includes home url
-				if (
-					! (
-						( strpos( $href, 'http://' ) === 0 && strlen( $href ) > 7 ) ||
-						( strpos( $href, 'https://' ) === 0 && strlen( $href ) > 8 ) ||
-						substr( $href, 0, 2 ) != '//'
-					) ||
-					( strpos( $href, '/' ) !== 0 && $remote_url_host != $home_url_host ) ||
-					! trim( $href ) ||
-					rtrim( $href, '/' ) == $home_url
-				) {
-					continue;
-				}
+            $remote_url_host = wp_parse_url($href, PHP_URL_HOST);
+            $home_url_host = wp_parse_url($home_url, PHP_URL_HOST);
 
-				if ( substr( $href, 0, 1 ) == '/' ) {
-					$href = rtrim( $home_url, '/' ) . $href;
-				}
+            // Check if relative url or includes home url
+            if (
+                !(
+                    (strpos($href, 'http://') === 0 && strlen($href) > 7) ||
+                    (strpos($href, 'https://') === 0 && strlen($href) > 8) ||
+                    substr($href, 0, 2) != '//'
+                ) ||
+                (strpos($href, '/') !== 0 && $remote_url_host != $home_url_host) ||
+                !trim($href) ||
+                rtrim($href, '/') == $home_url
+            ) {
+                continue;
+            }
 
-				if ( ! in_array( $href, $urls ) ) {
-					$urls[] = $href;
-				}
-			}
+            if (substr($href, 0, 1) == '/') {
+                $href = rtrim($home_url, '/') . $href;
+            }
 
-			$urls = apply_filters( 'sbp_CacheWarmup_urls', $urls );
+            if (!in_array($href, $urls)) {
+                $urls[] = $href;
+            }
+        }
 
-			foreach ( $urls as $url ) {
-				$this->warmup_process->push_to_queue( [
-					'url'     => $url,
-					'options' => [ 'user-agent' => 'Speed Booster Pack/Cache Warmup' ],
-				] );
+        $urls = apply_filters('sbp_CacheWarmup_urls', $urls);
 
-				if ( sbp_get_option( 'caching_separate_mobile' ) ) {
-					$this->warmup_process->push_to_queue( [
-						'url'     => $url,
-						'options' => [ 'user-agent' => 'Mobile' ],
-					] );
-				}
-			}
+        foreach ($urls as $url) {
+            $this->warmup_process->push_to_queue([
+                'url' => $url,
+                'options' => ['user-agent' => 'Speed Booster Pack/Cache Warmup'],
+            ]);
 
-			$this->warmup_process->save()->dispatch();
-		}
+            if (sbp_get_option('caching_separate_mobile')) {
+                $this->warmup_process->push_to_queue([
+                    'url' => $url,
+                    'options' => ['user-agent' => 'Mobile'],
+                ]);
+            }
+        }
 
-		return false;
-	}
+        $this->warmup_process->save()->dispatch();
+
+        return false;
+    }
 }

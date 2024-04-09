@@ -1,13 +1,27 @@
 {
+  "name": "optimocha/speed-booster-pack",
+  "description": "",
+  "keywords": [
+    "wordpress",
+    "speed",
+    "optimization",
+    "performance",
+    "booster"
+  ],
   "require": {
+    "php": "^7.2",
     "simplehtmldom/simplehtmldom": "dev-master",
     "deliciousbrains/wp-background-processing": "^1.0"
   },
   "autoload": {
-      "psr-4": {
-          "Optimocha\\SpeedBooster\\": "inc/"
-      },
-      "files": ["inc/Freemius.php", "inc/Helpers.php", "vendor/sbpopt-framework/sbpopt-framework.php"]
+    "psr-4": {
+      "Optimocha\\SpeedBooster\\": "inc/"
+    },
+    "files": [
+      "inc/Freemius.php",
+      "inc/Helpers.php",
+      "vendor/sbpopt-framework/sbpopt-framework.php"
+    ]
   },
   "minimum-stability": "dev",
   "prefer-stable": true

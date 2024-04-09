@@ -1,371 +1,393 @@
 <?php
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 use Optimocha\SpeedBooster\Utils;
 
 /**
  * Load all plugin options
  */
-if ( ! function_exists( 'sbp_get_option' ) ) {
-	/**
-	 * Returns the value of the option with given name, if option doesn't exists function returns the default value (from second variable)
-	 *
-	 * @param string $option
-	 * @param null $default
-	 *
-	 * @return mixed|null
-	 */
-	function sbp_get_option( $option = '', $default = null ) {
-		$sbp_options = get_option( 'sbp_options' );
+if (!function_exists('sbp_get_option')) {
+    /**
+     * Returns the value of the option with given name,
+     * if option doesn't exists function returns the default value (from second variable)
+     *
+     * @param string $option
+     * @param mixed|null $default
+     *
+     * @return mixed|null
+     */
+    function sbp_get_option(string $option = '', $default = null)
+    {
+        $sbp_options = get_option('sbp_options');
 
-		return $sbp_options[ $option ] ?? $default;
-	}
+        return $sbp_options[$option] ?? $default;
+    }
 }
 
 // TODO: replace it with the technique from wp-smushit/uninstall.php
-if ( ! function_exists( 'sbp_get_filesystem' ) ) {
-	function sbp_get_filesystem() {
-		global $wp_filesystem;
+if (!function_exists('sbp_get_filesystem')) {
+    function sbp_get_filesystem()
+    {
+        global $wp_filesystem;
 
-		require_once( ABSPATH . '/wp-admin/includes/file.php' );
-		WP_Filesystem();
+        require_once(ABSPATH . '/wp-admin/includes/file.php');
+        WP_Filesystem();
 
-		return $wp_filesystem;
-	}
+        return $wp_filesystem;
+    }
 }
 
-if ( ! function_exists( 'sbp_delete_dir_recursively' ) ) {
-	function sbp_delete_dir_recursively( $dir ) {
-		if ( ! is_dir( $dir ) ) {
-			return;
-		}
+/**
+ * [TODO]: refactor
+ */
+if (!function_exists('sbp_delete_dir_recursively')) {
+    function sbp_delete_dir_recursively($dir)
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
 
-		$dir_objects = @scandir( $dir );
-		$objects     = array_filter( $dir_objects,
-			function ( $object ) {
-				return $object != '.' && $object != '..';
-			} );
+        $dir_objects = @scandir($dir);
+        $objects = array_filter($dir_objects,
+            function ($object) {
+                return $object != '.' && $object != '..';
+            });
 
-		if ( empty( $objects ) ) {
-			return;
-		}
+        if (empty($objects)) {
+            return;
+        }
 
-		foreach ( $objects as $object ) {
-			$object = $dir . DIRECTORY_SEPARATOR . $object;
+        foreach ($objects as $object) {
+            $object = $dir . DIRECTORY_SEPARATOR . $object;
 
-			if ( is_dir( $object ) ) {
-				sbp_delete_dir_recursively( $object );
-			} else {
-				@unlink( $object );
-			}
-		}
+            if (is_dir($object)) {
+                sbp_delete_dir_recursively($object);
+            } else {
+                @unlink($object);
+            }
+        }
 
-		@rmdir( $dir );
+        @rmdir($dir);
 
-		clearstatcache();
-	}
+        clearstatcache();
+    }
 }
 
-if ( ! function_exists( 'sbp_get_hosting_restrictions' ) ) {
-	function sbp_get_hosting_restrictions() {
-		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) && $_SERVER['KINSTA_CACHE_ZONE'] ) {
-			return [
-				'name'              => 'Kinsta',
-				'disabled_features' => [ 'caching' ],
-				/* translators: both %s instances are the names of the hosting company.  */
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'Kinsta', 'Kinsta' ),
-			];
-		}
+if (!function_exists('sbp_get_hosting_restrictions')) {
+    function sbp_get_hosting_restrictions()
+    {
+        if (isset($_SERVER['KINSTA_CACHE_ZONE']) && $_SERVER['KINSTA_CACHE_ZONE']) {
+            return [
+                'name' => 'Kinsta',
+                'disabled_features' => ['caching'],
+                /* translators: both %s instances are the names of the hosting company.  */
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'Kinsta', 'Kinsta'),
+            ];
+        }
 
-		if ( function_exists( 'is_wpe' ) || function_exists( 'is_wpe_snapshot' ) ) {
-			return [
-				'name'              => 'WP Engine',
-				'disabled_features' => [],
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'WP Engine', 'WP Engine' ),
-			];
-		}
+        if (function_exists('is_wpe') || function_exists('is_wpe_snapshot')) {
+            return [
+                'name' => 'WP Engine',
+                'disabled_features' => [],
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'WP Engine', 'WP Engine'),
+            ];
+        }
 
-		$hosting_provider_constants = [
-			'GD_SYSTEM_PLUGIN_DIR' => [
-				'name'              => 'GoDaddy',
-				'disabled_features' => [],
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'GoDaddy', 'GoDaddy' ),
-			],
-			'MM_BASE_DIR'          => [
-				'name'              => 'Bluehost',
-				'disabled_features' => [],
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'Bluehost', 'Bluehost' ),
-			],
-			'PAGELYBIN'            => [
-				'name'              => 'Pagely',
-				'disabled_features' => [],
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'Pagely', 'Pagely' ),
-			],
-			'KINSTAMU_VERSION'     => [
-				'name'              => 'Kinsta',
-				'disabled_features' => [],
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'Kinsta', 'Kinsta' ),
-			],
-			'FLYWHEEL_CONFIG_DIR'  => [
-				'name'              => 'Flywheel',
-				'disabled_features' => [],
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'Flywheel', 'Flywheel' ),
-			],
-			'IS_PRESSABLE'         => [
-				'name'              => 'Pressable',
-				'disabled_features' => [],
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'Pressable', 'Pressable' ),
-			],
-			'VIP_GO_ENV'           => [
-				'name'              => 'WordPress VIP',
-				'disabled_features' => [],
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'WordPress VIP', 'WordPress VIP' ),
-			],
-			'KINSTA_CACHE_ZONE'    => [
-				'name'              => 'Kinsta',
-				'disabled_features' => [ 'caching' ],
-				'error_message'     => sprintf( __( 'Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack' ), 'Kinsta', 'Kinsta' ),
-			],
-		];
+        $hosting_provider_constants = [
+            'GD_SYSTEM_PLUGIN_DIR' => [
+                'name' => 'GoDaddy',
+                'disabled_features' => [],
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'GoDaddy', 'GoDaddy'),
+            ],
+            'MM_BASE_DIR' => [
+                'name' => 'Bluehost',
+                'disabled_features' => [],
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'Bluehost', 'Bluehost'),
+            ],
+            'PAGELYBIN' => [
+                'name' => 'Pagely',
+                'disabled_features' => [],
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'Pagely', 'Pagely'),
+            ],
+            'KINSTAMU_VERSION' => [
+                'name' => 'Kinsta',
+                'disabled_features' => [],
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'Kinsta', 'Kinsta'),
+            ],
+            'FLYWHEEL_CONFIG_DIR' => [
+                'name' => 'Flywheel',
+                'disabled_features' => [],
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'Flywheel', 'Flywheel'),
+            ],
+            'IS_PRESSABLE' => [
+                'name' => 'Pressable',
+                'disabled_features' => [],
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'Pressable', 'Pressable'),
+            ],
+            'VIP_GO_ENV' => [
+                'name' => 'WordPress VIP',
+                'disabled_features' => [],
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'WordPress VIP', 'WordPress VIP'),
+            ],
+            'KINSTA_CACHE_ZONE' => [
+                'name' => 'Kinsta',
+                'disabled_features' => ['caching'],
+                'error_message' => sprintf(__('Since you\'re using %s, cache feature is completely disabled to ensure compatibility with internal caching system of %s.', 'speed-booster-pack'), 'Kinsta', 'Kinsta'),
+            ],
+        ];
 
-		foreach ( $hosting_provider_constants as $constant => $company_info ) {
-			if ( defined( $constant ) && constant( $constant ) ) {
-				return $company_info;
-			}
-		}
+        foreach ($hosting_provider_constants as $constant => $company_info) {
+            if (defined($constant) && constant($constant)) {
+                return $company_info;
+            }
+        }
 
-		return [
-			'name'              => null,
-			'disabled_features' => [],
-			'error_message'     => '',
-		]; // Return this structure to avoid undefined index errors.
-	}
+        return [
+            'name' => null,
+            'disabled_features' => [],
+            'error_message' => '',
+        ]; // Return this structure to avoid undefined index errors.
+    }
 }
 
-if ( ! function_exists( 'sbp_should_disable_feature' ) ) {
-	function sbp_should_disable_feature( $feature_name ) {
-		$hosting_restrictions = sbp_get_hosting_restrictions();
+if (!function_exists('sbp_should_disable_feature')) {
+    function sbp_should_disable_feature($feature_name)
+    {
+        $hosting_restrictions = sbp_get_hosting_restrictions();
 
-		if ( $hosting_restrictions['name'] !== null ) {
-			if ( in_array( $feature_name, $hosting_restrictions['disabled_features'] ) ) {
-				return $hosting_restrictions;
-			}
-		}
+        if ($hosting_restrictions['name'] !== null) {
+            if (in_array($feature_name, $hosting_restrictions['disabled_features'])) {
+                return $hosting_restrictions;
+            }
+        }
 
-		if ( ! get_option( 'permalink_structure' ) ) {
-			return [
-				'name'              => 'Permalink',
-				'disabled_features' => [ 'caching' ],
-				'error_message'     => __( 'You should enable permalinks for the caching module.', 'speed-booster-pack' ),
-			];
-		}
+        if (!get_option('permalink_structure')) {
+            return [
+                'name' => 'Permalink',
+                'disabled_features' => ['caching'],
+                'error_message' => __('You should enable permalinks for the caching module.', 'speed-booster-pack'),
+            ];
+        }
 
-		return false;
-	}
+        return false;
+    }
 }
 
-if ( ! function_exists( 'sbp_str_replace_first' ) ) {
-	function sbp_str_replace_first( $from, $to, $content ) {
-		$from = '/' . preg_quote( $from, '/' ) . '/';
+if (!function_exists('sbp_str_replace_first')) {
+    function sbp_str_replace_first($from, $to, $content)
+    {
+        $from = '/' . preg_quote($from, '/') . '/';
 
-		return preg_replace( $from, $to, $content, 1 );
-	}
+        return preg_replace($from, $to, $content, 1);
+    }
 }
 
-if ( ! function_exists( 'sbp_posabs' ) ) {
-	/**
-	 * Returns absolute value of a number. Returns 1 if value is zero.
-	 *
-	 * @param $value
-	 *
-	 * @return float|int
-	 * @since 4.0.0
-	 *
-	 */
-	function sbp_posabs( $value ) {
-		if ( 0 == $value ) {
-			return 1;
-		}
+if (!function_exists('sbp_posabs')) {
+    /**
+     * Returns absolute value of a number. Returns 1 if value is zero.
+     *
+     * @param $value
+     *
+     * @return float|int
+     * @since 4.0.0
+     *
+     */
+    function sbp_posabs($value)
+    {
+        if (0 == $value) {
+            return 1;
+        }
 
-		return absint( $value );
-	}
+        return absint($value);
+    }
 }
 
-if ( ! function_exists( 'sbp_clear_http' ) ) {
-	/**
-	 * Removes http:// from the url
-	 *
-	 * @param $url
-	 *
-	 * @return string
-	 * @since 4.0.0
-	 *
-	 */
-	function sbp_clear_http( $url ) {
-		return strip_tags( str_replace( "http://", "//", $url ) );
-	}
+if (!function_exists('sbp_clear_http')) {
+    /**
+     * Removes http:// from the url
+     *
+     * @param $url
+     *
+     * @return string
+     * @since 4.0.0
+     *
+     */
+    function sbp_clear_http($url)
+    {
+        return strip_tags(str_replace("http://", "//", $url));
+    }
 }
 
-if ( ! function_exists( 'sbp_remove_duplicates_and_empty' ) ) {
-	/**
-	 * Removes duplicated and empty elements from an array.
-	 *
-	 * @param $value array
-	 *
-	 * @return array
-	 * @since 4.2.0
-	 *
-	 */
-	function sbp_remove_duplicates_and_empty( $value ) {
-		$value = array_filter( $value );
+if (!function_exists('sbp_remove_duplicates_and_empty')) {
+    /**
+     * Removes duplicated and empty elements from an array.
+     *
+     * @param $value array
+     *
+     * @return array
+     * @since 4.2.0
+     *
+     */
+    function sbp_remove_duplicates_and_empty($value)
+    {
+        $value = array_filter($value);
 
-		return array_unique( $value );
-	}
+        return array_unique($value);
+    }
 }
 
-if ( ! function_exists( 'sbp_sanitize_strip_tags' ) ) {
-	/**
-	 * Trims and strips the tags from given value. Takes one dimensional array or string as argument. Returns the modified value.
-	 *
-	 * @param $value array|string
-	 *
-	 * @return array|string
-	 */
-	function sbp_sanitize_strip_tags( $value ) {
-		if ( is_array( $value ) ) {
-			$value = array_map(
-				function ( $item ) {
-					return trim( strip_tags( $item ) );
-				},
-				$value
-			);
-		} else {
-			$value = trim( strip_tags( $value ) );
-		}
+if (!function_exists('sbp_sanitize_strip_tags')) {
+    /**
+     * Trims and strips the tags from given value. Takes one dimensional array or string as argument. Returns the modified value.
+     *
+     * @param $value array|string
+     *
+     * @return array|string
+     */
+    function sbp_sanitize_strip_tags($value)
+    {
+        if (is_array($value)) {
+            $value = array_map(
+                function ($item) {
+                    return trim(strip_tags($item));
+                },
+                $value
+            );
+        } else {
+            $value = trim(strip_tags($value));
+        }
 
-		return $value;
-	}
+        return $value;
+    }
 }
 
-if ( ! function_exists( 'sbp_remove_leading_string' ) ) {
-	function sbp_remove_leading_string( $string, $remove ) {
-		if ( substr( $string, 0, strlen( $remove ) ) == $remove ) {
-			$string = substr( $string, strlen( $remove ) );
-		}
+if (!function_exists('sbp_remove_leading_string')) {
+    function sbp_remove_leading_string($string, $remove)
+    {
+        if (substr($string, 0, strlen($remove)) == $remove) {
+            $string = substr($string, strlen($remove));
+        }
 
-		return $string;
-	}
+        return $string;
+    }
 }
 
-if ( ! function_exists( 'sbp_sanitize_caching_urls' ) ) {
-	/**
-	 * Sanitizes excluded URLs for caching
-	 *
-	 * @param $urls
-	 *
-	 * @return string
-	 * @since 4.0.0
-	 *
-	 */
-	function sbp_sanitize_caching_urls( $urls ) {
-		$urls = strip_tags( $urls );
-		$urls = Utils::explode_lines( $urls );
-		$urls = sbp_remove_duplicates_and_empty( $urls );
-		foreach ( $urls as &$url ) {
-			$url = sbp_remove_leading_string( $url, 'https://' );
-			$url = sbp_remove_leading_string( $url, 'http://' );
-			$url = sbp_remove_leading_string( $url, '//' );
-			$url = rtrim( $url, '/' );
-			$url = esc_url( $url );
-		}
+if (!function_exists('sbp_sanitize_caching_urls')) {
+    /**
+     * Sanitizes excluded URLs for caching
+     *
+     * @param $urls
+     *
+     * @return string
+     * @since 4.0.0
+     *
+     */
+    function sbp_sanitize_caching_urls($urls)
+    {
+        $urls = strip_tags($urls);
+        $urls = Utils::explode_lines($urls);
+        $urls = sbp_remove_duplicates_and_empty($urls);
+        foreach ($urls as &$url) {
+            $url = sbp_remove_leading_string($url, 'https://');
+            $url = sbp_remove_leading_string($url, 'http://');
+            $url = sbp_remove_leading_string($url, '//');
+            $url = rtrim($url, '/');
+            $url = esc_url($url);
+        }
 
-		return implode( PHP_EOL, $urls );
-	}
+        return implode(PHP_EOL, $urls);
+    }
 }
 
 // TODO: use boolval() instead
-if ( ! function_exists( 'sbp_sanitize_boolean' ) ) {
-	function sbp_sanitize_boolean( $value ) {
-		return $value == '1' ? '1' : '0';
-	}
+if (!function_exists('sbp_sanitize_boolean')) {
+    function sbp_sanitize_boolean($value)
+    {
+        return $value == '1' ? '1' : '0';
+    }
 }
 
-if ( ! function_exists( 'sbp_get_post_meta' ) ) {
-	function sbp_get_post_meta( $post_id, $option_key, $default = null ) {
-		$post_meta = get_post_meta( $post_id, 'sbp_post_meta', true );
+if (!function_exists('sbp_get_post_meta')) {
+    function sbp_get_post_meta($post_id, $option_key, $default = null)
+    {
+        $post_meta = get_post_meta($post_id, 'sbp_post_meta', true);
 
-		return ( isset( $post_meta[ $option_key ] ) ) ? $post_meta[ $option_key ] : $default;
-	}
+        return (isset($post_meta[$option_key])) ? $post_meta[$option_key] : $default;
+    }
 }
 
-if ( ! function_exists( 'sbp_check_file_permissions' ) ) {
-	function sbp_check_file_permissions( $file_path, $check = 'write' ) {
-		if ( 'write' !== $check && 'read' !== $check && 'both' !== $check ) {
-			return null;
-		}
+if (!function_exists('sbp_check_file_permissions')) {
+    function sbp_check_file_permissions($file_path, $check = 'write')
+    {
+        if ('write' !== $check && 'read' !== $check && 'both' !== $check) {
+            return null;
+        }
 
-		$wp_filesystem = sbp_get_filesystem();
+        $wp_filesystem = sbp_get_filesystem();
 
-		switch ( $check ) {
-			case "write":
-				return $wp_filesystem->is_writable( $file_path );
-			case "read":
-				return $wp_filesystem->is_readable( $file_path );
-			case "both":
-				return $wp_filesystem->is_writable( $file_path ) && $wp_filesystem->is_readable( $file_path );
-		}
-	}
+        switch ($check) {
+            case "write":
+                return $wp_filesystem->is_writable($file_path);
+            case "read":
+                return $wp_filesystem->is_readable($file_path);
+            case "both":
+                return $wp_filesystem->is_writable($file_path) && $wp_filesystem->is_readable($file_path);
+        }
+    }
 }
 
-if ( ! function_exists( 'sbp_proper_parse_str' ) ) {
-	function sbp_proper_parse_str( $str ) {
-		# result array
-		$arr = array();
+if (!function_exists('sbp_proper_parse_str')) {
+    function sbp_proper_parse_str($str)
+    {
+        # result array
+        $arr = array();
 
-		# split on outer delimiter
-		$pairs = explode( '&', $str );
+        # split on outer delimiter
+        $pairs = explode('&', $str);
 
-		# loop through each pair
-		foreach ( $pairs as $i ) {
-			# split into name and value
-			list( $name, $value ) = explode( '=', $i, 2 );
+        # loop through each pair
+        foreach ($pairs as $i) {
+            # split into name and value
+            list($name, $value) = explode('=', $i, 2);
 
-			# if name already exists
-			if ( isset( $arr[ $name ] ) ) {
-				# stick multiple values into an array
-				if ( is_array( $arr[ $name ] ) ) {
-					$arr[ $name ][] = $value;
-				} else {
-					$arr[ $name ] = array( $arr[ $name ], $value );
-				}
-			} # otherwise, simply stick it in a scalar
-			else {
-				$arr[ $name ] = $value;
-			}
-		}
+            # if name already exists
+            if (isset($arr[$name])) {
+                # stick multiple values into an array
+                if (is_array($arr[$name])) {
+                    $arr[$name][] = $value;
+                } else {
+                    $arr[$name] = array($arr[$name], $value);
+                }
+            } # otherwise, simply stick it in a scalar
+            else {
+                $arr[$name] = $value;
+            }
+        }
 
-		# return result array
-		return $arr;
-	}
+        # return result array
+        return $arr;
+    }
 }
 
-if ( ! function_exists( 'sbp_get_wp_config_path' ) ) {
-	function sbp_get_wp_config_path() {
-		if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
-			$wp_config_file = ABSPATH . 'wp-config.php';
-		} else {
-			$wp_config_file = dirname( ABSPATH ) . '/wp-config.php';
-		}
+if (!function_exists('sbp_get_wp_config_path')) {
+    function sbp_get_wp_config_path()
+    {
+        if (file_exists(ABSPATH . 'wp-config.php')) {
+            $wp_config_file = ABSPATH . 'wp-config.php';
+        } else {
+            $wp_config_file = dirname(ABSPATH) . '/wp-config.php';
+        }
 
-		return $wp_config_file;
-	}
+        return $wp_config_file;
+    }
 }
 
-if ( ! function_exists( 'sbp_is_wp_config_writable' ) ) {
-	function sbp_is_wp_config_writable() {
-		$wp_config_file = sbp_get_wp_config_path();
+if (!function_exists('sbp_is_wp_config_writable')) {
+    function sbp_is_wp_config_writable()
+    {
+        $wp_config_file = sbp_get_wp_config_path();
 
-		return file_exists( $wp_config_file ) && sbp_check_file_permissions( $wp_config_file );
-	}
+        return file_exists($wp_config_file) && sbp_check_file_permissions($wp_config_file);
+    }
 }

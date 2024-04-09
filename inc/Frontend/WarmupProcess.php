@@ -2,34 +2,38 @@
 
 namespace Optimocha\SpeedBooster\Frontend;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
-class WarmupProcess extends \WP_Background_Process {
-	protected $action = 'sbp_CacheWarmup';
-	private $begun = false;
+use Optimocha\SpeedBooster\Utils;
+use WP_Background_Process;
 
-	protected function task( $item ) {
-		$item['url'] = Utils::clear_hashes_and_question_mark( $item['url'] );
+class WarmupProcess extends WP_Background_Process
+{
+    protected $action = 'sbp_CacheWarmup';
+    private $begun = false;
 
-		$options = isset( $item['options'] ) ? $item['options'] : [];
-		$args    = array_merge( [
-			'blocking'    => false,
-			'httpversion' => '1.1',
-			'timeout'     => 0.01,
-		],
-			$options );
+    protected function task($item): bool
+    {
+        $item['url'] = Utils::clear_hashes_and_question_mark($item['url']);
 
-		wp_remote_get( $item['url'], $args );
+        $options = $item['options'] ?? [];
+        $args = array_merge(
+            ['blocking' => false, 'httpversion' => '1.1', 'timeout' => 0.01],
+            $options
+        );
 
-		if ( $this->begun === false ) {
-			$this->begun = true;
-		}
+        wp_remote_get($item['url'], $args);
 
-		return false;
-	}
+        if ($this->begun === false) {
+            $this->begun = true;
+        }
 
-	protected function complete() {
-		delete_transient( 'sbp_warmup_started' );
-		parent::complete();
-	}
+        return false;
+    }
+
+    protected function complete()
+    {
+        delete_transient('sbp_warmup_started');
+        parent::complete();
+    }
 }

@@ -2,244 +2,255 @@
 
 namespace Optimocha\SpeedBooster\Frontend;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
-class FontOptimizer {
-	private $families = [];
-	private $subsets = [];
-	private $css2_families = [];
-	private $found_fonts = true;
+class FontOptimizer
+{
+    private $families = [];
+    private $subsets = [];
+    private $css2_families = [];
+    private $found_fonts = true;
 
-	public function __construct() {
-		
-		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'optimize_gfonts' ) ) {
-			return;
-		}
+    public function __construct()
+    {
+        if (!sbp_get_option('module_assets') || !sbp_get_option('optimize_gfonts')) {
+            return;
+        }
 
-		add_action( 'set_current_user', [ $this, 'run_class' ] );
-	}
+        add_action('set_current_user', [$this, 'run_class']);
+    }
 
-	public function run_class() {
-		add_filter( 'sbp_output_buffer', [ $this, 'process_google_fonts' ], 10 );
-	}
+    public function run_class()
+    {
+        add_filter('sbp_output_buffer', [$this, 'process_google_fonts'], 10);
+    }
 
-	public function process_google_fonts( $html ) {
+    public function process_google_fonts($html): string
+    {
+        if (is_embed()) {
+            return $html;
+        }
 
-		if ( is_embed() ) {
-			return $html;
-		}
-		
-		$html = $this->process_google_fonts_api( $html );
-		$html = $this->process_new_google_fonts_api( $html );
-		
-		if ( ! $this->found_fonts ) {
-			return $html;
-		}
+        $html = $this->process_google_fonts_api($html);
+        $html = $this->process_new_google_fonts_api($html);
 
-		$html     = preg_replace( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/i", '', $html );
-		$link_tag = $this->create_tag();
-		$html     = str_replace( '</title>', '</title>' . PHP_EOL . '<link rel="preconnect" href="https://fonts.googleapis.com" />' . PHP_EOL . '<link rel="preconnect" href="https://fonts.gstatic.com" />' . PHP_EOL . $link_tag, $html );
+        if (!$this->found_fonts) {
+            return $html;
+        }
 
-		return $html;
-	}
+        $html = preg_replace("/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/i", '', $html);
+        $link_tag = $this->create_tag();
+        $html = str_replace('</title>', '</title>' . PHP_EOL . '<link rel="preconnect" href="https://fonts.googleapis.com" />' . PHP_EOL . '<link rel="preconnect" href="https://fonts.gstatic.com" />' . PHP_EOL . $link_tag, $html);
 
-	public function process_google_fonts_api( $html ) {
-		preg_match_all( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/is", $html, $matches );
-		if ( ! isset( $matches[1] ) || empty( $matches[1] ) ) {			
-			$this->found_fonts = false;
-			return $html;
-		}
+        return $html;
+    }
 
-		$urls = $matches[1];
+    public function process_google_fonts_api($html)
+    {
+        preg_match_all("/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css\?(.*?))['\"?].*?>/is", $html, $matches);
+        if (empty($matches[1])) {
+            $this->found_fonts = false;
+            return $html;
+        }
 
-		// Process each url
-		foreach ( $urls as $url ) {
-			$attributes = $this->parse_attributes( $url );
+        $urls = $matches[1];
 
-			if ( isset( $attributes['family'] ) ) {
-				$this->parse_family( $attributes['family'] );
-			}
+        // Process each url
+        foreach ($urls as $url) {
+            $attributes = $this->parse_attributes($url);
 
-			if ( isset( $attributes['subset'] ) ) {
-				$this->parse_subset( $attributes['subset'] );
-			}
-		}
+            if (isset($attributes['family'])) {
+                $this->parse_family($attributes['family']);
+            }
 
-		return $html;
-	}
+            if (isset($attributes['subset'])) {
+                $this->parse_subset($attributes['subset']);
+            }
+        }
 
-	public function process_new_google_fonts_api( $html ) {
-		preg_match_all( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css2\?(.*?))['\"?].*?>/is", $html, $matches );
-		if ( ! isset( $matches[1] ) || empty( $matches[1] ) ) {
-			$this->found_fonts = false;
-			return $html;
-		}
+        return $html;
+    }
 
-		$urls  = $matches[1];
-		$fonts = [];
+    public function process_new_google_fonts_api($html)
+    {
+        preg_match_all("/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css2\?(.*?))['\"?].*?>/is", $html, $matches);
+        if (empty($matches[1])) {
+            $this->found_fonts = false;
+            return $html;
+        }
 
-		// Process each url
-		foreach ( $urls as $url ) {
-			$fonts[] = $this->parse_css2_attributes( $url );
-		}
+        $urls = $matches[1];
+        $fonts = [];
 
-		$list = [];
-		foreach ( $fonts as $font ) {
-			if ( is_array( $font['family'] ) ) {
-				foreach ( $font['family'] as $font ) {
-					$this->append_css2_fonts_list( $font );
-					$list[] = $font;
-				}
-			} else {
-				$this->append_css2_fonts_list( $font['family'] );
-				$list[] = $font['family'];
-			}
-		}
+        // Process each url
+        foreach ($urls as $url) {
+            $fonts[] = $this->parse_css2_attributes($url);
+        }
 
-		$link_tag = $this->generate_css2_link_tag();
+        $list = [];
+        foreach ($fonts as $font) {
+            if (is_array($font['family'])) {
+                foreach ($font['family'] as $font) {
+                    $this->append_css2_fonts_list($font);
+                    $list[] = $font;
+                }
+            } else {
+                $this->append_css2_fonts_list($font['family']);
+                $list[] = $font['family'];
+            }
+        }
 
-		$html = preg_replace( "/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css2\?(.*?))['\"?].*?>/i", '', $html );
-		$html = str_replace( '</title>', '</title>' . PHP_EOL . $link_tag, $html );
+        $link_tag = $this->generate_css2_link_tag();
 
-		return $html;
-	}
+        $html = preg_replace("/<link[^<>\/]+href=['\"?]((https?:)?\/\/fonts\.googleapis\.com\/css2\?(.*?))['\"?].*?>/i", '', $html);
+        $html = str_replace('</title>', '</title>' . PHP_EOL . $link_tag, $html);
 
-	private function append_css2_fonts_list( $font ) {
-		$font_array  = explode( ':', $font );
-		$font_family = $font_array[0];
+        return $html;
+    }
 
-		if ( isset( $font_array[1] ) ) {
-			$font_attributes = explode( '@', $font_array[1] );
+    private function append_css2_fonts_list($font)
+    {
+        $font_array = explode(':', $font);
+        $font_family = $font_array[0];
 
-			if ( isset( $font_attributes[1] ) ) {
-				$weights = explode( ';', $font_attributes[1] );
+        if (isset($font_array[1])) {
+            $font_attributes = explode('@', $font_array[1]);
 
-				if ( ! isset( $this->css2_families[ $font_family ]['weights'] ) ) {
-					$this->css2_families[ $font_family ]['weights'] = [];
-				}
+            if (isset($font_attributes[1])) {
+                $weights = explode(';', $font_attributes[1]);
 
-				$this->css2_families[ $font_family ]['weights'] = array_merge( $this->css2_families[ $font_family ]['weights'], $weights );
-			}
+                if (!isset($this->css2_families[$font_family]['weights'])) {
+                    $this->css2_families[$font_family]['weights'] = [];
+                }
 
-			$styles = explode( ',', $font_attributes[0] );
+                $this->css2_families[$font_family]['weights'] = array_merge($this->css2_families[$font_family]['weights'], $weights);
+            }
 
-			if ( $styles ) {
-				foreach ( $styles as $style ) {
-					$this->css2_families[ $font_family ]['styles'][] = $style;
-				}
-			}
-		} else {
-			if ( ! isset( $this->css2_families[ $font_family ] ) ) {
-				$this->css2_families[ $font_family ] = [];
-			}
-		}
-	}
+            $styles = explode(',', $font_attributes[0]);
 
-	private function generate_css2_link_tag() {
-		$query_strings = [];
+            if ($styles) {
+                foreach ($styles as $style) {
+                    $this->css2_families[$font_family]['styles'][] = $style;
+                }
+            }
+        } else {
+            if (!isset($this->css2_families[$font_family])) {
+                $this->css2_families[$font_family] = [];
+            }
+        }
+    }
 
-		// Sort and clear arrays first
-		$this->css2_families = array_map( function ( $item ) {
-			$item['styles'] = array_unique( $item['styles'] );
-			sort( $item['styles'] );
-			$item['weights'] = array_unique( $item['weights'] );
-			sort( $item['weights'] );
+    private function generate_css2_link_tag()
+    {
+        $query_strings = [];
 
-			return $item;
-		}, $this->css2_families );
+        // Sort and clear arrays first
+        $this->css2_families = array_map(function ($item) {
+            $item['styles'] = array_unique($item['styles']);
+            sort($item['styles']);
+            $item['weights'] = array_unique($item['weights']);
+            sort($item['weights']);
 
-		if ( $this->css2_families ) {
-			foreach ( $this->css2_families as $family_name => $attributes ) {
-				$query_string = 'family=' . $family_name;
+            return $item;
+        }, $this->css2_families);
 
-				if ( isset( $attributes['styles'] ) && $attributes['styles'] ) {
-					$query_string .= ':' . implode( ',', $attributes['styles'] );
-				}
+        if ($this->css2_families) {
+            foreach ($this->css2_families as $family_name => $attributes) {
+                $query_string = 'family=' . $family_name;
 
-				if ( isset( $attributes['weights'] ) && $attributes['weights'] ) {
-					$query_string .= '@' . implode( ';', $attributes['weights'] );
-				}
+                if (isset($attributes['styles']) && $attributes['styles']) {
+                    $query_string .= ':' . implode(',', $attributes['styles']);
+                }
 
-				$query_strings[] = $query_string;
-			}
-		}
+                if (isset($attributes['weights']) && $attributes['weights']) {
+                    $query_string .= '@' . implode(';', $attributes['weights']);
+                }
 
-		return '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?' . implode( '&', $query_strings ) . '" />';
-	}
+                $query_strings[] = $query_string;
+            }
+        }
 
-	private function parse_css2_attributes( $url ) {
-		return sbp_proper_parse_str( parse_url( $url )['query'] );
-	}
+        return '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?' . implode('&', $query_strings) . '" />';
+    }
 
-	private function parse_attributes( $url ) {
-		$url = htmlspecialchars_decode( $url );
-		parse_str( parse_url( $url )['query'], $attributes );
+    private function parse_css2_attributes($url)
+    {
+        return sbp_proper_parse_str(parse_url($url)['query']);
+    }
 
-		return $attributes;
-	}
+    private function parse_attributes($url)
+    {
+        $url = htmlspecialchars_decode($url);
+        parse_str(parse_url($url)['query'], $attributes);
 
-	private function parse_family( $family ) {
-		$families = explode( '|', $family ); // if there is no pipe, explode will return 1 element array
-		foreach ( $families as $family ) {
-			if ( strpos( $family, ':' ) !== false ) {
-				$family                          = explode( ':', $family );
-				$name                            = $family[0];
-				$this->families[ $name ]['name'] = $name;
+        return $attributes;
+    }
 
-				// Explode sizes
-				$sizes = $family[1];
-				$sizes = explode( ',', $sizes );
-				foreach ( $sizes as $size ) {
-					$this->families[ $name ]['sizes'][] = $size;
-				}
-			} else {
-				$this->families[ $family ]['name']  = $family;
-				$this->families[ $family ]['sizes'] = array_merge( $this->families[ $family ]['sizes'], [] );
-			}
-		}
-	}
+    private function parse_family($family)
+    {
+        $families = explode('|', $family); // if there is no pipe, explode will return 1 element array
+        foreach ($families as $family) {
+            if (strpos($family, ':') !== false) {
+                $family = explode(':', $family);
+                $name = $family[0];
+                $this->families[$name]['name'] = $name;
 
-	private function parse_subset( $subset ) {
-		$subsets = explode( ',', $subset );
-		foreach ( $subsets as $subset ) {
-			$this->subsets[] = $subset;
-		}
-	}
+                // Explode sizes
+                $sizes = $family[1];
+                $sizes = explode(',', $sizes);
+                foreach ($sizes as $size) {
+                    $this->families[$name]['sizes'][] = $size;
+                }
+            } else {
+                $this->families[$family]['name'] = $family;
+                $this->families[$family]['sizes'] = array_merge($this->families[$family]['sizes'], []);
+            }
+        }
+    }
 
-	private function create_tag() {
-		// parse families
-		$families = [];
-		foreach ( $this->families as $family ) {
-			if ( isset( $family['sizes'] ) && ! empty( $family['sizes'] ) ) {
-				$family['sizes'] = array_unique( $family['sizes'] );
-				$families[]      .= $family['name'] . ":" . implode( ',', $family['sizes'] );
-			} else {
-				$families[] .= $family['name'];
-			}
-		}
+    private function parse_subset($subset)
+    {
+        $subsets = explode(',', $subset);
+        foreach ($subsets as $subset) {
+            $this->subsets[] = $subset;
+        }
+    }
 
-		$families = implode( '|', $families );
+    private function create_tag(): string
+    {
+        // parse families
+        $families = [];
+        foreach ($this->families as $family) {
+            if (isset($family['sizes']) && !empty($family['sizes'])) {
+                $family['sizes'] = array_unique($family['sizes']);
+                $families[] .= $family['name'] . ":" . implode(',', $family['sizes']);
+            } else {
+                $families[] .= $family['name'];
+            }
+        }
 
-		// parse subsets
-		$subsets = null;
-		if ( null !== $this->subsets ) {
-			$subsets = implode( ",", array_unique( $this->subsets ) );
-		}
+        $families = implode('|', $families);
 
-		$attributes = []; // Don't put attributes that doesn't exists
+        // parse subsets
+        $subsets = null;
+        if (null !== $this->subsets) {
+            $subsets = implode(",", array_unique($this->subsets));
+        }
 
-		if ( $families ) {
-			$attributes[] = 'family=' . esc_attr( $families );
-		}
+        $attributes = []; // Don't put attributes that doesn't exists
 
-		if ( $subsets ) {
-			$attributes[] = 'subset=' . esc_attr( $subsets );
-		}
+        if ($families) {
+            $attributes[] = 'family=' . esc_attr($families);
+        }
 
-		$attributes[] = 'display=swap';
+        if ($subsets) {
+            $attributes[] = 'subset=' . esc_attr($subsets);
+        }
 
-		$final_gfont_url = 'https://fonts.googleapis.com/css?' . implode( '&', $attributes );
+        $attributes[] = 'display=swap';
 
-		return '<link rel="preload" as="style" href="' . $final_gfont_url . '" />' . PHP_EOL . '<link rel="stylesheet" href="' . $final_gfont_url . '" media="print" onload="this.media=\'all\'">';
-	}
+        $final_gfont_url = 'https://fonts.googleapis.com/css?' . implode('&', $attributes);
+
+        return '<link rel="preload" as="style" href="' . $final_gfont_url . '" />' . PHP_EOL . '<link rel="stylesheet" href="' . $final_gfont_url . '" media="print" onload="this.media=\'all\'">';
+    }
 }

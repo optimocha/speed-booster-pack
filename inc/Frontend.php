@@ -7,17 +7,11 @@
 //		maybe_disable_sbp_frontend (sbp_public) // core'daki should_plugin_run() metodu buraya
 //		http_headers (send_headers)
 
-/**
- * The public-facing functionality of the plugin.
- *
- * @since      4.0.0
- *
- * @package    Optimocha\SpeedBooster
- */
+
 
 namespace Optimocha\SpeedBooster;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 /**
  * The public-facing functionality of the plugin.
@@ -25,94 +19,101 @@ defined( 'ABSPATH' ) || exit;
  * @package    Optimocha\SpeedBooster
  * @author     Optimocha
  */
-class Frontend {
+class Frontend
+{
+    /**
+     * The loader that's responsible for maintaining and registering all hooks that power
+     * the plugin.
+     *
+     * @since    4.0.0
+     * @access   protected
+     * @var      Loader $loader Maintains and registers all hooks for the plugin.
+     */
+    protected $loader;
 
-	/**
-	 * The loader that's responsible for maintaining and registering all hooks that power
-	 * the plugin.
-	 *
-	 * @since    4.0.0
-	 * @access   protected
-	 * @var      Loader $loader Maintains and registers all hooks for the plugin.
-	 */
-	protected $loader;
+    /**
+     * The main options array of the plugin.
+     *
+     * @since    5.0.0
+     * @access   protected
+     */
+    protected $options;
 
-	/**
-	 * The main options array of the plugin.
-	 *
-	 * @since    5.0.0
-	 * @access   protected
-	 */
-	protected $options;
+    /**
+     * Defines the frontend class constructor.
+     *
+     * @since    5.0.0
+     */
+    public function __construct($options, Loader $loader)
+    {
+        $this->options = $options;
+        $this->loader = $loader;
+    }
 
-	/**
-	 * Defines the frontend class constructor.
-	 *
-	 * @since    5.0.0
-	 */
-	public function __construct( $options, $loader ) {
+    public function check_user_roles(): bool
+    {
+        $sbp_disabled_roles = sbp_get_option('roles_to_disable_sbp');
+        if (!$sbp_disabled_roles) {
+            return false;
+        }
 
-		$this->options = $options;
-		$this->loader = $loader;
+        $user = wp_get_current_user();
+        $roles = $user->roles;
+        if (!$roles) {
+            return false;
+        }
 
-	}
+        foreach ($roles as $role) {
+            if (in_array($role, $sbp_disabled_roles)) {
+                return true;
+            }
+        }
 
-	public function check_user_roles() {
+        return false;
+    }
 
-		$sbp_disabled_roles = sbp_get_option( 'roles_to_disable_sbp' );
-		if ( ! $sbp_disabled_roles ) { return false; }
+    public function disable_sbp_frontend(): bool
+    {
+        if (is_admin() || wp_doing_cron() || wp_doing_ajax()) {
+            return true;
+        }
 
-		$user               = wp_get_current_user();
-		$roles              = $user->roles;
-		if ( ! $roles ) { return false; }
+        if (true === $this->check_user_roles()) {
+            return true;
+        }
 
-		foreach ( $roles as $role ) {
-			if ( in_array( $role, $sbp_disabled_roles ) ) {
-				return true;
-				break;
-			}
-		}
+        return false;
+    }
 
-	}
+    /**
+     * Starts output buffering for the HTML, and hooks to the `template_redirect` action.
+     *
+     * @return void
+     */
+    public function template_redirect()
+    {
+        if (true === $this->disable_sbp_frontend()) {
+            return;
+        }
 
-	public function disable_sbp_frontend() {
+        ob_start([$this, 'output_buffer']);
+    }
 
-		if ( is_admin() || wp_doing_cron() || wp_doing_ajax() ) { return true; }
+    /**
+     * Gets the HTML output of a page and applies a filter hook so Speed Booster Pack features can work with the HTML.
+     *
+     * @param string $html
+     * @return string
+     */
+    public function output_buffer(string $html)
+    {
+        if (is_embed() || $_SERVER['REQUEST_METHOD'] !== 'GET' || !preg_match('/<\/html>/i', $html)) {
+            return $html;
+        }
 
-		if ( true === $this->check_user_roles() ) { return true; }
+        $html = apply_filters('sbp_output_buffer', $html);
 
-	}
-
-	/**
-	 * Starts output buffering for the HTML, and hooks to the `template_redirect` action.
-	 *
-	 * @return void
-	 */
-	public function template_redirect() {
-
-		if( true === $this->disable_sbp_frontend() ) { return; }
-
-		ob_start( [ $this, 'output_buffer' ] );
-
-	}
-
-	/**
-	 * Gets the HTML output of a page and applies a filter hook so Speed Booster Pack features can work with the HTML.
-	 *
-	 * @param  string $html
-	 * @return void
-	 */
-	public function output_buffer( $html ) {
-
-		if( is_embed() || $_SERVER[ 'REQUEST_METHOD' ] != 'GET' || ! preg_match( '/<\/html>/i', $html ) ) {
-			return $html;
-		}
-
-		$html = apply_filters( 'sbp_output_buffer', $html );
-
-		$html = str_replace( '</head>', '<!-- Optimized by Speed Booster Pack v' . SBP_VERSION . ' -->' . PHP_EOL . '</head>', $html );
-
-		return $html;
-	}
+        return str_replace('</head>', '<!-- Optimized by Speed Booster Pack v' . SBP_VERSION . ' -->' . PHP_EOL . '</head>', $html);
+    }
 
 }

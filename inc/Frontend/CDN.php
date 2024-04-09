@@ -2,103 +2,111 @@
 
 namespace Optimocha\SpeedBooster\Frontend;
 
-defined( 'ABSPATH' ) || exit;
+use Optimocha\SpeedBooster\Utils;
 
-class CDN {
+defined('ABSPATH') || exit;
 
-	private $included_dirs = [];
-	private $excluded_extensions = [
-		'php',
-	];
-	private $site_url = null;
+class CDN
+{
+    private $included_dirs = [];
+    private $excluded_extensions = [
+        'php',
+    ];
+    private $site_url = null;
 
-	public function __construct() {
-		
-		if ( ! sbp_get_option( 'cdn_url' ) || ! sbp_get_option( 'cdn_enable' ) ) {
-			return;
-		}
+    public function __construct()
+    {
+        if (!sbp_get_option('cdn_url') || !sbp_get_option('cdn_enable')) {
+            return;
+        }
 
-		add_action( 'set_current_user', [ $this, 'run_class' ] );
-	}
+        add_action('set_current_user', [$this, 'run_class']);
+    }
 
-	public function run_class() {
-		$this->site_url = get_site_url( get_current_blog_id() ); // For Multisite
-		$this->set_included_dirs();
-		$this->set_excluded_extensions();
+    public function run_class()
+    {
+        $this->site_url = get_site_url(get_current_blog_id()); // For Multisite
+        $this->set_included_dirs();
+        $this->set_excluded_extensions();
 
-		add_filter( 'sbp_output_buffer', [ $this, 'run_rewriter' ] );
-	}
+        add_filter('sbp_output_buffer', [$this, 'run_rewriter']);
+    }
 
-	public function run_rewriter( $html ) {
-		// Don't run in preview
-		if ( is_admin_bar_showing() && isset( $_GET['preview'] ) && $_GET['preview'] == 'true' ) {
-			return $html;
-		}
+    public function run_rewriter($html)
+    {
+        // Don't run in preview
+        if (is_admin_bar_showing() && isset($_GET['preview']) && $_GET['preview'] == 'true') {
+            return $html;
+        }
 
-		$urls = $this->fetch_all_urls( $html );
+        $urls = $this->fetch_all_urls($html);
 
-		foreach ( $urls as $url ) {
-			// Check if has excluded extension
-			if ( $this->is_excluded( $url ) ) {
-				continue;
-			}
+        foreach ($urls as $url) {
+            // Check if has excluded extension
+            if ($this->is_excluded($url)) {
+                continue;
+            }
 
-			// Replace the url
-			$new_url = $this->replace_url( $url );
+            // Replace the url
+            $new_url = $this->replace_url($url);
 
-			// Replace URL With CDN URL
-			$html = sbp_str_replace_first( $url, $new_url, $html );
-		}
+            // Replace URL With CDN URL
+            $html = sbp_str_replace_first($url, $new_url, $html);
+        }
 
-		return $html;
-	}
+        return $html;
+    }
 
-	private function set_included_dirs() {
-		// Get WP_CONTENT directory name
-		$wp_content_dir_name = str_replace( ABSPATH, '', WP_CONTENT_DIR );
+    private function set_included_dirs()
+    {
+        // Get WP_CONTENT directory name
+        $wp_content_dir_name = str_replace(ABSPATH, '', WP_CONTENT_DIR);
 
-		$this->included_dirs = [
-			$wp_content_dir_name,
-			'wp-includes',
-		];
+        $this->included_dirs = [
+            $wp_content_dir_name,
+            'wp-includes',
+        ];
 
-		$includes            = sbp_get_option( 'cdn_includes' );
-		$lines               = Utils::explode_lines( $includes, true );
-		$this->included_dirs = array_merge( $this->included_dirs, $lines );
-		$this->included_dirs = apply_filters( 'sbp_cdn_included_directories', $this->included_dirs );
-	}
+        $includes = sbp_get_option('cdn_includes');
+        $lines = Utils::explode_lines($includes);
+        $this->included_dirs = array_merge($this->included_dirs, $lines);
+        $this->included_dirs = apply_filters('sbp_cdn_included_directories', $this->included_dirs);
+    }
 
-	private function set_excluded_extensions() {
-		$excludes                  = sbp_get_option( 'cdn_excludes' );
-		$lines                     = Utils::explode_lines( $excludes, true );
-		$this->excluded_extensions = array_merge( $this->excluded_extensions, $lines );
-		$this->excluded_extensions = apply_filters( 'sbp_cdn_excluded_extensions', $this->excluded_extensions );
-	}
+    private function set_excluded_extensions()
+    {
+        $excludes = sbp_get_option('cdn_excludes');
+        $lines = Utils::explode_lines($excludes);
+        $this->excluded_extensions = array_merge($this->excluded_extensions, $lines);
+        $this->excluded_extensions = apply_filters('sbp_cdn_excluded_extensions', $this->excluded_extensions);
+    }
 
-	private function fetch_all_urls( $html ) {
-		$site_url = get_site_url();
+    private function fetch_all_urls($html)
+    {
+        $site_url = get_site_url();
 
-		$included_dirs = implode( "|", $this->included_dirs );
-		$regex         = '#(?<=[(\"\'])(?:' . $site_url . ')?/(?:((?:' . $included_dirs . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
+        $included_dirs = implode("|", $this->included_dirs);
+        $regex = '#(?<=[(\"\'])(?:' . $site_url . ')?/(?:((?:' . $included_dirs . ')[^\"\')]+)|([^/\"\']+\.[^/\"\')]+))(?=[\"\')])#';
 
-		preg_match_all( $regex, $html, $matches );
+        preg_match_all($regex, $html, $matches);
 
-		if ( isset( $matches[0] ) && $matches[0] ) {
-			return $matches[0];
-		}
+        if (isset($matches[0]) && $matches[0]) {
+            return $matches[0];
+        }
 
-		return [];
-	}
+        return [];
+    }
 
-	private function replace_url( $url ) {
-		$cdn_url = '//' . sbp_get_option( 'cdn_url' );
+    private function replace_url($url)
+    {
+        $cdn_url = '//' . sbp_get_option('cdn_url');
 
-		if ( preg_match( '/^(http|https):\/\//', $url ) ) {
-			return str_replace( $this->site_url, $cdn_url, $url );
-		}
+        if (preg_match('/^(http|https):\/\//', $url)) {
+            return str_replace($this->site_url, $cdn_url, $url);
+        }
 
-		// Check if relative path
-		// We'll need this in the future
+        // Check if relative path
+        // We'll need this in the future
 //		if ( substr( $url, 0, 2 ) == '//' ) {
 //			// Remove http/s from site url
 //			$site_url = preg_replace( '#^(http|https)://#', '', $this->site_url );
@@ -107,16 +115,17 @@ class CDN {
 //			return str_replace( $site_url, $cdn_url, $url );
 //		}
 
-		if ( substr( $url, 0, 1 ) === '/' ) {
-			return $cdn_url . $url;
-		}
+        if (substr($url, 0, 1) === '/') {
+            return $cdn_url . $url;
+        }
 
-		return $url;
-	}
+        return $url;
+    }
 
-	private function is_excluded( $url ) {
-		$extension = Utils::get_file_extension_from_url( $url );
+    private function is_excluded($url): bool
+    {
+        $extension = Utils::get_file_extension_from_url($url);
 
-		return in_array( $extension, $this->excluded_extensions );
-	}
+        return in_array($extension, $this->excluded_extensions);
+    }
 }

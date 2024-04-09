@@ -2,79 +2,86 @@
 
 namespace Optimocha\SpeedBooster;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
-class Utils {
-	public static function explode_lines( $text, $unique = true ) {
-		if ( ! $text ) {
-			return [];
-		}
+class Utils
+{
+    public static function explode_lines(string $text, bool $unique = true): array
+    {
+        if (!$text) {
+            return [];
+        }
 
-		if ( true === $unique ) {
-			return array_filter( array_unique( array_map( 'trim', explode( PHP_EOL, $text ) ) ) );
-		} else {
-			return array_filter( array_map( 'trim', explode( PHP_EOL, $text ) ) );
-		}
-	}
+        if ($unique === true) {
+            return array_filter(array_unique(array_map('trim', explode(PHP_EOL, $text))));
+        }
 
-	public static function get_file_extension_from_url( $url ) {
-		$url = self::clear_hashes_and_question_mark( $url );
+        return array_filter(array_map('trim', explode(PHP_EOL, $text)));
+    }
 
-		return pathinfo( $url, PATHINFO_EXTENSION );
-	}
+    public static function get_file_extension_from_url(string $url)
+    {
+        $url = self::clear_hashes_and_question_mark($url);
 
-	public static function clear_hashes_and_question_mark( $url ) {
-		// Remove Query String
-		if ( strpos( $url, "?" ) !== false ) {
-			$url = substr( $url, 0, strpos( $url, "?" ) );
-		}
-		if ( strpos( $url, "#" ) !== false ) {
-			$url = substr( $url, 0, strpos( $url, "#" ) );
-		}
+        return pathinfo($url, PATHINFO_EXTENSION);
+    }
 
-		return $url;
-	}
+    public static function clear_hashes_and_question_mark(string $url): string
+    {
+        // Remove Query String
+        if (strpos($url, '?') !== false) {
+            $url = substr($url, 0, strpos($url, '?'));
+        }
+        if (strpos($url, '#') !== false) {
+            $url = substr($url, 0, strpos($url, '#'));
+        }
 
-	/**
-	 * Check if a plugin is active or not.
-	 * @since 3.8.3
-	 */
-	public static function is_plugin_active( $plugin ) {
-		$is_plugin_active_for_network = false;
+        return $url;
+    }
 
-		$plugins = get_site_option( 'active_sitewide_plugins' );
-		if ( isset( $plugins[ $plugin ] ) ) {
-			$is_plugin_active_for_network = true;
-		}
+    /**
+     * Check if a plugin is active or not.
+     * @since 3.8.3
+     */
+    public static function is_plugin_active(string $plugin): bool
+    {
+        $is_plugin_active_for_network = false;
 
-		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || $is_plugin_active_for_network;
-	}
+        $plugins = get_site_option('active_sitewide_plugins');
+        if (isset($plugins[$plugin])) {
+            $is_plugin_active_for_network = true;
+        }
 
-	public static function insert_to_htaccess( $marker_name, $content ) {
-		global $wp_filesystem;
+        return in_array($plugin, (array)get_option('active_plugins', []), true) || $is_plugin_active_for_network;
+    }
 
-		require_once( ABSPATH . '/wp-admin/includes/file.php' );
-		WP_Filesystem();
+    public static function insert_to_htaccess(string $marker_name, $content)
+    {
+        global $wp_filesystem;
 
-		$htaccess_file_path = get_home_path() . '/.htaccess';
+        require_once(ABSPATH . '/wp-admin/includes/file.php');
+        WP_Filesystem();
 
-		if ( $wp_filesystem->exists( $htaccess_file_path ) ) {
-			add_action( 'admin_init', function() use ( $htaccess_file_path, $marker_name, $content ) {
-				insert_with_markers( $htaccess_file_path, $marker_name, $content );
-			} );
-		}
+        $htaccess_file_path = get_home_path() . '/.htaccess';
 
-		return false;
-	}
+        if ($wp_filesystem->exists($htaccess_file_path)) {
+            add_action('admin_init', function () use ($htaccess_file_path, $marker_name, $content) {
+                insert_with_markers($htaccess_file_path, $marker_name, $content);
+            });
+        }
+    }
 
-	/**
-	 * Removes the http and https prefixes from url's
-	 *
-	 * @param $url
-	 *
-	 * @return void
-	 */
-	public static function remove_protocol( $url ) {
-		return str_replace( [ 'http://', 'https://' ], [ '//', '//' ], $url );
-	}
+    /**
+     * Removes the http and https prefixes from url
+     */
+    public static function remove_protocol(string $url): string
+    {
+        return str_replace(['http://', 'https://'], '//', $url);
+    }
+
+    public static function wp_safe_redirect(string $url, int $status = 302)
+    {
+        wp_safe_redirect($url, $status);
+        exit;
+    }
 }

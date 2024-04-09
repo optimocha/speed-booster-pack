@@ -2,42 +2,38 @@
 
 namespace Optimocha\SpeedBooster\Frontend;
 
-defined( 'ABSPATH' ) || exit;
+use Optimocha\SpeedBooster\Utils;
 
-class LazyLoader {
+defined('ABSPATH') || exit;
 
-	private $noscript_placeholder = '<!--SBP_NOSCRIPT_PLACEHOLDER-->';
-	
-	private $noscripts = [];
+class LazyLoader
+{
+    private $noscript_placeholder = '<!--SBP_NOSCRIPT_PLACEHOLDER-->';
 
-	public function __construct() {
+    private $noscripts = [];
 
-		
-		if ( ! sbp_get_option( 'module_assets' ) || ! sbp_get_option( 'lazyload' ) || sbp_should_disable_feature( 'lazyload' ) ) {
-			return;
-		}
+    public function __construct()
+    {
+        if (!sbp_get_option('module_assets') || !sbp_get_option('lazyload') || sbp_should_disable_feature('lazyload')) {
+            return;
+        }
 
-		add_action( 'set_current_user', [ $this, 'run_class' ] );
+        add_action('set_current_user', [$this, 'run_class']);
+    }
 
-	}
+    public function run_class()
+    {
+        add_action('wp_enqueue_scripts', [$this, 'add_lazy_load_script']);
+        add_action('wp_enqueue_scripts', [$this, 'deregister_media_elements']);
+        add_filter('script_loader_tag', [$this, 'add_attribute_to_tag'], 10, 2);
+        add_filter('sbp_output_buffer', [$this, 'lazy_load_handler']);
+    }
 
-	public function run_class() {
+    function add_lazy_load_script()
+    {
+        wp_enqueue_script('sbp-lazy-load', SBP_URL . 'assets/lazyload.js', false, '17.7.0', true);
 
-		add_action( 'wp_enqueue_scripts', [ $this, 'add_lazy_load_script' ] );
-
-		add_action( 'wp_enqueue_scripts', [ $this, 'deregister_media_elements' ] );
-
-		add_filter( 'script_loader_tag', [ $this, 'add_attribute_to_tag' ], 10, 2 );
-
-		add_filter( 'sbp_output_buffer', [ $this, 'lazy_load_handler' ] );
-
-	}
-
-	function add_lazy_load_script() {
-
-		wp_enqueue_script( 'sbp-lazy-load', SBP_URL . 'assets/lazyload.js', false, '17.7.0', true );
-
-		$lazy_loader_script = 'window.lazyLoadOptions = {
+        $lazy_loader_script = 'window.lazyLoadOptions = {
 					elements_selector: "[loading=lazy]"
 				};
 				window.addEventListener(
@@ -74,158 +70,148 @@ class LazyLoader {
 					false
 				);';
 
-		$lazy_loader_script = apply_filters( 'sbp_lazyload_script', $lazy_loader_script );
+        $lazy_loader_script = apply_filters('sbp_lazyload_script', $lazy_loader_script);
 
-		wp_add_inline_script( 'sbp-lazy-load', $lazy_loader_script );
+        wp_add_inline_script('sbp-lazy-load', $lazy_loader_script);
 
-	}
+    }
 
-	 function deregister_media_elements() {
+    function deregister_media_elements()
+    {
+        wp_deregister_script('wp-mediaelement');
+        wp_deregister_style('wp-mediaelement');
+    }
 
-	   wp_deregister_script( 'wp-mediaelement' );
-	   wp_deregister_style( 'wp-mediaelement' );
 
-	}
+    function lazy_load_handler($html)
+    {
+        if (is_embed()) {
+            return $html;
+        }
 
+        $this->replace_with_noscripts($html);
 
-	function lazy_load_handler( $html ) {
+        $lazyload_exclusions = Utils::explode_lines(sbp_get_option('lazyload_exclude'));
+        // Add default lazyload exclusions
+        $default_lazyload_exclusions = [
+            'data-no-lazy',
+            'skip-lazy',
+            'loading=eager',
+            'loading="eager"',
+            'loading=\'eager\'',
+            'loading=auto',
+            'loading="auto"',
+            'loading=\'auto\'',
+            'wp-embedded-content',
+            'images.dmca.com/Badges/',
+        ];
+        $lazyload_exclusions = apply_filters('sbp_lazyload_exclusions', array_merge($lazyload_exclusions, $default_lazyload_exclusions));
+        $placeholder = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
-		if ( is_embed() != false ) {
-			return $html;
-		}
+        // Find all images
+        preg_match_all('/<(img|source|video|iframe)(.*?) (src=)[\'|"](.*?)[\'|"](.*?)>/is', $html, $resource_elements);
 
-		$this->replace_with_noscripts( $html );
+        $elements_to_be_changed = [];
 
-		$lazyload_exclusions = Utils::explode_lines( sbp_get_option( 'lazyload_exclude' ) );
-		// Add default lazyload exclusions
-		$default_lazyload_exclusions = [
-			'data-no-lazy',
-			'skip-lazy',
-			'loading=eager',
-			'loading="eager"',
-			'loading=\'eager\'',
-			'loading=auto',
-			'loading="auto"',
-			'loading=\'auto\'',
-			'wp-embedded-content',
-			'images.dmca.com/Badges/',
-		];
-		$lazyload_exclusions         = apply_filters( 'sbp_lazyload_exclusions', array_merge( $lazyload_exclusions, $default_lazyload_exclusions ) );
-		$placeholder                 = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+        // Determine which images will be changed
+        foreach ($resource_elements[0] as $element) {
+            $exclude_element = false;
+            if (count($lazyload_exclusions) > 0) {
+                foreach ($lazyload_exclusions as $exclusion) {
+                    $exclusion = trim($exclusion);
+                    if (false !== strpos($element, $exclusion)) {
+                        $exclude_element = true;
+                    }
+                }
+            }
 
-		// Find all images
-		preg_match_all( '/<(img|source|video|iframe)(.*?) (src=)[\'|"](.*?)[\'|"](.*?)>/is', $html, $resource_elements );
+            // If not excluded element, put it into the to be changed list.
+            if (false === $exclude_element) {
+                $elements_to_be_changed[] = $element;
+            }
+        }
 
-		$elements_to_be_changed = [];
+        // Clean the possible repeated elements
+        $elements_to_be_changed = array_unique($elements_to_be_changed);
 
-		// Determine which images will be changed
-		foreach ( $resource_elements[0] as $element ) {
-			$exclude_element = false;
-			if ( count( $lazyload_exclusions ) > 0 ) {
-				foreach ( $lazyload_exclusions as $exclusion ) {
-					$exclusion = trim( $exclusion );
-					if ( false !== strpos( $element, $exclusion ) ) {
-						$exclude_element = true;
-					}
-				}
-			}
+        // Process all elements marked as to be changed
+        foreach ($elements_to_be_changed as $element) {
+            // Change src with placeholder
+            $newElement = preg_replace(
+                "/<(img|source|iframe)(.*?) (src=)(.*?)>/is",
+                '<$1$2 $3"' . $placeholder . '" data-$3$4>',
+                $element
+            );
 
-			// If not excluded element, put it into the to be changed list.
-			if ( false === $exclude_element ) {
-				$elements_to_be_changed[] = $element;
-			}
-		}
+            // change srcset
+            $newElement = preg_replace(
+                "/<(img|source|iframe)(.*?) (srcset=)(.*?)>/is",
+                '<$1$2 $3"' . $placeholder . '" data-$3$4>',
+                $newElement
+            );
 
-		// Clean the possible repeated elements
-		$elements_to_be_changed = array_unique( $elements_to_be_changed );
+            // add loading attribute, but only if the tag doesn't have one
+            if (!strpos($newElement, 'loading=')) {
+                $newElement = preg_replace(
+                    "/<(img|source|video|iframe)(.*?) ?(\/?)>/is",
+                    '<$1$2 loading="lazy" $3>',
+                    $newElement
+                );
+            }
 
-		// Process all elements marked as to be changed
-		foreach ( $elements_to_be_changed as $element ) {
+            // prevent mixed content errors
+            $newElement = str_replace('http://', '//', $newElement);
 
-			// Change src with placeholder
-			$newElement = preg_replace(
-				"/<(img|source|iframe)(.*?) (src=)(.*?)>/is",
-				'<$1$2 $3"' . $placeholder . '" data-$3$4>',
-				$element
-			);
+            $html = str_replace($element, $newElement, $html);
+        }
 
-			// change srcset
-			$newElement = preg_replace(
-				"/<(img|source|iframe)(.*?) (srcset=)(.*?)>/is",
-				'<$1$2 $3"' . $placeholder . '" data-$3$4>',
-				$newElement
-			);
+        $this->add_noscripts($html);
 
-			// add loading attribute, but only if the tag doesn't have one
-			if ( ! strpos( $newElement, 'loading=' ) ) {
-				$newElement = preg_replace(
-					"/<(img|source|video|iframe)(.*?) ?(\/?)>/is",
-					'<$1$2 loading="lazy" $3>',
-					$newElement
-				);
-			}
+        return $html;
+    }
 
-			// prevent mixed content errors
-			$newElement = str_replace( 'http://', '//', $newElement );
+    public function add_attribute_to_tag($tag, $handle)
+    {
+        if ('sbp-lazy-load' !== $handle) {
+            return $tag;
+        }
 
-			$html = str_replace( $element, $newElement, $html );
+        return str_replace(' src=', ' async src=', $tag);
+    }
 
-		}
+    /**
+     * Replaces noscript tags with placeholder and sets the noscripts property
+     *
+     * @param $html
+     *
+     * @return mixed
+     */
+    private function replace_with_noscripts(&$html)
+    {
+        $regex = '/<noscript(.*?)>(.*?)<\/noscript>/si';
 
-		$this->add_noscripts( $html );
+        preg_match_all($regex, $html, $matches);
 
-		return $html;
+        $this->noscripts = $matches[0];
 
-	}
+        if (count($this->noscripts) > 0) {
+            $html = preg_replace($regex, $this->noscript_placeholder, $html);
+        }
+    }
 
-	public function add_attribute_to_tag( $tag, $handle ) {
+    /**
+     * Replaces noscript placeholders with noscripts.
+     *
+     * @param $html
+     */
+    private function add_noscripts(&$html)
+    {
+        foreach ($this->noscripts as $noscript) {
+            $pos = strpos($html, $this->noscript_placeholder);
 
-		if ( 'sbp-lazy-load' !== $handle ) {
-			return $tag;
-		}
-
-		return str_replace( ' src=', ' async src=', $tag );
-
-	}
-
-	/**
-	 * Replaces noscript tags with placeholder and sets the noscripts property
-	 *
-	 * @param $html
-	 *
-	 * @return mixed
-	 */
-	private function replace_with_noscripts( &$html ) {
-
-		$regex = '/<noscript(.*?)>(.*?)<\/noscript>/si';
-
-		preg_match_all( $regex, $html, $matches );
-
-		$this->noscripts = $matches[0];
-
-		if ( count( $this->noscripts ) > 0 ) {
-			$html = preg_replace( $regex, $this->noscript_placeholder, $html );
-		}
-
-	}
-
-	/**
-	 * Replaces noscript placeholders with noscripts.
-	 *
-	 * @param $html
-	 */
-	private function add_noscripts( &$html ) {
-
-		foreach ( $this->noscripts as $noscript ) {
-
-			$pos = strpos( $html, $this->noscript_placeholder );
-
-			if ( false !== $pos ) {
-				$html = substr_replace( $html, $noscript, $pos, strlen( $this->noscript_placeholder ) );
-			}
-
-		}
-
-	}
-
+            if (false !== $pos) {
+                $html = substr_replace($html, $noscript, $pos, strlen($this->noscript_placeholder));
+            }
+        }
+    }
 }
