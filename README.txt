@@ -101,6 +101,18 @@ All the time! We're always looking for new ways to get this plugin to a better s
 
 == Changelog ==
 
+= 4.5.9 =
+
+*Release Date: TODO April 2024*
+
+// TODO:
+- Test lazy loader.
+- Test instant page.
+
+* **Updated**: Compatibility with WordPress v6.5.2.
+* **Updated**: Updated instantpage.js to v5.2.0.
+* **Updated**: Updated lazyload.js to v19.1.2.
+
 = 4.5.8.1 =
 
 *Release Date: 13 February 2024*
