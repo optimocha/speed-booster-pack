@@ -3,9 +3,9 @@ Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
 Tags: speed, pagespeed, optimization, core web vitals, cache, lcp, cls, inp, fid, tbt
 Requires at least: 4.6
-Tested up to: 6.4
-Requires PHP: 5.6
-Stable tag: 4.5.8.1
+Tested up to: 6.6
+Requires PHP: 7.4
+Stable tag: 5.0.0
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 

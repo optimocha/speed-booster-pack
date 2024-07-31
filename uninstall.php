@@ -22,7 +22,7 @@
  * @link       https://optimocha.com
  * @since      4.0.0
  *
- * @package    Speed_Booster_Pack
+ * @package    SpeedBoosterPack
  */
 
 // If uninstall not called from WordPress, then exit.
@@ -133,9 +133,9 @@ if ( $wp_filesystem->exists( ABSPATH . 'wp-config.php' ) ) {
 }
 
 $wp_config_content = $wp_filesystem->get_contents( $wp_config_file );
-$config_regex = '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si';
+$config_regex      = '/\/\/ BEGIN SBP_WP_Config(.*?)\/\/ END SBP_WP_Config/si';
 if ( preg_match( $config_regex, $wp_config_content ) ) {
-	if ($wp_filesystem->is_writable($wp_config_file)) {
+	if ( $wp_filesystem->is_writable( $wp_config_file ) ) {
 		$modified_wp_config_content = preg_replace( $config_regex, '', $wp_config_content );
 		$wp_filesystem->put_contents( $wp_config_file, $modified_wp_config_content );
 	}
