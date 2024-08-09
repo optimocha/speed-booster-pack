@@ -3,9 +3,9 @@ Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
 Tags: speed, pagespeed, optimization, core web vitals, cache, lcp, cls, inp, fid, tbt
 Requires at least: 4.6
-Tested up to: 6.4
+Tested up to: 6.6
 Requires PHP: 5.6
-Stable tag: 4.5.8.1
+Stable tag: 4.5.8.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -112,6 +112,13 @@ All the time! We're always looking for new ways to get this plugin to a better s
 * **Updated**: Compatibility with WordPress v6.5.2.
 * **Updated**: Updated instantpage.js to v5.2.0.
 * **Updated**: Updated lazyload.js to v19.1.2.
+
+= 4.5.8.2 =
+
+*Release Date: ????*
+
+* **Improved**: Check user capability on activation hook.
+* **Improved**: Add dependency checks into activation hook.
 
 = 4.5.8.1 =
 
