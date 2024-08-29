@@ -28,6 +28,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'freemius/wordpress-sdk' => array(
+            'pretty_version' => '2.7.4',
+            'version' => '2.7.4.0',
+            'reference' => '2741ba2b4f819b5018f68529036e505ef1e7c349',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../freemius/wordpress-sdk',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'simplehtmldom/simplehtmldom' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',

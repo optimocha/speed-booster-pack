@@ -1,7 +1,8 @@
 {
   "require": {
     "simplehtmldom/simplehtmldom": "dev-master",
-    "deliciousbrains/wp-background-processing": "^1.0"
+    "deliciousbrains/wp-background-processing": "^1.0",
+    "freemius/wordpress-sdk": "^2.7"
   },
   "autoload": {
       "psr-4": {
