@@ -10,5 +10,6 @@
       "files": ["inc/Freemius.php", "inc/Helpers.php", "vendor/sbpopt-framework/sbpopt-framework.php"]
   },
   "minimum-stability": "dev",
-  "prefer-stable": true
+  "prefer-stable": true,
+  "optimize-autoloader": true
 }
