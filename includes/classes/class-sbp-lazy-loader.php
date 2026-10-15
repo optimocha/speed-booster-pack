@@ -119,7 +119,6 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 			'images.dmca.com/Badges/',
 		];
 		$lazyload_exclusions         = apply_filters( 'sbp_lazyload_exclusions', array_merge( $lazyload_exclusions, $default_lazyload_exclusions ) );
-		$placeholder                 = "data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org/2000/svg' style='width:auto;height:auto'%2F%3E";
 
 		// Find all images
 		preg_match_all( '/<(img|source|video|iframe)(.*?) (src=)[\'|"](.*?)[\'|"](.*?)>/is', $html, $resource_elements );
@@ -147,37 +146,49 @@ class SBP_Lazy_Loader extends SBP_Abstract_Module {
 		// Clean the possible repeated elements
 		$elements_to_be_changed = array_unique( $elements_to_be_changed );
 
-		// Process all elements marked as to be changed
+		// 1. Fully percent-encode the SVG placeholder (no raw single or double quotes)
+		$placeholder = "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20style%3D%22width%3Aauto%3Bheight%3Aauto%22%2F%3E";
+
+		// 2. Safely capture real src attributes using callback matching
 		foreach ( $elements_to_be_changed as $element ) {
 
-			// Change src with placeholder
-			$newElement = preg_replace(
-				"/<(img|source|iframe)(.*?) (src=)(.*?)>/is",
-				'<$1$2 $3"' . $placeholder . '" data-$3$4>',
-				$element
-			);
+		    $newElement = preg_replace_callback(
+		        '/<(img|source|iframe)([^>]*?)\s+src=(["\'])(.*?)\3([^>]*?)>/is',
+		        function ( $matches ) use ( $placeholder ) {
+		            $tag    = $matches[1];
+		            $before = $matches[2];
+		            $quote  = $matches[3]; // Preserves original opening quote delimiter
+		            $src    = $matches[4];
+		            $after  = $matches[5];
 
-			// change srcset
-			// $newElement = preg_replace(
-			// 	"/<(img|source|iframe)(.*?) (srcset=)(.*?)>/is",
-			// 	'<$1$2 $3"' . $placeholder . '" data-$3$4>',
-			// 	$newElement
-			// );
+		            // Skip if already converted
+		            if ( 0 === strpos( $src, 'data:image/svg' ) ) {
+		                return $matches[0];
+		            }
 
-			// add loading attribute, but only if the tag doesn't have one
-			if ( ! strpos( $newElement, 'loading=' ) ) {
-				$newElement = preg_replace(
-					"/<(img|source|video|iframe)(.*?) ?(\/?)>/is",
-					'<$1$2 loading="lazy" $3>',
-					$newElement
-				);
-			}
+		            $src = str_replace( 'http://', '//', $src );
 
-			// prevent mixed content errors
-			$newElement = str_replace( 'http://', '//', $newElement );
+		            return sprintf(
+		                '<%s%s src=%s%s%s data-src=%s%s%s%s>',
+		                $tag,
+		                $before,
+		                $quote, $placeholder, $quote,
+		                $quote, $src, $quote,
+		                $after
+		            );
+		        },
+		        $element
+		    );
 
-			$html = str_replace( $element, $newElement, $html );
+		    if ( ! strpos( $newElement, 'loading=' ) ) {
+		        $newElement = preg_replace(
+		            '/<(img|source|video|iframe)([^>]*?)(\/?)>/is',
+		            '<$1$2 loading="lazy" $3>',
+		            $newElement
+		        );
+		    }
 
+		    $html = str_replace( $element, $newElement, $html );
 		}
 
 		$this->add_noscripts( $html );
