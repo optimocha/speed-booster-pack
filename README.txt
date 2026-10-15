@@ -5,7 +5,7 @@ Tags: speed, pagespeed, optimization, core web vitals, cache, lcp, cls, inp, fid
 Requires at least: 4.6
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 4.5.9.1
+Stable tag: 4.5.9.2
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -100,6 +100,14 @@ All the time! We're always looking for new ways to get this plugin to a better s
 1. Plugin options page
 
 == Changelog ==
+
+= 4.5.9.2 =
+
+*Release Date: 08 May 2026*
+
+* **Fixed**: Patched security vulnerability "Unauthenticated Stored XSS via comment author name" (CVE-2026-107771) - big thanks to Youcef Hamdani and Wordfence Intelligence!
+* **Updated**: Bumped instant.page version to 5.2.0.
+* **Updated**: Bumped instant.page version to 19.1.3.
 
 = 4.5.9.1 =
 
