@@ -3,9 +3,9 @@ Plugin Name: Speed Booster Pack ⚡ PageSpeed Optimization Suite
 Contributors: optimocha, speedboosterpack
 Tags: speed, pagespeed, optimization, core web vitals, cache, lcp, cls, inp, fid, tbt
 Requires at least: 4.6
-Tested up to: 6.6
+Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 4.5.8.2
+Stable tag: 4.5.9.1
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,7 +46,7 @@ With our huge set of features, of course!
 
 We're constantly working on new features so stay tuned for more and more on every major release!
 
-For complete usage instructions, you can visit the [Speed Booster Pack documentation](https://speedboosterpack.com/docs/) page.
+For complete usage instructions, you can visit the [Speed Booster Pack documentation](https://speedboosterpack.com/) page.
 
 ### Translators are always welcome & always rewarded!
 
@@ -74,7 +74,7 @@ Even though the plugin works perfectly well on most WordPress websites, it's not
 
 == Frequently Asked Questions ==
 
-For complete usage instructions, you can visit the [Speed Booster Pack documentation](https://speedboosterpack.com/docs/) page.
+For complete usage instructions, you can visit the [Speed Booster Pack documentation](https://speedboosterpack.com/) page.
 
 = I like your plugin, how do I thank you? =
 
@@ -94,31 +94,24 @@ Our main business is special speed optimization services, tailored for every web
 
 = How often do you update the plugin? =
 
-All the time! We're always looking for new ways to get this plugin to a better state: We code new features, we fix existing bugs, and we try our best to make Speed Booster Pack more and more popular. And we always appreciate a helping hand: If you've got a new feature to offer, [you can suggest it over here](https://speedboosterpack.com/contact/). If we eventually make it happen and/or you help us make it happen, you'll be rewarded with handsome discount coupons or even free speed optimization services!
+All the time! We're always looking for new ways to get this plugin to a better state: We code new features, we fix existing bugs, and we try our best to make Speed Booster Pack more and more popular. And we always appreciate a helping hand: If you've got a new feature to offer, [you can suggest it over here](https://optimocha.com/contact/). If we eventually make it happen and/or you help us make it happen, you'll be rewarded with handsome discount coupons or even free speed optimization services!
 
 == Screenshots ==
 1. Plugin options page
 
 == Changelog ==
 
+= 4.5.9.1 =
+
+*Release Date: 08 May 2026*
+
+* **Fixed**: The "Function _load_textdomain_just_in_time was called incorrectly" error is now fixed.
+
 = 4.5.9 =
 
-*Release Date: TODO April 2024*
+*Release Date: 10 October 2025*
 
-// TODO:
-- Test lazy loader.
-- Test instant page.
-
-* **Updated**: Compatibility with WordPress v6.5.2.
-* **Updated**: Updated instantpage.js to v5.2.0.
-* **Updated**: Updated lazyload.js to v19.1.2.
-
-= 4.5.8.2 =
-
-*Release Date: ????*
-
-* **Improved**: Check user capability on activation hook.
-* **Improved**: Add dependency checks into activation hook.
+* **Improved**: Checked and ensured the plugin is compatible with the latest versions of WordPress & PHP and several popular plugins. [Contact us](https://optimocha.com/contact/) if you have ideas to improve the plugin... because we're working on version 5!
 
 = 4.5.8.1 =
 
@@ -416,4 +409,4 @@ Had to release a tiny hotfix because we _forgot_ to change the version. And whil
 * **Fixed**: The lazy load feature caused mixed content warnings in some edge cases, which is now fixed.
 * **Updated**: Updated external libraries (lazyload.js and instantpage.js) to their latest versions.
 
-*You can read the rest of the changelog on the [Speed Booster Pack documentation](https://speedboosterpack.com/docs/) page.
+*You can read the rest of the changelog on the [Speed Booster Pack documentation](https://speedboosterpack.com/) page.
